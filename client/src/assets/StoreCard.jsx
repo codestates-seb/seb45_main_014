@@ -1,4 +1,7 @@
 import { styled } from 'styled-components';
+import { useBookmarkStore } from '../store/store';
+import bookmarkOff from './bookmarkOff.png';
+import bookmarkOn from './bookmarkOn.png';
 
 const StoreImage = styled.img`
   width: 300px;
@@ -13,14 +16,23 @@ const StoreCard = () => {
   const formattedStoreRating = storeRating.toFixed(1);
   const formattedStoreViews = storeViews.toLocaleString();
 
+  const { isBookmarked, toggleBookmark } = useBookmarkStore();
   return (
     <div className="w-72 relative">
       <StoreImage
         src={`https://picsum.photos/300/200`}
         alt="매장 대표 이미지"
       />
-      <button className="absolute top-0 right-0 p-2">
-        {/* SVG나 북마크 아이콘 */}
+      <button
+        className="absolute bottom-16 right-0 p-2"
+        onClick={toggleBookmark}
+      >
+        <img
+          src={isBookmarked ? bookmarkOn : bookmarkOff}
+          alt="북마크 아이콘"
+          width={24}
+          height={24}
+        />
       </button>
       <div className="flex justify-between">
         <div className="flex flex-col">
