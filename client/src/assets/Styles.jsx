@@ -17,3 +17,10 @@ export const Input = styled.input`
 export const InputBox = styled.div`
   margin-top: 0.75rem;
 `;
+
+export const SocialLoginButton = styled.img`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+`;
