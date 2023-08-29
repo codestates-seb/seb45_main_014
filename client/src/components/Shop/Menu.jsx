@@ -1,18 +1,18 @@
 import { styled } from 'styled-components';
-import { Wrapper } from '@googlemaps/react-wrapper';
-
+import menuimg from '../../image/menu_img1.png';
 const Menu = () => {
+  const menuinventory = 100;
   return (
     <>
-      <div className="flex justify-center m-6">
-        <div className="mr-12 text-center">
-          <div>메뉴 이름</div>
-          <div>메뉴 설명</div>
-          <div>메뉴 가격</div>
+      <div className="flex justify-center m-6 border-b">
+        <div className="mr-12 text-center pt-8">
+          <div className="m-3">소금빵</div>
+          <div className="m-3">겉바속촉 고소하고 맛있는 소금빵</div>
+          <div className="m-3">2,000 원</div>
         </div>
-        <div className="flex flex-col">
-          <div>남은 수량</div>
-          <MenuImgBox>메뉴 이미지</MenuImgBox>
+        <div className="flex flex-col mb-8">
+          <div>남은 수량 {menuinventory}개</div>
+          <MenuImgBox src={menuimg} alt="메뉴 이미지" />
         </div>
       </div>
     </>
@@ -21,9 +21,8 @@ const Menu = () => {
 
 export default Menu;
 
-const MenuImgBox = styled.div`
+const MenuImgBox = styled.img`
   width: 200px;
   height: 150px;
-  background-color: red;
   text-align: right;
 `;
