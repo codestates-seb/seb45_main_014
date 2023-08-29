@@ -9,6 +9,7 @@ const StoreImage = styled.img`
 `;
 
 const StoreCard = () => {
+  // 데이터 불러오기 전 하드 코딩
   const storeName = '파리바게트 본점';
   const storeLocation = '서울시 강남구';
   const storeRating = 5.0;
@@ -18,13 +19,13 @@ const StoreCard = () => {
 
   const { isBookmarked, toggleBookmark } = useBookmarkStore();
   return (
-    <div className="w-72 relative">
+    <div className="w-72 relative m-5">
       <StoreImage
         src={`https://picsum.photos/300/200`}
         alt="매장 대표 이미지"
       />
       <button
-        className="absolute bottom-16 right-0 p-2"
+        className="absolute bottom-16 right-1 p-2"
         onClick={toggleBookmark}
       >
         <img
