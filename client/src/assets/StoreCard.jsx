@@ -1,7 +1,6 @@
 import { styled } from 'styled-components';
 import { useBookmarkStore } from '../store/store';
-import bookmarkOff from './bookmarkOff.png';
-import bookmarkOn from './bookmarkOn.png';
+import images from './images/Images';
 
 const StoreImage = styled.img`
   width: 300px;
@@ -30,7 +29,7 @@ const StoreCard = () => {
         onClick={toggleBookmark}
       >
         <img
-          src={isBookmarked ? bookmarkOn : bookmarkOff}
+          src={isBookmarked ? images.bookmarkOn : images.bookmarkOff}
           alt="북마크 아이콘"
           width={24}
           height={24}

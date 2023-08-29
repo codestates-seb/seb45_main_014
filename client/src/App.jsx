@@ -4,6 +4,9 @@ import Header from './components/Header.jsx';
 import MainPage from './pages/main/MainPage.jsx';
 import { createGlobalStyle } from 'styled-components';
 import GmarketSans from './assets/fonts/GmarketSansTTFMedium.ttf';
+import { Route, Routes } from 'react-router-dom';
+import SignUpPage from './pages/signUp/SignUpPage.jsx';
+import LoginPage from './pages/login/LoginPage.jsx';
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -22,7 +25,13 @@ function App() {
     <>
       <GlobalStyle />
       <Header />
-      <MainPage />
+      <div className="pt-32 mb-64">
+        <Routes>
+          <Route path="/" element={<MainPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
+        </Routes>
+      </div>
       <Footer />
     </>
   );
