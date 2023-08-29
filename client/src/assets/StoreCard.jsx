@@ -10,6 +10,7 @@ const StoreImage = styled.img`
 
 const StoreCard = () => {
   // 데이터 불러오기 전 하드 코딩
+  // API 생기면 이미지 클릭 시 상세 페이지로 이동하게 변경
   const storeName = '파리바게트 본점';
   const storeLocation = '서울시 강남구';
   const storeRating = 5.0;
