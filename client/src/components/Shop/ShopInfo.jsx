@@ -1,11 +1,10 @@
 import { styled } from 'styled-components';
-import shop_logo from '../../image/pb_logo.png';
-import bookmarkOff from '../../assets/bookmarkOff.png';
-import bookmarkOn from '../../assets/bookmarkOn.png';
+import shop_logo from '../../assets/images/pb_logo.png';
 import { useBookmarkStore } from '../../store/store.js';
-import shareicon from '../../assets/shareicon.png';
 import copy from 'clipboard-copy';
 import React, { useEffect } from 'react';
+import images from '../../assets/images/Images';
+import { Map } from 'react-kakao-maps-sdk';
 
 const ShopInfo = () => {
   const { isBookmarked, toggleBookmark } = useBookmarkStore();
@@ -16,35 +15,6 @@ const ShopInfo = () => {
     alert('URL이 복사되었습니다.');
   };
 
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src =
-      '//dapi.kakao.com/v2/maps/sdk.js?appkey=b676bffeb7b033ef9950c49bb688d15c&libraries=services,drawing';
-    script.async = true;
-    script.onload = () => {
-      if (window.kakao && window.kakao.maps) {
-        const container = document.getElementById('kakaomap');
-
-        // Check if the LatLng constructor is available before using it
-        if (window.kakao.maps.LatLng) {
-          const options = {
-            center: new window.kakao.maps.LatLng(37.5665, 126.978),
-            level: 3,
-          };
-          new window.kakao.maps.Map(container, options);
-        } else {
-          console.error('LatLng constructor is not available.');
-        }
-      }
-    };
-    document.head.appendChild(script);
-
-    return () => {
-      document.head.removeChild(script);
-    };
-  }, []);
-
   const StoreName = '파리 바게트';
   const StoreImg = shop_logo;
   return (
@@ -53,22 +23,26 @@ const ShopInfo = () => {
         <ShopLogo src={StoreImg} alt="매장 이미지" />
         <button onClick={toggleBookmark}>
           <ShopBookmarkIcon
-            src={isBookmarked ? bookmarkOn : bookmarkOff}
+            src={isBookmarked ? images.bookmarkOn : images.bookmarkOff}
             alt="즐겨찾기 아이콘"
           />
         </button>
         <button>
           <ShopInfoShareIcon
             onClick={handleCopyUrl}
-            src={shareicon}
+            src={images.share}
             alt="공유 버튼 아이콘"
           />
         </button>
       </div>
-      <div className="text-center">{StoreName}</div>
+      <div className="text-center m-3 w-">{StoreName}</div>
       <div className="flex justify-center mb-6">
-        <span>매장 소개</span>
-        <ShopInfoMap>매장 지도</ShopInfoMap>
+        <span className="mr-6">매장 소개</span>
+        <Map
+          center={{ lat: 35.955406, lng: 126.978647 }} // 지도의 중심 좌표
+          style={{ width: '400px', height: '250px' }} // 지도 크기
+          level={3} // 지도 확대 레벨
+        ></Map>
       </div>
     </div>
   );
@@ -80,11 +54,6 @@ const ShopLogo = styled.img`
   width: 300px;
   height: 220px;
   margin-left: 350px;
-`;
-
-const ShopInfoMap = styled.div`
-  width: 500px; /* 충분한 크기로 설정 */
-  height: 300px; /* 충분한 크기로 설정 */
 `;
 
 const ShopBookmarkIcon = styled.img`

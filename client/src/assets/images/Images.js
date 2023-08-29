@@ -5,6 +5,7 @@ import bookmarkOn from './bookmarkOn.png';
 import google from './google.png';
 import kakao from './kakao.png';
 import naver from './naver.png';
+import share from './share.png';
 
 const images = {
   githublogo,
@@ -14,6 +15,7 @@ const images = {
   google,
   kakao,
   naver,
+  share,
 };
 
 export default images;

@@ -1,4 +1,4 @@
-import menuimg from '../../image/menu_img1.png';
+import menuimg from '../../assets/images/menu_img1.png';
 import { styled } from 'styled-components';
 const MenuReview = () => {
   return (
