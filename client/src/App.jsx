@@ -25,7 +25,7 @@ function App() {
     <>
       <GlobalStyle />
       <Header />
-      <div className="pt-32">
+      <div className="pt-32 mb-64">
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/login" element={<LoginPage />} />
