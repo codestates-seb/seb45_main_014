@@ -50,7 +50,7 @@ const Header = () => {
   return (
     <HeaderBox>
       <MenuBox>
-        <Logo>
+        <Logo to="/">
           {/* <img src={images.mainlogo} alt="main logo" width="50" /> */}
           BBANG ORDER
         </Logo>
