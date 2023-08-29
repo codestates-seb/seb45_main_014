@@ -55,9 +55,11 @@ const Header = () => {
           BBANG ORDER
         </Logo>
         <Button weight="800">로그인</Button>
-        <Button className="ml-2 mr-1" weight="800">
-          회원가입
-        </Button>
+        <Link to="/signup">
+          <Button className="ml-2 mr-1" weight="800">
+            회원가입
+          </Button>
+        </Link>
       </MenuBox>
       <SearchBox>검색 바 영역</SearchBox>
     </HeaderBox>
