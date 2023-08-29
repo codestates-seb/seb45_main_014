@@ -1,5 +1,6 @@
 import './App.css';
 import Shop from './pages/Shop.jsx';
+import MainPage from './pages/main/MainPage.jsx';
 import { createGlobalStyle } from 'styled-components';
 import GmarketSans from './assets/fonts/GmarketSansTTFMedium.ttf';
 
@@ -20,6 +21,7 @@ function App() {
     <>
       <GlobalStyle />
       <Shop />
+      <MainPage />
     </>
   );
 }

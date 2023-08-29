@@ -1,6 +1,8 @@
-/ @type {import('tailwindcss').Config} */;
+/** @type {import('tailwindcss').Config} */
+const plugin = require('tailwindcss/plugin');
+
 module.exports = {
-  content: ['./src/**/*.{js,jsx,ts,tsx}'], // ** 를 사용하여 모든 하위 디렉토리의 파일을 선택합니다
+  content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {},
     screens: {
@@ -11,5 +13,13 @@ module.exports = {
       '2xl': '1536px',
     },
   },
-  plugins: [],
+  plugins: [
+    plugin(function ({ addBase, theme }) {
+      addBase({
+        h1: { fontSize: theme('fontSize.2xl') },
+        h2: { fontSize: theme('fontSize.xl') },
+        h3: { fontSize: theme('fontSize.lg') },
+      });
+    }),
+  ],
 };
