@@ -1,11 +1,9 @@
 import { styled } from 'styled-components';
 import shop_logo from '../../image/pb_logo.png';
-import bookmarkOff from '../../assets/bookmarkOff.png';
-import bookmarkOn from '../../assets/bookmarkOn.png';
 import { useBookmarkStore } from '../../store/store.js';
-import shareicon from '../../assets/shareicon.png';
 import copy from 'clipboard-copy';
 import React, { useEffect } from 'react';
+import images from '../../assets/images/Images';
 
 const ShopInfo = () => {
   const { isBookmarked, toggleBookmark } = useBookmarkStore();
@@ -53,14 +51,14 @@ const ShopInfo = () => {
         <ShopLogo src={StoreImg} alt="매장 이미지" />
         <button onClick={toggleBookmark}>
           <ShopBookmarkIcon
-            src={isBookmarked ? bookmarkOn : bookmarkOff}
+            src={isBookmarked ? images.bookmarkOn : images.bookmarkOff}
             alt="즐겨찾기 아이콘"
           />
         </button>
         <button>
           <ShopInfoShareIcon
             onClick={handleCopyUrl}
-            src={shareicon}
+            src={images.shareicon}
             alt="공유 버튼 아이콘"
           />
         </button>
