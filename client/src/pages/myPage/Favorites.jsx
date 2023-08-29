@@ -2,10 +2,16 @@ import StoreCard from '../../assets/StoreCard.jsx';
 
 const Favorites = () => {
   return (
-    <div>
-      <h1>Favorites</h1>
-      <StoreCard />
-    </div>
+    <>
+      <div className="flex flex-wrap justify-center">
+        <StoreCard />
+        <StoreCard />
+        <StoreCard />
+        <StoreCard />
+        <StoreCard />
+        <StoreCard />
+      </div>
+    </>
   );
 };
 
