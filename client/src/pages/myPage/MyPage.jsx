@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import Button from '../../components/Button.jsx';
 import { styled } from 'styled-components';
+import Reviews from './Reviews.jsx';
+import Orders from './Orders.jsx';
+import Favorites from './Favorites.jsx';
 
 const TabContainer = styled.ul`
   display: flex;
@@ -9,7 +12,10 @@ const TabContainer = styled.ul`
   border-bottom: 2px solid #ccc;
 
   > li {
+    display: flex;
     border-right: 2px solid #ccc;
+    height: 3rem;
+    align-items: center;
     cursor: pointer;
 
     &:hover {
@@ -63,9 +69,11 @@ const MyPage = () => {
           </a>
         </li>
       </TabContainer>
-      {currentTab === '리뷰 관리' && <div>리뷰 관리</div>}
-      {currentTab === '주문 내역' && <div>주문 내역</div>}
-      {currentTab === '즐겨찾기' && <div>즐겨찾기</div>}
+      <div className="flex justify-center">
+        {currentTab === '리뷰 관리' && <Reviews />}
+        {currentTab === '주문 내역' && <Orders />}
+        {currentTab === '즐겨찾기' && <Favorites />}
+      </div>
     </div>
   );
 };
