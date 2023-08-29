@@ -1,11 +1,9 @@
 import { styled } from 'styled-components';
 import shop_logo from '../../image/pb_logo.png';
-import bookmarkOff from '../../assets/bookmarkOff.png';
-import bookmarkOn from '../../assets/bookmarkOn.png';
 import { useBookmarkStore } from '../../store/store.js';
-import shareicon from '../../assets/shareicon.png';
 import copy from 'clipboard-copy';
-import React, { useEffect } from 'react';
+import images from '../../assets/images/Images';
+import { useEffect } from 'react';
 
 const ShopInfo = () => {
   const { isBookmarked, toggleBookmark } = useBookmarkStore();
@@ -19,27 +17,27 @@ const ShopInfo = () => {
   useEffect(() => {
     const script = document.createElement('script');
     script.type = 'text/javascript';
-    script.src =
-      '//dapi.kakao.com/v2/maps/sdk.js?appkey=b676bffeb7b033ef9950c49bb688d15c&libraries=services,drawing';
+    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.REACT_APP_KAKAO_MAPS_APP_KEY}&autoload=false`;
     script.async = true;
     script.onload = () => {
-      if (window.kakao && window.kakao.maps) {
-        const container = document.getElementById('kakaomap');
-
-        // Check if the LatLng constructor is available before using it
-        if (window.kakao.maps.LatLng) {
-          const options = {
-            center: new window.kakao.maps.LatLng(37.5665, 126.978),
-            level: 3,
-          };
-          new window.kakao.maps.Map(container, options);
-        } else {
-          console.error('LatLng constructor is not available.');
-        }
-      }
+      window.kakao.maps.load(() => {
+        const container = document.getElementById('map');
+        const options = {
+          center: new window.kakao.maps.LatLng(33.450701, 126.570667),
+          level: 3,
+        };
+        const map = new window.kakao.maps.Map(container, options);
+        const markerPosition = new window.kakao.maps.LatLng(
+          33.450701,
+          126.570667,
+        );
+        const marker = new window.kakao.maps.Marker({
+          position: markerPosition,
+        });
+        marker.setMap(map);
+      });
     };
     document.head.appendChild(script);
-
     return () => {
       document.head.removeChild(script);
     };
@@ -53,14 +51,14 @@ const ShopInfo = () => {
         <ShopLogo src={StoreImg} alt="매장 이미지" />
         <button onClick={toggleBookmark}>
           <ShopBookmarkIcon
-            src={isBookmarked ? bookmarkOn : bookmarkOff}
+            src={isBookmarked ? images.bookmarkOn : images.bookmarkOff}
             alt="즐겨찾기 아이콘"
           />
         </button>
         <button>
           <ShopInfoShareIcon
             onClick={handleCopyUrl}
-            src={shareicon}
+            src={images.shareicon}
             alt="공유 버튼 아이콘"
           />
         </button>
@@ -69,6 +67,7 @@ const ShopInfo = () => {
       <div className="flex justify-center mb-6">
         <span>매장 소개</span>
         <ShopInfoMap>매장 지도</ShopInfoMap>
+        <div id="map" style={{ width: '500px', height: '400px' }}></div>
       </div>
     </div>
   );
