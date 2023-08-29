@@ -22,8 +22,10 @@ function App() {
     <>
       <GlobalStyle />
       <Header />
-      <MainPage />
-      <Footer />
+      <div className="pt-32">
+        <MainPage />
+        <Footer />
+      </div>
     </>
   );
 }
