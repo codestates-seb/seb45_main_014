@@ -1,22 +1,9 @@
 import images from '../../assets/images/Images';
-import { styled } from 'styled-components';
 import Button from '../../components/Button.jsx';
 import { userFormStore } from '../../store/store';
 import { useEffect } from 'react';
 import { getByteSize } from '../../utils/getByteSize';
-
-const Input = styled.input`
-  width: 30rem;
-  height: 3rem;
-  margin-top: 0.75rem;
-  padding: 0.75rem;
-  border: 2px solid #ccc;
-  border-radius: 0.5rem;
-`;
-
-const InputBox = styled.div`
-  margin-top: 0.75rem;
-`;
+import { Input, InputBox } from '../../assets/Styles.jsx';
 
 const SignUpPage = () => {
   const {

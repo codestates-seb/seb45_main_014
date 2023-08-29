@@ -54,7 +54,9 @@ const Header = () => {
           {/* <img src={images.mainlogo} alt="main logo" width="50" /> */}
           BBANG ORDER
         </Logo>
-        <Button weight="800">로그인</Button>
+        <Link to="/login">
+          <Button weight="800">로그인</Button>
+        </Link>
         <Link to="/signup">
           <Button className="ml-2 mr-1" weight="800">
             회원가입
