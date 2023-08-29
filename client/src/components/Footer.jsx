@@ -9,7 +9,7 @@ const FooterContainer = styled.div`
   position: fixed;
   bottom: 0;
   max-height: 230px;
-  background-color: #b6a280;
+  background-color: #debe8f;
   color: white;
 `;
 
@@ -23,7 +23,7 @@ const FooterContent = styled.div`
 
 const Support = styled.ul`
   display: flex;
-  font-weight: 700;
+  font-weight: 600;
 `;
 const SupItem = styled.li`
   padding: 0 10px 0 10px;
@@ -58,24 +58,31 @@ const Member = styled.li`
 `;
 
 const Logo = styled(Link)`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   position: fixed;
   bottom: 0;
   right: 0;
-  padding: 16px;
-  font-size: 40px;
+  padding-right: 16px;
+  padding-bottom: 10px;
+  font-size: 12px;
+  font-family: AritaSans;
+  font-weight: 600;
 `;
 
 const Footer = () => {
   const supportItem = ['회사소개', '공지사항', '이용약관', '개인정보 처리방침'];
   const frontMember = [
-    { name: '양새결', url: '/' },
+    { name: '양새결', url: 'https://github.com/YangSaekyul' },
     { name: '송상현', url: 'https://github.com/nuyhv' },
-    { name: '김종호', url: '/' },
+    { name: '김종호', url: 'https://github.com/JongHoSke' },
   ];
   const backMember = [
     { name: '김성현', url: 'https://github.com/tsulocalize' },
     { name: '김하민', url: 'https://github.com/kimhaming' },
-    { name: '박보승', url: '/' },
+    { name: '박보승', url: 'https://github.com/Alluringstar' },
   ];
 
   return (
@@ -91,7 +98,7 @@ const Footer = () => {
         <MemberWrapper className="text-lg">
           DEVS
           <MemberBox>
-            <ul className="text-base">
+            <ul className="text-sm">
               FRONT-END
               {frontMember.map((item, idx) => (
                 <Member key={idx}>
@@ -107,7 +114,7 @@ const Footer = () => {
                 </Member>
               ))}
             </ul>
-            <ul className="text-base">
+            <ul className="text-sm">
               BACK-END
               {backMember.map((item, idx) => (
                 <Member key={idx}>
@@ -125,7 +132,10 @@ const Footer = () => {
             </ul>
           </MemberBox>
         </MemberWrapper>
-        <Logo to="/">로고 들어가는 곳</Logo>
+        <Logo to="/">
+          <img src={images.mainlogo} alt="main logo" width="70" />
+          BBANG ORDER
+        </Logo>
       </FooterContent>
     </FooterContainer>
   );
