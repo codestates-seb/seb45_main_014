@@ -1,4 +1,5 @@
 import './App.css';
+import Shop from './pages/Shop.jsx';
 import Footer from './components/Footer.jsx';
 import Header from './components/Header.jsx';
 import MainPage from './pages/main/MainPage.jsx';
@@ -27,11 +28,14 @@ function App() {
       <GlobalStyle />
       <Header />
       <div className="pt-32 mb-64">
+
+       
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/mypage" element={<MyPage />} />
+          <Route path="/shop" element={<Shop />} />
         </Routes>
       </div>
       <Footer />
