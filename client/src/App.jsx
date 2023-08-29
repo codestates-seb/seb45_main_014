@@ -7,6 +7,7 @@ import GmarketSans from './assets/fonts/GmarketSansTTFMedium.ttf';
 import { Route, Routes } from 'react-router-dom';
 import SignUpPage from './pages/signUp/SignUpPage.jsx';
 import LoginPage from './pages/login/LoginPage.jsx';
+import MyPage from './pages/myPage/MyPage.jsx';
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -30,6 +31,7 @@ function App() {
           <Route path="/" element={<MainPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/mypage" element={<MyPage />} />
         </Routes>
       </div>
       <Footer />
