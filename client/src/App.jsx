@@ -20,7 +20,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     font-family: 'GmarketSans', sans-serif;
   }
-`;
+  `;
 
 function App() {
   return (

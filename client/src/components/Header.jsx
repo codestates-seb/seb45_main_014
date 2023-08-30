@@ -11,7 +11,7 @@ const HeaderBox = styled.header`
   z-index: 1000;
   max-height: 120px;
   background-color: white;
-  color: #b6a280;
+  color: #debe8f;
   display: flex;
   justify-content: space-between;
   box-shadow:
@@ -31,6 +31,7 @@ const Logo = styled(Link)`
 
 const MenuBox = styled.div`
   display: flex;
+  justify-content: stretch;
   align-items: center;
 `;
 
@@ -51,7 +52,7 @@ const Header = () => {
         <SearchBar />
       </SearchBox>
       <MenuBox>
-        <Link to="/login">
+        <Link to="/login" className="">
           <Button weight="800">로그인</Button>
         </Link>
         <Link to="/signup">
