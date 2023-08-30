@@ -9,6 +9,7 @@ import { Route, Routes } from 'react-router-dom';
 import SignUpPage from './pages/signUp/SignUpPage.jsx';
 import LoginPage from './pages/login/LoginPage.jsx';
 import MyPage from './pages/myPage/MyPage.jsx';
+import ReviewPost from './pages/myPage/ReviewPost.jsx';
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -27,15 +28,16 @@ function App() {
     <>
       <GlobalStyle />
       <Header />
-      <div className="pt-32 mb-64">
+      <main className="max-w-screen-lg mx-auto pt-32 mb-64">
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/shop" element={<Shop />} />
+          <Route path="/reviews/post" element={<ReviewPost />} />
         </Routes>
-      </div>
+      </main>
       <Footer />
     </>
   );
