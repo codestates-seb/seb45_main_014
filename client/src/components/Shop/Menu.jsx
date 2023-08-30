@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import menuimg from '../../image/menu_img1.png';
+import menuimg from '../../assets/images/menu_img1.png';
 const Menu = () => {
   const menuinventory = 100;
   return (
