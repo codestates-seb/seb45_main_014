@@ -67,7 +67,7 @@ const ShopInfo = () => {
       <div className="text-center">{StoreName}</div>
       <div className="flex justify-center mb-6">
         <span>매장 소개</span>
-        <div id="map" style={{ width: '500px', height: '400px' }}></div>
+        <div id="map" style={{ width: '300px', height: '280px' }}></div>
       </div>
     </div>
   );
