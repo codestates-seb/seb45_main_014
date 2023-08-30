@@ -102,7 +102,12 @@ const Footer = () => {
               FRONT-END
               {frontMember.map((item, idx) => (
                 <Member key={idx}>
-                  <Link to={item.url} className="flex justify-center">
+                  <Link
+                    to={item.url}
+                    className="flex justify-center"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     {item.name}
                     <img
                       src={images.githublogo}
@@ -118,7 +123,12 @@ const Footer = () => {
               BACK-END
               {backMember.map((item, idx) => (
                 <Member key={idx}>
-                  <Link to={item.url} className="flex justify-center">
+                  <Link
+                    to={item.url}
+                    className="flex justify-center"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     {item.name}
                     <img
                       src={images.githublogo}
