@@ -6,8 +6,6 @@ const FooterContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  position: fixed;
-  bottom: 0;
   max-height: 230px;
   background-color: #debe8f;
   color: white;
@@ -57,16 +55,18 @@ const Member = styled.li`
   }
 `;
 
+const BottomContents = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+`;
+
 const Logo = styled(Link)`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  padding-right: 16px;
-  padding-bottom: 10px;
   font-size: 12px;
   font-family: AritaSans;
   font-weight: 600;
@@ -95,47 +95,67 @@ const Footer = () => {
             </SupItem>
           ))}
         </Support>
-        <MemberWrapper className="text-lg">
-          DEVS
-          <MemberBox>
-            <ul className="text-sm">
-              FRONT-END
-              {frontMember.map((item, idx) => (
-                <Member key={idx}>
-                  <Link to={item.url} className="flex justify-center">
-                    {item.name}
-                    <img
-                      src={images.githublogo}
-                      alt="github logo"
-                      width="20"
-                      className="ml-1"
-                    />
-                  </Link>
-                </Member>
-              ))}
-            </ul>
-            <ul className="text-sm">
-              BACK-END
-              {backMember.map((item, idx) => (
-                <Member key={idx}>
-                  <Link to={item.url} className="flex justify-center">
-                    {item.name}
-                    <img
-                      src={images.githublogo}
-                      alt="github logo"
-                      width="20"
-                      className="ml-1"
-                    />
-                  </Link>
-                </Member>
-              ))}
-            </ul>
-          </MemberBox>
-        </MemberWrapper>
-        <Logo to="/">
-          <img src={images.mainlogo} alt="main logo" width="70" />
-          BBANG ORDER
-        </Logo>
+        <BottomContents>
+          <div className="dummy">
+            <img
+              className="opacity-0"
+              src={images.mainlogo}
+              alt="null"
+              width="70"
+            />
+          </div>
+          <MemberWrapper className="text-lg">
+            DEVS
+            <MemberBox>
+              <ul className="text-sm">
+                FRONT-END
+                {frontMember.map((item, idx) => (
+                  <Member key={idx}>
+                    <Link
+                      to={item.url}
+                      className="flex justify-center"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {item.name}
+                      <img
+                        src={images.githublogo}
+                        alt="github logo"
+                        width="20"
+                        className="ml-1"
+                      />
+                    </Link>
+                  </Member>
+                ))}
+              </ul>
+              <ul className="text-sm">
+                BACK-END
+                {backMember.map((item, idx) => (
+                  <Member key={idx}>
+                    <Link
+                      to={item.url}
+                      className="flex justify-center"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {item.name}
+                      <img
+                        src={images.githublogo}
+                        alt="github logo"
+                        width="20"
+                        className="ml-1"
+                      />
+                    </Link>
+                  </Member>
+                ))}
+              </ul>
+            </MemberBox>
+          </MemberWrapper>
+          <Logo to="/">
+            <img src={images.mainlogo} alt="main logo" width="70" />
+            BBANG ORDER
+          </Logo>
+        </BottomContents>
       </FooterContent>
     </FooterContainer>
   );
