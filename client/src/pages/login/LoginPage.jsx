@@ -58,7 +58,6 @@ const Login = () => {
             회원가입이 필요합니까?
             <Link to="/signup">
               <span className="text-blue-600 cursor-pointer hover:text-blue-300">
-                {' '}
                 Sign Up
               </span>
             </Link>

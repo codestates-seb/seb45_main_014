@@ -47,7 +47,9 @@ const MyPage = () => {
           <div className="flex items-center ml-5">유저이름</div>
         </div>
         <div className="flex">
-          <Button className="ml-5">프로필 수정</Button>
+          <Button className="ml-5">
+            <Link to="/mypage/edit">프로필 수정</Link>
+          </Button>
         </div>
       </div>
       <div className="w-full h-48 border-zinc-700 border-2 my-6">
