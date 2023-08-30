@@ -3,25 +3,24 @@ import { styled } from 'styled-components';
 const MenuReview = () => {
   return (
     <>
-      <div className="text-center m-4 flex justify-center">
-        <div className="mr-12 text-center pt-1">
-          <div className="m-3">리뷰</div>
-          <div className="m-3">나는 종호</div>
-          <div className="m-3">별점</div>
-          <div className="m-3">처음 먹어 봤는데 너무 맛있어요!</div>
+      <div className="text-center m-4 flex flex-col justify-center border-b pl-60">
+        <div className="flex p-3">
+          <img
+            className="w-20 h-20 mr-6 rounded-full"
+            src={menuimg}
+            alt="프로필 이미지"
+          />
+          <div className="flex flex-col justify-center text-center">
+            <div className="mb-1 text-left">김소금</div>
+            <div className="text-left">레이팅 점수</div>
+          </div>
         </div>
-        <div>
-          <ReviewImg src={menuimg} alt="메뉴 이미지" />
-        </div>
+        {/* 사용자 정보 */}
+        <div className="text-left m-6">리뷰 내용</div>
+        {/* 리뷰 내용 */}
       </div>
     </>
   );
 };
 
 export default MenuReview;
-
-const ReviewImg = styled.img`
-  width: 200px;
-  height: 150px;
-  text-align: right;
-`;
