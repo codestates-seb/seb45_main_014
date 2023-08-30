@@ -1,5 +1,6 @@
 import { styled } from 'styled-components';
 import { Stars } from '../../components/Stars.jsx';
+import { useRatingStore } from '../../store/store.js';
 
 const ReviewDetailStyle = styled.div`
   width: 100%;
@@ -10,12 +11,14 @@ const ReviewDetailStyle = styled.div`
 `;
 
 const ReviewDetail = () => {
+  const { rating, setRating } = useRatingStore();
+
   return (
     <ReviewDetailStyle>
       <div>
         <h2>{'맛있는 빵집 1004호점'}</h2>
         <div className="flex">
-          <Stars rating={3} />
+          <Stars rating={rating} onChangeRating={setRating} />
           {'2023-08-20'}
         </div>
         <div className="mt-2">너무 맛있어용!</div>

@@ -28,7 +28,7 @@ const OrdersItem = () => {
 const Orders = () => {
   return (
     <div className="flex justify-center">
-      <div className="flex flex-wrap justify-around w-5/6">
+      <div className="flex flex-wrap justify-around w-5/6 gap-4">
         <OrdersItem className="w-1/3" />
         <OrdersItem className="w-1/3" />
         <OrdersItem className="w-1/3" />
