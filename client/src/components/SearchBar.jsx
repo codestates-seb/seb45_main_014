@@ -8,12 +8,12 @@ const SearchbarContainer = styled.form`
 
 const SearchboxInput = styled.input`
   border-radius: 10px;
-  border: 2px solid #b6a280;
+  border: 2px solid #debe8f;
   width: 90%;
   padding: 7.8px 9.1px 7.8px 32px;
   color: black;
   &:focus {
-    border-color: #b6a280;
+    border-color: #debe8f;
     outline: none;
     box-shadow: 0 0 3px 3px #f7e5c6;
   }
