@@ -1,11 +1,7 @@
 import { styled } from 'styled-components';
 import { useBookmarkStore } from '../store/store';
 import images from './images/Images';
-
-const StoreImage = styled.img`
-  width: 300px;
-  height: 200px;
-`;
+import { StoreImage } from './Styles.jsx';
 
 const StoreCard = () => {
   // 데이터 불러오기 전 하드 코딩
