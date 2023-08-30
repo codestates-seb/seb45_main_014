@@ -8,7 +8,6 @@ import naver from './naver.png';
 import share from './share.png';
 import arrow from './arrow.svg';
 
-
 const images = {
   githublogo,
   mainlogo,
