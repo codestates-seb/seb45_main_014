@@ -61,7 +61,7 @@ const SignUpPage = () => {
     }
 
     setErrors(newErrors);
-  }, [email, password, confirmPassword, nickname, phone]);
+  }, [email, password, confirmPassword, nickname, phone, setErrors]);
 
   return (
     <div className="flex flex-col items-center">
