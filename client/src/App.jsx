@@ -9,6 +9,7 @@ import { Route, Routes } from 'react-router-dom';
 import SignUpPage from './pages/signUp/SignUpPage.jsx';
 import LoginPage from './pages/login/LoginPage.jsx';
 import MyPage from './pages/myPage/MyPage.jsx';
+import MenuDetails from './pages/menu/MenuDetails.jsx';
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -34,6 +35,7 @@ function App() {
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/shop" element={<Shop />} />
+          <Route path="/menu" element={<MenuDetails />} />
         </Routes>
       </div>
       <Footer />

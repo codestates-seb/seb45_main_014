@@ -7,7 +7,7 @@ import kakao from './kakao.png';
 import naver from './naver.png';
 import share from './share.png';
 import arrow from './arrow.svg';
-
+import menu from './menu_img1.png';
 const images = {
   githublogo,
   mainlogo,
@@ -18,6 +18,7 @@ const images = {
   naver,
   share,
   arrow,
+  menu,
 };
 
 export default images;
