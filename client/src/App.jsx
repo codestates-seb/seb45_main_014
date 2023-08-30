@@ -33,15 +33,14 @@ function App() {
       <Header />
       <main className="max-w-screen-lg mx-auto pt-32 mb-64">
         <Suspense fallback={<LoadingSpinner />}>
-          {/* <Routes>
+          <Routes>
             <Route path="/" element={<MainPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignUpPage />} />
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/shop" element={<Shop />} />
             <Route path="/reviews/post" element={<PostReview />} />
-          </Routes> */}
-          <LoadingSpinner />
+          </Routes>
         </Suspense>
       </main>
       <Footer />
