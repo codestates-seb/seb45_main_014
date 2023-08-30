@@ -9,6 +9,7 @@ import searchicon from './searchicon.svg';
 import share from './share.png';
 import arrow from './arrow.svg';
 import menu from './menu_img1.png';
+
 const images = {
   githublogo,
   mainlogo,

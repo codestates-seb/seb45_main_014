@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import menuimg from '../../assets/images/menu_img1.png';
+
 const Menu = () => {
   const menuinventory = 100;
   const navigate = useNavigate();
