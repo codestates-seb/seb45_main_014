@@ -6,6 +6,8 @@ import google from './google.png';
 import kakao from './kakao.png';
 import naver from './naver.png';
 import share from './share.png';
+import arrow from './arrow.svg';
+
 
 const images = {
   githublogo,
@@ -16,6 +18,7 @@ const images = {
   kakao,
   naver,
   share,
+  arrow,
 };
 
 export default images;
