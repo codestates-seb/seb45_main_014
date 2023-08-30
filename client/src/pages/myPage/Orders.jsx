@@ -1,5 +1,6 @@
 import { styled } from 'styled-components';
 import Button from '../../components/Button.jsx';
+import { Link } from 'react-router-dom';
 
 const OrdersImage = styled.img`
   width: 150px;
@@ -17,7 +18,9 @@ const OrdersItem = () => {
         <div>매장명 어쩌구</div>
         <div>{'2023-08-20'}</div>
       </div>
-      <Button className="w-full">리뷰 작성</Button>
+      <Button className="w-full">
+        <Link to="/reviews/post">리뷰 작성</Link>
+      </Button>
     </div>
   );
 };

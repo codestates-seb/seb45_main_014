@@ -4,6 +4,7 @@ import { styled } from 'styled-components';
 import Reviews from './Reviews.jsx';
 import Orders from './Orders.jsx';
 import Favorites from './Favorites.jsx';
+import { Link } from 'react-router-dom';
 
 const TabContainer = styled.ul`
   display: flex;
@@ -54,19 +55,19 @@ const MyPage = () => {
       </div>
       <TabContainer>
         <li className="w-full">
-          <a href="#리뷰 관리" onClick={() => setCurrentTab('리뷰 관리')}>
+          <Link to="#리뷰 관리" onClick={() => setCurrentTab('리뷰 관리')}>
             리뷰 관리
-          </a>
+          </Link>
         </li>
         <li className="w-full">
-          <a href="#주문 내역" onClick={() => setCurrentTab('주문 내역')}>
+          <Link to="#주문 내역" onClick={() => setCurrentTab('주문 내역')}>
             주문 내역
-          </a>
+          </Link>
         </li>
         <li className="w-full">
-          <a href="#즐겨찾기" onClick={() => setCurrentTab('즐겨찾기')}>
+          <Link to="#즐겨찾기" onClick={() => setCurrentTab('즐겨찾기')}>
             즐겨찾기
-          </a>
+          </Link>
         </li>
       </TabContainer>
       <div className="flex">
