@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 export const useBookmarkStore = create((set) => ({
@@ -20,6 +19,16 @@ export const userFormStore = create((set) => ({
   setNickname: (nickname) => set({ nickname }),
   setPhone: (phone) => set({ phone }),
   setErrors: (errors) => set({ errors }),
+}));
+
+export const useCountStore = create((set) => ({
+  count: 1, // 초기값을 0으로 설정
+  up() {
+    set((state) => ({ count: state.count + 1 }));
+  },
+  down() {
+    set((state) => ({ count: state.count > 0 ? state.count - 1 : 0 }));
+  },
 }));
 
 // export const useShopInventoryStore = create((set) => ({
