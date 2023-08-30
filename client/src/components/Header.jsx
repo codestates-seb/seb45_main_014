@@ -2,17 +2,18 @@ import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
 import Button from './Button.jsx';
 import images from '../assets/images/Images.js';
+import SearchBar from './SearchBar.jsx';
 
 const HeaderBox = styled.header`
   padding: 12px;
   width: 100%;
   position: fixed;
   z-index: 1000;
-  height: 120px;
+  max-height: 120px;
   background-color: white;
   color: #b6a280;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   box-shadow:
     0 1px 2px hsla(0, 0%, 0%, 0.05),
     0 1px 4px hsla(0, 0%, 0%, 0.05),
@@ -23,18 +24,12 @@ const Logo = styled(Link)`
   display: flex;
   align-items: center;
   text-align: center;
-  position: fixed;
-  padding: 12px;
-  top: 0;
-  left: 0;
   font-size: 24px;
   font-family: AritaSans;
   font-weight: 900;
 `;
 
 const MenuBox = styled.div`
-  flex: 1;
-  justify-content: flex-end;
   display: flex;
   align-items: center;
 `;
@@ -42,18 +37,20 @@ const MenuBox = styled.div`
 const SearchBox = styled.div`
   flex: 1;
   justify-content: center;
-  display: flex;
   align-items: center;
 `;
 
 const Header = () => {
   return (
     <HeaderBox>
+      <Logo to="/">
+        {/* <img src={images.mainlogo} alt="main logo" width="50" /> */}
+        BBANG ORDER
+      </Logo>
+      <SearchBox>
+        <SearchBar />
+      </SearchBox>
       <MenuBox>
-        <Logo to="/">
-          {/* <img src={images.mainlogo} alt="main logo" width="50" /> */}
-          BBANG ORDER
-        </Logo>
         <Link to="/login">
           <Button weight="800">로그인</Button>
         </Link>
@@ -63,7 +60,6 @@ const Header = () => {
           </Button>
         </Link>
       </MenuBox>
-      <SearchBox>검색 바 영역</SearchBox>
     </HeaderBox>
   );
 };

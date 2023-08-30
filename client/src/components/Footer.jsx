@@ -100,7 +100,7 @@ const Footer = () => {
             <img
               className="opacity-0"
               src={images.mainlogo}
-              alt="main logo"
+              alt="null"
               width="70"
             />
           </div>
