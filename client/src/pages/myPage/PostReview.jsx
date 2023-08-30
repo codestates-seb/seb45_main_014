@@ -1,8 +1,14 @@
 import { Stars } from '../../components/Stars.jsx';
-import { useRatingStore, useImageStore } from '../../store/store.js';
+import {
+  useRatingStore,
+  useImageStore,
+  useByteSizeStore,
+} from '../../store/store.js';
 import { styled } from 'styled-components';
 import { StoreImage } from '../../assets/Styles.jsx';
 import Button from '../../components/Button.jsx';
+import { useState } from 'react';
+import { getByteSize } from '../../utils/getByteSize.js';
 
 const TextBox = styled.textarea`
   border: 1px solid #b6a280;
@@ -19,9 +25,18 @@ const MenuSummary = styled.div`
   padding: 5px;
 `;
 
+const ByteCount = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  color: ${(props) => (props.isOver ? 'red' : 'inherit')};
+`;
+
+const MAX_BYTE_LIMIT = 200;
+
 const PostReview = () => {
   const { rating, setRating } = useRatingStore();
   const { selectedImage, setSelectedImage } = useImageStore();
+  const { text, setText } = useByteSizeStore();
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -31,6 +46,13 @@ const PostReview = () => {
       } else {
         alert('이미지 크기는 1MB를 초과할 수 없습니다.');
       }
+    }
+  };
+
+  const handleTextChange = (e) => {
+    const newText = e.target.value;
+    if (getByteSize(newText) <= MAX_BYTE_LIMIT) {
+      setText(newText);
     }
   };
 
@@ -68,8 +90,13 @@ const PostReview = () => {
         id="storeReview"
         cols="30"
         rows="10"
+        value={text}
+        onChange={handleTextChange}
         placeholder="영문 기준 200자 이내로 작성"
       ></TextBox>
+      <ByteCount isExceeded={getByteSize(text) > MAX_BYTE_LIMIT}>
+        {`${getByteSize(text)} / ${MAX_BYTE_LIMIT} byte`}
+      </ByteCount>
       <div className="flex justify-between items-center">
         <input type="file" accept="image/*" onChange={handleImageChange} />
         {selectedImage && (

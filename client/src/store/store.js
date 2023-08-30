@@ -30,3 +30,8 @@ export const useImageStore = create((set) => ({
   setSelectedImage: (selectedImage) => set({ selectedImage }),
   clearSelectedImage: () => set({ selectedImage: null }),
 }));
+
+export const useByteSizeStore = create((set) => ({
+  text: '',
+  setText: (text) => set({ text }),
+}));
