@@ -5,6 +5,7 @@ import StoreCard from '../../assets/StoreCard.jsx';
 import storeData from '../../assets/data/storeData';
 import { styled } from 'styled-components';
 import { StoreImage } from '../../assets/Styles.jsx';
+import { Link } from 'react-router-dom';
 
 const FavoriteStoreImage = styled(StoreImage)`
   width: 500px;
@@ -14,7 +15,7 @@ const Title = styled.h1`
   margin: 1rem 0;
 `;
 
-const FavoriteStoreCard = ({ store }) => {
+export const FavoriteStoreCard = ({ store }) => {
   return (
     <div className="relative p-2">
       <div className="flex items-center">
@@ -29,10 +30,12 @@ const FavoriteStoreCard = ({ store }) => {
   );
 };
 
+export const getFavoriteStores = () => {
+  return storeData.filter((store) => store.is_favorite === true);
+};
+
 const MainPage = () => {
-  const favoriteStores = storeData.filter(
-    (store) => store.is_favorite === true,
-  );
+  const favoriteStores = getFavoriteStores();
 
   const settings = {
     dots: true,
@@ -49,11 +52,8 @@ const MainPage = () => {
       <div>
         <div className="flex justify-between">
           <Title>즐겨찾기</Title>
-          <Title
-            className="text-blue-500 underline underline-offset-8 hover:text-blue-600 cursor-pointer
-          "
-          >
-            더보기
+          <Title className="text-blue-500 underline underline-offset-8 hover:text-blue-600 cursor-pointer">
+            <Link to="/mypage#즐겨찾기">더보기</Link>
           </Title>
         </div>
         <Slider {...settings}>
