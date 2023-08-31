@@ -1,5 +1,6 @@
 import { FcGoogle } from 'react-icons/fc';
 import { RiKakaoTalkFill } from 'react-icons/ri';
+import { ImManWoman } from 'react-icons/im';
 
 const OauthBtn = ({ bgColor, color, icon, text, onClick }) => {
   return (
@@ -62,6 +63,22 @@ export const KakaoBtn = () => {
       onClick={kakaoSocialLogin}
       icon={<RiKakaoTalkFill className="kakaoicon" />}
       text="카카오 계정으로 로그인하기"
+    />
+  );
+};
+
+export const GuestBtn = () => {
+  const guestLogin = () => {
+    window.location.href = 'http://.../oauth2/authorization/guest';
+  };
+
+  return (
+    <OauthBtn
+      bgColor="#2e2e2e"
+      color="#f6f6f2"
+      onClick={guestLogin}
+      icon={<ImManWoman />}
+      text="게스트 계정으로 로그인하기"
     />
   );
 };
