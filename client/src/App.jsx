@@ -24,9 +24,14 @@ const GlobalStyle = createGlobalStyle`
     font-weight: 300;
     font-style: normal;
   }
+  * {
+    box-sizing: border-box;
+  }
   html, body {
     font-family: 'GmarketSans', sans-serif;
     height: 100%;
+    padding: 0;
+    margin: 0;
   }
   body {
     padding-top: 65px;
