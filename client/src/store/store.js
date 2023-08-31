@@ -21,7 +21,6 @@ export const userFormStore = create((set) => ({
   setErrors: (errors) => set({ errors }),
 }));
 
-
 export const useRatingStore = create((set) => ({
   rating: 0,
   setRating: (rating) => set({ rating }),
@@ -62,3 +61,8 @@ export const useCountStore = create((set) => ({
 //   },
 // }));
 
+export const useLoginModalStore = create((set) => ({
+  isLoginModalOpen: false,
+  openLoginModal: () => set({ isLoginModalOpen: true }),
+  closeLoginModal: () => set({ isLoginModalOpen: false }),
+}));
