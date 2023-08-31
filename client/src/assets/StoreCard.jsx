@@ -24,9 +24,9 @@ const StoreCard = ({ store }) => {
   const { isBookmarked, toggleBookmark } = useBookmarkStore();
 
   return (
-    <div className="w-72 relative m-5">
+    <div className="w-72 relative mx-4">
       <Link to={`/store/${store.id}`}>
-        <StoreImage src={img} alt="매장 대표 이미지" className="rounded-lg" />
+        <StoreImage src={img} alt="매장 대표 이미지" />
       </Link>
       <BookmarkButton
         is_favorite={is_favorite}

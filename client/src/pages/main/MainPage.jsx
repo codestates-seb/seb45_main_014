@@ -3,13 +3,23 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import StoreCard from '../../assets/StoreCard.jsx';
 import storeData from '../../assets/data/storeData';
+import { styled } from 'styled-components';
+import { StoreImage } from '../../assets/Styles.jsx';
+
+const FavoriteStoreImage = styled(StoreImage)`
+  width: 500px;
+`;
+
+const Title = styled.h1`
+  margin: 1rem 0;
+`;
 
 const FavoriteStoreCard = ({ store }) => {
   return (
-    <div className="relative p-4">
-      <div className="flex items-center h-[200px]">
+    <div className="relative p-2">
+      <div className="flex items-center">
         <a href={`/store/${store.id}`}>
-          <img src={store.img} alt="즐겨찾기된 매장" height={'100%'} />
+          <FavoriteStoreImage src={store.img} alt="즐겨찾기된 매장" />
         </a>
       </div>
       <div className="absolute bottom-6 left-6 font-black text-yellow-200 text-2xl">
@@ -35,18 +45,27 @@ const MainPage = () => {
   };
 
   return (
-    <div className="">
-      <div className="flex justify-between mx-5">
-        <h1>즐겨찾기</h1>
-        <h1>더보기</h1>
+    <div className="max-w-screen-lg mx-auto">
+      <div>
+        <div className="flex justify-between">
+          <Title>즐겨찾기</Title>
+          <Title
+            className="text-blue-500 underline underline-offset-8 hover:text-blue-600 cursor-pointer
+          "
+          >
+            더보기
+          </Title>
+        </div>
+        <Slider {...settings}>
+          {favoriteStores.map((store, index) => (
+            <FavoriteStoreCard store={store} key={index} />
+          ))}
+        </Slider>
       </div>
-      <Slider {...settings}>
-        {favoriteStores.map((store, index) => (
-          <FavoriteStoreCard store={store} key={index} />
-        ))}
-      </Slider>
-      <div className="flex flex-col max-w-screen-md mx-auto">
-        <h1 className="flex flex-start w-full">빵집 리스트</h1>
+      <div className="flex flex-col max-w-screen-lg mx-auto">
+        <div>
+          <Title className="flex">빵집 리스트</Title>
+        </div>
         <div className="flex flex-wrap justify-center">
           {storeData.map((store, index) => (
             <StoreCard key={index} store={store} />
