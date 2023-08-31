@@ -5,7 +5,7 @@ const menuData = [
     menu_desc: '짭조름한 맛',
     price: 3000,
     stock: 3,
-    img: 'http://',
+    img: 'https://img.freepik.com/free-photo/vivid-blurred-colorful-background_58702-2545.jpg',
   },
   {
     id: 2,
@@ -13,7 +13,7 @@ const menuData = [
     menu_desc: '부드러운 크림이 가득',
     price: 3500,
     stock: 5,
-    img: 'http://',
+    img: 'https://img.freepik.com/premium-vector/abstract-pastel-color-background-with-pink-purple-gradient-effect-graphic-design-decoration_120819-463.jpg',
   },
   {
     id: 3,
@@ -21,7 +21,7 @@ const menuData = [
     menu_desc: '고소한 팥 앙금',
     price: 2800,
     stock: 2,
-    img: 'http://',
+    img: 'https://media.architecturaldigest.com/photos/6080a73d795a7b010f3dd2e0/2:1/w_2700,h_1350,c_limit/GettyImages-1213929929.jpg',
   },
   {
     id: 4,

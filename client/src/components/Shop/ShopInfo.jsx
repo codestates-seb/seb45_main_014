@@ -4,7 +4,8 @@ import { useBookmarkStore } from '../../store/store.js';
 import copy from 'clipboard-copy';
 import images from '../../assets/images/Images';
 import { useEffect } from 'react';
-import StoreRollingBanner from './StoreRollingBanner.jsx';
+import StoreBanner from './StoreBanner.jsx';
+import storemenuData from '../../assets/data/menuData.js';
 
 const ShopInfo = ({ store }) => {
   const { isBookmarked, toggleBookmark } = useBookmarkStore();
@@ -47,7 +48,7 @@ const ShopInfo = ({ store }) => {
   return (
     <div className="text-center border-b">
       <div>
-        <StoreRollingBanner />
+        <StoreBanner menuimgs={storemenuData[0]} />
         <div className="flex justify-center mb-6">
           <img className="w-24" src={shop_logo} alt="매장 로고" />
           <div className="text-left text-3xl mr-36 pt-8 w-1/6">
@@ -93,7 +94,11 @@ const ShopInfo = ({ store }) => {
           </div>
           <div className="flex flex-col text-left text-2xl">
             <span className="mb-3">매장 위치</span>
-            <div id="map" style={{ width: '300px', height: '280px' }}></div>
+            <div
+              className="rounded-s-lg mb-8"
+              id="map"
+              style={{ width: '350px', height: '280px' }}
+            ></div>
           </div>
         </div>
       </div>

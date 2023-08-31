@@ -7,7 +7,7 @@ import store from '../assets/data/storeData.js';
 
 const Shop = () => {
   return (
-    <div className="flex flex-col justify-center pt-12">
+    <div className="flex flex-col justify-center ">
       <ShopInfo store={store[0]} />
       {menu.map((menu, index) => {
         return <Menu key={index} menu={menu} />;
