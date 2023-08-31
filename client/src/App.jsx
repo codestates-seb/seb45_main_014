@@ -31,7 +31,8 @@ const GlobalStyle = createGlobalStyle`
     height: 100%;
   }
   main {
-    min-height: 1024px
+    height: calc(100% - 206px);
+    min-height: 900px;
   }
   `;
 
@@ -40,7 +41,7 @@ function App() {
     <>
       <GlobalStyle />
       <Header />
-      <main className="h-full w-full mx-auto pt-32">
+      <main className="w-full mx-auto pt-32">
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
             <Route path="/" element={<MainPage />} />
