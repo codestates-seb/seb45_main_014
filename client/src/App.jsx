@@ -28,12 +28,8 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'GmarketSans', sans-serif;
     height: 100%;
   }
-  #root {
-    height: 100%;
-  }
-  main {
-    height: calc(100% - 206px);
-    min-height: 900px;
+  body {
+    padding-top: 65px;
   }
   `;
 
@@ -42,7 +38,7 @@ function App() {
     <>
       <GlobalStyle />
       <Header />
-      <main className="w-full mx-auto pt-16">
+      <main className="w-full mx-auto overflow-auto min-h-screen">
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
             <Route path="/" element={<MainPage />} />
