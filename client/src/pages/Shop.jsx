@@ -5,7 +5,7 @@ import MenuReview from '../components/Shop/MenuReview.jsx';
 
 const Shop = () => {
   return (
-    <div className="flex flex-col justify-center max-w-screen-lg mx-auto">
+    <div className="flex flex-col justify-center">
       <ShopInfo />
       <Menu />
       <MenuReview />

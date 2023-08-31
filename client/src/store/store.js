@@ -21,7 +21,6 @@ export const userFormStore = create((set) => ({
   setErrors: (errors) => set({ errors }),
 }));
 
-
 export const useRatingStore = create((set) => ({
   rating: 0,
   setRating: (rating) => set({ rating }),
@@ -39,12 +38,12 @@ export const useByteSizeStore = create((set) => ({
 }));
 
 export const useCountStore = create((set) => ({
-  count: 1, // 초기값을 0으로 설정
+  count: 1, // 초기값을 1으로 설정
   up() {
     set((state) => ({ count: state.count + 1 }));
   },
   down() {
-    set((state) => ({ count: state.count > 0 ? state.count - 1 : 0 }));
+    set((state) => ({ count: state.count > 1 ? state.count - 1 : 1 }));
   },
 }));
 
@@ -61,4 +60,3 @@ export const useCountStore = create((set) => ({
 //   }
 //   },
 // }));
-
