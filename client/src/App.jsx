@@ -15,6 +15,7 @@ const Shop = lazy(() => import('./pages/Shop.jsx'));
 const PostReview = lazy(() => import('./pages/myPage/PostReview.jsx'));
 const EditProfile = lazy(() => import('./pages/myPage/EditProfile.jsx'));
 const MenuDetails = lazy(() => import('./pages/menu/MenuDetails.jsx'));
+const SearchResult = lazy(() => import('./pages/search/SearchResult.jsx'));
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -52,6 +53,7 @@ function App() {
             <Route path="/reviews/post" element={<PostReview />} />
             <Route path="/mypage/edit" element={<EditProfile />} />
             <Route path="/menu" element={<MenuDetails />} />
+            <Route path="/search" element={<SearchResult />} />
           </Routes>
         </Suspense>
       </main>
