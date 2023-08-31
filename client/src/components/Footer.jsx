@@ -3,10 +3,9 @@ import { Link } from 'react-router-dom';
 import images from '../assets/images/Images';
 
 const FooterContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+  display: block;
   width: 100%;
-  max-height: 230px;
+  max-height: 220px;
   background-color: #debe8f;
   color: white;
 `;

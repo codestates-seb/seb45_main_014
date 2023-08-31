@@ -16,8 +16,6 @@ const PostReview = lazy(() => import('./pages/myPage/PostReview.jsx'));
 const EditProfile = lazy(() => import('./pages/myPage/EditProfile.jsx'));
 const MenuDetails = lazy(() => import('./pages/menu/MenuDetails.jsx'));
 
-
-
 const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'GmarketSans';
@@ -25,8 +23,15 @@ const GlobalStyle = createGlobalStyle`
     font-weight: 300;
     font-style: normal;
   }
-  body {
+  html, body {
     font-family: 'GmarketSans', sans-serif;
+    height: 100%;
+  }
+  #root {
+    height: 100%;
+  }
+  main {
+    min-height: 1024px
   }
   `;
 
@@ -35,7 +40,7 @@ function App() {
     <>
       <GlobalStyle />
       <Header />
-      <main className="max-w-screen-lg mx-auto pt-32 mb-64">
+      <main className="h-full w-full mx-auto pt-32">
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
             <Route path="/" element={<MainPage />} />
@@ -45,7 +50,7 @@ function App() {
             <Route path="/shop" element={<Shop />} />
             <Route path="/reviews/post" element={<PostReview />} />
             <Route path="/mypage/edit" element={<EditProfile />} />
-          <Route path="/menu" element={<MenuDetails />} />
+            <Route path="/menu" element={<MenuDetails />} />
           </Routes>
         </Suspense>
       </main>
