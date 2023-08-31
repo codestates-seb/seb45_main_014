@@ -69,7 +69,7 @@ const Header = () => {
         </MenuBox>
       </HeaderBox>
 
-      {isLoginModalOpen && <Login />}
+      {isLoginModalOpen && <Login onClose={closeLoginModal} />}
     </>
   );
 };
