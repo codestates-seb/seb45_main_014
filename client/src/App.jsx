@@ -42,7 +42,7 @@ function App() {
     <>
       <GlobalStyle />
       <Header />
-      <main className="w-full mx-auto pt-32">
+      <main className="w-full mx-auto pt-16">
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
             <Route path="/" element={<MainPage />} />
