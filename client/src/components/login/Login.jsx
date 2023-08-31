@@ -1,4 +1,4 @@
-import { GoogleBtn, KakaoBtn } from './OauthBtn.jsx';
+import { GoogleBtn, GuestBtn, KakaoBtn } from './OauthBtn.jsx';
 import { styled } from 'styled-components';
 
 const LoginModal = styled.div`
@@ -49,6 +49,7 @@ const Login = ({ onClose }) => {
             <div>
               <GoogleBtn />
               <KakaoBtn />
+              <GuestBtn />
             </div>
           </section>
         </div>
