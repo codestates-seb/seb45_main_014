@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import StoreBanner from './StoreBanner.jsx';
 import storemenuData from '../../assets/data/menuData.js';
 
-const ShopInfo = ({ store }) => {
+const ShopInfo = ({ store, menu }) => {
   const { isBookmarked, toggleBookmark } = useBookmarkStore();
   const currentUrl = window.location.origin;
 
@@ -46,10 +46,10 @@ const ShopInfo = ({ store }) => {
   }, []);
 
   return (
-    <div className="text-center border-b">
+    <div className="text-center">
       <div>
         <StoreBanner menuimgs={storemenuData[0]} />
-        <div className="flex justify-center mb-6">
+        <div className="flex justify-center mb-6 ">
           <img className="w-24" src={shop_logo} alt="매장 로고" />
           <div className="text-left text-3xl mr-36 pt-8 w-1/6">
             {store.store_name}
@@ -71,7 +71,7 @@ const ShopInfo = ({ store }) => {
           </div>
         </div>
         <div className="flex justify-center space-x-8">
-          <div className="flex flex-col text-left">
+          <div className="flex flex-col text-left border rounded-lg p-4">
             <div className="text-2xl mb-3">매장 소개</div>
             <div className="flex flex-col">
               <div className="flex mr-3  mb-6">
@@ -81,6 +81,18 @@ const ShopInfo = ({ store }) => {
               <div className="flex mr-3 mb-6">
                 <p className="mr-2">매장 평점</p>
                 <p>{store.rating}</p>
+              </div>
+              <div className="flex mr-3 mb-6">
+                <p className="mr-2">매장 메뉴</p>
+                <div className="flex flex-wrap max-w-[400px]">
+                  {menu.map((menu, index) => {
+                    return (
+                      <p className="mr-3" key={index}>
+                        {menu.menu_name}
+                      </p>
+                    );
+                  })}
+                </div>
               </div>
               <div className="flex mr-3 mb-6">
                 <p className="mr-2">매장 주소</p>

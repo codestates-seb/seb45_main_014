@@ -4,15 +4,18 @@ import Menu from '../components/Shop/Menu.jsx';
 import MenuReview from '../components/Shop/MenuReview.jsx';
 import menu from '../assets/data/menuData.js';
 import store from '../assets/data/storeData.js';
+import reviews from '../assets/data/reviewData.js';
 
 const Shop = () => {
   return (
-    <div className="flex flex-col justify-center ">
-      <ShopInfo store={store[0]} />
+    <div className="flex flex-col">
+      <ShopInfo store={store[0]} menu={menu} />
       {menu.map((menu, index) => {
         return <Menu key={index} menu={menu} />;
       })}
-      <MenuReview />
+      {reviews.map((review, index) => {
+        return <MenuReview key={index} reviews={review} />;
+      })}
     </div>
   );
 };
