@@ -1,7 +1,12 @@
 import StoreCard from '../../assets/StoreCard.jsx';
 import images from '../../assets/images/Images.js';
+import storeData from '../../assets/data/storeData';
 
 const MainPage = () => {
+  const favoriteStores = storeData.filter(
+    (store) => store.is_favorite === true,
+  );
+
   return (
     <div className="max-w-screen-lg mx-auto">
       {/* 즐겨찾기된 매장 */}
@@ -11,15 +16,9 @@ const MainPage = () => {
       </div>
       <div className="flex flex-col items-center overflow-x-auto whitespace-nowrap">
         <div className="flex">
-          <StoreCard />
-          <StoreCard />
-          <StoreCard />
-          <StoreCard />
-          <StoreCard />
-          <StoreCard />
-          <StoreCard />
-          <StoreCard />
-          <StoreCard />
+          {favoriteStores.map((store, index) => (
+            <StoreCard key={index} store={store} />
+          ))}
           <div className="flex flex-col items-center justify-center hover:bg-gray-200 w-40">
             <a href="/mypage#favorites">
               <img
@@ -34,11 +33,11 @@ const MainPage = () => {
         </div>
       </div>
 
-      {/* // 추후 데이터 불러오는 것으로 변경 */}
       <h1 className="flex justify-center">빵집 리스트</h1>
       <div className="flex flex-wrap justify-center">
-        <StoreCard />
-        <StoreCard />
+        {storeData.map((store, index) => (
+          <StoreCard key={index} store={store} />
+        ))}
       </div>
     </div>
   );
