@@ -12,7 +12,7 @@ const OauthBtn = ({ bgColor, color, icon, text, onClick }) => {
         width: '300px',
         height: '40px',
         borderRadius: '8px',
-        border: 'none',
+        boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.5)',
         margin: '10px 0px',
         backgroundColor: bgColor,
         color: color,

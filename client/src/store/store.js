@@ -60,3 +60,9 @@ export const useCountStore = create((set) => ({
 //   }
 //   },
 // }));
+
+export const useLoginModalStore = create((set) => ({
+  isLoginModalOpen: false,
+  openLoginModal: () => set({ isLoginModalOpen: true }),
+  closeLoginModal: () => set({ isLoginModalOpen: false }),
+}));

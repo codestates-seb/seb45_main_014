@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import Button from './Button.jsx';
 import images from '../assets/images/Images.js';
 import SearchBar from './SearchBar.jsx';
+import Login from './login/Login.jsx';
+import { useLoginModalStore } from '../store/store.js';
 
 const HeaderBox = styled.header`
   padding: 12px;
@@ -42,26 +44,33 @@ const SearchBox = styled.div`
 `;
 
 const Header = () => {
+  const { isLoginModalOpen, openLoginModal, closeLoginModal } =
+    useLoginModalStore();
+
   return (
-    <HeaderBox>
-      <Logo to="/">
-        {/* <img src={images.mainlogo} alt="main logo" width="50" /> */}
-        BBANG ORDER
-      </Logo>
-      <SearchBox>
-        <SearchBar />
-      </SearchBox>
-      <MenuBox>
-        <Link to="/login" className="">
-          <Button weight="800">로그인</Button>
-        </Link>
-        <Link to="/signup">
-          <Button className="ml-2 mr-1" weight="800">
-            회원가입
+    <>
+      <HeaderBox>
+        <Logo to="/">
+          {/* <img src={images.mainlogo} alt="main logo" width="50" /> */}
+          BBANG ORDER
+        </Logo>
+        <SearchBox>
+          <SearchBar />
+        </SearchBox>
+        <MenuBox>
+          <Button onClick={openLoginModal} weight="800">
+            로그인
           </Button>
-        </Link>
-      </MenuBox>
-    </HeaderBox>
+          <Link to="/signup">
+            <Button className="ml-2 mr-1" weight="800">
+              회원가입
+            </Button>
+          </Link>
+        </MenuBox>
+      </HeaderBox>
+
+      {isLoginModalOpen && <Login />}
+    </>
   );
 };
 
