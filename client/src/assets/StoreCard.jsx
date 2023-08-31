@@ -3,7 +3,7 @@ import images from './images/Images';
 import { StoreImage } from './Styles.jsx';
 
 const StoreCard = ({ store }) => {
-  const { store_name, region_name, rating, img } = store;
+  const { store_name, region_name, rating, img, is_favorite } = store;
 
   const formattedStoreRating = rating.toFixed(1);
 
@@ -17,7 +17,7 @@ const StoreCard = ({ store }) => {
         onClick={toggleBookmark}
       >
         <img
-          src={isBookmarked ? images.bookmarkOn : images.bookmarkOff}
+          src={is_favorite ? images.bookmarkOn : images.bookmarkOff}
           alt="북마크 아이콘"
           width={24}
           height={24}
