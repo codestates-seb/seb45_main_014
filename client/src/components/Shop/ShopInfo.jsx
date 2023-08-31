@@ -83,7 +83,7 @@ const ShopInfo = ({ store, menu }) => {
                 <p>{store.rating}</p>
               </div>
               <div className="flex mr-3 mb-6">
-                <p className="mr-2">매장 메뉴</p>
+                <p className="mr-2">대표 메뉴</p>
                 <div className="flex flex-wrap max-w-[400px]">
                   {menu.map((menu, index) => {
                     return (

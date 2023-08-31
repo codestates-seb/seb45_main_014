@@ -4,7 +4,7 @@ import Menu from '../components/Shop/Menu.jsx';
 import MenuReview from '../components/Shop/MenuReview.jsx';
 import menu from '../assets/data/menuData.js';
 import store from '../assets/data/storeData.js';
-import reviews from '../assets/data/reviewData.js';
+import reviewData from '../assets/data/reviewData.js';
 
 const Shop = () => {
   return (
@@ -13,8 +13,8 @@ const Shop = () => {
       {menu.map((menu, index) => {
         return <Menu key={index} menu={menu} />;
       })}
-      {reviews.map((review, index) => {
-        return <MenuReview key={index} reviews={review} />;
+      {reviewData.map((review, index) => {
+        return <MenuReview key={index} review={review} />;
       })}
     </div>
   );
