@@ -33,7 +33,7 @@ function App() {
     <>
       <GlobalStyle />
       <Header />
-      <main className="max-w-screen-lg mx-auto pt-32 mb-64">
+      <main className="pt-32 mb-64">
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
             <Route path="/" element={<MainPage />} />
