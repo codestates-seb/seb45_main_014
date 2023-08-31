@@ -1,6 +1,20 @@
 import { useBookmarkStore } from '../store/store';
 import images from './images/Images';
 import { StoreImage } from './Styles.jsx';
+import { useEffect, useState } from 'react';
+
+const BookmarkButton = ({ is_favorite, toggleBookmark }) => {
+  return (
+    <button className="absolute bottom-16 right-1 p-2" onClick={toggleBookmark}>
+      <img
+        src={is_favorite ? images.bookmarkOn : images.bookmarkOff}
+        alt="북마크 아이콘"
+        width={24}
+        height={24}
+      />
+    </button>
+  );
+};
 
 const StoreCard = ({ store }) => {
   const { store_name, region_name, rating, img, is_favorite } = store;
