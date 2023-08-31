@@ -1,77 +1,50 @@
-import { styled } from 'styled-components';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import StoreCard from '../../assets/StoreCard.jsx';
 import storeData from '../../assets/data/storeData';
-import { useState, useEffect } from 'react';
-import Button from '../../components/Button.jsx';
 
-const FavoriteStoreCard = ({ store, index }) => {
+const FavoriteStoreCard = ({ store }) => {
   return (
-    <>
-      <div key={index} className="w-1/3">
+    <div className="relative p-4">
+      <div className="flex items-center h-[200px]">
         <a href={`/store/${store.id}`}>
-          <img src={store.img} alt="즐겨찾기된 매장" />
+          <img src={store.img} alt="즐겨찾기된 매장" height={'100%'} />
         </a>
-        <div>{store.store_name}</div>
       </div>
-    </>
+      <div className="absolute bottom-6 left-6 font-black text-yellow-200 text-2xl">
+        {store.store_name}
+      </div>
+    </div>
   );
 };
 
 const MainPage = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 3;
-  const [pagedStores, setPagedStores] = useState([]);
   const favoriteStores = storeData.filter(
     (store) => store.is_favorite === true,
   );
 
-  useEffect(() => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    setPagedStores(storeData.slice(startIndex, endIndex));
-  }, [currentPage]);
+  const settings = {
+    dots: true,
+    infinite: true,
+    slidesToShow: 3,
+    slidesToScroll: 2,
 
-  const handlePrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-
-    if (currentPage === 1) {
-      setCurrentPage(Math.ceil(favoriteStores.length / itemsPerPage));
-    }
-  };
-
-  const handleNextPage = () => {
-    if (currentPage === Math.ceil(favoriteStores.length / itemsPerPage)) {
-      setCurrentPage(1);
-    }
-
-    if (currentPage < Math.ceil(favoriteStores.length / itemsPerPage)) {
-      setCurrentPage(currentPage + 1);
-    }
+    autoplay: true,
+    autoplaySpeed: 2000,
   };
 
   return (
     <div className="">
-      {/* 즐겨찾기된 매장 */}
       <div className="flex justify-between mx-5">
-        <h1 className="flex">즐겨찾기</h1>
-        <h1 className="flex">더보기</h1>
+        <h1>즐겨찾기</h1>
+        <h1>더보기</h1>
       </div>
-      <div className="flex flex-col items-center overflow-x-auto whitespace-nowrap">
-        <div className="flex flex-col items-center">
-          <div className="flex">
-            {pagedStores.map((store, index) => (
-              <FavoriteStoreCard store={store} key={index} />
-            ))}
-          </div>
-          <div className="flex gap-4">
-            <Button onClick={handlePrevPage}>이전</Button>
-            <Button>{currentPage}</Button>
-            <Button onClick={handleNextPage}>다음</Button>
-          </div>
-        </div>
-      </div>
+      <Slider {...settings}>
+        {favoriteStores.map((store, index) => (
+          <FavoriteStoreCard store={store} key={index} />
+        ))}
+      </Slider>
       <div className="flex flex-col max-w-screen-md mx-auto">
         <h1 className="flex flex-start w-full">빵집 리스트</h1>
         <div className="flex flex-wrap justify-center">
