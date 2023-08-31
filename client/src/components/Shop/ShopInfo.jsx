@@ -5,7 +5,8 @@ import copy from 'clipboard-copy';
 import images from '../../assets/images/Images';
 import { useEffect } from 'react';
 import StoreRollingBanner from './StoreRollingBanner.jsx';
-const ShopInfo = () => {
+
+const ShopInfo = ({ store }) => {
   const { isBookmarked, toggleBookmark } = useBookmarkStore();
   const currentUrl = window.location.origin;
 
@@ -43,15 +44,15 @@ const ShopInfo = () => {
     };
   }, []);
 
-  const StoreName = '파리 바게트';
-  const StoreImg = shop_logo;
-
   return (
     <div className="text-center border-b">
-      <StoreRollingBanner />
       <div>
+        <StoreRollingBanner />
         <div className="flex justify-center mb-6">
-          <div className="text-left text-3xl mr-32 ">{StoreName}</div>
+          <img className="w-24" src={shop_logo} alt="매장 로고" />
+          <div className="text-left text-3xl mr-36 pt-8 w-1/6">
+            {store.store_name}
+          </div>
           <div>
             <button onClick={toggleBookmark}>
               <ShopBookmarkIcon
@@ -70,13 +71,24 @@ const ShopInfo = () => {
         </div>
         <div className="flex justify-center space-x-8">
           <div className="flex flex-col text-left">
-            <div className="text-2xl">매장 소개</div>
-            <div>
-              <p>매장 주소</p>
-              <p>
-                경기도 남양주시 조안면 북한강로 908 지번 경기도 남양주시 조안면
-                삼봉리 193-2
-              </p>
+            <div className="text-2xl mb-3">매장 소개</div>
+            <div className="flex flex-col">
+              <div className="flex mr-3  mb-6">
+                <p className="mr-2">영업 시간</p>
+                <p>{store.region_name}</p>
+              </div>
+              <div className="flex mr-3 mb-6">
+                <p className="mr-2">매장 평점</p>
+                <p>{store.rating}</p>
+              </div>
+              <div className="flex mr-3 mb-6">
+                <p className="mr-2">매장 주소</p>
+                <p>{store.region_name}</p>
+              </div>
+              <div className="flex mr-6 ">
+                <p className="mr-2">매장 번호</p>
+                <p>{store.phone_num}</p>
+              </div>
             </div>
           </div>
           <div className="flex flex-col text-left text-2xl">
@@ -90,13 +102,10 @@ const ShopInfo = () => {
 };
 export default ShopInfo;
 
-const ShopLogo = styled.img`
-  width: 250px;
-`;
-
 const ShopBookmarkIcon = styled.img`
   width: 24px;
   margin-right: 20px;
+  padding-top: 150%;
 `;
 
 const ShopInfoShareIcon = styled.img`

@@ -1,3 +1,5 @@
+import menu from '../../assets/data/menuData.js';
+
 const StoreRollingBanner = () => {
   return (
     <>
