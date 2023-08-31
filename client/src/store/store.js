@@ -38,28 +38,14 @@ export const useByteSizeStore = create((set) => ({
 }));
 
 export const useCountStore = create((set) => ({
-  count: 1, // 초기값을 0으로 설정
+  count: 1, // 초기값을 1으로 설정
   up() {
     set((state) => ({ count: state.count + 1 }));
   },
   down() {
-    set((state) => ({ count: state.count > 0 ? state.count - 1 : 0 }));
+    set((state) => ({ count: state.count > 1 ? state.count - 1 : 1 }));
   },
 }));
-
-// export const useShopInventoryStore = create((set) => ({
-//   inventory: 0,
-//   isFetch: false,
-//   fetchinventory: async () => {
-//     try {
-//       const resulte = await axios.get(`${URL적기}`)
-//     };
-//     set({ inventory: resulte.${재고량 key값, isFetch: true });
-//   } catch (error) {
-//     console.error('남은 재고가 없습니다.', error);
-//   }
-//   },
-// }));
 
 export const useLoginModalStore = create((set) => ({
   isLoginModalOpen: false,

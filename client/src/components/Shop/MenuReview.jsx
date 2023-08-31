@@ -1,25 +1,30 @@
-import menuimg from '../../assets/images/menu_img1.png';
-import { styled } from 'styled-components';
-const MenuReview = () => {
+import { calculateDate } from '../../utils/calculateDate';
+
+const MenuReview = ({ review }) => {
   return (
-    <>
-      <div className="text-center m-4 flex flex-col justify-center border-b pl-60">
-        <div className="flex p-3">
+    <div className="flex mt-6 mb-6 justify-center items-center">
+      <div className="text-center mr-3">
+        <div>
           <img
-            className="w-20 h-20 mr-6 rounded-full"
-            src={menuimg}
+            className="w-16 h-16 rounded-full"
+            src={review.img}
             alt="프로필 이미지"
           />
-          <div className="flex flex-col justify-center text-center">
-            <div className="mb-1 text-left">김소금</div>
-            <div className="text-left">레이팅 점수</div>
-          </div>
         </div>
-        {/* 사용자 정보 */}
-        <div className="text-left m-6">리뷰 내용</div>
-        {/* 리뷰 내용 */}
+        <div>
+          <span>{review.member_id}</span>
+        </div>
       </div>
-    </>
+      <div className="w-80">
+        {/* 요소 크기를 고정 */}
+        <div className="flex items-center">
+          <div className="mr-4">별점 : {review.star}</div>
+          <p>{calculateDate(review.created_at)} 일전</p>
+        </div>
+        <span className="whitespace-pre-line break-all">{review.content}</span>
+        <div className="">이미지 출력</div>
+      </div>
+    </div>
   );
 };
 
