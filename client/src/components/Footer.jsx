@@ -2,7 +2,7 @@ import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
 import images from '../assets/images/Images';
 
-const FooterContainer = styled.div`
+const FooterContainer = styled.footer`
   display: block;
   width: 100%;
   max-height: 220px;
