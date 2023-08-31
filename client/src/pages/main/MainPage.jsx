@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import StoreCard from '../../assets/StoreCard.jsx';
 import storeData from '../../assets/data/storeData';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import Button from '../../components/Button.jsx';
 
 const FavoriteStoreCard = ({ store, index }) => {
@@ -21,6 +21,9 @@ const MainPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 3;
   const [pagedStores, setPagedStores] = useState([]);
+  const favoriteStores = storeData.filter(
+    (store) => store.is_favorite === true,
+  );
 
   useEffect(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -31,6 +34,10 @@ const MainPage = () => {
   const handlePrevPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
+    }
+
+    if (currentPage === 1) {
+      setCurrentPage(Math.ceil(favoriteStores.length / itemsPerPage));
     }
   };
 
@@ -43,10 +50,6 @@ const MainPage = () => {
       setCurrentPage(currentPage + 1);
     }
   };
-
-  const favoriteStores = storeData.filter(
-    (store) => store.is_favorite === true,
-  );
 
   return (
     <div className="">
