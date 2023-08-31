@@ -8,7 +8,6 @@ import { lazy, Suspense } from 'react';
 import LoadingSpinner from './components/Loading.jsx';
 
 const MainPage = lazy(() => import('./pages/main/MainPage.jsx'));
-const SignUpPage = lazy(() => import('./pages/signUp/SignUpPage.jsx'));
 const MyPage = lazy(() => import('./pages/myPage/MyPage.jsx'));
 const Shop = lazy(() => import('./pages/Shop.jsx'));
 const PostReview = lazy(() => import('./pages/myPage/PostReview.jsx'));
@@ -36,7 +35,6 @@ function App() {
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
             <Route path="/" element={<MainPage />} />
-            <Route path="/signup" element={<SignUpPage />} />
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/shop" element={<Shop />} />
             <Route path="/reviews/post" element={<PostReview />} />
