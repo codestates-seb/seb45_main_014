@@ -60,13 +60,8 @@ const SearchResult = () => {
     <Wrapper>
       검색 결과
       <DataContainer>
-        {data.map((item) => (
-          <StoreCard
-            key={item.id}
-            storeName={item.store_name}
-            storeLocation={item.region_name}
-            storeRating={item.rating}
-          />
+        {data.map((store, idx) => (
+          <StoreCard key={idx} store={store} />
         ))}
       </DataContainer>
     </Wrapper>
