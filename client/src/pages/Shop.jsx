@@ -5,11 +5,24 @@ import MenuReview from '../components/Shop/MenuReview.jsx';
 import menu from '../assets/data/menuData.js';
 import store from '../assets/data/storeData.js';
 import reviewData from '../assets/data/reviewData.js';
+import { useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 const Shop = () => {
+  const { id } = useParams();
+  const [data, setData] = useState(store);
+
+  const filteredData = store.filter((data) => data.id === Number(id));
+
+  useEffect(() => {
+    setData(filteredData);
+    console.log(data);
+  }, [id]);
+
   return (
     <div className="flex flex-col">
-      <ShopInfo store={store[0]} menu={menu} />
+      <p>현재 파라미터는 {id}</p>
+      <ShopInfo store={data[0]} menu={menu} />
       <div>
         <h2 className="border-t mt-8 pt-6 max-w-4xl mx-auto">
           메뉴 ({menu.length})

@@ -19,7 +19,7 @@ export const FavoriteStoreCard = ({ store }) => {
   return (
     <div className="relative p-2">
       <div className="flex items-center">
-        <a href={`/store/${store.id}`}>
+        <a href={`/stores/${store.id}`}>
           <FavoriteStoreImage src={store.img} alt="즐겨찾기된 매장" />
         </a>
       </div>
