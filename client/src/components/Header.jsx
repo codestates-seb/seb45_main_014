@@ -9,8 +9,9 @@ const HeaderBox = styled.header`
   padding: 12px;
   width: 100%;
   position: fixed;
+  margin-top: -65px;
   z-index: 1000;
-  max-height: 120px;
+  height: 65px;
   background-color: white;
   color: #debe8f;
   display: flex;

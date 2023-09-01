@@ -13,6 +13,7 @@ const Shop = lazy(() => import('./pages/Shop.jsx'));
 const PostReview = lazy(() => import('./pages/myPage/PostReview.jsx'));
 const EditProfile = lazy(() => import('./pages/myPage/EditProfile.jsx'));
 const MenuDetails = lazy(() => import('./pages/menu/MenuDetails.jsx'));
+const SearchResult = lazy(() => import('./pages/search/SearchResult.jsx'));
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -21,8 +22,17 @@ const GlobalStyle = createGlobalStyle`
     font-weight: 300;
     font-style: normal;
   }
-  body {
+  * {
+    box-sizing: border-box;
+  }
+  html, body {
     font-family: 'GmarketSans', sans-serif;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+  }
+  body {
+    padding-top: 65px;
   }
   `;
 
@@ -31,7 +41,7 @@ function App() {
     <>
       <GlobalStyle />
       <Header />
-      <main className="pt-16">
+      <main className="w-full mx-auto overflow-auto min-h-screen">
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
             <Route path="/" element={<MainPage />} />
@@ -40,6 +50,7 @@ function App() {
             <Route path="/reviews/post" element={<PostReview />} />
             <Route path="/mypage/edit" element={<EditProfile />} />
             <Route path="/menu" element={<MenuDetails />} />
+            <Route path="/search" element={<SearchResult />} />
           </Routes>
         </Suspense>
       </main>

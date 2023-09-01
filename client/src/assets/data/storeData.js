@@ -84,7 +84,6 @@ const storeData = [
     rating: 4.4,
     is_favorite: 'false',
     img: 'https://source.unsplash.com/random/?Multigrain',
-
     last_modified_at: '2022-09-06T12:47:30',
     created_at: '2022-09-01T09:30:15',
   },
