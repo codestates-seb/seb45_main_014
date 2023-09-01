@@ -26,7 +26,6 @@ const SearchboxInput = styled.input`
     box-shadow: 0 0 3px 3px #f7e5c6;
     width: 90%;
     transition: all 0.2s ease;
-    transform: translateY(3em);
   }
   * {
     filter: blur(2px);
@@ -55,7 +54,7 @@ const SearchBar = () => {
       navigate(`/search?search_value=${searchQuery}`);
     } else {
       // 검색 키워드가 존재하지 않는 경우, 쿼리 스트링이 없는 원래 URL을 보여주도록 navigate 처리한다.
-      navigate('/search');
+      alert('검색어를 입력해 주세요!');
     }
   };
   return (
