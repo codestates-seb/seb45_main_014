@@ -52,6 +52,7 @@ const SearchBar = () => {
         search_keyword: searchQuery,
         // search_target: '',
       });
+      navigate(`/search?search_value=${searchQuery}`);
     } else {
       // 검색 키워드가 존재하지 않는 경우, 쿼리 스트링이 없는 원래 URL을 보여주도록 navigate 처리한다.
       navigate('/search');
