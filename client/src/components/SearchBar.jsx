@@ -41,7 +41,7 @@ const SearchBar = () => {
   const handleSearchQuery = (e) => {
     const query = e.target.value;
     setSearchQuery(query);
-    console.log(searchQuery);
+    console.log(`searchQuery 값은 ${searchQuery}`);
   };
 
   const searchSubmitHandler = (e) => {
