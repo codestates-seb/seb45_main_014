@@ -1,8 +1,12 @@
 const StoreBanner = ({ menuimgs }) => {
   return (
-    <>
-      <img className=" mb-6 w-full h-80" src={menuimgs.img} alt="배너 이미지" />
-    </>
+    <div className="flex justify-center w-full h-80 overflow-hidden bg-cover bg-center">
+      <img
+        className="w-full h-full object-cover"
+        src={menuimgs.img}
+        alt="배너 이미지"
+      />
+    </div>
   );
 };
 

@@ -17,11 +17,11 @@ const Shop = () => {
   useEffect(() => {
     setData(filteredData);
     console.log(data);
+    console.log(`현재 파라미터는 ${id} 입니다.`);
   }, [id]);
 
   return (
     <div className="flex flex-col">
-      <p>현재 파라미터는 {id}</p>
       <ShopInfo store={data[0]} menu={menu} />
       <div>
         <h2 className="border-t mt-8 pt-6 max-w-4xl mx-auto">
