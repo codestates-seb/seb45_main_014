@@ -31,7 +31,7 @@ function App() {
     <>
       <GlobalStyle />
       <Header />
-      <main className="pt-16 mb-64">
+      <main className="pt-16">
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
             <Route path="/" element={<MainPage />} />

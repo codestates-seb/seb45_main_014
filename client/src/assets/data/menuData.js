@@ -37,9 +37,7 @@ const menuData = [
     menu_desc: '촉촉한 느낌',
     price: 4000,
     stock: 6,
-
     img: 'https://source.unsplash.com/random/300×300',
-
   },
   {
     id: 6,
@@ -47,9 +45,7 @@ const menuData = [
     menu_desc: '고소한 호두가 어우러진 맛',
     price: 3800,
     stock: 3,
-
     img: 'https://source.unsplash.com/random/300×300',
-
   },
   {
     id: 7,
@@ -57,9 +53,7 @@ const menuData = [
     menu_desc: '상큼한 블루베리 풍미',
     price: 4200,
     stock: 7,
-
     img: 'https://source.unsplash.com/random/300×300',
-
   },
   {
     id: 8,
@@ -67,9 +61,7 @@ const menuData = [
     menu_desc: '초코 풍미가 일품',
     price: 3300,
     stock: 4,
-
     img: 'https://source.unsplash.com/random/300×300',
-
   },
   {
     id: 9,
@@ -77,9 +69,7 @@ const menuData = [
     menu_desc: '건강한 통밀 맛',
     price: 3800,
     stock: 5,
-
     img: 'https://source.unsplash.com/random/300×300',
-
   },
   {
     id: 10,
@@ -87,9 +77,7 @@ const menuData = [
     menu_desc: '향긋한 마늘 풍미',
     price: 4500,
     stock: 3,
-
     img: 'https://source.unsplash.com/random/300×300',
-
   },
 ];
 
