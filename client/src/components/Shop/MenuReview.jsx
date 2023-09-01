@@ -1,28 +1,35 @@
 import { calculateDate } from '../../utils/calculateDate';
+import { useState } from 'react';
 
 const MenuReview = ({ review }) => {
+  const [isExpanded, setIsExpanded] = useState(true);
+  const reviewContentHandle = () => {
+    setIsExpanded(!isExpanded);
+  };
+
   return (
-    <div className="flex mt-6 mb-6 justify-center items-center">
-      <div className="text-center mr-3">
-        <div>
-          <img
-            className="w-16 h-16 rounded-full"
-            src={review.img}
-            alt="프로필 이미지"
-          />
-        </div>
-        <div>
-          <span>{review.member_id}</span>
-        </div>
+    <div className="flex max-w-4xl w-full mx-auto border-b space-x-8 pt-10 pb-16">
+      <div className="text-center flex-shrink-0">
+        <img
+          className="w-16 h-16 rounded-full"
+          src={review.img}
+          alt="프로필 이미지"
+        />
+        <p className="mt-2">{review.member_id}</p>
       </div>
-      <div className="w-80">
-        {/* 요소 크기를 고정 */}
-        <div className="flex items-center">
-          <div className="mr-4">별점 : {review.star}</div>
-          <p>{calculateDate(review.created_at)} 일전</p>
+      <div className="grow-1">
+        <div className="flex items-center mb-2">
+          <p className="text-gray-500 text-sm">
+            {calculateDate(review.created_at)} 일전
+          </p>
+          <p className="ml-4 text-gray-500 text-sm">별점: {review.star}</p>
         </div>
-        <span className="whitespace-pre-line break-all">{review.content}</span>
-        <div className="">이미지 출력</div>
+        <div className={`break-word ${isExpanded ? 'line-clamp-3' : ''}`}>
+          {review.content}
+        </div>
+        <button className="mt-2" onClick={reviewContentHandle}>
+          내용 더보기
+        </button>
       </div>
     </div>
   );

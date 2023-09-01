@@ -51,7 +51,7 @@ const ShopInfo = ({ store, menu }) => {
         <StoreBanner menuimgs={storemenuData[0]} />
         <div className="flex justify-center mb-6 ">
           <img className="w-24" src={shop_logo} alt="매장 로고" />
-          <div className="text-left text-3xl mr-36 pt-8 w-1/6">
+          <div className="text-left text-4xl mr-36 pt-8 w-1/6">
             {store.store_name}
           </div>
           <div>
@@ -72,7 +72,7 @@ const ShopInfo = ({ store, menu }) => {
         </div>
         <div className="flex justify-center space-x-8">
           <div className="flex flex-col text-left border rounded-lg p-4">
-            <div className="text-2xl mb-3">매장 소개</div>
+            <div className="text-4xl mb-3">매장 소개</div>
             <div className="flex flex-col">
               <div className="flex mr-3  mb-6">
                 <p className="mr-2">영업 시간</p>
@@ -107,9 +107,9 @@ const ShopInfo = ({ store, menu }) => {
           <div className="flex flex-col text-left text-2xl">
             <span className="mb-3">매장 위치</span>
             <div
-              className="rounded-s-lg mb-8"
+              className="rounded-s-lg"
               id="map"
-              style={{ width: '350px', height: '280px' }}
+              style={{ width: '350px', height: '300px' }}
             ></div>
           </div>
         </div>
