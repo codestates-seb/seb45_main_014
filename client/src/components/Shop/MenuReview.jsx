@@ -1,25 +1,37 @@
-import menuimg from '../../assets/images/menu_img1.png';
-import { styled } from 'styled-components';
-const MenuReview = () => {
+import { calculateDate } from '../../utils/calculateDate';
+import { useState } from 'react';
+
+const MenuReview = ({ review }) => {
+  const [isExpanded, setIsExpanded] = useState(true);
+  const reviewContentHandle = () => {
+    setIsExpanded(!isExpanded);
+  };
+
   return (
-    <>
-      <div className="text-center m-4 flex flex-col justify-center border-b pl-60">
-        <div className="flex p-3">
-          <img
-            className="w-20 h-20 mr-6 rounded-full"
-            src={menuimg}
-            alt="프로필 이미지"
-          />
-          <div className="flex flex-col justify-center text-center">
-            <div className="mb-1 text-left">김소금</div>
-            <div className="text-left">레이팅 점수</div>
-          </div>
-        </div>
-        {/* 사용자 정보 */}
-        <div className="text-left m-6">리뷰 내용</div>
-        {/* 리뷰 내용 */}
+    <div className="flex max-w-4xl w-full mx-auto border-b space-x-8 pt-10 pb-16">
+      <div className="text-center flex-shrink-0">
+        <img
+          className="w-16 h-16 rounded-full"
+          src={review.img}
+          alt="프로필 이미지"
+        />
+        <p className="mt-2">{review.member_id}</p>
       </div>
-    </>
+      <div className="grow-1">
+        <div className="flex items-center mb-2">
+          <p className="text-gray-500 text-sm">
+            {calculateDate(review.created_at)} 일전
+          </p>
+          <p className="ml-4 text-gray-500 text-sm">별점: {review.star}</p>
+        </div>
+        <div className={`break-word ${isExpanded ? 'line-clamp-3' : ''}`}>
+          {review.content}
+        </div>
+        <button className="mt-2" onClick={reviewContentHandle}>
+          내용 더보기
+        </button>
+      </div>
+    </div>
   );
 };
 

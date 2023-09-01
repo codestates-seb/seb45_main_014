@@ -19,34 +19,7 @@ const EditProfile = () => {
       />
       <section className="bg-amber-200 p-5 mt-5 rounded-lg">
         <form className="flex flex-col items-center">
-          <InputBox>
-            <label htmlFor="email" className="block">
-              이메일
-            </label>
-            <Input
-              type="email"
-              id="email"
-              placeholder="example@gmail.com"
-              required=""
-            />
-          </InputBox>
-          <InputBox>
-            <label htmlFor="password" className="block">
-              비밀번호
-            </label>
-            <Input
-              type="password"
-              id="password"
-              placeholder="••••••••"
-              required=""
-            />
-          </InputBox>
-          <InputBox>
-            <label htmlFor="name" className="block">
-              이름
-            </label>
-            <Input type="text" id="name" placeholder="김빵순" required="" />
-          </InputBox>
+          {/* 기존 사용자일 경우 placeholder가 아닌 기존 닉네임이 value에 들어감 */}
           <InputBox>
             <label htmlFor="nickname" className="block">
               닉네임
@@ -65,6 +38,8 @@ const EditProfile = () => {
             />
           </InputBox>
           <div className="flex gap-4">
+            {/* 초기 회원일 경우 입력으로 바뀜 */}
+            {/* 초기 회원일 경우 필수로 입력하지 않으면 경고창 */}
             <Button className="mt-5">회원정보 수정</Button>
             <CancelButton className="mt-5">
               <Link to="/mypage">취소</Link>
