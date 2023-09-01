@@ -47,6 +47,14 @@ export const useCountStore = create((set) => ({
   },
 }));
 
+// 검색 기능
+export const useSearchStore = create((set) => ({
+  searchQuery: '',
+  searchResults: [],
+  setSearchQuery: (query) => set({ searchQuery: query }),
+  setSearchResults: (results) => set({ searchResults: results }),
+}));
+
 // export const useShopInventoryStore = create((set) => ({
 //   inventory: 0,
 //   isFetch: false,

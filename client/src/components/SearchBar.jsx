@@ -1,5 +1,7 @@
 import { styled } from 'styled-components';
-import images from '../assets/images/Images';
+import { useSearchStore } from '../store/store';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const SearchbarContainer = styled.form`
   display: flex;
@@ -32,18 +34,38 @@ const SearchboxInput = styled.input`
 `;
 
 const SearchBar = () => {
-  function handleFocus() {
-    console.log('포커스 받았음');
-  }
+  const { searchQuery, setSearchQuery } = useSearchStore();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
 
+  const handleSearchQuery = (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+    console.log(searchQuery);
+  };
+
+  const searchSubmitHandler = (e) => {
+    e.preventDefault();
+
+    if (searchQuery) {
+      setSearchParams({
+        search_keyword: searchQuery,
+        // search_target: '',
+      });
+    } else {
+      // 검색 키워드가 존재하지 않는 경우, 쿼리 스트링이 없는 원래 URL을 보여주도록 navigate 처리한다.
+      navigate('/search');
+    }
+  };
   return (
-    <SearchbarContainer>
+    <SearchbarContainer onSubmit={searchSubmitHandler}>
       <div className="flex flex-1 justify-center">
         <SearchboxInput
           className="searchbox"
           type="text"
           placeholder="지역, 가게명 또는 메뉴명"
-          onFocus={handleFocus}
+          onChange={handleSearchQuery}
+          value={searchQuery}
         />
       </div>
     </SearchbarContainer>
