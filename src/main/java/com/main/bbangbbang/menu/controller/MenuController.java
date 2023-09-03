@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.awt.*;
-
 @RestController
 @RequestMapping
 public class MenuController {
@@ -21,7 +19,7 @@ public class MenuController {
         this.menuService = menuService;
     }
 
-    @GetMapping("/{menu-id}")
+    @GetMapping("/api/stores/{store-id}/menus/{menu-id}")
     public ResponseEntity<MenuResponseDto> getMenu(@PathVariable("store-id") Long storeId, @PathVariable("menu-id") Long menuId) {
         MenuResponseDto menuResponseDto = menuService.getMenuById(menuId);
         return ResponseEntity.ok(menuResponseDto); // 리턴 타입은 메소드 명 좌측에 항상 명시되어 있다.

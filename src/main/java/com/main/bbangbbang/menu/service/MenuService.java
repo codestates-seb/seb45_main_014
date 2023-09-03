@@ -1,22 +1,15 @@
 package com.main.bbangbbang.menu.service;
 
 import com.main.bbangbbang.menu.dto.MenuResponseDto;
-import com.main.bbangbbang.menu.entity.MenuEntity;
+import com.main.bbangbbang.menu.entity.Menu;
 import com.main.bbangbbang.menu.mapper.MenuMapper;
 import com.main.bbangbbang.menu.repository.MenuRepository;
-import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.awt.*;
-import java.util.Map;
-
 @Service
 public class MenuService {
-
     private final MenuRepository menuRepository;
     private final MenuMapper menuMapper;
-
     @Autowired
     public MenuService(MenuRepository menuRepository, MenuMapper menuMapper) {
         this.menuRepository = menuRepository;
@@ -24,8 +17,8 @@ public class MenuService {
     }
 
     public MenuResponseDto getMenuById(Long menuId) {
-        MenuEntity menuEntity = menuRepository.findByMenuId(menuId).get();// menurepository 꺼내 온 것
-        MenuResponseDto menuResponseDto = menuMapper.toDto(menuEntity); // responsedto를 entity로 연결
+        Menu menu = menuRepository.findById(menuId).get();// menurepository 꺼내 온 것
+        MenuResponseDto menuResponseDto = menuMapper.toDto(menu); // responsedto를 entity로 연결
         return menuResponseDto; // 위에 되돌려줌
     }
 

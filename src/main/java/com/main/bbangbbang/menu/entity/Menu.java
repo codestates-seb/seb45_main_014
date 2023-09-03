@@ -2,19 +2,18 @@ package com.main.bbangbbang.menu.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.catalina.Store;
 
 import javax.persistence.*;
-@Table(name = "menus")
+
+@Table
 @Getter
 @Setter
 @Entity
-public class MenuEntity {
+public class Menu {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "menu_id") // 데이터베이스에서 menu_id 컬럼과 매핑
-    private Long menuId; // 필드 이름을 menuId로 변경
+    private Long Id; // 필드 이름을 Id로 변경
 
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "store_id", nullable = false)
