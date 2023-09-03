@@ -3,7 +3,11 @@ package com.main.bbangbbang.menu.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Table;
 
 @Table
 @Getter
@@ -11,7 +15,7 @@ import javax.persistence.*;
 @Entity
 public class Menu {
 
-    @Id
+    @javax.persistence.Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id; // 필드 이름을 Id로 변경
 
