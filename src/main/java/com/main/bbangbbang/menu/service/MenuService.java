@@ -14,7 +14,7 @@ public class MenuService {
     private final MenuRepository menuRepository;
 
     @Transactional(readOnly = true)
-    public Menu getMenuById(Long menuId) {
+    public Menu findMenu(Long menuId) {
         Optional<Menu> optionalMenu = menuRepository.findById(menuId);// menurepository 꺼내 온 것
 
         return optionalMenu.orElseThrow(NoSuchElementException::new); // 위에 되돌려줌
