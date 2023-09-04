@@ -1,8 +1,19 @@
 import { calculateDate } from '../../utils/calculateDate';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const MenuReview = ({ review }) => {
   const [isExpanded, setIsExpanded] = useState(true);
+  const [showButton, setShowButton] = useState(false);
+  const contentRef = useRef(null);
+
+  useEffect(() => {
+    // 컴포넌트가 마운트되거나 내용이 변경될 때마다 텍스트 높이를 계산
+    if (contentRef.current) {
+      const contentHeight = contentRef.current.clientHeight;
+      setShowButton(contentHeight > 3 * 16); // 3줄 * 16px 폰트 크기
+    }
+  }, [review.content]);
+
   const reviewContentHandle = () => {
     setIsExpanded(!isExpanded);
   };
@@ -24,12 +35,17 @@ const MenuReview = ({ review }) => {
           </p>
           <p className="ml-4 text-gray-500 text-sm">별점: {review.star}</p>
         </div>
-        <div className={`break-word ${isExpanded ? 'line-clamp-3' : ''}`}>
+        <div
+          className={`break-word ${isExpanded ? 'line-clamp-3' : ''}`}
+          ref={contentRef}
+        >
           {review.content}
         </div>
-        <button className="mt-2" onClick={reviewContentHandle}>
-          내용 더보기
-        </button>
+        {showButton && (
+          <button className="mt-2" onClick={reviewContentHandle}>
+            {isExpanded ? '내용 더보기' : '내용 숨기기'}
+          </button>
+        )}
       </div>
     </div>
   );
