@@ -6,6 +6,7 @@ import searchicon from './searchicon.svg';
 import share from './share.png';
 import arrow from './arrow.svg';
 import menu from './menu_img1.png';
+import notfound from './notFound.png';
 
 const images = {
   githublogo,
@@ -16,6 +17,7 @@ const images = {
   share,
   arrow,
   menu,
+  notfound,
 };
 
 export default images;

@@ -1,5 +1,14 @@
 import { GoogleBtn, GuestBtn, KakaoBtn } from './OauthBtn.jsx';
-import { styled } from 'styled-components';
+import { styled, keyframes } from 'styled-components';
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
 
 const LoginModal = styled.div`
   position: fixed;
@@ -19,8 +28,10 @@ const ModalOverlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.5);
   z-index: 9999;
+
+  animation: ${fadeIn} 0.3s ease-in-out;
 `;
 
 const CloseButton = styled.button`
