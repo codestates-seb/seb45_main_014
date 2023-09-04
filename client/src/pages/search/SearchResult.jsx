@@ -56,7 +56,7 @@ const SearchResult = () => {
     } else {
       setData(storeData);
     }
-  }, [location]);
+  }, [location, searchQuery, resultQuery]);
 
   return (
     <Wrapper>
