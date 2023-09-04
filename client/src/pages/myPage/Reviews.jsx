@@ -3,6 +3,7 @@ import { Stars } from '../../components/Stars.jsx';
 import data from '../../assets/data/myPageReviewData.js';
 import { StoreImage } from '../../assets/Styles.jsx';
 import formatDate from '../../utils/formatDate';
+import Button from '../../components/Button.jsx';
 
 const ReviewDetailStyle = styled.div`
   width: 100%;
@@ -31,7 +32,15 @@ const ReviewDetail = ({ singleData }) => {
 const Reviews = () => {
   return (
     <div className="w-full">
-      <h1>내가 쓴 리뷰 : {data.reviews.length} 개</h1>
+      {data.reviews.length === 0 ? (
+        <div>
+          <h1>작성하신 리뷰가 없습니다. 주문하러 가볼까요?</h1>
+          <Button>주문하러 가기</Button>
+        </div>
+      ) : (
+        <h1>내가 쓴 리뷰 : {data.reviews.length} 개</h1>
+      )}
+      {/* <h1>내가 쓴 리뷰 : {data.reviews.length} 개</h1> */}
       {data.reviews.map((item, index) => (
         <ReviewDetail key={index} singleData={item} />
       ))}
