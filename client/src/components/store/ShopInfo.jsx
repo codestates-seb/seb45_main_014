@@ -14,7 +14,7 @@ import 'slick-carousel/slick/slick-theme.css';
 
 const ShopInfo = ({ store, menu }) => {
   const { isBookmarked, toggleBookmark } = useBookmarkStore();
-  const currentUrl = window.location.origin;
+  const currentUrl = window.location;
 
   const handleCopyUrl = () => {
     copy(currentUrl);
