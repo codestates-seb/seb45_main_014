@@ -1,9 +1,9 @@
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
-import Button from './Button.jsx';
+import Button from '../../assets/buttons/Button.jsx';
 import SearchBar from './SearchBar.jsx';
-import Login from './login/Login.jsx';
-import { useLoginModalStore } from '../store/store.js';
+import Login from '../login/Login.jsx';
+import { useLoginModalStore } from '../../store/store.js';
 
 const HeaderBox = styled.header`
   padding: 12px;

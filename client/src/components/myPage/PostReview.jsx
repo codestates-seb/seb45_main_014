@@ -6,8 +6,7 @@ import {
 } from '../../store/store.js';
 import { styled } from 'styled-components';
 import { StoreImage } from '../../assets/Styles.jsx';
-import Button from '../../components/Button.jsx';
-import { useState } from 'react';
+import Button from '../../assets/buttons/Button.jsx';
 import { getByteSize } from '../../utils/getByteSize.js';
 
 const TextBox = styled.textarea`

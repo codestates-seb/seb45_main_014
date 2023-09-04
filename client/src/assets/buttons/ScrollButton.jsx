@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
-import bottom from '../assets/icons/bottom-alignment.ico';
-import top from '../assets/icons/top-alignment.ico';
+import bottom from '../icons/bottom-alignment.ico';
+import top from '../icons/top-alignment.ico';
 
 const ScrollBtn = styled.div`
   position: fixed;

@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { useSearchStore } from '../store/store';
+import { useSearchStore } from '../../store/store';
 
 const DropdownWrapper = styled.select`
   text-align: center;
