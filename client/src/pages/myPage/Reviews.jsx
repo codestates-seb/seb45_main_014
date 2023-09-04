@@ -18,7 +18,7 @@ const ReviewDetail = ({ singleData }) => {
       <div>
         <h2>{singleData.store_name}</h2>
         <div className="flex gap-2">
-          <Stars rating={singleData.rating} />
+          <Stars rating={singleData.rating} readOnly={true} />
           {formatDate(singleData.created_at)}
         </div>
         <div className="mt-2">{singleData.content}</div>
