@@ -14,7 +14,7 @@ const Store = () => {
     <div className="flex flex-col">
       <ShopInfo store={selectedStore} menu={menuData} />
       <div>
-        <h2 className="border-t mt-8 pt-6 max-w-4xl mx-auto">
+        <h2 className="border-t mt-8 pt-6 pl-20 max-w-4xl mx-auto">
           메뉴 ({menuData.length})
         </h2>
         {menuData.map((menu, index) => {
@@ -24,7 +24,7 @@ const Store = () => {
         })}
       </div>
       <div>
-        <h2 className=" mt-8 pt-6 max-w-4xl mx-auto border-t">
+        <h2 className=" mt-8 pb-6 pt-6 max-w-4xl mx-auto border-t border-b">
           리뷰 ({reviewData.length})
         </h2>
         {reviewData.map((review, index) => {
