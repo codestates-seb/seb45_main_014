@@ -22,7 +22,8 @@ const myPageReviewData = {
       id: 3,
       store_name: '푸드킹',
       rating: 3,
-      content: '괜찮아요',
+      content:
+        '가로가 길어질 때 이미지가 바뀌는가 궁금해서 길게 적어봤습니다. 혹시 길어진다면 너비를 수정해야 할듯 합니다.',
       img: 'https://source.unsplash.com/random/?lunch',
       last_modified_at: '2022-08-18T09:30:15',
       created_at: '2022-08-18T09:30:15',

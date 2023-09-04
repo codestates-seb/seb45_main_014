@@ -15,7 +15,7 @@ const ReviewDetailStyle = styled.div`
 const ReviewDetail = ({ singleData }) => {
   return (
     <ReviewDetailStyle>
-      <div>
+      <div className="w-2/3">
         <h2>{singleData.store_name}</h2>
         <div className="flex gap-2">
           <Stars rating={singleData.rating} readOnly={true} />
