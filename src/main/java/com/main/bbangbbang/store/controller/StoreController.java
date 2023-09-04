@@ -20,7 +20,7 @@ public class StoreController { // 매장 상세 페이지
     private final StoreMapper storeMapper;
 
     @GetMapping("/stores/{store-id}")
-    public ResponseEntity<?> getStore(@PathVariable("store-id") long storeId) { // 매장 상세 내용 (이름, 설명, 주소, 메뉴들)
+    public ResponseEntity<StoreResponseDto> getStore(@PathVariable("store-id") long storeId) { // 매장 상세 내용 (이름, 설명, 주소, 메뉴들)
         Store store = storeService.findStore(storeId);
         StoreResponseDto responseDto = new StoreResponseDto(storeMapper.storeToStoreDetailData(store));
 
