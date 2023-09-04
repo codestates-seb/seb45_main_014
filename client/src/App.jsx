@@ -6,6 +6,7 @@ import GmarketSans from './assets/fonts/GmarketSansTTFMedium.ttf';
 import { Route, Routes } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import LoadingSpinner from './components/Loading.jsx';
+import ScrollButton from './components/ScrollButton.jsx';
 
 const NotFound = lazy(() => import('./pages/NotFound.jsx'));
 const MainPage = lazy(() => import('./pages/main/MainPage.jsx'));
@@ -40,9 +41,9 @@ const GlobalStyle = createGlobalStyle`
 function App() {
   return (
     <>
-      <GlobalStyle />
-      <Header />
+      <GlobalStyle /> <Header />
       <main className="w-full mx-auto overflow-auto min-h-screen">
+        <ScrollButton />
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
             <Route path="*" element={<NotFound />} />
