@@ -24,7 +24,7 @@ const DataContainer = styled.div`
 const SearchResult = () => {
   const [data, setData] = useState([]);
   const location = useLocation();
-  const { searchQuery } = useSearchStore();
+  const { searchQuery, searchFilter } = useSearchStore();
   const [resultQuery, setResultQuery] = useState('');
 
   // 나중에 API 구현했을 떄?
@@ -44,18 +44,57 @@ const SearchResult = () => {
   //       .catch((err) => console.log('에러임', err));
   //   }
   // }, [location]);
+
+  // useEffect(() => {
+  //   if (searchQuery) {
+  //     const filteredData = storeData.filter((data) =>
+  //       data.store_name.includes(searchQuery),
+  //     );
+  //     setData(filteredData);
+  //     setResultQuery(searchQuery);
+  //     console.log(`키워드는 ${resultQuery} 입니다.`);
+  //   } else {
+  //     setData(storeData);
+  //   }
+  // }, [location, resultQuery, searchQuery]);
+
   useEffect(() => {
-    if (searchQuery) {
-      const filteredData = storeData.filter((data) =>
-        data.store_name.includes(searchQuery),
-      );
-      setData(filteredData);
-      setResultQuery(searchQuery);
-      console.log(`키워드는 ${resultQuery} 입니다.`);
-    } else {
-      setData(storeData);
+    switch (searchFilter) {
+      case 'store':
+        if (searchQuery) {
+          const filteredData = storeData.filter((data) =>
+            data.store_name.includes(searchQuery),
+          );
+          setData(filteredData);
+          setResultQuery(searchQuery);
+          console.log(`키워드는 ${resultQuery} 입니다.`);
+        } else {
+          setData(storeData);
+        }
+        break;
+
+      case 'region':
+        if (searchQuery) {
+          const filteredData = storeData.filter((data) =>
+            data.region_name.includes(searchQuery),
+          );
+          setData(filteredData);
+          setResultQuery(searchQuery);
+          console.log(`키워드는 ${resultQuery} 입니다.`);
+        } else {
+          setData(storeData);
+        }
+        break;
+
+      case 'menu':
+        // 'menu'에 대한 로직
+        break;
+
+      default:
+        // 기본 동작을 정의
+        break;
     }
-  }, [location, resultQuery, searchQuery]);
+  }, [location, resultQuery, searchQuery, searchFilter]);
 
   return (
     <Wrapper>
