@@ -50,7 +50,7 @@ export const useCountStore = create((set) => ({
 // 검색 기능
 export const useSearchStore = create((set) => ({
   searchQuery: '',
-  searchFilter: '',
+  searchFilter: 'store',
   setSearchQuery: (query) => set({ searchQuery: query }),
   setSearchFilter: (filter) => set({ searchFilter: filter }),
 }));
