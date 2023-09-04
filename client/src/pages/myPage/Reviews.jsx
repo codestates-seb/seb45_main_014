@@ -2,6 +2,7 @@ import { styled } from 'styled-components';
 import { Stars } from '../../components/Stars.jsx';
 import data from '../../assets/data/myPageReviewData.js';
 import { StoreImage } from '../../assets/Styles.jsx';
+import formatDate from '../../utils/formatDate';
 
 const ReviewDetailStyle = styled.div`
   width: 100%;
@@ -16,9 +17,9 @@ const ReviewDetail = ({ singleData }) => {
     <ReviewDetailStyle>
       <div>
         <h2>{singleData.store_name}</h2>
-        <div className="flex">
+        <div className="flex gap-2">
           <Stars rating={singleData.rating} />
-          {singleData.created_at}
+          {formatDate(singleData.created_at)}
         </div>
         <div className="mt-2">{singleData.content}</div>
       </div>
