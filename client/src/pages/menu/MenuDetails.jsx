@@ -15,7 +15,7 @@ const MenuDetails = ({ menu }) => {
         <h1 className="m-3 pr-80">{menuData.menu_name}</h1>
         <SelectMenuContents>{menuData.menu_desc}</SelectMenuContents>
       </div>
-      <MenuPriceinvnt menuData={menuData} />
+      <MenuPriceinvnt className="border" menuData={menuData} />
     </div>
   );
 };
