@@ -25,14 +25,14 @@ const StoreCard = ({ store }) => {
 
   return (
     <div className="w-72 relative mx-4">
-      <Link to={`/store/${store.id}`}>
+      <Link to={`/stores/${store.id}`}>
         <StoreImage src={img} alt="매장 대표 이미지" />
       </Link>
       <BookmarkButton
         is_favorite={is_favorite}
         toggleBookmark={() => toggleBookmark(store.id)}
       />
-      <Link to={`/store/${store.id}`}>
+      <Link to={`/stores/${store.id}`}>
         <div className="flex justify-between">
           <div className="flex flex-col">
             <div className="flex">

@@ -1,20 +1,23 @@
-import { styled } from 'styled-components';
-import ShopInfo from '../components/Shop/ShopInfo.jsx';
-import Menu from '../components/Shop/Menu.jsx';
-import MenuReview from '../components/Shop/MenuReview.jsx';
-import menu from '../assets/data/menuData.js';
-import store from '../assets/data/storeData.js';
+import ShopInfo from '../components/store/ShopInfo.jsx';
+import Menu from '../components/store/Menu.jsx';
+import MenuReview from '../components/store/MenuReview.jsx';
+import menuData from '../assets/data/menuData.js';
+import storeData from '../assets/data/storeData.js';
 import reviewData from '../assets/data/reviewData.js';
+import { useParams } from 'react-router-dom';
 
-const Shop = () => {
+const Store = () => {
+  const { id } = useParams();
+  const selectedStore = storeData.find((store) => store.id === Number(id));
+
   return (
     <div className="flex flex-col">
-      <ShopInfo store={store[0]} menu={menu} />
+      <ShopInfo store={selectedStore} menu={menuData} />
       <div>
         <h2 className="border-t mt-8 pt-6 max-w-4xl mx-auto">
-          메뉴 ({menu.length})
+          메뉴 ({menuData.length})
         </h2>
-        {menu.map((menu, index) => {
+        {menuData.map((menu, index) => {
           return (
             <Menu key={index} menu={menu} isLast={index === menu.length - 1} />
           );
@@ -32,4 +35,4 @@ const Shop = () => {
   );
 };
 
-export default Shop;
+export default Store;
