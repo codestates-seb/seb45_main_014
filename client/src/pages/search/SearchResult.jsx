@@ -26,6 +26,7 @@ const SearchResult = () => {
   const [data, setData] = useState([]);
   const location = useLocation();
   const { searchQuery } = useSearchStore();
+  const [resultQuery, setResultQuery] = useState('');
 
   // 나중에 API 구현했을 떄?
   // const API = 'localhost:3000';
@@ -50,7 +51,8 @@ const SearchResult = () => {
         data.store_name.includes(searchQuery),
       );
       setData(filteredData);
-      console.log(`키워드는 ${searchQuery} 입니다.`);
+      setResultQuery(searchQuery);
+      console.log(`키워드는 ${resultQuery} 입니다.`);
     } else {
       setData(storeData);
     }
@@ -58,15 +60,14 @@ const SearchResult = () => {
 
   return (
     <Wrapper>
-      검색 결과
+      <div className="flex text-[20px] w-[76%] content-start pt-3 pb-3">
+        {!data.length
+          ? `검색결과가 없습니다.`
+          : `'${resultQuery}'에 대한 검색 결과는 총 ${data.length}건 입니다.`}
+      </div>
       <DataContainer>
-        {data.map((item) => (
-          <StoreCard
-            key={item.id}
-            storeName={item.store_name}
-            storeLocation={item.region_name}
-            storeRating={item.rating}
-          />
+        {data.map((store, idx) => (
+          <StoreCard key={idx} store={store} />
         ))}
       </DataContainer>
     </Wrapper>
