@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import Button from '../../components/Button.jsx';
+import Button from '../assets/buttons/Button.jsx';
 import { styled } from 'styled-components';
-import Reviews from './Reviews.jsx';
-import Orders from './Orders.jsx';
-import Favorites from './Favorites.jsx';
+import Reviews from '../components/myPage/Reviews.jsx';
+import Orders from '../components/myPage/Orders.jsx';
+import Favorites from '../components/myPage/Favorites.jsx';
+
 import { Link } from 'react-router-dom';
 
 const TabContainer = styled.ul`

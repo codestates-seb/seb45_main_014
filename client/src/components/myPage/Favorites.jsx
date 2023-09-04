@@ -1,5 +1,5 @@
 import StoreCard from '../../assets/StoreCard.jsx';
-import { FavoriteStoreCard, getFavoriteStores } from '../main/MainPage.jsx';
+import { getFavoriteStores } from '../../pages/main/MainPage.jsx';
 
 const Favorites = () => {
   const favoriteStores = getFavoriteStores();

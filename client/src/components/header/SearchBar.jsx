@@ -1,5 +1,5 @@
 import { styled, keyframes } from 'styled-components';
-import { useSearchStore } from '../store/store';
+import { useSearchStore } from '../../store/store';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import DropdownMenu from './DropdownMenu.jsx';
 import { useState } from 'react';
