@@ -4,6 +4,7 @@ import data from '../../assets/data/myPageReviewData.js';
 import { StoreImage } from '../../assets/Styles.jsx';
 import formatDate from '../../utils/formatDate';
 import Button from '../../components/Button.jsx';
+import { RedButton } from '../../assets/buttons/RedButton.jsx';
 
 const ReviewDetailStyle = styled.div`
   width: 100%;
@@ -22,7 +23,10 @@ const ReviewDetail = ({ singleData }) => {
           <Stars rating={singleData.rating} readOnly={true} />
           {formatDate(singleData.created_at)}
         </div>
-        <div className="mt-2">{singleData.content}</div>
+        <div className="h-1/2 mt-2 flex flex-col justify-between">
+          <p>{singleData.content}</p>
+        </div>
+        <RedButton>삭제</RedButton>
       </div>
       <StoreImage src={singleData.img} alt="매장 이미지"></StoreImage>
     </ReviewDetailStyle>
