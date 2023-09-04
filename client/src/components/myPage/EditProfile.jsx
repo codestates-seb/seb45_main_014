@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import { InputBox, Input } from '../../assets/Styles.jsx';
 import images from '../../assets/images/Images';
-import Button from '../../components/Button.jsx';
+import Button from '../../assets/buttons/Button.jsx';
 import { Link } from 'react-router-dom';
 
 const CancelButton = styled(Button)`

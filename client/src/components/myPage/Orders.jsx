@@ -2,7 +2,7 @@ import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
 import orderData from '../../assets/data/orderData.js';
 import formatDate from '../../utils/formatDate';
-import Button from '../../components/Button.jsx';
+import Button from '../../assets/buttons/Button.jsx';
 
 const OrdersImage = styled.img`
   width: 150px;
