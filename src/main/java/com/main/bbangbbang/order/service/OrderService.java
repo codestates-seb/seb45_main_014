@@ -6,10 +6,13 @@ import com.main.bbangbbang.order.entity.Order;
 import com.main.bbangbbang.order.entity.Order.OrderStatus;
 import com.main.bbangbbang.order.repository.OrderRepository;
 import com.main.bbangbbang.store.entity.Store;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,16 +40,23 @@ public class OrderService {
 
     @Transactional(readOnly = true)
     public Page<Order> findOrders(Long memberId, Integer page, Integer size) {
-        return null;
+
+        return orderRepository.findByMemberId(memberId, PageRequest.of(page-1, size)); // OrderStatus.DELETED 숨기기 필요
     }
 
     @Transactional
     public void removeOrder(Long orderId) {
+        Optional<Order> optionalOrder = orderRepository.findById(orderId);
+        Order order = optionalOrder.orElseThrow(NoSuchElementException::new);
+        order.setOrderStatus(OrderStatus.DELETED);
     }
 
     @Transactional
     public Order doOrder(Order order, Integer minutes) {
-        return null;
+        order.setPickupTime(LocalDateTime.now().plusMinutes(minutes));
+        order.setOrderStatus(OrderStatus.READY);
+
+        return order;
     }
 
     @Transactional
