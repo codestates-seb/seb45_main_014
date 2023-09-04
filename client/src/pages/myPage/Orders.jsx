@@ -10,6 +10,9 @@ const OrdersImage = styled.img`
 `;
 
 const OrdersItem = ({ data }) => {
+  const menuName = data.order_menus[0].menu_name;
+  const menuLength = data.order_menus.length;
+
   return (
     <div className="flex flex-col items-center">
       {/* 이미지 변경 필요 */}
@@ -20,7 +23,8 @@ const OrdersItem = ({ data }) => {
       <div className="flex flex-col w-full">
         <div>{data.storeId}</div>
         <div>
-          {data.order_menus[0].menu_name}외 {data.order_menus.length - 1}개
+          {menuName}
+          {menuLength > 1 ? ` 외 ${menuLength - 1}개` : ''}
         </div>
         <div>{formatDate(data.created_at)}</div>
       </div>
