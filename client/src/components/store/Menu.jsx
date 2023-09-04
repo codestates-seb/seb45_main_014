@@ -1,21 +1,20 @@
 import { styled } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
-const Menu = ({ menu, isLast }) => {
+const Menu = ({ store, menu, isLast }) => {
   const navigate = useNavigate();
-
   const MenuImgHandle = () => {
-    navigate('/menu');
+    navigate(`/stores/${store.id}/menus/${menu.id}`, { state: { menu } });
   };
 
   return (
     <div className="flex justify-center mt-6">
       <div className="max-w-4xl w-full mx-auto">
-        <div className="border-t pt-8">
+        <div className="border-t pt-8 pl-20 pr-20">
           <div className="flex justify-center">
             <div className="mr-12 text-center flex-1">
-              <h2 className="m-3 text-left">{menu.menu_name}</h2>
-              <div className="mt-8 pl-20 text-left">{menu.menu_desc}</div>
+              <h2 className="text-left">{menu.menu_name}</h2>
+              <div className="mt-8 text-left">{menu.menu_desc}</div>
             </div>
             <div className="flex flex-col">
               <MenuImgBox

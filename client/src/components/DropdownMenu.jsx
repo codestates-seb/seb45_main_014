@@ -20,7 +20,7 @@ const DropdownWrapper = styled.select`
 `;
 
 const DropdownMenu = () => {
-  const { searchFilter, setSearchFilter } = useSearchStore();
+  const { setSearchFilter } = useSearchStore();
   const options = [
     { value: 'store', name: '가게명' },
     { value: 'region', name: '지역명' },
@@ -29,7 +29,7 @@ const DropdownMenu = () => {
   const handleSearchFilter = (e) => {
     const filter = e.target.value;
     setSearchFilter(filter);
-    console.log(`searchFilter 값은 ${searchFilter}`);
+    console.log(`searchFilter 값은 ${filter}`);
   };
 
   return (
