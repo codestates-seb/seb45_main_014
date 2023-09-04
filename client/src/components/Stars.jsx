@@ -1,14 +1,14 @@
 import images from '../assets/images/Images';
 
-export const Stars = ({ rating, onChangeRating }) => {
+export const Stars = ({ rating, onChangeRating, readOnly }) => {
   return (
     <div className="flex">
       {Array.from({ length: 5 }, (_, i) => i + 1).map((star) => (
         <div
           key={star}
           className={`star ${star <= rating ? 'active' : ''}`}
-          onClick={() => onChangeRating(star)}
-          role="button"
+          onClick={readOnly ? null : () => onChangeRating(star)}
+          role={readOnly ? null : 'button'}
           tabIndex={0}
         >
           <img
