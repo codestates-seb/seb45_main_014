@@ -19,7 +19,12 @@ const Store = () => {
         </h2>
         {menuData.map((menu, index) => {
           return (
-            <Menu key={index} menu={menu} isLast={index === menu.length - 1} />
+            <Menu
+              key={index}
+              menu={menu}
+              isLast={index === menu.length - 1}
+              store={selectedStore}
+            />
           );
         })}
       </div>

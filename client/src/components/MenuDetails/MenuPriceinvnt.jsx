@@ -1,7 +1,7 @@
 import { useCountStore } from '../../store/store.js';
 
-const MenuPriceinvnt = () => {
-  const price = 1000; // 문자열을 숫자로 변경
+const MenuPriceinvnt = ({ menuData }) => {
+  const price = menuData.price; // 문자열을 숫자로 변경
   const { count, up, down } = useCountStore();
 
   return (
