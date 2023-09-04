@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 import { Stars } from '../../components/Stars.jsx';
-import { useRatingStore } from '../../store/store.js';
+import data from '../../assets/data/myPageReviewData.js';
+import { StoreImage } from '../../assets/Styles.jsx';
 
 const ReviewDetailStyle = styled.div`
   width: 100%;
@@ -10,20 +11,18 @@ const ReviewDetailStyle = styled.div`
   justify-content: space-between;
 `;
 
-const ReviewDetail = () => {
-  const { rating, setRating } = useRatingStore();
-
+const ReviewDetail = ({ singleData }) => {
   return (
     <ReviewDetailStyle>
       <div>
-        <h2>{'맛있는 빵집 1004호점'}</h2>
+        <h2>{singleData.store_name}</h2>
         <div className="flex">
-          <Stars rating={rating} onChangeRating={setRating} />
-          {'2023-08-20'}
+          <Stars rating={singleData.rating} />
+          {singleData.created_at}
         </div>
-        <div className="mt-2">너무 맛있어용!</div>
+        <div className="mt-2">{singleData.content}</div>
       </div>
-      <div>이미지가 들어갈 곳입니다....</div>
+      <StoreImage src={singleData.img} alt="매장 이미지"></StoreImage>
     </ReviewDetailStyle>
   );
 };
@@ -31,10 +30,10 @@ const ReviewDetail = () => {
 const Reviews = () => {
   return (
     <div className="w-full">
-      <h1>내가 쓴 리뷰 : {0} 개</h1>
-      <ReviewDetail />
-      <ReviewDetail />
-      <ReviewDetail />
+      <h1>내가 쓴 리뷰 : {data.reviews.length} 개</h1>
+      {data.reviews.map((item, index) => (
+        <ReviewDetail key={index} singleData={item} />
+      ))}
     </div>
   );
 };
