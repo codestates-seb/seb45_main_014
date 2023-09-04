@@ -1,14 +1,14 @@
 import { styled } from 'styled-components';
-import ShopInfo from '../components/Shop/ShopInfo.jsx';
-import Menu from '../components/Shop/Menu.jsx';
-import MenuReview from '../components/Shop/MenuReview.jsx';
+import ShopInfo from '../components/store/ShopInfo.jsx';
+import Menu from '../components/store/Menu.jsx';
+import MenuReview from '../components/store/MenuReview.jsx';
 import menu from '../assets/data/menuData.js';
 import store from '../assets/data/storeData.js';
 import reviewData from '../assets/data/reviewData.js';
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
-const Shop = () => {
+const Store = () => {
   const { id } = useParams();
   const [data, setData] = useState(store);
 
@@ -45,4 +45,4 @@ const Shop = () => {
   );
 };
 
-export default Shop;
+export default Store;
