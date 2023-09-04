@@ -7,6 +7,7 @@ import { Route, Routes } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import LoadingSpinner from './components/Loading.jsx';
 
+const NotFound = lazy(() => import('./pages/NotFound.jsx'));
 const MainPage = lazy(() => import('./pages/main/MainPage.jsx'));
 const MyPage = lazy(() => import('./pages/myPage/MyPage.jsx'));
 const Store = lazy(() => import('./pages/Store.jsx'));
@@ -44,6 +45,7 @@ function App() {
       <main className="w-full mx-auto overflow-auto min-h-screen">
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
+            <Route path="*" element={<NotFound />} />
             <Route path="/" element={<MainPage />} />
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/stores/:id" element={<Store />} />
