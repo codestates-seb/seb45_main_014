@@ -61,9 +61,14 @@ const SearchResult = () => {
   return (
     <Wrapper>
       <div className="flex text-[20px] w-[76%] content-start pt-3 pb-3">
-        {!data.length
-          ? `검색결과가 없습니다.`
-          : `'${resultQuery}'에 대한 검색 결과는 총 ${data.length}건 입니다.`}
+        {!data.length ? (
+          `검색결과가 없습니다.`
+        ) : (
+          <span className="flex">
+            <p className="text-[#debe8f] font-semibold">{`'${resultQuery}'`}</p>
+            <p>에 대한 검색결과는 총 {data.length}건 입니다.</p>
+          </span>
+        )}
       </div>
       <DataContainer>
         {data.map((store, idx) => (
