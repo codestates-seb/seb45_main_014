@@ -23,8 +23,12 @@ const Menu = ({ store, menu, isLast }) => {
                 alt="메뉴 이미지"
               />
               <div className="flex space-x-6">
-                <div className="m-3 text-right">{menu.price} 원</div>
-                <div className="text-right mt-3">남은 수량 {menu.stock}개</div>
+                <div className="m-3 text-right">
+                  {menu.price.toLocaleString()} 원
+                </div>
+                <div className="text-right mt-3 grow">
+                  남은 수량 {menu.stock}개
+                </div>
               </div>
             </div>
           </div>

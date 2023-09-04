@@ -14,7 +14,7 @@ import 'slick-carousel/slick/slick-theme.css';
 
 const ShopInfo = ({ store, menu }) => {
   const { isBookmarked, toggleBookmark } = useBookmarkStore();
-  const currentUrl = window.location.origin;
+  const currentUrl = window.location;
 
   const handleCopyUrl = () => {
     copy(currentUrl);
@@ -70,10 +70,8 @@ const ShopInfo = ({ store, menu }) => {
           </Slider>
         </div>
         <div className="flex justify-center mb-6">
-          <img className="w-24" src={shop_logo} alt="매장 로고" />
-          <div className="text-left text-4xl  pt-8 w-1/6">
-            {store.store_name}
-          </div>
+          {/* <img className="w-24" src={shop_logo} alt="매장 로고" /> */}
+          <h1 className="text-left text-5xl pt-8 w-1/6 ">{store.store_name}</h1>
         </div>
         <div className="flex justify-center space-x-8">
           <div className="flex flex-col text-left  rounded-lg">
