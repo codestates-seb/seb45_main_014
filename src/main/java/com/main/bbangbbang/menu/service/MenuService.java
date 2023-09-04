@@ -15,7 +15,7 @@ public class MenuService {
 
     public MenuResponseDto getMenuById(Long menuId) {
         Menu menu = menuRepository.findById(menuId).get();// menurepository 꺼내 온 것
-        MenuResponseDto menuResponseDto = menuMapper.toDto(menu); // responsedto를 entity로 연결
+        MenuResponseDto menuResponseDto = new MenuResponseDto(menuMapper.menuToMenuDetailData(menu)); // responsedto를 entity로 연결
 
         return menuResponseDto; // 위에 되돌려줌
     }
