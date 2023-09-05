@@ -37,12 +37,16 @@ const GlobalStyle = createGlobalStyle`
   body {
     padding-top: 65px;
   }
+  ul, li {
+    list-style-type: none;
+  }
   `;
 
 function App() {
   return (
     <>
-      <GlobalStyle /> <Header />
+      <GlobalStyle />
+      <Header />
       <main className="w-full mx-auto overflow-auto min-h-screen">
         <ScrollButton />
         <Suspense fallback={<LoadingSpinner />}>
