@@ -50,7 +50,7 @@ function App() {
             <Route path="/" element={<MainPage />} />
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/stores/:id" element={<Store />} />
-            <Route path="/reviews/post" element={<PostReview />} />
+            <Route path="/review/:id" element={<PostReview />} />
             <Route path="/mypage/edit" element={<EditProfile />} />
             <Route
               path="/stores/:id/menus/:menu_id"

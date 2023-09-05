@@ -26,7 +26,7 @@ const OrdersItem = ({ data }) => {
         <div>{formatDate(data.created_at)}</div>
       </div>
       <Button className="w-full">
-        <Link to="/reviews/post">리뷰 작성</Link>
+        <Link to={`/review/${data.storeId}`}>리뷰 작성</Link>
       </Button>
     </div>
   );

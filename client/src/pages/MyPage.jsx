@@ -58,17 +58,17 @@ const MyPage = () => {
       </div>
       <TabContainer className="mb-5">
         <li className="w-full">
-          <Link to="#리뷰 관리" onClick={() => setCurrentTab('리뷰 관리')}>
+          <Link to="#review" onClick={() => setCurrentTab('리뷰 관리')}>
             리뷰 관리
           </Link>
         </li>
         <li className="w-full">
-          <Link to="#주문 내역" onClick={() => setCurrentTab('주문 내역')}>
+          <Link to="#order" onClick={() => setCurrentTab('주문 내역')}>
             주문 내역
           </Link>
         </li>
         <li className="w-full">
-          <Link to="#즐겨찾기" onClick={() => setCurrentTab('즐겨찾기')}>
+          <Link to="#favorite" onClick={() => setCurrentTab('즐겨찾기')}>
             즐겨찾기
           </Link>
         </li>
