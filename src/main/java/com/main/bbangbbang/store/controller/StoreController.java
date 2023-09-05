@@ -1,10 +1,19 @@
 package com.main.bbangbbang.store.controller;
 
+import com.main.bbangbbang.review.data.ReviewData;
+import com.main.bbangbbang.review.dto.ReviewsResponseDto;
+import com.main.bbangbbang.review.entity.Review;
+import com.main.bbangbbang.review.mapper.ReviewMapper;
+import com.main.bbangbbang.review.service.ReviewService;
 import com.main.bbangbbang.store.dto.StoreResponseDto;
 import com.main.bbangbbang.store.entity.Store;
 import com.main.bbangbbang.store.mapper.StoreMapper;
 import com.main.bbangbbang.store.service.StoreService;
+import com.main.bbangbbang.utils.PageInfo;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +26,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class StoreController { // 매장 상세 페이지
     private final StoreService storeService;
+    private final ReviewService reviewService;
     private final StoreMapper storeMapper;
+    private final ReviewMapper reviewMapper;
 
     @GetMapping("/stores/{store-id}")
     public ResponseEntity<StoreResponseDto> getStore(@PathVariable("store-id") long storeId) { // 매장 상세 내용 (이름, 설명, 주소, 메뉴들)
@@ -31,6 +42,13 @@ public class StoreController { // 매장 상세 페이지
     public ResponseEntity<?> getReviews(@PathVariable("store-id") long storeId,
                                         @RequestParam("page") int page,
                                         @RequestParam("size") int size) { // 매장 리뷰 가져오기
-        return null;
+        Page<Review> reviewPage = reviewService.findReviewsByStore(storeId, page, size);
+        PageInfo pageInfo = PageInfo.of(page, size, reviewPage);
+
+        List<ReviewData> reviews = reviewPage.stream()
+                .map(reviewMapper::reviewToReviewDataWithStoreName)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(new ReviewsResponseDto(reviews, pageInfo));
     }
 }
