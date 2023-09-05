@@ -56,7 +56,7 @@ const MyPage = () => {
       <div className="w-full h-48 border-zinc-700 border-2 my-6">
         유저 이미지
       </div>
-      <TabContainer>
+      <TabContainer className="mb-5">
         <li className="w-full">
           <Link to="#리뷰 관리" onClick={() => setCurrentTab('리뷰 관리')}>
             리뷰 관리
