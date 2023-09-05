@@ -5,6 +5,8 @@ import com.main.bbangbbang.menu.entity.Menu;
 import com.main.bbangbbang.order.entity.Order;
 import com.main.bbangbbang.order.entity.Order.OrderStatus;
 import com.main.bbangbbang.order.repository.OrderRepository;
+import com.main.bbangbbang.ordermenu.entity.OrderMenu;
+import com.main.bbangbbang.ordermenu.service.OrderMenuService;
 import com.main.bbangbbang.store.entity.Store;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 @Service
 public class OrderService {
+    private final OrderMenuService orderMenuService;
     private final OrderRepository orderRepository;
 
     @Transactional
@@ -61,6 +64,13 @@ public class OrderService {
 
     @Transactional
     public void addCart(Order order, Menu menu, Integer quantity) {
+        for (OrderMenu orderMenu : order.getOrderMenus())
+            if (orderMenu.getMenu().getMenuName().equals(menu.getMenuName())) {
+                orderMenu.setQuantity(orderMenu.getQuantity() + quantity);
+                return;
+            }
+
+        order.addOrderMenu(orderMenuService.createOrderMenu(order, menu, quantity));
     }
 
     private void validateOneActiveOrder(List<Order> orders) {

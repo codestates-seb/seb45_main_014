@@ -1,11 +1,16 @@
 package com.main.bbangbbang.order.controller;
 
+import com.main.bbangbbang.member.entity.Member;
+import com.main.bbangbbang.menu.entity.Menu;
+import com.main.bbangbbang.menu.service.MenuService;
 import com.main.bbangbbang.order.data.OrderData;
 import com.main.bbangbbang.order.dto.OrderResponseDto;
 import com.main.bbangbbang.order.dto.OrdersResponseDto;
 import com.main.bbangbbang.order.entity.Order;
 import com.main.bbangbbang.order.mapper.OrderMapper;
 import com.main.bbangbbang.order.service.OrderService;
+import com.main.bbangbbang.store.entity.Store;
+import com.main.bbangbbang.store.service.StoreService;
 import com.main.bbangbbang.utils.PageInfo;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +30,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class OrderController { // jwt토큰 parsing하여 Member확인이 가능할 때까지 memberId = 1로 고정
     private final OrderService orderService;
+    private final StoreService storeService;
+    private final MenuService menuService;
     private final OrderMapper orderMapper;
 
     @GetMapping("/cart")
@@ -46,7 +53,19 @@ public class OrderController { // jwt토큰 parsing하여 Member확인이 가능
     public ResponseEntity<?> addCart(@PathVariable("menu-id") Long menuId,
                                      @RequestParam("quantity") Integer quantity,
                                      @RequestParam("new_order") Boolean isNewOrder) {
-        return null;
+        Menu menu = menuService.findMenu(menuId);
+        Store store = storeService.findStoreByMenu(menu);
+        Member member = new Member();
+        Order order;
+
+        if (isNewOrder) {
+            order = orderService.createOrder(member, store);
+        } else {
+            order = orderService.findActiveOrder(1L);
+        }
+        orderService.addCart(order, menu, quantity);
+
+        return ResponseEntity.ok().body(new OrderResponseDto(orderMapper.orderToOrderData(order)));
     }
 
     @GetMapping("/members/orders")
