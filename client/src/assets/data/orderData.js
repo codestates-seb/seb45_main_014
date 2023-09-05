@@ -10,6 +10,7 @@ const orderData = [
       {
         id: 1,
         menu_name: '소금빵',
+        img: 'https://source.unsplash.com/random/?Ciabatta',
         price: 3000,
         quantity: 6,
       },
@@ -26,6 +27,7 @@ const orderData = [
       {
         id: 2,
         menu_name: '치즈크로와상',
+        img: 'https://source.unsplash.com/random/?CRoissant',
         price: 4500,
         quantity: 3,
       },
@@ -48,6 +50,7 @@ const orderData = [
       {
         id: 4,
         menu_name: '단팥빵',
+        img: 'https://source.unsplash.com/random/?DOughnut',
         price: 2800,
         quantity: 4,
       },
@@ -70,6 +73,7 @@ const orderData = [
       {
         id: 6,
         menu_name: '크림빵',
+        img: 'https://source.unsplash.com/random/?Sourdough',
         price: 3200,
         quantity: 2,
       },
@@ -84,7 +88,7 @@ const orderData = [
   {
     id: 5,
     storeId: 2,
-    order_status: '배달완료',
+    order_status: '구매완료',
     pickup_time: '2022-08-18T09:00:45',
     last_modified_at: '2022-08-18T09:00:45',
     created_at: '2022-08-18T09:00:45',
@@ -92,6 +96,7 @@ const orderData = [
       {
         id: 8,
         menu_name: '팥빵',
+        img: 'https://source.unsplash.com/random/?Brioche',
         price: 2600,
         quantity: 5,
       },

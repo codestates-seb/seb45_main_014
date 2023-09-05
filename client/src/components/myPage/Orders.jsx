@@ -12,14 +12,11 @@ const OrdersImage = styled.img`
 const OrdersItem = ({ data }) => {
   const menuName = data.order_menus[0].menu_name;
   const menuLength = data.order_menus.length;
+  const menuImage = data.order_menus[0].img;
 
   return (
     <div className="flex flex-col items-center">
-      {/* 이미지 변경 필요 */}
-      <OrdersImage
-        src="https://user-images.githubusercontent.com/121498405/264039565-fc5b6c09-792b-46e6-8622-7d45822c497f.png"
-        alt="loading"
-      />
+      <OrdersImage src={menuImage} alt="loading" />
       <div className="flex flex-col w-full">
         <div>{data.storeId}</div>
         <div>
@@ -38,7 +35,7 @@ const OrdersItem = ({ data }) => {
 const Orders = () => {
   return (
     <div className="flex justify-center">
-      <div className="flex flex-wrap justify-around w-5/6 gap-4">
+      <div className="flex flex-wrap w-5/6 gap-4">
         {orderData.map((item, index) => (
           <OrdersItem key={index} data={item} />
         ))}
