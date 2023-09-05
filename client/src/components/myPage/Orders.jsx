@@ -16,9 +16,9 @@ const OrdersItem = ({ data }) => {
 
   return (
     <div className="flex flex-col items-center">
-      <OrdersImage src={menuImage} alt="loading" />
+      <OrdersImage className="object-cover" src={menuImage} alt="loading" />
       <div className="flex flex-col w-full">
-        <div>{data.storeId}</div>
+        <div>{data.store_name}</div>
         <div>
           {menuName}
           {menuLength > 1 ? ` 외 ${menuLength - 1}개` : ''}

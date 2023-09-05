@@ -2,6 +2,7 @@ const orderData = [
   {
     id: 1,
     storeId: 2,
+    store_name: '파리바게뜨',
     order_status: '준비완료',
     pickup_time: '2022-08-16T17:30:57',
     last_modified_at: '2022-08-16T17:30:57',
@@ -19,6 +20,7 @@ const orderData = [
   {
     id: 2,
     storeId: 3,
+    store_name: '뚜레쥬르',
     order_status: '배달중',
     pickup_time: '2022-08-16T18:45:22',
     last_modified_at: '2022-08-16T18:45:22',
@@ -42,6 +44,7 @@ const orderData = [
   {
     id: 3,
     storeId: 1,
+    store_name: '빵굽는사람',
     order_status: '주문접수',
     pickup_time: '2022-08-17T10:15:00',
     last_modified_at: '2022-08-17T10:15:00',
@@ -65,6 +68,7 @@ const orderData = [
   {
     id: 4,
     storeId: 4,
+    store_name: '빵집',
     order_status: '준비중',
     pickup_time: '2022-08-17T14:30:15',
     last_modified_at: '2022-08-17T14:30:15',
@@ -88,6 +92,7 @@ const orderData = [
   {
     id: 5,
     storeId: 2,
+    store_name: '로또돼서 만든 빵집',
     order_status: '구매완료',
     pickup_time: '2022-08-18T09:00:45',
     last_modified_at: '2022-08-18T09:00:45',
