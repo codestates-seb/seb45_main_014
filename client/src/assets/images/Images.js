@@ -7,6 +7,8 @@ import share from './share.png';
 import arrow from './arrow.svg';
 import menu from './menu_img1.png';
 import notfound from './notFound.png';
+import boxchecked from './boxchecked.svg';
+import boxunchecked from './boxunchecked.svg';
 
 const images = {
   githublogo,
@@ -18,6 +20,8 @@ const images = {
   arrow,
   menu,
   notfound,
+  boxchecked,
+  boxunchecked,
 };
 
 export default images;
