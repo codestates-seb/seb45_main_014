@@ -78,7 +78,7 @@ values ('1234', '2022-08-16T17:30:57', 'http', '설명1', '2022-08-16T17:30:57',
 
 
 INSERT INTO review (rating, content, img, store_id)
-VALUES (4, '맛있어용 진짜루', 'http:', 1),
+values (4, '맛있어용 진짜루', 'http:', 1),
        (1, '우엑 이게 무슨 맛이야 최악이야 다시는 안 먹고 싶어 여기 오지 마셈 빵 진짜 별로임 하;;', NULL, 2),
        (3, '괜찮아요', NULL, 3),
        (5, '완전 좋아요!', 'http:', 4),
@@ -117,7 +117,7 @@ VALUES (4, '맛있어용 진짜루', 'http:', 1),
 
 
 INSERT INTO menu (store_id, menu_name, price)
-VALUES (1, '소금빵', 3000),
+values (1, '소금빵', 3000),
        (1, '계란빵', 1000),
        (2, '치킨빵', 2500),
        (2, '피자빵', 5000),
