@@ -63,18 +63,18 @@ const ShopInfo = ({ store, menu }) => {
     <div className="text-center">
       <div>
         <div className="flex justify-center">
-          <Slider {...settings} className="mb-10 w-11/12">
+          {/* <Slider {...settings} className="mb-10 w-11/12">
             {storemenuData.map((menu, index) => (
               <StoreBanner menu={menu} key={index} />
             ))}
-          </Slider>
+          </Slider> */}
         </div>
         <div className="flex justify-center mb-6">
           {/* <img className="w-24" src={shop_logo} alt="매장 로고" /> */}
           <h1 className="text-left text-5xl pt-8 w-1/6 ">{store.store_name}</h1>
         </div>
-        <div className="flex justify-center space-x-8">
-          <div className="flex flex-col text-left  rounded-lg">
+        <div className="flex justify-center space-x-8 mb-8">
+          <StoreIntro>
             <div className="flex text-4xl mb-3 pb-1.5 border-b">
               <strong className="mr-3">매장 소개</strong>
               <div>
@@ -123,13 +123,13 @@ const ShopInfo = ({ store, menu }) => {
                 <p>{store.phone_num}</p>
               </div>
             </div>
-          </div>
+          </StoreIntro>
           <div className="flex flex-col text-left text-2xl">
             <span className="mb-3">매장 위치</span>
             <div
               className="rounded-s-lg"
               id="map"
-              style={{ width: '350px', height: '300px' }}
+              style={{ width: '450px', height: '400px' }}
             ></div>
           </div>
         </div>
@@ -146,4 +146,12 @@ const ShopBookmarkIcon = styled.img`
 
 const ShopInfoShareIcon = styled.img`
   width: 24px;
+`;
+
+const StoreIntro = styled.div`
+  width: 550px;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  border-radius: 8px;
 `;

@@ -25,7 +25,7 @@ const StoreCard = ({ store }) => {
 
   return (
     <div className="w-72 relative mx-4">
-      <Link to={`/stores/${store.id}`}>
+      <Link to={`/stores/${store.id}/`}>
         <StoreImage src={img} alt="매장 대표 이미지" />
       </Link>
       <BookmarkButton
