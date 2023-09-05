@@ -60,8 +60,9 @@ public class Order {
 
     public enum OrderStatus { // private로 설정하고 싶은데 mapper에서 Enum.name()을 사용하려면 public으로 둬야 하나?
         CREATED("생성"),
-        ACTIVE("주문"),
-        READY("대기"),
+        ACTIVE("담는중"),
+        BAKING("준비중"),
+        READY("준비완료"),
         PICKUP("픽업"),
         REVIEWED("리뷰"),
         CANCELED("취소"),
