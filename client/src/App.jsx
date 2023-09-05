@@ -3,7 +3,7 @@ import Footer from './components/Footer.jsx';
 import Header from './components/header/Header.jsx';
 import { createGlobalStyle } from 'styled-components';
 import GmarketSans from './assets/fonts/GmarketSansTTFMedium.ttf';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import LoadingSpinner from './components/Loading.jsx';
 import ScrollButton from './assets/buttons/ScrollButton.jsx';
@@ -39,6 +39,9 @@ const GlobalStyle = createGlobalStyle`
   `;
 
 function App() {
+  const location = useLocation();
+  const showFooter = location.pathname !== '/mypage';
+
   return (
     <>
       <GlobalStyle /> <Header />
@@ -49,9 +52,9 @@ function App() {
             <Route path="*" element={<NotFound />} />
             <Route path="/" element={<MainPage />} />
             <Route path="/mypage" element={<MyPage />} />
+            <Route path="/mypage/edit" element={<EditProfile />} />
             <Route path="/stores/:id" element={<Store />} />
             <Route path="/review/:id" element={<PostReview />} />
-            <Route path="/mypage/edit" element={<EditProfile />} />
             <Route
               path="/stores/:id/menus/:menu_id"
               element={<MenuDetails />}
@@ -60,7 +63,7 @@ function App() {
           </Routes>
         </Suspense>
       </main>
-      <Footer />
+      {showFooter && <Footer />}
     </>
   );
 }
