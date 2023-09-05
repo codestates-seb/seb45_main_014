@@ -73,7 +73,7 @@ const MyPage = () => {
           </Link>
         </li>
       </TabContainer>
-      <div className="flex">
+      <div className="flex justify-center">
         {currentTab === '리뷰 관리' && <Reviews />}
         {currentTab === '주문 내역' && <Orders />}
         {currentTab === '즐겨찾기' && <Favorites />}
