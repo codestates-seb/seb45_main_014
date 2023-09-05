@@ -8,6 +8,9 @@ import { styled } from 'styled-components';
 import { StoreImage } from '../../assets/Styles.jsx';
 import Button from '../../assets/buttons/Button.jsx';
 import { getByteSize } from '../../utils/getByteSize.js';
+import orderData from '../../assets/data/orderData';
+import { useParams } from 'react-router-dom';
+import formatDate from '../../utils/formatDate.js';
 
 const TextBox = styled.textarea`
   border: 1px solid #b6a280;
@@ -30,12 +33,30 @@ const ByteCount = styled.div`
   color: ${(props) => (props.isOver ? 'red' : 'inherit')};
 `;
 
-const MAX_BYTE_LIMIT = 200;
+const MAX_BYTE_LIMIT = 300;
+
+const OrderedMenus = ({ menu }) => {
+  return (
+    <MenuSummary>
+      <div className="flex flex-col">
+        <div>{menu.menu_name}</div>
+        <div>{menu.quantity} 개</div>
+      </div>
+      <div>{menu.price} 원</div>
+    </MenuSummary>
+  );
+};
 
 const PostReview = () => {
   const { rating, setRating } = useRatingStore();
   const { selectedImage, setSelectedImage } = useImageStore();
   const { text, setText } = useByteSizeStore();
+  const { id } = useParams();
+  const storeId = Number(id);
+
+  const order = orderData.find((item) => item.storeId === storeId);
+  const menu = order.order_menus;
+  const orderDate = formatDate(order.created_at);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -58,28 +79,14 @@ const PostReview = () => {
   return (
     <div className="max-w-screen-sm mx-auto flex flex-col gap-4">
       <div className="flex justify-between">
-        <h2>2023-07-30</h2>
+        <h2>{orderDate}</h2>
       </div>
       <StoreSummary>
-        <StoreImage
-          src={`https://picsum.photos/300/200`}
-          alt="매장 대표 이미지"
-        />
-        <h2>가게 이름</h2>
-        <MenuSummary>
-          <div className="flex flex-col">
-            <div>🍞 바다에 절인 소금빵</div>
-            <div>{'200,000'} 개</div>
-          </div>
-          <div>{'19,500'} 원</div>
-        </MenuSummary>
-        <MenuSummary>
-          <div className="flex flex-col">
-            <div>🍞 파인애플 김밥</div>
-            <div>{'2'} 개</div>
-          </div>
-          <div>{'500'} 원</div>
-        </MenuSummary>
+        <StoreImage src={menu[0].img} alt="매장 대표 이미지" />
+        <h2>{order.store_name}</h2>
+        {menu.map((item, index) => (
+          <OrderedMenus key={index} menu={item} />
+        ))}
       </StoreSummary>
       <div className="flex justify-end">
         <Stars rating={rating} onChangeRating={setRating} />
