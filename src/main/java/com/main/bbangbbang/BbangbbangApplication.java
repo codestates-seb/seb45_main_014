@@ -10,6 +10,6 @@ public class BbangbbangApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BbangbbangApplication.class, args);
+		System.out.println("Hello, World!");
 	}
-
 }
