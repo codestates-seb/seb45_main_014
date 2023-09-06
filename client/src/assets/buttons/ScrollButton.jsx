@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import bottom from '../icons/bottom-alignment.ico';
 import top from '../icons/top-alignment.ico';
@@ -22,15 +22,17 @@ const ScrollBtn = styled.div`
 `;
 
 const ScrollBtnTop = styled(ScrollBtn)`
-  top: 48%;
+  top: 47%;
 `;
 
 const ScrollBtnBottom = styled(ScrollBtn)`
-  top: 52%;
+  top: 53%;
 `;
 
 const ScrollButtonWithPosition = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
+
+  const threshold = 10;
 
   const handleScroll = () => {
     setScrollPosition(window.scrollY);
@@ -64,9 +66,11 @@ const ScrollButtonWithPosition = () => {
           <img src={top} alt="top" />
         </ScrollBtnTop>
       )}
-      {scrollPosition < document.body.scrollHeight - window.innerHeight && (
+      {Math.abs(
+        scrollPosition - (document.body.scrollHeight - window.innerHeight),
+      ) > threshold && (
         <ScrollBtnBottom type="ScrollBtn" onClick={scrollToBottom}>
-          <img src={bottom} alt="top" />
+          <img src={bottom} alt="bottom" />
         </ScrollBtnBottom>
       )}
     </div>

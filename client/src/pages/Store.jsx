@@ -13,10 +13,10 @@ const Store = () => {
   const [currentTab, setCurrentTab] = useState('메뉴');
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col relative">
       <ShopInfo store={selectedStore} menu={menuData} />
 
-      <ul className="flex justify-center text-center w-3/6 mx-auto border-b mb-1">
+      <ul className="flex justify-center text-center w-[1050px] mx-auto border-b mb-1 sticky top-[65px] bg-white z-10">
         <li className="w-full hover:bg-[#ccc] border-r p-3">
           <Link
             to="#매장"
@@ -36,6 +36,7 @@ const Store = () => {
           </Link>
         </li>
       </ul>
+
       <div className="flex mx-auto">
         {currentTab === '메뉴' && <MenuTab menuData={menuData} />}
         {currentTab === '후기' && <StoreReviewTab reviewData={reviewData} />}

@@ -14,7 +14,6 @@ const MyPage = lazy(() => import('./pages/MyPage.jsx'));
 const Store = lazy(() => import('./pages/Store.jsx'));
 const PostReview = lazy(() => import('./components/myPage/PostReview.jsx'));
 const EditProfile = lazy(() => import('./components/myPage/EditProfile.jsx'));
-const MenuDetails = lazy(() => import('./pages/menu/MenuDetails.jsx'));
 const SearchResult = lazy(() => import('./pages/search/SearchResult.jsx'));
 
 const GlobalStyle = createGlobalStyle`
@@ -42,7 +41,7 @@ function App() {
   return (
     <>
       <GlobalStyle /> <Header />
-      <main className="w-full mx-auto overflow-auto min-h-screen">
+      <main className="w-full mx-auto">
         <ScrollButton />
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
@@ -52,10 +51,6 @@ function App() {
             <Route path="/stores/:id" element={<Store />} />
             <Route path="/reviews/post" element={<PostReview />} />
             <Route path="/mypage/edit" element={<EditProfile />} />
-            <Route
-              path="/stores/:id/menus/:menu_id"
-              element={<MenuDetails />}
-            />
             <Route path="/search" element={<SearchResult />} />
           </Routes>
         </Suspense>
