@@ -45,7 +45,10 @@ export const MenuItem = ({ data }) => {
         </div>
       </div>
       {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-[#4c4c4c] opacity-90">
+        <div
+          className="fixed inset-0 flex items-center justify-center z-[9999] bg-[#4c4c4c] opacity-90"
+          onClick={closeModal}
+        >
           <div className="relative bg-white w-[500px] h-[250px] p-4 rounded-lg shadow-lg">
             <button
               className="absolute top-2 right-2 text-gray-600 hover:text-gray-800"
@@ -60,9 +63,9 @@ export const MenuItem = ({ data }) => {
               <div>남은 수량: {data.stock}</div>
               <div>
                 <span>주문수량</span>
-                <button onClick={count < data.stock ? up : undefined}>+</button>
-                <span>{count}</span>
                 <button onClick={down}> - </button>
+                <span>{count}</span>
+                <button onClick={count < data.stock ? up : undefined}>+</button>
               </div>
               <div>
                 총 결제 금액 : {(count * data.price).toLocaleString()} 원
