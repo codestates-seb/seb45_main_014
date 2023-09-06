@@ -38,7 +38,7 @@ export const useByteSizeStore = create((set) => ({
 }));
 
 export const useCountStore = create((set) => ({
-  count: 1, // 초기값을 1으로 설정
+  count: 1,
   up() {
     set((state) => ({ count: state.count + 1 }));
   },

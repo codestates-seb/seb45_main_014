@@ -14,7 +14,6 @@ const MyPage = lazy(() => import('./pages/MyPage.jsx'));
 const Store = lazy(() => import('./pages/Store.jsx'));
 const PostReview = lazy(() => import('./components/myPage/PostReview.jsx'));
 const EditProfile = lazy(() => import('./components/myPage/EditProfile.jsx'));
-const MenuDetails = lazy(() => import('./pages/menu/MenuDetails.jsx'));
 const SearchResult = lazy(() => import('./pages/search/SearchResult.jsx'));
 const Cart = lazy(() => import('./pages/cart/Cart.jsx'));
 
@@ -60,10 +59,6 @@ function App() {
             <Route path="/mypage/edit" element={<EditProfile />} />
             <Route path="/stores/:id" element={<Store />} />
             <Route path="/review/:id" element={<PostReview />} />
-            <Route
-              path="/stores/:id/menus/:menu_id"
-              element={<MenuDetails />}
-            />
             <Route path="/search" element={<SearchResult />} />
             <Route path="/cart" element={<Cart />} />
           </Routes>
