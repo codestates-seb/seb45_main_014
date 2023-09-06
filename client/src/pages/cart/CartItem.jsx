@@ -53,9 +53,16 @@ const PriceBox = styled.div`
   text-align: right;
 `;
 
-const CartItem = ({ storeName, menuName, quantity, price }) => {
+const CartItem = ({
+  storeName,
+  menuName,
+  quantity,
+  price,
+  onChange,
+  checked,
+}) => {
   //-, +버튼으로 quantity를 조절하는 함수
-  const [amount, setAmount] = useState(1);
+  const [amount, setAmount] = useState(quantity);
   const up = () => {
     setAmount(amount + 1);
   };
@@ -67,7 +74,7 @@ const CartItem = ({ storeName, menuName, quantity, price }) => {
 
   return (
     <ItemCard>
-      <CheckBox />
+      <CheckBox onChange={onChange} checked={checked} />
       <ItemImg to={'/'} />
       <div>
         <Link to={'/'}>
@@ -79,7 +86,7 @@ const CartItem = ({ storeName, menuName, quantity, price }) => {
         <button type="button" aria-label="수량내리기" onClick={down}>
           -
         </button>
-        <div className="">{amount}</div>
+        <div>{amount}</div>
         <button type="button" aria-label="수량올리기" onClick={up}>
           +
         </button>

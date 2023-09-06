@@ -13,18 +13,13 @@ const CheckLabel = styled.label`
   }
 `;
 
-const CheckBox = () => {
-  const [isChecked, setIsChecked] = useState(false);
-
-  const handleCheck = () => {
-    setIsChecked(!isChecked);
-  };
+const CheckBox = ({ onChange, checked }) => {
   return (
     <CheckLabel>
-      <input type="checkbox" onChange={handleCheck} checked={isChecked} />
+      <input type="checkbox" onChange={onChange} checked={checked} />
       <div className="mr-3">
         <img
-          src={!isChecked ? images.boxunchecked : images.boxchecked}
+          src={!checked ? images.boxunchecked : images.boxchecked}
           alt="checkbox"
         />
       </div>
