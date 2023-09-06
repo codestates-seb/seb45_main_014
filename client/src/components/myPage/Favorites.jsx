@@ -6,7 +6,7 @@ const Favorites = () => {
 
   return (
     <>
-      <div className="flex flex-wrap justify-center m-4">
+      <div className="flex flex-wrap justify-center mx-4">
         {favoriteStores.map((store, index) => (
           <StoreCard key={index} store={store} />
         ))}

@@ -11,22 +11,23 @@ const ScrollBtn = styled.div`
   height: 50px;
   cursor: pointer;
 
-  border-radius: 50%;
-  background-color: lightgray;
+  border-radius: 10%;
   padding: 10px;
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.5);
     transition: 0.3s;
   }
 `;
 
 const ScrollBtnTop = styled(ScrollBtn)`
-  top: 47%;
+
+  top: 47.5%;
 `;
 
 const ScrollBtnBottom = styled(ScrollBtn)`
-  top: 53%;
+  top: 52.5%;
+
 `;
 
 const ScrollButtonWithPosition = () => {
