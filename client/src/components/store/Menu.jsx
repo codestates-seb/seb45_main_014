@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
-const Menu = ({ store, menu, isLast }) => {
+const Menu = ({ store, menu }) => {
   const navigate = useNavigate();
   const MenuImgHandle = () => {
     navigate(`/stores/${store.id}/menus/${menu.id}`, { state: { menu } });
