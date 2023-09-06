@@ -65,6 +65,8 @@ const Cart = () => {
   const [item, setItem] = useState(orderData);
   const menuName = item[0].order_menus[0].menu_name;
   const storeName = item[0].store_name;
+  const price = item[0].order_menus[0].price;
+  const quantity = item[0].order_menus[0].quantity;
 
   return (
     <section className="max-w-screen-lg mx-auto">
@@ -77,7 +79,12 @@ const Cart = () => {
             <button>선택삭제</button>
           </CartMenu>
           아이템 들어가는 곳
-          <CartItem menuName={menuName} storeName={storeName} />
+          <CartItem
+            menuName={menuName}
+            storeName={storeName}
+            price={price}
+            quantity={quantity}
+          />
         </CartItems>
         <Total>
           <TotalBox>
