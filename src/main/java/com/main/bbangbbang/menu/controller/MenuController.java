@@ -22,8 +22,8 @@ public class MenuController {
     public ResponseEntity<MenuResponseDto> getMenu(@PathVariable("store-id") Long storeId,
                                                    @PathVariable("menu-id") Long menuId) {
         Menu menu = menuService.findMenu(menuId);
-        MenuResponseDto menuResponseDto = new MenuResponseDto(menuMapper.menuToMenuDetailData(menu)); // responsedto를 entity로 연결
+        MenuResponseDto menuResponseDto = new MenuResponseDto(menuMapper.menuToMenuDetailData(menu));
 
-        return ResponseEntity.ok(menuResponseDto); // 리턴 타입은 메소드 명 좌측에 항상 명시되어 있다.
+        return ResponseEntity.ok(menuResponseDto);
     }
 }

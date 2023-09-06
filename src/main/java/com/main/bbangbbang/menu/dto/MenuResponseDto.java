@@ -6,8 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter // 이거가 있으면 get set 필요 없음
-@AllArgsConstructor //
+@Setter
+@AllArgsConstructor
 public class MenuResponseDto {
     private MenuData menu;
 }
