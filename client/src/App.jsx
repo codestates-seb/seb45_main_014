@@ -49,7 +49,7 @@ function App() {
     <>
       <GlobalStyle />
       <Header />
-      <main className="w-full mx-auto overflow-auto min-h-screen">
+      <main className="w-full mx-auto">
         <ScrollButton />
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>

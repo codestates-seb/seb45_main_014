@@ -57,8 +57,8 @@ const Store = () => {
     <div className="flex flex-col relative">
       <ShopInfo store={storeData} menu={menuData} />
 
-      <ul className="flex justify-center text-center w-[1050px] mx-auto border-b mb-1 sticky top-[65px] bg-white z-10">
-        <li className="w-full hover:bg-[#ccc] border-r p-3">
+      <ul className="flex justify-center text-center w-[1070px] mx-auto border-b mb-1 sticky top-[65px] bg-white z-10">
+        <li className="w-full hover:bg-[#ccc] border-r py-3">
           <Link
             to="#매장"
             className="block w-full"
@@ -67,7 +67,7 @@ const Store = () => {
             메뉴 ({menuData.length})
           </Link>
         </li>
-        <li className="w-full hover:bg-[#ccc] p-3">
+        <li className="w-full hover:bg-[#ccc] py-3">
           <Link
             to="#매장"
             className="block w-full"
