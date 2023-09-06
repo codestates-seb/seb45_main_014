@@ -53,7 +53,7 @@ const MainPage = () => {
         <div className="flex justify-between">
           <Title>즐겨찾기</Title>
           <Title className="text-blue-500 underline underline-offset-8 hover:text-blue-600 cursor-pointer">
-            <Link to="/mypage#즐겨찾기">더보기</Link>
+            <Link to="/mypage#favorite">더보기</Link>
           </Title>
         </div>
         <Slider {...settings}>
