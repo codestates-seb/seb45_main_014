@@ -1,5 +1,4 @@
 import { styled } from 'styled-components';
-import storeData from '../../assets/data/storeData';
 import { useState, useEffect } from 'react';
 import StoreCard from '../../assets/StoreCard.jsx';
 import axios from 'axios';
@@ -24,77 +23,62 @@ const DataContainer = styled.div`
 const SearchResult = () => {
   const [data, setData] = useState([]);
   const location = useLocation();
-  const { searchQuery, searchFilter } = useSearchStore();
-  const [resultQuery, setResultQuery] = useState('');
+  const { searchQuery } = useSearchStore();
 
-  // 나중에 API 구현했을 떄?
-  // const API = 'localhost:3000';
-  // useEffect(() => {
-  //   const keyWord = decodeURI(location.search);
-
-  //   axios
-  //     .get(`${API}/search/${keyWord}`)
-  //     .then((res) => setData(res.data.stores))
-  //     .catch((err) => console.log('에러임', err));
-
-  //   if (!keyWord) {
-  //     axios
-  //       .get(`${API}/search`)
-  //       .then((res) => setData(res.data.stores))
-  //       .catch((err) => console.log('에러임', err));
-  //   }
-  // }, [location]);
-
-  // useEffect(() => {
-  //   if (searchQuery) {
-  //     const filteredData = storeData.filter((data) =>
-  //       data.store_name.includes(searchQuery),
-  //     );
-  //     setData(filteredData);
-  //     setResultQuery(searchQuery);
-  //     console.log(`키워드는 ${resultQuery} 입니다.`);
-  //   } else {
-  //     setData(storeData);
-  //   }
-  // }, [location, resultQuery, searchQuery]);
-
+  const API = `${process.env.REACT_APP_API_URL}/api`;
   useEffect(() => {
-    switch (searchFilter) {
-      case 'store':
-        if (searchQuery) {
-          const filteredData = storeData.filter((data) =>
-            data.store_name.includes(searchQuery),
-          );
-          setData(filteredData);
-          setResultQuery(searchQuery);
-          console.log(`키워드는 ${resultQuery} 입니다.`);
-        } else {
-          setData(storeData);
-        }
-        break;
+    const keyWord = decodeURI(location.search);
 
-      case 'region':
-        if (searchQuery) {
-          const filteredData = storeData.filter((data) =>
-            data.region_name.includes(searchQuery),
-          );
-          setData(filteredData);
-          setResultQuery(searchQuery);
-          console.log(`키워드는 ${resultQuery} 입니다.`);
-        } else {
-          setData(storeData);
-        }
-        break;
-
-      case 'menu':
-        // 'menu'에 대한 로직
-        break;
-
-      default:
-        // 기본 동작을 정의
-        break;
+    if (keyWord) {
+      axios
+        .get(`${API}/search${keyWord}`)
+        .then((res) => setData(res.data.stores))
+        .catch((err) => console.log('에러임', err));
+    } else {
+      axios
+        .get(`${API}/search`)
+        .then((res) => setData(res.data.stores))
+        .catch((err) => console.log('에러임', err));
     }
-  }, [location, resultQuery, searchQuery, searchFilter]);
+  }, [location, API]);
+
+  // useEffect(() => {
+  //   switch (searchFilter) {
+  //     case 'store':
+  //       if (searchQuery) {
+  //         const filteredData = storeData.filter((data) =>
+  //           data.store_name.includes(searchQuery),
+  //         );
+  //         setData(filteredData);
+  //         setResultQuery(searchQuery);
+  //         console.log(`키워드는 ${resultQuery} 입니다.`);
+  //       } else {
+  //         setData(storeData);
+  //       }
+  //       break;
+
+  //     case 'region':
+  //       if (searchQuery) {
+  //         const filteredData = storeData.filter((data) =>
+  //           data.region_name.includes(searchQuery),
+  //         );
+  //         setData(filteredData);
+  //         setResultQuery(searchQuery);
+  //         console.log(`키워드는 ${resultQuery} 입니다.`);
+  //       } else {
+  //         setData(storeData);
+  //       }
+  //       break;
+
+  //     case 'menu':
+  //       // 'menu'에 대한 로직
+  //       break;
+
+  //     default:
+  //       // 기본 동작을 정의
+  //       break;
+  //   }
+  // }, [location, resultQuery, searchQuery, searchFilter]);
 
   return (
     <Wrapper>
@@ -103,7 +87,7 @@ const SearchResult = () => {
           `검색결과가 없습니다.`
         ) : (
           <span className="flex">
-            <p className="text-[#debe8f] font-semibold">{`'${resultQuery}'`}</p>
+            <p className="text-[#debe8f] font-semibold">{`'${searchQuery}'`}</p>
             <p>에 대한 검색결과는 총 {data.length}건 입니다.</p>
           </span>
         )}
