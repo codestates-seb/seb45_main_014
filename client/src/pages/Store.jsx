@@ -57,7 +57,7 @@ const Store = () => {
     <div className="flex flex-col relative">
       <ShopInfo store={storeData} menu={menuData} />
 
-      <ul className="flex justify-center text-center w-[1050px] mx-auto border-b mb-1 sticky top-[65px] bg-white z-10">
+      <ul className="flex justify-center text-center w-[1070px] mx-auto border-b mb-1 sticky top-[65px] bg-white z-10">
         <li className="w-full hover:bg-[#ccc] border-r p-3">
           <Link
             to="#매장"
