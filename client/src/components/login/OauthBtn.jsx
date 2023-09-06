@@ -37,7 +37,7 @@ const OauthBtn = ({ bgColor, color, icon, text, onClick }) => {
 
 export const GoogleBtn = () => {
   const googleSocialLogin = () => {
-    window.location.href = 'http://.../oauth2/authorization/google';
+    window.location.href = `${process.env.REACT_APP_API_URL}/oauth2/authorization/google`;
   };
 
   return (
