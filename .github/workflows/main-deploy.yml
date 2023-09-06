@@ -17,7 +17,7 @@ jobs:
 
       - name: Build
         env:
-          REACT_APP_KAKAO_API_KEY: ${{ secrets.REACT_APP_KAKAO_MAPS_APP_KEY }}
+          REACT_APP_KAKAO_MAPS_APP_KEY: ${{ secrets.REACT_APP_KAKAO_MAPS_APP_KEY }}
         run: npm run build
         working-directory: ./client
 
