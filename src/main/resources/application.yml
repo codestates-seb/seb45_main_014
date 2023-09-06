@@ -1,4 +1,5 @@
 spring:
+
   h2:
     console:
       enabled: true
@@ -23,3 +24,12 @@ spring:
             scope:
               - email
               - profile
+mail:
+  address:
+    admin: test@test.com
+
+jwt:
+  key:
+    secret: ${JWT_SECRET_KEY}
+  access-token-expiration-minutes: 30
+  refresh-token-expiration-minutes: 30

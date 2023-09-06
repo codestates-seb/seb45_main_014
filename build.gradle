@@ -26,7 +26,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-security'     // 스프링 시큐리티
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'	// 스프링 시큐리티 OAuth2
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'    // 스프링 시큐리티 OAuth2
 	implementation 'org.mapstruct:mapstruct:1.5.5.Final'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
@@ -34,6 +34,12 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final' // 롬북 뒤에 있어야 Getter 정상 생성
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	// (2) JWT 기능을 위한 jjwt 라이브러리
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	runtimeOnly    'io.jsonwebtoken:jjwt-jackson:0.11.5'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'com.google.code.gson:gson:2.10' // Google의 JSON 처리 라이브러리 추가
 }
 
 tasks.named('test') {
