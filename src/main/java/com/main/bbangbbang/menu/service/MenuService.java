@@ -16,9 +16,9 @@ public class MenuService {
 
     @Transactional(readOnly = true)
     public Menu findMenu(Long menuId) {
-        Optional<Menu> optionalMenu = menuRepository.findById(menuId);// menurepository 꺼내 온 것
+        Optional<Menu> optionalMenu = menuRepository.findById(menuId);
 
-        return optionalMenu.orElseThrow(NoSuchElementException::new); // 위에 되돌려줌
+        return optionalMenu.orElseThrow(NoSuchElementException::new);
     }
 
     @Transactional(readOnly = true)
@@ -26,8 +26,4 @@ public class MenuService {
 
         return menuRepository.findByMenuNameContaining(menuName);
     }
-
-//    private static 어디에 연결을 해야 하는지 아직 미구현(Menu entity){
-//
-//    }
 }
