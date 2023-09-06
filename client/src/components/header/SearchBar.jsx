@@ -67,13 +67,13 @@ const SearchBar = () => {
   const searchSubmitHandler = (e) => {
     e.preventDefault();
 
-    if (searchQuery) {
+    if (searchQuery.trim()) {
       setSearchParams({
         search_keyword: searchQuery,
         search_target: searchFilter,
       });
       navigate(
-        `/search?search_value=${searchQuery}&search_target=${searchFilter}`,
+        `/search?search_keyword=${searchQuery.trim()}&search_target=${searchFilter}&page=1&size=10`,
       );
 
       document.activeElement.blur();
