@@ -2,6 +2,7 @@ const orderData = [
   {
     id: 1,
     storeId: 2,
+    store_name: '겁나맛있는최고빵집',
     order_status: '준비완료',
     pickup_time: '2022-08-16T17:30:57',
     last_modified_at: '2022-08-16T17:30:57',
