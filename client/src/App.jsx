@@ -3,7 +3,7 @@ import Footer from './components/Footer.jsx';
 import Header from './components/header/Header.jsx';
 import { createGlobalStyle } from 'styled-components';
 import GmarketSans from './assets/fonts/GmarketSansTTFMedium.ttf';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import LoadingSpinner from './components/Loading.jsx';
 import ScrollButton from './assets/buttons/ScrollButton.jsx';
@@ -15,6 +15,7 @@ const Store = lazy(() => import('./pages/Store.jsx'));
 const PostReview = lazy(() => import('./components/myPage/PostReview.jsx'));
 const EditProfile = lazy(() => import('./components/myPage/EditProfile.jsx'));
 const SearchResult = lazy(() => import('./pages/search/SearchResult.jsx'));
+const Cart = lazy(() => import('./pages/cart/Cart.jsx'));
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -35,27 +36,35 @@ const GlobalStyle = createGlobalStyle`
   body {
     padding-top: 65px;
   }
+  ul, li {
+    list-style-type: none;
+  }
   `;
 
 function App() {
+  const location = useLocation();
+  const showFooter = location.pathname !== '/mypage';
+
   return (
     <>
-      <GlobalStyle /> <Header />
-      <main className="w-full mx-auto">
+      <GlobalStyle />
+      <Header />
+      <main className="w-full mx-auto overflow-auto min-h-screen">
         <ScrollButton />
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
             <Route path="*" element={<NotFound />} />
             <Route path="/" element={<MainPage />} />
             <Route path="/mypage" element={<MyPage />} />
-            <Route path="/stores/:id" element={<Store />} />
-            <Route path="/reviews/post" element={<PostReview />} />
             <Route path="/mypage/edit" element={<EditProfile />} />
+            <Route path="/stores/:id" element={<Store />} />
+            <Route path="/review/:id" element={<PostReview />} />
             <Route path="/search" element={<SearchResult />} />
+            <Route path="/cart" element={<Cart />} />
           </Routes>
         </Suspense>
       </main>
-      <Footer />
+      {showFooter && <Footer />}
     </>
   );
 }
