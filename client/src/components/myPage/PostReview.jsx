@@ -98,7 +98,7 @@ const PostReview = () => {
         rows="10"
         value={text}
         onChange={handleTextChange}
-        placeholder="영문 기준 200자 이내로 작성"
+        placeholder="영문 기준 300자 이내로 작성"
       ></TextBox>
       <ByteCount isExceeded={getByteSize(text) > MAX_BYTE_LIMIT}>
         {`${getByteSize(text)} / ${MAX_BYTE_LIMIT} byte`}
