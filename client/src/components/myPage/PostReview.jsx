@@ -7,7 +7,6 @@ import {
 import { styled } from 'styled-components';
 import { StoreImage } from '../../assets/Styles.jsx';
 import Button from '../../assets/buttons/Button.jsx';
-import { getByteSize } from '../../utils/getByteSize.js';
 import formatDate from '../../utils/formatDate.js';
 import { Modal, ModalOverlay } from '../../assets/Modal.jsx';
 
@@ -32,7 +31,7 @@ const ByteCount = styled.div`
   color: ${(props) => (props.isOver ? 'red' : 'inherit')};
 `;
 
-const MAX_BYTE_LIMIT = 300;
+const MAX_BYTE_LIMIT = 200;
 
 const OrderedMenus = ({ menu }) => {
   return (
@@ -67,7 +66,7 @@ const PostReview = ({ data, closeModal }) => {
 
   const handleTextChange = (e) => {
     const newText = e.target.value;
-    if (getByteSize(newText) <= MAX_BYTE_LIMIT) {
+    if (newText.length <= MAX_BYTE_LIMIT) {
       setText(newText);
     }
   };
@@ -93,14 +92,14 @@ const PostReview = ({ data, closeModal }) => {
           <TextBox
             name="storeReview"
             id="storeReview"
-            cols="30"
+            cols="20"
             rows="10"
             value={text}
             onChange={handleTextChange}
             placeholder=" 200자 이내로 작성"
           ></TextBox>
-          <ByteCount isExceeded={getByteSize(text) > MAX_BYTE_LIMIT}>
-            {`${getByteSize(text)} / ${MAX_BYTE_LIMIT} byte`}
+          <ByteCount isExceeded={text.length > MAX_BYTE_LIMIT}>
+            {`${text.length} / ${MAX_BYTE_LIMIT} 글자`}
           </ByteCount>
           <div className="flex justify-between items-center">
             <input type="file" accept="image/*" onChange={handleImageChange} />
