@@ -58,7 +58,7 @@ const ItemBadge = styled.span`
   top: -1px;
   width: 20px;
   height: 20px;
-  padding: 0px 5px;
+  padding: 0 4px;
   border: 2px solid rgb(255, 255, 255);
   border-radius: 10px;
   background-color: #b39260;
@@ -74,8 +74,8 @@ const ItemBadge = styled.span`
     'Open Sans',
     'Helvetica Neue',
     sans-serif;
-  font-size: 9px;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 700;
   color: rgb(255, 255, 255);
   line-height: 15px;
   text-align: center;
