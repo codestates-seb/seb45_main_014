@@ -45,7 +45,7 @@ const DarkOverlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.7); /* 어두운 배경의 색상과 투명도 설정 */
+  background: rgba(0, 0, 0, 0.5); /* 어두운 배경의 색상과 투명도 설정 */
   z-index: 100; /* 모달을 가장 위로 표시 */
   animation: ${fadeIn} 0.3s ease;
   display: ${({ isFocused }) =>
