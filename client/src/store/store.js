@@ -69,8 +69,8 @@ export const useSearchStore = create((set) => ({
 //   },
 // }));
 
-export const useLoginModalStore = create((set) => ({
-  isLoginModalOpen: false,
-  openLoginModal: () => set({ isLoginModalOpen: true }),
-  closeLoginModal: () => set({ isLoginModalOpen: false }),
+export const useModalStore = create((set) => ({
+  isModalOpen: false,
+  openModal: () => set({ isModalOpen: true }),
+  closeModal: () => set({ isModalOpen: false }),
 }));
