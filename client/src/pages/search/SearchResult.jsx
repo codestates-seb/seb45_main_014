@@ -2,8 +2,7 @@ import { styled } from 'styled-components';
 import { useState, useEffect } from 'react';
 import StoreCard from '../../assets/StoreCard.jsx';
 import axios from 'axios';
-import { useSearchStore } from '../../store/store';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 
 const Wrapper = styled.section`
   max-width: 650px;
@@ -23,7 +22,6 @@ const DataContainer = styled.div`
 const SearchResult = () => {
   const [data, setData] = useState([]);
   const location = useLocation();
-  const { searchQuery } = useSearchStore();
 
   const API = `${process.env.REACT_APP_API_URL}/api`;
   useEffect(() => {
@@ -35,10 +33,7 @@ const SearchResult = () => {
         .then((res) => setData(res.data.stores))
         .catch((err) => console.log('에러임', err));
     } else {
-      axios
-        .get(`${API}/search`)
-        .then((res) => setData(res.data.stores))
-        .catch((err) => console.log('에러임', err));
+      setData([]);
     }
   }, [location, API]);
 
@@ -80,17 +75,17 @@ const SearchResult = () => {
   //   }
   // }, [location, resultQuery, searchQuery, searchFilter]);
 
+  // query string에서 search_keyword를 가져옴
+  const [searchParams] = useSearchParams();
+  const query = searchParams.get('search_keyword');
+
   return (
     <Wrapper>
       <div className="text-[20px] pb-3">
-        {!data.length ? (
-          `검색결과가 없습니다.`
-        ) : (
-          <span className="flex">
-            <p className="text-[#debe8f] font-semibold">{`'${searchQuery}'`}</p>
-            <p>에 대한 검색결과는 총 {data.length}건 입니다.</p>
-          </span>
-        )}
+        <span className="flex">
+          <p className="text-[#debe8f] font-semibold">{`'${query}'`}</p>
+          <p>에 대한 검색결과</p>
+        </span>
       </div>
       <DataContainer>
         {data.map((store, idx) => (
