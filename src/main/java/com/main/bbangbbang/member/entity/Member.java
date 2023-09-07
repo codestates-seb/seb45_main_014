@@ -1,12 +1,16 @@
 package com.main.bbangbbang.member.entity;
 
+import com.main.bbangbbang.memberstore.entity.MemberStore;
 import java.time.LocalDateTime;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,6 +33,9 @@ public class Member {
 
     @Column
     private String img;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<MemberStore> memberStores;
 
     @Column
     @LastModifiedDate
