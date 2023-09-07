@@ -6,16 +6,18 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04 #배포 실행될 환경
-    steps: #각 단계의 이름과 실행내용을 나열해서 작성한다.
+    runs-on: ubuntu-20.04
+    steps:
       - name: Checkout source code.
         uses: actions/checkout@v2
 
       - name: Install dependencies
         run: npm install
-        working-directory: ./client #디렉토리명
+        working-directory: ./client
 
       - name: Build
+        env:
+          REACT_APP_KAKAO_MAPS_APP_KEY: ${{ secrets.REACT_APP_KAKAO_MAPS_APP_KEY }}
         run: npm run build
         working-directory: ./client
 

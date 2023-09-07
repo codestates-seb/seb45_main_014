@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Button from '../../assets/buttons/Button.jsx';
 import SearchBar from './SearchBar.jsx';
 import Login from '../login/Login.jsx';
-import { useLoginModalStore } from '../../store/store.js';
+import { useModalStore } from '../../store/store.js';
 
 const HeaderBox = styled.header`
   padding: 12px;
@@ -44,8 +44,7 @@ const SearchBox = styled.div`
 `;
 
 const Header = () => {
-  const { isLoginModalOpen, openLoginModal, closeLoginModal } =
-    useLoginModalStore();
+  const { isModalOpen, openModal, closeModal } = useModalStore();
 
   return (
     <>
@@ -58,13 +57,13 @@ const Header = () => {
           <SearchBar />
         </SearchBox>
         <MenuBox>
-          <Button onClick={openLoginModal} weight="800">
+          <Button onClick={openModal} weight="800">
             로그인
           </Button>
         </MenuBox>
       </HeaderBox>
 
-      {isLoginModalOpen && <Login onClose={closeLoginModal} />}
+      {isModalOpen && <Login onClose={closeModal} />}
     </>
   );
 };

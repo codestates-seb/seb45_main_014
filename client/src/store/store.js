@@ -45,6 +45,33 @@ export const useSearchStore = create((set) => ({
   setSearchFilter: (filter) => set({ searchFilter: filter }),
 }));
 
+// export const useShopInventoryStore = create((set) => ({
+//   inventory: 0,
+//   isFetch: false,
+//   fetchinventory: async () => {
+//     try {
+//       const resulte = await axios.get(`${URL적기}`)
+//     };
+//     set({ inventory: resulte.${재고량 key값, isFetch: true });
+//   } catch (error) {
+//     console.error('남은 재고가 없습니다.', error);
+//   }
+//   },
+// }));
+
+export const useModalStore = create((set) => ({
+  isModalOpen: false,
+  openModal: () => set({ isModalOpen: true }),
+  closeModal: () => set({ isModalOpen: false }),
+}));
+
+export const useSignStore = create((set) => ({
+  isLogin: false,
+  token: null,
+  setLogin: (value) => set({ isLogin: value }),
+  setToken: (value) => set({ token: value }),
+}));
+
 export const useLoginModalStore = create((set) => ({
   isLoginModalOpen: false,
   openLoginModal: () => set({ isLoginModalOpen: true }),
