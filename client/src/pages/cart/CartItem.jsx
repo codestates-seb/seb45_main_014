@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
 import CheckBox from '../../components/cart/Checkbox.jsx';
-import { useState } from 'react';
+import { useCartItemStore } from '../../store/store.js';
 
 const ItemCard = styled.li`
   display: flex;
@@ -62,15 +62,7 @@ const CartItem = ({
   checked,
 }) => {
   //-, +버튼으로 quantity를 조절하는 함수
-  const [amount, setAmount] = useState(quantity);
-  const up = () => {
-    setAmount(amount + 1);
-  };
-  const down = () => {
-    if (amount > 1) {
-      setAmount(amount - 1);
-    }
-  };
+  const { quantityUp, quantityDown } = useCartItemStore();
 
   return (
     <ItemCard>
@@ -83,11 +75,11 @@ const CartItem = ({
         </Link>
       </div>
       <ButtonBox>
-        <button type="button" aria-label="수량내리기" onClick={down}>
+        <button type="button" aria-label="수량내리기" onClick={quantityDown}>
           -
         </button>
-        <div>{amount}</div>
-        <button type="button" aria-label="수량올리기" onClick={up}>
+        <div>{quantity}</div>
+        <button type="button" aria-label="수량올리기" onClick={quantityUp}>
           +
         </button>
       </ButtonBox>
@@ -97,7 +89,7 @@ const CartItem = ({
           data-testid="product-price"
           className="font-bold"
         >
-          {(price * amount).toLocaleString()}원
+          {(price * quantity).toLocaleString()}원
         </span>
       </PriceBox>
     </ItemCard>
