@@ -1,8 +1,9 @@
 import { styled } from 'styled-components';
-import { Link } from 'react-router-dom';
 import orderData from '../../assets/data/orderData.js';
 import formatDate from '../../utils/formatDate';
 import Button from '../../assets/buttons/Button.jsx';
+import { useModalStore } from '../../store/store.js';
+import PostReview from './PostReview.jsx';
 
 const OrdersImage = styled.img`
   width: 200px;
@@ -10,6 +11,8 @@ const OrdersImage = styled.img`
 `;
 
 const OrdersItem = ({ data }) => {
+  const { isModalOpen, openModal, closeModal } = useModalStore();
+
   const menuName = data.order_menus[0].menu_name;
   const menuLength = data.order_menus.length;
   const menuImage = data.order_menus[0].img;
@@ -25,9 +28,10 @@ const OrdersItem = ({ data }) => {
         </div>
         <div>{formatDate(data.created_at)}</div>
       </div>
-      <Button className="w-full">
-        <Link to={`/review/${data.storeId}`}>리뷰 작성</Link>
+      <Button onClick={openModal} className="w-full">
+        리뷰 작성
       </Button>
+      {isModalOpen && <PostReview closeModal={closeModal} />}
     </div>
   );
 };

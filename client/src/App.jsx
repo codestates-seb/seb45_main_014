@@ -12,7 +12,6 @@ const NotFound = lazy(() => import('./pages/NotFound.jsx'));
 const MainPage = lazy(() => import('./pages/main/MainPage.jsx'));
 const MyPage = lazy(() => import('./pages/MyPage.jsx'));
 const Store = lazy(() => import('./pages/Store.jsx'));
-const PostReview = lazy(() => import('./components/myPage/PostReview.jsx'));
 const EditProfile = lazy(() => import('./components/myPage/EditProfile.jsx'));
 const SearchResult = lazy(() => import('./pages/search/SearchResult.jsx'));
 const Cart = lazy(() => import('./pages/cart/Cart.jsx'));
@@ -58,7 +57,6 @@ function App() {
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/mypage/edit" element={<EditProfile />} />
             <Route path="/stores/:id" element={<Store />} />
-            <Route path="/review/:id" element={<PostReview />} />
             <Route path="/search" element={<SearchResult />} />
             <Route path="/cart" element={<Cart />} />
           </Routes>
