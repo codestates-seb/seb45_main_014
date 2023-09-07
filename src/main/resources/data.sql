@@ -231,14 +231,14 @@ values ('박우현'), --1
 
 
 INSERT INTO orders (store_id, member_id, order_status)
-values (1, 1, 'ACTIVE'), --1번가게 1번손님 생성
-       (1, 2, 'BAKING'), --1번가게 2번손님 준비중
-       (2, 3, 'BAKING'),
-       (2, 4, 'READY'),
-       (2, 5, 'PICKUP'),
-       (3, 6, 'REVIEWED'),
-       (3, 7, 'CANCELED'),
-       (4, 8, 'DELETED'),
+values (1, 1, 'CREATED'), --1번가게 1번손님 생성
+       (1, 2, 'ACTIVE'), --1번가게 2번손님 담는중
+       (2, 3, 'BAKING'), --2번가게 3번손님 준비중
+       (2, 4, 'READY'), --2번가게 4번손님 준비완료
+       (2, 5, 'PICKUP'), --2번가게 5번손님 픽업
+       (3, 6, 'REVIEWED'), --3번가게 6번손님 리뷰
+       (3, 7, 'CANCELED'), --3번가게 7번손님 취소
+       (4, 8, 'DELETED'), --4번가게 8번손님 삭제
        (5, 9, 'BAKING'),
        (5, 9, 'CREATED'),
        (5, 9, 'ACTIVE'),
@@ -250,17 +250,17 @@ values (1, 1, 'ACTIVE'), --1번가게 1번손님 생성
        (10, 15, 'CANCELED'),
        (11, 15, 'DELETED'),
        (12, 16, 'ACTIVE'),
-       (13, 17, 'CREATED'), -- 13번가게 17번손님 생성
-       (14, 17, 'ACTIVE'), -- 14번가게 17번손님 담는중
-       (15, 17, 'READY'), -- 15번가게 17번손님 준비완료
+       (13, 17, 'CREATED'),
+       (14, 17, 'ACTIVE'),
+       (15, 17, 'READY'),
        (16, 18, 'CANCELED'),
        (17, 18, 'BAKING'),
        (18, 19, 'REVIEWED'),
        (19, 20, 'CANCELED'),
        (19, 21, 'PICKUP'),
        (20, 22, 'CREATED'),
-       (21, 23, 'ACTIVE'), -- 21번가게 23번 손님 담는중
-       (22, 23, 'BAKING'), -- 22번가게 23번 손님 준비중
+       (21, 23, 'ACTIVE'),
+       (22, 23, 'BAKING'),
        (23, 24, 'CREATED'),
        (24, 25, 'PICKUP'),
        (25, 25, 'DELETED'),
@@ -273,10 +273,10 @@ values (1, 1, 'ACTIVE'), --1번가게 1번손님 생성
        (30, 32, 'PICKUP'),
        (31, 33, 'REVIEWED'),
        (32, 34, 'CREATED'),
-       (33, 35, 'READY'), -- 33번가게 35번손님 준비완료
-       (34, 36, 'BAKING'), -- 34번가게 36번손님 준비중
-       (35, 36, 'REVIEWED'), -- 35번가게 35번손님 리뷰
-       (36, 36, 'CANCELED'); -- 36번가게 36번손님 취소
+       (33, 35, 'READY'),
+       (34, 36, 'BAKING'),
+       (35, 36, 'REVIEWED'),
+       (36, 36, 'CANCELED');
 
 
 INSERT INTO order_menu (orders_id, menu_id, quantity)
