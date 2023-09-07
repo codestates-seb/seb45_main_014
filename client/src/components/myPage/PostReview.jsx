@@ -71,9 +71,17 @@ const PostReview = ({ data, closeModal }) => {
     }
   };
 
+  const handleCloseModal = () => {
+    setRating(0);
+    setSelectedImage(null);
+    setText('');
+
+    closeModal(rating, selectedImage, text);
+  };
+
   return (
     <>
-      <ModalOverlay onClick={closeModal} />
+      <ModalOverlay onClick={handleCloseModal} />
       <Modal>
         <div className="max-w-screen-sm mx-auto flex flex-col gap-4">
           <div className="flex justify-between">

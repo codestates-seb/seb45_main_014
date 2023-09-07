@@ -42,7 +42,10 @@ const Orders = () => {
 
   const openModal = (data) => setCurrentModalData(data);
   const closeModal = () => {
-    const isConfirmed = window.confirm('리뷰 작성을 취소하시겠습니까?');
+    const isConfirmed = window.confirm(
+      '리뷰 작성을 취소하시겠습니까?\n작성하신 내용은 사라집니다.',
+    );
+
     if (isConfirmed) setCurrentModalData(null);
   };
 
