@@ -46,7 +46,7 @@ public class StoreController { // 매장 상세 페이지
         PageInfo pageInfo = PageInfo.of(page, size, reviewPage);
 
         List<ReviewData> reviews = reviewPage.stream()
-                .map(reviewMapper::reviewToReviewDataWithStoreName)
+                .map(reviewMapper::reviewToReviewDataWithNickname)
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(new ReviewsResponseDto(reviews, pageInfo));
