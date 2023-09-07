@@ -1,34 +1,14 @@
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import StoreCard from '../../assets/StoreCard.jsx';
+import StoreCard, { FavoriteStoreCard } from '../../assets/StoreCard.jsx';
 import storeData from '../../assets/data/storeData';
 import { styled } from 'styled-components';
-import { StoreImage } from '../../assets/Styles.jsx';
 import { Link } from 'react-router-dom';
-
-const FavoriteStoreImage = styled(StoreImage)`
-  width: 500px;
-`;
 
 const Title = styled.h1`
   margin: 1rem 0;
 `;
-
-export const FavoriteStoreCard = ({ store }) => {
-  return (
-    <div className="relative p-2">
-      <div className="flex items-center">
-        <a href={`/stores/${store.id}`}>
-          <FavoriteStoreImage src={store.img} alt="즐겨찾기된 매장" />
-        </a>
-      </div>
-      <div className="absolute bottom-6 left-6 font-black text-yellow-200 text-2xl">
-        {store.store_name}
-      </div>
-    </div>
-  );
-};
 
 export const getFavoriteStores = () => {
   return storeData.filter((store) => store.is_favorite === true);

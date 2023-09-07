@@ -2,6 +2,7 @@ import { useBookmarkStore } from '../store/store';
 import images from './images/Images';
 import { StoreImage } from './Styles.jsx';
 import { Link } from 'react-router-dom';
+import { styled } from 'styled-components';
 
 const BookmarkButton = ({ is_favorite, toggleBookmark }) => {
   return (
@@ -13,6 +14,25 @@ const BookmarkButton = ({ is_favorite, toggleBookmark }) => {
         height={24}
       />
     </button>
+  );
+};
+
+const FavoriteStoreImage = styled(StoreImage)`
+  width: 500px;
+`;
+
+export const FavoriteStoreCard = ({ store }) => {
+  return (
+    <div className="relative p-2">
+      <div className="flex items-center">
+        <a href={`/stores/${store.id}`}>
+          <FavoriteStoreImage src={store.img} alt="즐겨찾기된 매장" />
+        </a>
+      </div>
+      <div className="absolute bottom-6 left-6 font-black text-yellow-400">
+        {store.store_name}
+      </div>
+    </div>
   );
 };
 
