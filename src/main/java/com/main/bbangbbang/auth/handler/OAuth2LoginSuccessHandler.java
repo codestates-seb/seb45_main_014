@@ -63,7 +63,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
             response.setHeader("Authrization", "Bearer " + accessToken);
             response.setHeader("Refresh", refreshToken);
-            String uri = "http://bbangorder.s3-website.ap-northeast-2.amazonaws.com";
+            String uri = "";
 
 //            String uri = createURI(accessToken, refreshToken).toString();   // (6-3)
             System.out.println("redirect to URI : " + uri);
