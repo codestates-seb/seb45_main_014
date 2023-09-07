@@ -5,8 +5,8 @@ import formatDate from '../../utils/formatDate';
 import Button from '../../assets/buttons/Button.jsx';
 
 const OrdersImage = styled.img`
-  width: 150px;
-  height: 150px;
+  width: 200px;
+  height: 200px;
 `;
 
 const OrdersItem = ({ data }) => {
@@ -35,7 +35,7 @@ const OrdersItem = ({ data }) => {
 const Orders = () => {
   return (
     <div className="flex justify-center">
-      <div className="flex flex-wrap w-5/6 gap-4">
+      <div className="grid grid-flow-row-dense grid-cols-4 gap-4">
         {orderData.map((item, index) => (
           <OrdersItem key={index} data={item} />
         ))}
