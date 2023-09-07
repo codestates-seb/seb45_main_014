@@ -1,10 +1,8 @@
 import { styled } from 'styled-components';
-import storeData from '../../assets/data/storeData';
 import { useState, useEffect } from 'react';
 import StoreCard from '../../assets/StoreCard.jsx';
 import axios from 'axios';
-import { useSearchStore } from '../../store/store';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 
 const Wrapper = styled.section`
   max-width: 650px;
@@ -24,89 +22,70 @@ const DataContainer = styled.div`
 const SearchResult = () => {
   const [data, setData] = useState([]);
   const location = useLocation();
-  const { searchQuery, searchFilter } = useSearchStore();
-  const [resultQuery, setResultQuery] = useState('');
 
-  // 나중에 API 구현했을 떄?
-  // const API = 'localhost:3000';
-  // useEffect(() => {
-  //   const keyWord = decodeURI(location.search);
-
-  //   axios
-  //     .get(`${API}/search/${keyWord}`)
-  //     .then((res) => setData(res.data.stores))
-  //     .catch((err) => console.log('에러임', err));
-
-  //   if (!keyWord) {
-  //     axios
-  //       .get(`${API}/search`)
-  //       .then((res) => setData(res.data.stores))
-  //       .catch((err) => console.log('에러임', err));
-  //   }
-  // }, [location]);
-
-  // useEffect(() => {
-  //   if (searchQuery) {
-  //     const filteredData = storeData.filter((data) =>
-  //       data.store_name.includes(searchQuery),
-  //     );
-  //     setData(filteredData);
-  //     setResultQuery(searchQuery);
-  //     console.log(`키워드는 ${resultQuery} 입니다.`);
-  //   } else {
-  //     setData(storeData);
-  //   }
-  // }, [location, resultQuery, searchQuery]);
-
+  const API = `${process.env.REACT_APP_API_URL}/api`;
   useEffect(() => {
-    switch (searchFilter) {
-      case 'store':
-        if (searchQuery) {
-          const filteredData = storeData.filter((data) =>
-            data.store_name.includes(searchQuery),
-          );
-          setData(filteredData);
-          setResultQuery(searchQuery);
-          console.log(`키워드는 ${resultQuery} 입니다.`);
-        } else {
-          setData(storeData);
-        }
-        break;
+    const keyWord = decodeURI(location.search);
 
-      case 'region':
-        if (searchQuery) {
-          const filteredData = storeData.filter((data) =>
-            data.region_name.includes(searchQuery),
-          );
-          setData(filteredData);
-          setResultQuery(searchQuery);
-          console.log(`키워드는 ${resultQuery} 입니다.`);
-        } else {
-          setData(storeData);
-        }
-        break;
-
-      case 'menu':
-        // 'menu'에 대한 로직
-        break;
-
-      default:
-        // 기본 동작을 정의
-        break;
+    if (keyWord) {
+      axios
+        .get(`${API}/search${keyWord}`)
+        .then((res) => setData(res.data.stores))
+        .catch((err) => console.log('에러임', err));
+    } else {
+      setData([]);
     }
-  }, [location, resultQuery, searchQuery, searchFilter]);
+  }, [location, API]);
+
+  // useEffect(() => {
+  //   switch (searchFilter) {
+  //     case 'store':
+  //       if (searchQuery) {
+  //         const filteredData = storeData.filter((data) =>
+  //           data.store_name.includes(searchQuery),
+  //         );
+  //         setData(filteredData);
+  //         setResultQuery(searchQuery);
+  //         console.log(`키워드는 ${resultQuery} 입니다.`);
+  //       } else {
+  //         setData(storeData);
+  //       }
+  //       break;
+
+  //     case 'region':
+  //       if (searchQuery) {
+  //         const filteredData = storeData.filter((data) =>
+  //           data.region_name.includes(searchQuery),
+  //         );
+  //         setData(filteredData);
+  //         setResultQuery(searchQuery);
+  //         console.log(`키워드는 ${resultQuery} 입니다.`);
+  //       } else {
+  //         setData(storeData);
+  //       }
+  //       break;
+
+  //     case 'menu':
+  //       // 'menu'에 대한 로직
+  //       break;
+
+  //     default:
+  //       // 기본 동작을 정의
+  //       break;
+  //   }
+  // }, [location, resultQuery, searchQuery, searchFilter]);
+
+  // query string에서 search_keyword를 가져옴
+  const [searchParams] = useSearchParams();
+  const query = searchParams.get('search_keyword');
 
   return (
     <Wrapper>
       <div className="text-[20px] pb-3">
-        {!data.length ? (
-          `검색결과가 없습니다.`
-        ) : (
-          <span className="flex">
-            <p className="text-[#debe8f] font-semibold">{`'${resultQuery}'`}</p>
-            <p>에 대한 검색결과는 총 {data.length}건 입니다.</p>
-          </span>
-        )}
+        <span className="flex justify-center">
+          <p className="text-[#debe8f] font-semibold">{`'${query}'`}</p>
+          <p>에 대한 검색결과</p>
+        </span>
       </div>
       <DataContainer>
         {data.map((store, idx) => (

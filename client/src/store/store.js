@@ -37,16 +37,6 @@ export const useByteSizeStore = create((set) => ({
   setText: (text) => set({ text }),
 }));
 
-export const useCountStore = create((set) => ({
-  count: 1,
-  up() {
-    set((state) => ({ count: state.count + 1 }));
-  },
-  down() {
-    set((state) => ({ count: state.count > 1 ? state.count - 1 : 1 }));
-  },
-}));
-
 // 검색 기능
 export const useSearchStore = create((set) => ({
   searchQuery: '',
@@ -80,4 +70,39 @@ export const useSignStore = create((set) => ({
   token: null,
   setLogin: (value) => set({ isLogin: value }),
   setToken: (value) => set({ token: value }),
+}));
+
+export const useLoginModalStore = create((set) => ({
+  isLoginModalOpen: false,
+  openLoginModal: () => set({ isLoginModalOpen: true }),
+  closeLoginModal: () => set({ isLoginModalOpen: false }),
+}));
+
+export const useCartItemStore = create((set) => ({
+  cartItem: [],
+  setCartItem: (data) => set({ cartItem: data }),
+
+  // 수량 변경 함수
+  quantityPlus: (id) => {
+    set((state) => {
+      const newCartItems = state.cartItems.map((item) => {
+        if (item.id === id) {
+          return { ...item, quantity: item.quantity + 1 };
+        }
+        return item;
+      });
+      return { cartItems: newCartItems };
+    });
+  },
+  quantityMinus: (id) => {
+    set((state) => {
+      const newCartItems = state.cartItems.map((item) => {
+        if (item.id === id) {
+          return { ...item, quantity: item.quantity - 1 };
+        }
+        return item;
+      });
+      return { cartItems: newCartItems };
+    });
+  },
 }));

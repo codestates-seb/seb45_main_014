@@ -3,16 +3,59 @@ import { calculateDate } from '../../utils/calculateDate';
 import { useState, useEffect, useRef } from 'react';
 
 const StoreReviewTab = ({ reviewData }) => {
+  const reviewsPerPage = 5; // 페이지당 보여줄 리뷰 수
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalReviews = reviewData.length;
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  // 현재 페이지에 해당하는 리뷰 추출
+  const startIndex = (currentPage - 1) * reviewsPerPage;
+  const endIndex = startIndex + reviewsPerPage;
+  const currentReviews = reviewData.slice(startIndex, endIndex);
+
   return (
     <div className="flex flex-col w-[1050px]">
       {reviewData.map((review) => {
         return <ReviewItem key={review.id} data={review} />;
       })}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={Math.ceil(totalReviews / reviewsPerPage)}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 };
 
 export default StoreReviewTab;
+
+const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+  const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
+
+  return (
+    <div className="flex justify-center mt-3">
+      <ul className="flex">
+        {pageNumbers.map((page) => (
+          <li key={page} className="mr-2">
+            <button
+              onClick={() => onPageChange(page)}
+              className={`${
+                page === currentPage
+                  ? 'bg-blue-500 text-white'
+                  : 'bg-white text-black'
+              } px-3 py-1 rounded-full hover:bg-blue-300`}
+            >
+              {page}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
 
 export const Stars = ({ rating, readOnly }) => {
   return (
