@@ -9,6 +9,7 @@ import menu from './menu_img1.png';
 import notfound from './notFound.png';
 import boxchecked from './boxchecked.svg';
 import boxunchecked from './boxunchecked.svg';
+import magnifier from './magnifier.svg';
 
 const images = {
   githublogo,
@@ -22,6 +23,7 @@ const images = {
   notfound,
   boxchecked,
   boxunchecked,
+  magnifier,
 };
 
 export default images;
