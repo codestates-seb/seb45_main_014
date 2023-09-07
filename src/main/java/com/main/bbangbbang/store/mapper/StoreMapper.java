@@ -5,9 +5,11 @@ import com.main.bbangbbang.store.data.StoreBriefData;
 import com.main.bbangbbang.store.data.StoreDetailData;
 import com.main.bbangbbang.store.entity.Store;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring", uses = MenuMapper.class)
 public interface StoreMapper {
+    @Mapping(source = "region.regionName", target = "regionName")
     StoreDetailData storeToStoreDetailData(Store store);
     StoreBriefData storeToStoreBriefData(Store store);
 }
