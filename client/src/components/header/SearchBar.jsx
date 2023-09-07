@@ -54,7 +54,7 @@ const DarkOverlay = styled.div`
 
 const SearchBar = () => {
   const { searchQuery, setSearchQuery, searchFilter } = useSearchStore();
-  const [searchParams, setSearchParams] = useSearchParams();
+  // const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const [isFocused, setIsFocused] = useState(false);
 
@@ -68,17 +68,20 @@ const SearchBar = () => {
     e.preventDefault();
 
     if (searchQuery.trim()) {
-      setSearchParams({
-        search_keyword: searchQuery,
-        search_target: searchFilter,
-      });
+      // setSearchParams({
+      //   search_keyword: searchQuery.trim(),
+      //   search_target: searchFilter,
+      //   page: 1,
+      //   size: 10,
+      // });
       navigate(
         `/search?search_keyword=${searchQuery.trim()}&search_target=${searchFilter}&page=1&size=10`,
       );
 
+      // 검색창 focus 해제하기
       document.activeElement.blur();
     } else {
-      // 검색 키워드가 존재하지 않는 경우, 쿼리 스트링이 없는 원래 URL을 보여주도록 navigate 처리한다.
+      // 검색 키워드가 존재하지 않는 경우 경고창 띄우기
       alert('검색어를 입력해 주세요!');
     }
   };
