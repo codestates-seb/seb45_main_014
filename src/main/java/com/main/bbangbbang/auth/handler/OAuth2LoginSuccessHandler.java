@@ -61,9 +61,9 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
             String refreshToken = delegateRefreshToken(username);     // (6-2)
             System.out.println("Refresh Token : " + refreshToken);
 
-            response.setHeader("Authrization", "Bearer " + accessToken);
+            response.setHeader("Authorization", "Bearer " + accessToken);
             response.setHeader("Refresh", refreshToken);
-            String uri = "";
+            String uri = "http://localhost:3000";
 
 //            String uri = createURI(accessToken, refreshToken).toString();   // (6-3)
             System.out.println("redirect to URI : " + uri);
