@@ -24,6 +24,7 @@ const HeaderBox = styled.header`
 
 const Logo = styled(Link)`
   display: flex;
+  width: 150px;
   align-items: center;
   text-align: center;
   font-size: 24px;
@@ -33,7 +34,8 @@ const Logo = styled(Link)`
 
 const MenuBox = styled.div`
   display: flex;
-  justify-content: stretch;
+  width: 150px;
+  justify-content: flex-end;
   align-items: center;
 `;
 
