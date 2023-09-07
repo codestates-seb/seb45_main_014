@@ -82,7 +82,7 @@ const SearchResult = () => {
   return (
     <Wrapper>
       <div className="text-[20px] pb-3">
-        <span className="flex">
+        <span className="flex justify-center">
           <p className="text-[#debe8f] font-semibold">{`'${query}'`}</p>
           <p>에 대한 검색결과</p>
         </span>
