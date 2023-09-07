@@ -44,7 +44,6 @@ const MainPage = () => {
 
   return (
     <div className="max-w-screen-lg mx-auto">
-      <button onClick={fetchData}>Fetch Data</button>
       <div>
         <div className="flex justify-between">
           <Title>즐겨찾기</Title>
