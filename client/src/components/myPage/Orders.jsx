@@ -22,11 +22,13 @@ const OrdersItem = ({ data, openModal }) => {
       <OrdersImage className="object-cover" src={menuImage} alt="loading" />
       <div className="flex flex-col w-full">
         <div>{data.store_name}</div>
-        <div>
+        <div className="text-sm text-stone-500">
           {menuName}
           {menuLength > 1 ? ` 외 ${menuLength - 1}개` : ''}
         </div>
-        <div>{formatDate(data.created_at)}</div>
+        <div className="text-sm text-stone-500">
+          {formatDate(data.created_at)}
+        </div>
       </div>
       <Button onClick={() => openModal(data)} className="w-full">
         리뷰 작성
@@ -39,7 +41,10 @@ const Orders = () => {
   const [currentModalData, setCurrentModalData] = useState(null);
 
   const openModal = (data) => setCurrentModalData(data);
-  const closeModal = () => setCurrentModalData(null);
+  const closeModal = () => {
+    const isConfirmed = window.confirm('리뷰 작성을 취소하시겠습니까?');
+    if (isConfirmed) setCurrentModalData(null);
+  };
 
   return (
     <div className="flex justify-center">
