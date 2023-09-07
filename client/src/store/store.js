@@ -50,3 +50,32 @@ export const useLoginModalStore = create((set) => ({
   openLoginModal: () => set({ isLoginModalOpen: true }),
   closeLoginModal: () => set({ isLoginModalOpen: false }),
 }));
+
+export const useCartItemStore = create((set) => ({
+  cartItem: [],
+  setCartItem: (data) => set({ cartItem: data }),
+
+  // 수량 변경 함수
+  quantityPlus: (id) => {
+    set((state) => {
+      const newCartItems = state.cartItems.map((item) => {
+        if (item.id === id) {
+          return { ...item, quantity: item.quantity + 1 };
+        }
+        return item;
+      });
+      return { cartItems: newCartItems };
+    });
+  },
+  quantityMinus: (id) => {
+    set((state) => {
+      const newCartItems = state.cartItems.map((item) => {
+        if (item.id === id) {
+          return { ...item, quantity: item.quantity - 1 };
+        }
+        return item;
+      });
+      return { cartItems: newCartItems };
+    });
+  },
+}));

@@ -45,7 +45,7 @@ const DarkOverlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.7); /* 어두운 배경의 색상과 투명도 설정 */
+  background: rgba(0, 0, 0, 0.5); /* 어두운 배경의 색상과 투명도 설정 */
   z-index: 100; /* 모달을 가장 위로 표시 */
   animation: ${fadeIn} 0.3s ease;
   display: ${({ isFocused }) =>
@@ -54,7 +54,7 @@ const DarkOverlay = styled.div`
 
 const SearchBar = () => {
   const { searchQuery, setSearchQuery, searchFilter } = useSearchStore();
-  const [searchParams, setSearchParams] = useSearchParams();
+  // const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const [isFocused, setIsFocused] = useState(false);
 
@@ -67,18 +67,21 @@ const SearchBar = () => {
   const searchSubmitHandler = (e) => {
     e.preventDefault();
 
-    if (searchQuery) {
-      setSearchParams({
-        search_keyword: searchQuery,
-        search_target: searchFilter,
-      });
+    if (searchQuery.trim()) {
+      // setSearchParams({
+      //   search_keyword: searchQuery.trim(),
+      //   search_target: searchFilter,
+      //   page: 1,
+      //   size: 10,
+      // });
       navigate(
-        `/search?search_value=${searchQuery}&search_target=${searchFilter}`,
+        `/search?search_keyword=${searchQuery.trim()}&search_target=${searchFilter}&page=1&size=10`,
       );
 
+      // 검색창 focus 해제하기
       document.activeElement.blur();
     } else {
-      // 검색 키워드가 존재하지 않는 경우, 쿼리 스트링이 없는 원래 URL을 보여주도록 navigate 처리한다.
+      // 검색 키워드가 존재하지 않는 경우 경고창 띄우기
       alert('검색어를 입력해 주세요!');
     }
   };
