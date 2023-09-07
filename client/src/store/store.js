@@ -74,3 +74,10 @@ export const useModalStore = create((set) => ({
   openModal: () => set({ isModalOpen: true }),
   closeModal: () => set({ isModalOpen: false }),
 }));
+
+export const useSignStore = create((set) => ({
+  isLogin: false,
+  token: null,
+  setLogin: (value) => set({ isLogin: value }),
+  setToken: (value) => set({ token: value }),
+}));
