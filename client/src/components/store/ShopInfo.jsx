@@ -1,18 +1,16 @@
 import { styled } from 'styled-components';
-import shop_logo from '../../assets/images/pb_logo.png';
 import { useBookmarkStore } from '../../store/store.js';
 import copy from 'clipboard-copy';
 import images from '../../assets/images/Images';
 import { useEffect } from 'react';
 import StoreBanner from './StoreBanner.jsx';
-import storemenuData from '../../assets/data/menuData.js';
 
 // 슬라이드 라이브러리
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-const ShopInfo = ({ store, menu }) => {
+const ShopInfo = ({ store }) => {
   const { isBookmarked, toggleBookmark } = useBookmarkStore();
   const currentUrl = window.location;
 
@@ -105,7 +103,7 @@ const ShopInfo = ({ store, menu }) => {
               <div className="flex mr-3 mb-6">
                 <p className="mr-2">대표 메뉴</p>
                 <div className="flex flex-wrap max-w-[400px]">
-                  {menu.map((menu, index) => {
+                  {store.menus.map((menu, index) => {
                     return (
                       <p className="mr-3" key={index}>
                         {menu.menu_name}
