@@ -6,14 +6,16 @@ import { styled } from 'styled-components';
 
 const BookmarkButton = ({ is_favorite, toggleBookmark }) => {
   return (
-    <button className="absolute bottom-16 right-1 p-2" onClick={toggleBookmark}>
-      <img
-        src={is_favorite ? images.bookmarkOn : images.bookmarkOff}
-        alt="북마크 아이콘"
-        width={24}
-        height={24}
-      />
-    </button>
+    <div className="absolute bottom-16 right-1 p-2 w-[40px] h-[40px] bg-black bg-opacity-50 rounded-full">
+      <button onClick={toggleBookmark}>
+        <img
+          src={is_favorite ? images.bookmarkOn : images.bookmarkOff}
+          alt="북마크 아이콘"
+          width={24}
+          height={24}
+        />
+      </button>
+    </div>
   );
 };
 
@@ -29,7 +31,7 @@ export const FavoriteStoreCard = ({ store }) => {
           <FavoriteStoreImage src={store.img} alt="즐겨찾기된 매장" />
         </a>
       </div>
-      <div className="absolute bottom-6 left-6 font-black text-yellow-400">
+      <div className="absolute bottom-6 left-6 font-black text-yellow-400 text-2xl drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
         {store.store_name}
       </div>
     </div>
@@ -44,9 +46,13 @@ const StoreCard = ({ store }) => {
   const { isBookmarked, toggleBookmark } = useBookmarkStore();
 
   return (
-    <div className="w-72 relative mx-4">
+    <div className="w-72 relative m-2">
       <Link to={`/stores/${store.id}`}>
-        <StoreImage className="object-cover" src={img} alt="매장 대표 이미지" />
+        <StoreImage
+          className="object-cover mb-1"
+          src={img}
+          alt="매장 대표 이미지"
+        />
       </Link>
       <BookmarkButton
         is_favorite={is_favorite}
@@ -59,19 +65,7 @@ const StoreCard = ({ store }) => {
               <h2>{store_name}</h2>
               <h2 className="ml-2 text-yellow-500">{formattedStoreRating}</h2>
             </div>
-            <div>{region_name}</div>
-          </div>
-          <div className="flex">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 48 48"
-              id="eye"
-              className="flex-shrink-0 rounded-full"
-              width="24"
-              height="24"
-            >
-              <path d="M24 9C14 9 5.46 15.22 2 24c3.46 8.78 12 15 22 15 10.01 0 18.54-6.22 22-15-3.46-8.78-11.99-15-22-15zm0 25c-5.52 0-10-4.48-10-10s4.48-10 10-10 10 4.48 10 10-4.48 10-10 10zm0-16c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6z"></path>
-            </svg>
+            <div className="">{region_name}</div>
           </div>
         </div>
       </Link>
