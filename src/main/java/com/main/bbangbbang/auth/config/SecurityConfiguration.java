@@ -6,6 +6,7 @@ import com.main.bbangbbang.auth.filter.JwtVerificationFilter;
 import com.main.bbangbbang.auth.handler.OAuth2LoginSuccessHandler;
 import com.main.bbangbbang.auth.jwt.JwtTokenizer;
 import com.main.bbangbbang.auth.utils.CustomAuthorityUtils;
+import com.main.bbangbbang.member.service.MemberService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -30,15 +31,16 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SecurityConfiguration {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
+    private final MemberService memberService;
 
-    public SecurityConfiguration(JwtTokenizer jwtTokenizer, CustomAuthorityUtils authorityUtils) {
+    public SecurityConfiguration(JwtTokenizer jwtTokenizer,
+                                 CustomAuthorityUtils authorityUtils, MemberService memberService) {
         this.jwtTokenizer = jwtTokenizer;
         this.authorityUtils = authorityUtils;
+        this.memberService = memberService;
     }
-//    private final MemberService memberService;
 
     //  JwtTokenizer 객체를 빈으로 등록
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, JwtVerificationFilter jwtVerificationFilter) throws Exception {
         http    //  시큐리티 설정 커스터마이징 수정 필요
@@ -68,11 +70,11 @@ public class SecurityConfiguration {
                 )
                 .oauth2Login(oauth2 -> oauth2
                         .successHandler(new OAuth2LoginSuccessHandler(
-                                jwtTokenizer, authorityUtils))    // tokenizer() 메서드 호출하여 인스턴스 사용
-//                        .failureHandler((request, response, exception) -> {
-//                            System.out.println("OAuth2LoginAuthenticationFailureHandler");
-//                            exception.printStackTrace();
-//                        })
+                                jwtTokenizer, authorityUtils, memberService))    // tokenizer() 메서드 호출하여 인스턴스 사용
+                        .failureHandler((request, response, exception) -> {
+                            System.out.println("OAuth2LoginAuthenticationFailureHandler");
+                            exception.printStackTrace();
+                        })
                 );
 
         return http.build();
@@ -107,6 +109,7 @@ public class SecurityConfiguration {
     }
 }
 
+//  보안 및 인증 관련 요구 사항이 변경될 수 있으므로 삭제하기 전 검토 필요
 //    private OAuth2UserService<OAuth2UserRequest, OAuth2User> userInfoService() {
 //        DefaultOAuth2UserService delegate = new DefaultOAuth2UserService();
 //        return (userRequest) -> {
