@@ -65,13 +65,6 @@ export const useModalStore = create((set) => ({
   closeModal: () => set({ isModalOpen: false }),
 }));
 
-export const useSignStore = create((set) => ({
-  isLogin: false,
-  token: null,
-  setLogin: (value) => set({ isLogin: value }),
-  setToken: (value) => set({ token: value }),
-}));
-
 export const useLoginModalStore = create((set) => ({
   isLoginModalOpen: false,
   openLoginModal: () => set({ isLoginModalOpen: true }),
@@ -103,6 +96,25 @@ export const useCartItemStore = create((set) => ({
         return item;
       });
       return { cartItems: newCartItems };
+    });
+  },
+}));
+
+export const useUserStore = create((set) => ({
+  isLogged: false, // 로그인 여부
+  token: '', // 토큰
+  // 로그인 상태를 업데이트하는 메서드
+  login: (token) => {
+    set({
+      isLogged: true,
+      token: token,
+    });
+  },
+  // 로그아웃 상태를 업데이트하는 메서드
+  logout: () => {
+    set({
+      isLogged: false,
+      token: '',
     });
   },
 }));

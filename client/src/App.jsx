@@ -4,9 +4,11 @@ import Header from './components/header/Header.jsx';
 import { createGlobalStyle } from 'styled-components';
 import GmarketSans from './assets/fonts/GmarketSansTTFMedium.ttf';
 import { Route, Routes, useLocation } from 'react-router-dom';
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useState, useEffect } from 'react';
 import LoadingSpinner from './components/Loading.jsx';
 import ScrollButton from './assets/buttons/ScrollButton.jsx';
+import saveAuthorizationToken from './SaveAuthorizationToken.jsx';
+import axios from 'axios';
 
 const NotFound = lazy(() => import('./pages/NotFound.jsx'));
 const MainPage = lazy(() => import('./pages/main/MainPage.jsx'));
