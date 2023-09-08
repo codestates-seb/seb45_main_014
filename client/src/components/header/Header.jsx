@@ -35,6 +35,7 @@ const Logo = styled.a`
 `;
 
 const MenuBox = styled.div`
+  padding-right: 10px;
   display: flex;
   width: 200px;
   justify-content: flex-end;
@@ -48,8 +49,20 @@ const SearchBox = styled.div`
 `;
 
 const CartBox = styled.div`
-  margin-left: 20px;
+  margin-left: 15px;
   position: relative;
+  transition: all 0.3s ease;
+  &:hover {
+    transform: scale(1.15);
+  }
+`;
+
+const UserBox = styled.div`
+  margin-left: 15px;
+  transition: all 0.3s ease;
+  &:hover {
+    transform: scale(1.2);
+  }
 `;
 
 const ItemBadge = styled.span`
@@ -101,12 +114,12 @@ const Header = () => {
           <Button onClick={openModal} weight="800">
             로그인
           </Button>
-          <div className="ml-[20px]" aria-label="마이페이지">
+          <UserBox aria-label="마이페이지">
             <Link to={'/mypage'}>
               <UserIcon />
             </Link>
-          </div>
-          <CartBox>
+          </UserBox>
+          <CartBox aria-label="장바구니">
             <Link to={'/cart'}>
               <CartIcon />
               {/*cartItem의 길이가 0보다 크면 ItemBadge를 렌더링*/}
