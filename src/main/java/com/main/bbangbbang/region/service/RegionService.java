@@ -19,7 +19,7 @@ public class RegionService {
         List<Region> subRegions = new ArrayList<>();
         List<Region> likeRegions = findRegions(regionName);
         for (Region region : likeRegions) {
-            subRegions.addAll(findChildRegions(region.getRegionName()));
+            subRegions.addAll(findChildRegions(region));
         }
 
         subRegions = subRegions.stream()
@@ -29,18 +29,12 @@ public class RegionService {
         return subRegions;
     }
 
-    private Region findRegion(String regionName) {
-
-        return regionRepository.findByRegionName(regionName);
-    }
-
     private List<Region> findRegions(String regionName) {
 
         return regionRepository.findByRegionNameStartsWith(regionName);
     }
 
-    private List<Region> findChildRegions(String regionName) {
-        Region region = findRegion(regionName);
+    private List<Region> findChildRegions(Region region) {
 
         return findChildRegions(new ArrayList<>(List.of(region)), region.getId());
     }
