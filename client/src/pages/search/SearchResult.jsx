@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import StoreCard from '../../assets/StoreCard.jsx';
 import axios from 'axios';
 import { useLocation, useSearchParams } from 'react-router-dom';
@@ -54,29 +54,31 @@ const SearchResult = () => {
   const [page, setPage] = useState(1);
   const location = useLocation();
 
-  const API = `${process.env.REACT_APP_API_URL}/api`;
-
   // 페이지 번호를 인수로 받아 데이터를 가져오는 함수
-  const fetchData = (pageNumber) => {
-    axios
-      .get(`${API}/search${location.search}&page=${pageNumber}&size=10`)
-      .then((res) => {
-        const newData = res.data.stores;
-        if (newData.length === 0) {
-          setHasMore(false); // 더 이상 데이터가 없을 때 hasMore를 false로 설정
-        } else {
-          setData((prevData) => [...prevData, ...newData]); // 기존 데이터에 새로운 데이터를 추가
-          if (newData.length < 10) {
-            setHasMore(false); // 데이터의 길이가 10보다 작으면 무한 스크롤 중지
+  const fetchData = useCallback(
+    (pageNumber) => {
+      const API = `${process.env.REACT_APP_API_URL}/api`;
+      axios
+        .get(`${API}/search${location.search}&page=${pageNumber}&size=10`)
+        .then((res) => {
+          const newData = res.data.stores;
+          if (newData.length === 0) {
+            setHasMore(false); // 더 이상 데이터가 없을 때 hasMore를 false로 설정
+          } else {
+            setData((prevData) => [...prevData, ...newData]); // 기존 데이터에 새로운 데이터를 추가
+            if (newData.length < 10) {
+              setHasMore(false); // 데이터의 길이가 10보다 작으면 무한 스크롤 중지
+            }
+            setPage(pageNumber + 1); // 다음 페이지를 위해 페이지 번호를 증가
           }
-          setPage(pageNumber + 1); // 다음 페이지를 위해 페이지 번호를 증가
-        }
-      })
-      .catch((err) => {
-        console.log('에러임', err);
-        setHasMore(false); // 데이터를 가져오는 동안 에러가 발생하면 hasMore를 false로 설정하여 무한 스크롤을 중지
-      });
-  };
+        })
+        .catch((err) => {
+          console.log('에러임', err);
+          setHasMore(false); // 데이터를 가져오는 동안 에러가 발생하면 hasMore를 false로 설정하여 무한 스크롤을 중지
+        });
+    },
+    [location, setData, setHasMore, setPage],
+  );
 
   // 검색어가 변경될 때마다 데이터를 가져오는 useEffect
   useEffect(() => {
@@ -89,7 +91,7 @@ const SearchResult = () => {
     } else {
       setData([]);
     }
-  }, [location, API]);
+  }, [location, fetchData]);
 
   const [searchParams] = useSearchParams();
   const query = searchParams.get('search_keyword');
