@@ -70,6 +70,15 @@ public class OrderService {
 
     @Transactional
     public Order doOrder(Order order, Integer minutes) {
+        try {
+            for (OrderMenu orderMenu : order.getOrderMenus()) {
+                orderMenuService.doOrderMenu(orderMenu);
+            }
+        } catch (RuntimeException e) {
+            order.setOrderStatus(OrderStatus.CANCELED);
+            return order;
+        }
+
         order.setPickupTime(LocalDateTime.now().plusMinutes(minutes));
         order.setOrderStatus(OrderStatus.READY);
 
