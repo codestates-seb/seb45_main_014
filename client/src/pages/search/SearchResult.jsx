@@ -55,6 +55,7 @@ const SearchResult = () => {
 
   const API = `${process.env.REACT_APP_API_URL}/api`;
 
+  // 검색어가 변경될 때마다 데이터를 가져오는 useEffect
   useEffect(() => {
     const keyWord = decodeURI(location.search);
 
@@ -65,6 +66,7 @@ const SearchResult = () => {
     }
   }, [location, API]);
 
+  // 페이지 번호를 인수로 받아 데이터를 가져오는 함수
   const fetchData = (pageNumber) => {
     axios
       .get(`${API}/search${location.search}&page=${pageNumber}&size=10`)
@@ -73,8 +75,8 @@ const SearchResult = () => {
         if (newData.length === 0) {
           setHasMore(false); // 더 이상 데이터가 없을 때 hasMore를 false로 설정
         } else {
-          setData((prevData) => [...prevData, ...newData]);
-          setPage(pageNumber + 1);
+          setData((prevData) => [...prevData, ...newData]); // 기존 데이터에 새로운 데이터를 추가
+          setPage(pageNumber + 1); // 다음 페이지를 위해 페이지 번호를 증가
         }
       })
       .catch((err) => {
