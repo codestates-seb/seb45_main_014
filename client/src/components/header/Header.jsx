@@ -24,7 +24,7 @@ const HeaderBox = styled.header`
     0 2px 8px hsla(0, 0%, 0%, 0.05);
 `;
 
-const Logo = styled(Link)`
+const Logo = styled.a`
   display: flex;
   width: 200px;
   align-items: center;
@@ -90,7 +90,7 @@ const Header = () => {
   return (
     <>
       <HeaderBox>
-        <Logo to="/">
+        <Logo href="/">
           {/* <img src={images.mainlogo} alt="main logo" width="50" /> */}
           BBANG ORDER
         </Logo>
