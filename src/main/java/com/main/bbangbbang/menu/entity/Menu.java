@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import javax.persistence.EntityListeners;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -43,11 +45,12 @@ public class Menu {
     private String ingredient;
 
     @Column
-    @Size(min = 100, max = 1000000)
+    @Min(100)
+    @Max(1000000)
     private Integer price;
 
     @Column
-    @Size(min = 0, max = 1000)
+    @Max(1000)
     private Integer stock;
 
     @Column
