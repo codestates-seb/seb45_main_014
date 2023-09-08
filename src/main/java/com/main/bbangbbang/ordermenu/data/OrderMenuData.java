@@ -13,4 +13,5 @@ public class OrderMenuData {
     private String menuName;
     private Integer price;
     private Integer quantity;
+    private String img;
 }
