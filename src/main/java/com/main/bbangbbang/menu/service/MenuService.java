@@ -26,4 +26,13 @@ public class MenuService {
 
         return menuRepository.findByMenuNameContaining(menuName);
     }
+
+    @Transactional
+    public void calculateStock(Menu menu, Integer quantity) throws RuntimeException {
+        Integer currentStock = menu.getStock();
+        if (currentStock < quantity) {
+            throw new RuntimeException(String.format("No Stocks for quantity: %d",quantity));
+        }
+        menu.setStock(currentStock - quantity);
+    }
 }

@@ -31,6 +31,7 @@ public class OrderService {
         Order order = new Order();
         order.setMember(memberService.findMember("hellobread1@googol.com")); // 임시 1번 member
         order.setStore(store);
+        order.setOrderStatus(OrderStatus.ACTIVE);
 
         return orderRepository.save(order);
     }
@@ -53,7 +54,11 @@ public class OrderService {
     @Transactional(readOnly = true)
     public Page<Order> findOrders(Long memberId, Integer page, Integer size) {
 
-        return orderRepository.findByMemberId(memberId, PageRequest.of(page-1, size)); // OrderStatus.DELETED 숨기기 필요
+        return orderRepository.findByMemberIdAndOrderStatusNot(
+                memberId,
+                OrderStatus.DELETED,
+                PageRequest.of(page-1, size)
+        );
     }
 
     @Transactional
@@ -65,6 +70,15 @@ public class OrderService {
 
     @Transactional
     public Order doOrder(Order order, Integer minutes) {
+        try {
+            for (OrderMenu orderMenu : order.getOrderMenus()) {
+                orderMenuService.doOrderMenu(orderMenu);
+            }
+        } catch (RuntimeException e) {
+            order.setOrderStatus(OrderStatus.CANCELED);
+            return order;
+        }
+
         order.setPickupTime(LocalDateTime.now().plusMinutes(minutes));
         order.setOrderStatus(OrderStatus.READY);
 

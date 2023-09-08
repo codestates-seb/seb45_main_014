@@ -8,6 +8,7 @@ import com.main.bbangbbang.order.data.OrderData;
 import com.main.bbangbbang.order.dto.OrderResponseDto;
 import com.main.bbangbbang.order.dto.OrdersResponseDto;
 import com.main.bbangbbang.order.entity.Order;
+import com.main.bbangbbang.order.entity.Order.OrderStatus;
 import com.main.bbangbbang.order.mapper.OrderMapper;
 import com.main.bbangbbang.order.service.OrderService;
 import com.main.bbangbbang.store.entity.Store;
@@ -48,7 +49,11 @@ public class OrderController { // jwt토큰 parsing하여 Member확인이 가능
         Order order = orderService.findActiveOrder(1L);
         Order doneOrder = orderService.doOrder(order, minutes);
 
-        return ResponseEntity.ok(new OrderResponseDto(orderMapper.orderToOrderData(doneOrder)));
+        if (doneOrder.getOrderStatus() == OrderStatus.CANCELED) {
+            return ResponseEntity.status(410).build();
+        }
+
+        return ResponseEntity. ok(new OrderResponseDto(orderMapper.orderToOrderData(doneOrder)));
     }
 
     @PostMapping("/cart/{menu-id}")

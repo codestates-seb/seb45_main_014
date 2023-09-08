@@ -41,6 +41,9 @@ public class Store {
     @Size(max = 40)
     private String address;
 
+    @Column
+    private Long placeId;
+
     @Column(unique = true)
     @Pattern(regexp = "\\d{10,11}$")
     private String phoneNum;
