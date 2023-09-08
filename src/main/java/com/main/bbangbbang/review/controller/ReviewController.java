@@ -3,6 +3,7 @@ package com.main.bbangbbang.review.controller;
 import com.main.bbangbbang.member.entity.Member;
 import com.main.bbangbbang.member.service.MemberService;
 import com.main.bbangbbang.order.entity.Order;
+import com.main.bbangbbang.order.entity.Order.OrderStatus;
 import com.main.bbangbbang.order.service.OrderService;
 import com.main.bbangbbang.review.data.ReviewData;
 import com.main.bbangbbang.review.dto.ReviewResponseDto;
@@ -40,6 +41,7 @@ public class ReviewController {
         // Todo : make sure order.getMemberId() == memberId from token
         Order order = orderService.findOrder(orderId);
         Review review = reviewService.createReview(order, content, rating); //need img
+        order.setOrderStatus(OrderStatus.REVIEWED);
 
         return ResponseEntity.ok(new ReviewResponseDto(reviewMapper.reviewToReviewDataWithStoreName(review)));
     }

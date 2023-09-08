@@ -18,7 +18,6 @@ public class ReviewService {
 
     @Transactional
     public Review createReview(Order order, String content, Integer rating) {
-        // TODO : make sure orderStatus == OrderStatus.PICKUP
         if (order.getOrderStatus() != OrderStatus.PICKUP) {
             throw new RuntimeException("주문 상태가 PICKUP이 아닙니다.");
         }

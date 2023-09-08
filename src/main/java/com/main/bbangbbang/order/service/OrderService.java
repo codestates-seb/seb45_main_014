@@ -31,6 +31,7 @@ public class OrderService {
         Order order = new Order();
         order.setMember(memberService.findMember("hellobread1@googol.com")); // 임시 1번 member
         order.setStore(store);
+        order.setOrderStatus(OrderStatus.ACTIVE);
 
         return orderRepository.save(order);
     }
