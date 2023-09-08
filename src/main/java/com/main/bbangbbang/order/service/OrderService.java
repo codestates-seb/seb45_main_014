@@ -1,6 +1,7 @@
 package com.main.bbangbbang.order.service;
 
 import com.main.bbangbbang.member.entity.Member;
+import com.main.bbangbbang.member.service.MemberService;
 import com.main.bbangbbang.menu.entity.Menu;
 import com.main.bbangbbang.order.entity.Order;
 import com.main.bbangbbang.order.entity.Order.OrderStatus;
@@ -23,14 +24,22 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrderService {
     private final OrderMenuService orderMenuService;
     private final OrderRepository orderRepository;
+    private final MemberService memberService;
 
     @Transactional
     public Order createOrder(Member member, Store store) {
         Order order = new Order();
-        order.setMember(member);
+        order.setMember(memberService.findMember("hellobread1@googol.com")); // 임시 1번 member
         order.setStore(store);
 
         return orderRepository.save(order);
+    }
+
+    @Transactional(readOnly = true)
+    public Order findOrder(Long orderId) {
+        Optional<Order> optionalOrder = orderRepository.findById(orderId);
+
+        return optionalOrder.orElseThrow(NoSuchElementException::new);
     }
 
     @Transactional(readOnly = true)
