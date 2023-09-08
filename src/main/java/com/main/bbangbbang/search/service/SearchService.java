@@ -34,13 +34,9 @@ public class SearchService {
         return storeService.findStoresByRegion(regionIds, PageRequest.of(page-1, size));
     }
 
-    public Page<Store> findByMenu(String menuName, int page, int size) {
+    public Page<Menu> findByMenu(String menuName, int page, int size) {
         List<Menu> menus = menuService.findMenusByName(menuName);
-        List<Store> stores = menus.stream()
-                .map(menu -> menu.getStore())
-                .distinct()
-                .collect(Collectors.toList());
 
-        return PageUtils.convertToPage(stores, page-1, size);
+        return PageUtils.convertToPage(menus, page-1, size);
     }
 }
