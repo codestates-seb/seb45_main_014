@@ -1,6 +1,7 @@
 package com.main.bbangbbang.ordermenu.service;
 
 import com.main.bbangbbang.menu.entity.Menu;
+import com.main.bbangbbang.menu.service.MenuService;
 import com.main.bbangbbang.order.entity.Order;
 import com.main.bbangbbang.ordermenu.entity.OrderMenu;
 import com.main.bbangbbang.ordermenu.repository.OrderMenuRepository;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @AllArgsConstructor
 public class OrderMenuService {
+    private final MenuService menuService;
     private final OrderMenuRepository orderMenuRepository;
 
     @Transactional
@@ -27,5 +29,10 @@ public class OrderMenuService {
     @Transactional(readOnly = true)
     public List<OrderMenu> findOrderMenus(Long orderId) {
         return orderMenuRepository.findByOrderId(orderId);
+    }
+
+    @Transactional
+    public void doOrderMenu(OrderMenu orderMenu) throws RuntimeException {
+        menuService.calculateStock(orderMenu.getMenu(), orderMenu.getQuantity());
     }
 }

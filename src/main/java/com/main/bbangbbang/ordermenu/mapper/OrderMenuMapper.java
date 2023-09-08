@@ -10,5 +10,6 @@ public interface OrderMenuMapper {
     @Mapping(source = "menu.menuName", target = "menuName")
     @Mapping(source = "menu.price", target = "price")
     @Mapping(source = "menu.id", target = "id")
+    @Mapping(source = "menu.img", target = "img")
     OrderMenuData orderMenuToOrderMenuData(OrderMenu orderMenu);
 }
