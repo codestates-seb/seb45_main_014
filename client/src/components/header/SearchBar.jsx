@@ -1,6 +1,6 @@
 import { styled, keyframes } from 'styled-components';
 import { useSearchStore } from '../../store/store';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import DropdownMenu from './DropdownMenu.jsx';
 import { useState } from 'react';
 
@@ -54,7 +54,6 @@ const DarkOverlay = styled.div`
 
 const SearchBar = () => {
   const { searchQuery, setSearchQuery, searchFilter } = useSearchStore();
-  // const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const [isFocused, setIsFocused] = useState(false);
 
@@ -67,15 +66,10 @@ const SearchBar = () => {
     e.preventDefault();
 
     if (searchQuery.trim()) {
-      // setSearchParams({
-      //   search_keyword: searchQuery.trim(),
-      //   search_target: searchFilter,
-      //   page: 1,
-      //   size: 10,
-      // });
-      navigate(
-        `/search?search_keyword=${searchQuery.trim()}&search_target=${searchFilter}&page=1&size=10`,
-      );
+      navigate({
+        pathname: '/search',
+        search: `?search_keyword=${searchQuery.trim()}&search_target=${searchFilter}`,
+      });
 
       // 검색창 focus 해제하기
       document.activeElement.blur();

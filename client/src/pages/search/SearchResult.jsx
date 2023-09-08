@@ -4,6 +4,7 @@ import StoreCard from '../../assets/StoreCard.jsx';
 import axios from 'axios';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { ReactComponent as Magnifier } from '../../assets/images/magnifier.svg';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 const Wrapper = styled.section`
   max-width: 650px;
@@ -48,23 +49,40 @@ const NoResult = styled.div`
 
 const SearchResult = () => {
   const [data, setData] = useState([]);
+  const [hasMore, setHasMore] = useState(true);
+  const [page, setPage] = useState(1);
   const location = useLocation();
 
   const API = `${process.env.REACT_APP_API_URL}/api`;
+
   useEffect(() => {
     const keyWord = decodeURI(location.search);
 
     if (keyWord) {
-      axios
-        .get(`${API}/search${keyWord}`)
-        .then((res) => setData(res.data.stores))
-        .catch((err) => console.log('에러임', err));
+      fetchData(1); // 페이지 로드시 첫 번째 페이지 데이터 로드
     } else {
       setData([]);
     }
   }, [location, API]);
 
-  // query string에서 search_keyword를 가져옴
+  const fetchData = (pageNumber) => {
+    axios
+      .get(`${API}/search${location.search}&page=${pageNumber}&size=10`)
+      .then((res) => {
+        const newData = res.data.stores;
+        if (newData.length === 0) {
+          setHasMore(false); // 더 이상 데이터가 없을 때 hasMore를 false로 설정
+        } else {
+          setData((prevData) => [...prevData, ...newData]);
+          setPage(pageNumber + 1);
+        }
+      })
+      .catch((err) => {
+        console.log('에러임', err);
+        setHasMore(false); // 데이터를 가져오는 동안 에러가 발생하면 hasMore를 false로 설정하여 무한 스크롤을 중지
+      });
+  };
+
   const [searchParams] = useSearchParams();
   const query = searchParams.get('search_keyword');
 
@@ -82,11 +100,19 @@ const SearchResult = () => {
           <p className="pt-8">검색된 결과가 없습니다.</p>
         </NoResult>
       )}
-      <DataContainer>
-        {data.map((store, idx) => (
-          <StoreCard key={idx} store={store} />
-        ))}
-      </DataContainer>
+      {/*무한 스크롤 구현*/}
+      <InfiniteScroll
+        dataLength={data.length}
+        next={() => fetchData(page)} // 다음 페이지 데이터 로드
+        hasMore={hasMore} // 무한 스크롤을 계속할지 여부
+        loader={<h4>Loading...</h4>}
+      >
+        <DataContainer>
+          {data.map((store, idx) => (
+            <StoreCard key={idx} store={store} />
+          ))}
+        </DataContainer>
+      </InfiniteScroll>
     </Wrapper>
   );
 };
