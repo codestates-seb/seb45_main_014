@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { ReactComponent as Magnifier } from '../../assets/images/magnifier.svg';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import LoadingSpinner from '../../components/Loading.jsx';
 
 const Wrapper = styled.section`
   max-width: 650px;
@@ -55,17 +56,6 @@ const SearchResult = () => {
 
   const API = `${process.env.REACT_APP_API_URL}/api`;
 
-  // 검색어가 변경될 때마다 데이터를 가져오는 useEffect
-  useEffect(() => {
-    const keyWord = decodeURI(location.search);
-
-    if (keyWord) {
-      fetchData(1); // 페이지 로드시 첫 번째 페이지 데이터 로드
-    } else {
-      setData([]);
-    }
-  }, [location, API]);
-
   // 페이지 번호를 인수로 받아 데이터를 가져오는 함수
   const fetchData = (pageNumber) => {
     axios
@@ -76,6 +66,9 @@ const SearchResult = () => {
           setHasMore(false); // 더 이상 데이터가 없을 때 hasMore를 false로 설정
         } else {
           setData((prevData) => [...prevData, ...newData]); // 기존 데이터에 새로운 데이터를 추가
+          if (newData.length < 10) {
+            setHasMore(false); // 데이터의 길이가 10보다 작으면 무한 스크롤 중지
+          }
           setPage(pageNumber + 1); // 다음 페이지를 위해 페이지 번호를 증가
         }
       })
@@ -84,6 +77,19 @@ const SearchResult = () => {
         setHasMore(false); // 데이터를 가져오는 동안 에러가 발생하면 hasMore를 false로 설정하여 무한 스크롤을 중지
       });
   };
+
+  // 검색어가 변경될 때마다 데이터를 가져오는 useEffect
+  useEffect(() => {
+    const keyWord = decodeURI(location.search);
+
+    if (keyWord) {
+      setData([]); // 검색어가 변경될 때마다 기존 데이터를 초기화
+      setHasMore(true); // 재검색을 할 경우 다시 hasMore를 true로 설정하여 무한 스크롤을 계속할 수 있도록 함
+      fetchData(1); // 페이지 로드시 첫 번째 페이지 데이터 로드
+    } else {
+      setData([]);
+    }
+  }, [location, API]);
 
   const [searchParams] = useSearchParams();
   const query = searchParams.get('search_keyword');
@@ -107,7 +113,11 @@ const SearchResult = () => {
         dataLength={data.length}
         next={() => fetchData(page)} // 다음 페이지 데이터 로드
         hasMore={hasMore} // 무한 스크롤을 계속할지 여부
-        loader={<h4>Loading...</h4>}
+        loader={
+          <div className="flex justify-center pt-14">
+            <LoadingSpinner position="static" />
+          </div>
+        }
       >
         <DataContainer>
           {data.map((store, idx) => (

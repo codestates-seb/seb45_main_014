@@ -73,6 +73,8 @@ const SearchBar = () => {
 
       // 검색창 focus 해제하기
       document.activeElement.blur();
+      // 페이지 이동시 강제 스크롤 이동
+      window.scrollTo(0, 0);
     } else {
       // 검색 키워드가 존재하지 않는 경우 경고창 띄우기
       alert('검색어를 입력해 주세요!');
