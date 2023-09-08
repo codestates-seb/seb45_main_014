@@ -27,6 +27,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 //  사용자 정보 기본값 -> UserInfo 변경되면서 불필요
 //  import static org.springframework.transaction.TransactionDefinition.withDefaults;
 
+@EnableWebSecurity
 @Configuration
 public class SecurityConfiguration {
     private final JwtTokenizer jwtTokenizer;
