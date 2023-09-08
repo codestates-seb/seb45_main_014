@@ -11,9 +11,9 @@ const spinAnimation = keyframes`
 `;
 
 const SpinnerContainer = styled.div`
-  position: fixed;
-  top: 50%;
-  left: 50%;
+  position: ${(props) => props.position || 'fixed'};
+  top: ${(props) => props.top || '50%'};
+  left: ${(props) => props.left || '50%'};
   transform: translate(-50%, -50%);
   display: flex;
   justify-content: center;
@@ -29,9 +29,9 @@ const LoadingSpinnerElement = styled.div`
   animation: ${spinAnimation} 1.5s linear infinite;
 `;
 
-const LoadingSpinner = () => {
+const LoadingSpinner = ({ position, top, left }) => {
   return (
-    <SpinnerContainer>
+    <SpinnerContainer position={position} top={top} left={left}>
       <LoadingSpinnerElement />
     </SpinnerContainer>
   );
