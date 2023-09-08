@@ -26,7 +26,7 @@ public class SearchService {
     }
 
     public Page<Store> findByRegion(String regionName, int page, int size) {
-        List<Region> regions = regionService.findChildRegions(regionName);
+        List<Region> regions = regionService.findAllSubRegions(regionName);
         List<Long> regionIds = regions.stream()
                                 .map(Region::getId)
                                 .collect(Collectors.toList());

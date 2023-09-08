@@ -6,5 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RegionRepository extends JpaRepository<Region, Long> {
     Region findByRegionName(String regionName);
+    List<Region> findByRegionNameStartsWith(String regionName);
     List<Region> findByParentId(Long parentId);
 }
