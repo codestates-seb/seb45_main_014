@@ -35,8 +35,8 @@ public class ReviewController {
 
     @PostMapping("/orders/{order-id}/reviews")
     public ResponseEntity<?> postReview(@PathVariable("order-id") Long orderId,
-                                        @RequestParam("content") String content,
-                                        @RequestParam("rating") Integer rating) {
+                                        @RequestParam(name = "content") String content,
+                                        @RequestParam(name = "rating") Integer rating) {
         // Todo : make sure order.getMemberId() == memberId from token
         Order order = orderService.findOrder(orderId);
         Review review = reviewService.createReview(order, content, rating); //need img
