@@ -1,6 +1,7 @@
 package com.main.bbangbbang.order.controller;
 
 import com.main.bbangbbang.member.entity.Member;
+import com.main.bbangbbang.member.service.MemberService;
 import com.main.bbangbbang.menu.entity.Menu;
 import com.main.bbangbbang.menu.service.MenuService;
 import com.main.bbangbbang.order.data.OrderData;
@@ -32,6 +33,7 @@ public class OrderController { // jwt토큰 parsing하여 Member확인이 가능
     private final OrderService orderService;
     private final StoreService storeService;
     private final MenuService menuService;
+    private final MemberService memberService;
     private final OrderMapper orderMapper;
 
     @GetMapping("/cart")
@@ -55,7 +57,7 @@ public class OrderController { // jwt토큰 parsing하여 Member확인이 가능
                                      @RequestParam("new_order") Boolean isNewOrder) {
         Menu menu = menuService.findMenu(menuId);
         Store store = storeService.findStoreByMenu(menu);
-        Member member = new Member();
+        Member member = memberService.findMember("hellobread1@googol.com"); // 임시 1번 멤버
         Order order;
 
         if (isNewOrder) {

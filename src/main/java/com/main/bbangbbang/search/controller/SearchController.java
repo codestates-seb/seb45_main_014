@@ -1,5 +1,9 @@
 package com.main.bbangbbang.search.controller;
 
+import com.main.bbangbbang.menu.data.MenuData;
+import com.main.bbangbbang.menu.dto.MenusResponseDto;
+import com.main.bbangbbang.menu.entity.Menu;
+import com.main.bbangbbang.menu.mapper.MenuMapper;
 import com.main.bbangbbang.search.service.SearchService;
 import com.main.bbangbbang.store.data.StoreData;
 import com.main.bbangbbang.store.dto.StoresResponseDto;
@@ -22,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class SearchController {
     private final SearchService searchService;
     private final StoreMapper storeMapper;
+    private final MenuMapper menuMapper;
 
     @GetMapping(params = "search_target=store")
     public ResponseEntity<?> getStoresByName(@RequestParam(name = "search_keyword") String keyword,
@@ -47,10 +52,14 @@ public class SearchController {
     public ResponseEntity<?> getStoresByMenu(@RequestParam(name = "search_keyword") String keyword,
                                        @RequestParam(name = "page") Integer page,
                                        @RequestParam(name = "size") Integer size) {
-        Page<Store> storePage = searchService.findByMenu(keyword, page, size);
-        PageInfo pageInfo = PageInfo.of(page, size, storePage);
+        Page<Menu> menuPage = searchService.findByMenu(keyword, page, size);
+        PageInfo pageInfo = PageInfo.of(page, size, menuPage);
+        List<MenuData> menus = menuPage.stream()
+                .map(menuMapper::menuToMenuSearchData)
+                .collect(Collectors.toList());
 
-        return ResponseEntity.ok(convertToResponseDto(storePage, pageInfo));
+
+        return ResponseEntity.ok(new MenusResponseDto(menus, pageInfo));
     }
 
     private StoresResponseDto convertToResponseDto(Page<Store> storePage, PageInfo pageInfo) {

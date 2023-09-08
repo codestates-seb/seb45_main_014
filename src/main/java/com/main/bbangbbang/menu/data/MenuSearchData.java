@@ -1,4 +1,4 @@
-package com.main.bbangbbang.ordermenu.data;
+package com.main.bbangbbang.menu.data;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -8,10 +8,7 @@ import lombok.Setter;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Getter
 @Setter
-public class OrderMenuData {
-    private Long id;
-    private String menuName;
-    private Integer price;
-    private Integer quantity;
+public class MenuSearchData extends MenuData{
+    private String storeName;
     private String img;
 }
