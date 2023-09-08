@@ -53,7 +53,11 @@ public class OrderService {
     @Transactional(readOnly = true)
     public Page<Order> findOrders(Long memberId, Integer page, Integer size) {
 
-        return orderRepository.findByMemberId(memberId, PageRequest.of(page-1, size)); // OrderStatus.DELETED 숨기기 필요
+        return orderRepository.findByMemberIdAndOrderStatusNot(
+                memberId,
+                OrderStatus.DELETED,
+                PageRequest.of(page-1, size)
+        );
     }
 
     @Transactional
