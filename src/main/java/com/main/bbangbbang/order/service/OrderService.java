@@ -74,7 +74,7 @@ public class OrderService {
     @Transactional
     public void addCart(Order order, Menu menu, Integer quantity) {
         for (OrderMenu orderMenu : order.getOrderMenus())
-            if (orderMenu.getMenu().getMenuName().equals(menu.getMenuName())) {
+            if (orderMenu.getMenu().getId().equals(menu.getId())) {
                 orderMenu.setQuantity(orderMenu.getQuantity() + quantity);
                 return;
             }
