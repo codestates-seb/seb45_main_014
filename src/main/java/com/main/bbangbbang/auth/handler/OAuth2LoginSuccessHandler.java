@@ -41,19 +41,22 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
             var oAuth2User = (OAuth2User)authentication.getPrincipal();
             String email = String.valueOf(oAuth2User.getAttributes().get("email")); // (3)
             String nickname = String.valueOf(oAuth2User.getAttributes().get("name"));
+            String img = String.valueOf(oAuth2User.getAttributes().get("picture"));
 
             System.out.println("OAuth 사용자 정보 : " + oAuth2User);
             System.out.println("사용자 이름 : " + nickname);
+            System.out.println("사용자 이메일 : " + email);
+            System.out.println("사용자 프로필 사진 : " + img);
 
             List<String> authorities = authorityUtils.createRoles(email);           // (4)
 
-            saveMember(email, nickname);  // (5)
+            saveMember(email, nickname, img);  // (5)
 
             redirect(request, response, email, nickname, authorities);  // (6)
         }
 
-        private void saveMember(String email, String nickname) {
-            memberService.createMember(email, nickname);
+        private void saveMember(String email, String nickname, String img) {
+            memberService.createMember(email, nickname, img);
         }
 
         private void redirect(HttpServletRequest request, HttpServletResponse response, String username, String nickname, List<String> authorities) throws IOException {
