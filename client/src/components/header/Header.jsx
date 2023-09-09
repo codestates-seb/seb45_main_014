@@ -51,7 +51,7 @@ const SearchBox = styled.div`
 const CartBox = styled.div`
   margin-left: 15px;
   position: relative;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   &:hover {
     transform: scale(1.15);
   }
@@ -59,7 +59,7 @@ const CartBox = styled.div`
 
 const UserBox = styled.div`
   margin-left: 15px;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   &:hover {
     transform: scale(1.2);
   }
