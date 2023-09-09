@@ -60,20 +60,20 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         }
 
         private void redirect(HttpServletRequest request, HttpServletResponse response, String username, String nickname, List<String> authorities) throws IOException {
-            String accessToken = delegateAccessToken(username, authorities);  // (6-1)
+            String accessToken = delegateAccessToken(username, authorities);
             System.out.println("Access Token : " + accessToken);
 
-            String refreshToken = delegateRefreshToken(username);     // (6-2)
+            String refreshToken = delegateRefreshToken(username);
             System.out.println("Refresh Token : " + refreshToken);
 
-            response.setHeader("Authorization", "Bearer " + accessToken);
+            response.setHeader("Authorization", "Bearer " + accessToken);   // setHeader 메서드를 통해 accessToken, refreshToken을 response에 담기는 것 확인했습니다.
             response.setHeader("Refresh", refreshToken);
-            String uri = "http://localhost:3000";
+//            String uri = "http://localhost:3000";
 
-//            String uri = createURI(accessToken, refreshToken).toString();   // (6-3)
+            String uri = createURI(accessToken, refreshToken).toString();   // createURI 메서드를 통해 고정주소 + accessToken, refreshToken을 함께 주는 메서드
             System.out.println("redirect to URI : " + uri);
 
-            getRedirectStrategy().sendRedirect(request, response, uri);   // (6-4) 고정주소 + uri 함께 주는 내장 메서드
+            getRedirectStrategy().sendRedirect(request, response, uri);   // sendRedirect 메서드를 통해 redirect
 
         }
 
@@ -111,8 +111,8 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
                     .newInstance()
                     .scheme("http")
                     .host("localhost")
-//                .port(80) // 추후 포트번호 변경 시 작성
-                    .path("/receive-token.html")
+                    .port(3000) // 추후 포트번호 변경 시 작성
+//                    .path("/receive-token.html")
                     .queryParams(queryParams)
                     .build()
                     .toUri();
