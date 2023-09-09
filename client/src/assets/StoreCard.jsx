@@ -48,11 +48,13 @@ const StoreCard = ({ store }) => {
   return (
     <div className="w-72 relative m-2">
       <Link to={`/stores/${store.id}`}>
-        <StoreImage
-          className="object-cover mb-1"
-          src={img}
-          alt="매장 대표 이미지"
-        />
+        <div className=" overflow-hidden rounded-lg">
+          <StoreImage
+            className="object-cover"
+            src={img}
+            alt="매장 대표 이미지"
+          />
+        </div>
       </Link>
       <BookmarkButton
         is_favorite={is_favorite}
