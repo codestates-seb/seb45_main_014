@@ -6,6 +6,7 @@ import StoreReviewTab from '../components/store/StoreReviewTab.jsx';
 import axios from 'axios';
 import LoadingSpinner from '../components/Loading.jsx';
 import menuData from '../assets/data/menuData';
+import reviewDmData from '../assets/data/reviewData';
 
 const Store = () => {
   const { id } = useParams();
@@ -47,7 +48,7 @@ const Store = () => {
     setCurrentTab(tab);
     if (tab === '메뉴') {
       menuRef.current.scrollIntoView({ behavior: 'smooth' });
-    } else if (tab === '후기') {
+    } else if (tab === '리뷰') {
       reviewRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
@@ -67,22 +68,22 @@ const Store = () => {
         </li>
         <li className="w-full hover:bg-[#ccc] py-3">
           <a
-            href="#후기"
+            href="#리뷰"
             className="block w-full cursor-pointer"
-            onClick={() => setCurrentTab('후기')}
+            onClick={() => setCurrentTab('리뷰')}
           >
-            후기 ({reviewData.length})
+            리뷰 ({reviewData.length})
           </a>
         </li>
       </ul>
       <div className="flex flex-col mx-auto">
         <div id="메뉴" ref={menuRef}>
           메뉴
-          <MenuTab menuData={storeData.menus} />
+          <MenuTab menuData={menuData} />
         </div>
-        <div id="후기" ref={reviewRef}>
-          후기
-          <StoreReviewTab reviewData={reviewData} />
+        <div id="리뷰" ref={reviewRef}>
+          리뷰
+          <StoreReviewTab reviewData={reviewDmData} />
         </div>
       </div>
     </div>

@@ -5,7 +5,6 @@ import { useState, useEffect, useRef } from 'react';
 const StoreReviewTab = ({ reviewData }) => {
   const reviewsPerPage = 5; // 페이지당 보여줄 리뷰 수
   const [currentPage, setCurrentPage] = useState(1);
-  const totalReviews = reviewData.length;
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -18,12 +17,12 @@ const StoreReviewTab = ({ reviewData }) => {
 
   return (
     <div className="flex flex-col w-[1050px] mb-3">
-      {reviewData.map((review) => {
-        return <ReviewItem key={review.id} data={review} />;
-      })}
+      {currentReviews.map((review) => (
+        <ReviewItem key={review.id} data={review} />
+      ))}
       <Pagination
         currentPage={currentPage}
-        totalPages={Math.ceil(totalReviews / reviewsPerPage)}
+        totalPages={Math.ceil(reviewData.length / reviewsPerPage)}
         onPageChange={handlePageChange}
       />
     </div>
