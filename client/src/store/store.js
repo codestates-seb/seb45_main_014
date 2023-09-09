@@ -101,20 +101,8 @@ export const useCartItemStore = create((set) => ({
 }));
 
 export const useUserStore = create((set) => ({
-  isLogged: false, // 로그인 여부
-  token: '', // 토큰
-  // 로그인 상태를 업데이트하는 메서드
-  login: (token) => {
-    set({
-      isLogged: true,
-      token: token,
-    });
-  },
-  // 로그아웃 상태를 업데이트하는 메서드
-  logout: () => {
-    set({
-      isLogged: false,
-      token: '',
-    });
-  },
+  isLoggedIn: false,
+  token: null,
+  setLogin: (token) => set({ isLoggedIn: true, token }),
+  logout: () => set({ isLoggedIn: false, token: null }),
 }));
