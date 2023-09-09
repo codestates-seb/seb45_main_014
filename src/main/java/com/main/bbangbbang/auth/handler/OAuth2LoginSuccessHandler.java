@@ -2,6 +2,7 @@ package com.main.bbangbbang.auth.handler;
 
 import com.main.bbangbbang.auth.jwt.JwtTokenizer;
 import com.main.bbangbbang.auth.utils.CustomAuthorityUtils;
+import com.main.bbangbbang.member.service.MemberService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -23,38 +24,42 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
         private final CustomAuthorityUtils authorityUtils;
         private final JwtTokenizer jwtTokenizer;
-        // private final MemberService memberService;
+        private final MemberService memberService;
 
         // (2)
         public OAuth2LoginSuccessHandler(JwtTokenizer jwtTokenizer,
                                          CustomAuthorityUtils authorityUtils
-        //                                 , MemberService memberService
+                                         , MemberService memberService
         ) {
             this.jwtTokenizer = jwtTokenizer;
             this.authorityUtils = authorityUtils;
-//            this.memberService = memberService;
+            this.memberService = memberService;
         }
 
         @Override
         public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
             var oAuth2User = (OAuth2User)authentication.getPrincipal();
             String email = String.valueOf(oAuth2User.getAttributes().get("email")); // (3)
-            System.out.println("oauth user info : " + oAuth2User);
+            String nickname = String.valueOf(oAuth2User.getAttributes().get("name"));
+            String img = String.valueOf(oAuth2User.getAttributes().get("picture"));
+
+            System.out.println("OAuth 사용자 정보 : " + oAuth2User);
+            System.out.println("사용자 이름 : " + nickname);
+            System.out.println("사용자 이메일 : " + email);
+            System.out.println("사용자 프로필 사진 : " + img);
 
             List<String> authorities = authorityUtils.createRoles(email);           // (4)
 
-           saveMember(email);  // (5)
+            saveMember(email, nickname, img);  // (5)
 
-           redirect(request, response, email, authorities);  // (6)
+            redirect(request, response, email, nickname, authorities);  // (6)
         }
 
-        private void saveMember(String email) {
-//            Member member = new Member(email);
-//            member.setStamp(new Stamp());
-//            memberService.createMember(member);
+        private void saveMember(String email, String nickname, String img) {
+            memberService.createMember(email, nickname, img);
         }
 
-        private void redirect(HttpServletRequest request, HttpServletResponse response, String username, List<String> authorities) throws IOException {
+        private void redirect(HttpServletRequest request, HttpServletResponse response, String username, String nickname, List<String> authorities) throws IOException {
             String accessToken = delegateAccessToken(username, authorities);  // (6-1)
             System.out.println("Access Token : " + accessToken);
 
