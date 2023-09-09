@@ -3,7 +3,7 @@ import { calculateDate } from '../../utils/calculateDate';
 import { useState, useEffect, useRef } from 'react';
 
 const StoreReviewTab = ({ reviewData }) => {
-  const reviewsPerPage = 5; // 페이지당 보여줄 리뷰 수
+  const reviewsPerPage = 10; // 페이지당 보여줄 리뷰 수
   const [currentPage, setCurrentPage] = useState(1);
 
   const handlePageChange = (page) => {
