@@ -55,19 +55,18 @@ export const MenuItem = ({ data }) => {
 
   return (
     <div className="flex p-[10px] border-b">
-      <div className="w-[750px]">
-        <h3 className="text-[25px]">{data.menu_name}</h3>
-        <div className="text-[15px]">{data.menu_desc}</div>
+      <div className="xl:w-[750px]">
+        <h3 className="xl:text-[25px]">{data.menu_name}</h3>
+        <div className="xl:text-[15px]">{data.menu_desc}</div>
       </div>
       <div>
-        <div onClick={openModal} className="cursor-pointer mb-2">
-          <img
-            className="w-[300px] h-[200px] object-cover rounded-lg"
-            src={data.img}
-            alt="메뉴 이미지"
-          ></img>
+        <div
+          onClick={openModal}
+          className="cursor-pointer mb-2 overflow-hidden rounded-lg"
+        >
+          <StyledImage src={data.img} alt="메뉴 이미지"></StyledImage>
         </div>
-        <div className="flex space-x-36">
+        <div className="flex xl:space-x-36">
           <div>{data.price.toLocaleString()}원</div>
           <div>남은 수량: {data.stock}</div>
         </div>
@@ -146,4 +145,16 @@ const ModalBg = styled.div`
   justify-content: center;
   z-index: 9999;
   background-color: rgba(76, 76, 76, 0.5);
+`;
+
+const StyledImage = styled.img`
+  width: 300px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.3s ease; /* 확대 트랜지션 효과 추가 */
+
+  &:hover {
+    transform: scale(1.1); /* 이미지를 1.1배 확대 */
+  }
 `;

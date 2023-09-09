@@ -17,7 +17,7 @@ const StoreReviewTab = ({ reviewData }) => {
   const currentReviews = reviewData.slice(startIndex, endIndex);
 
   return (
-    <div className="flex flex-col w-[1050px]">
+    <div className="flex flex-col w-[1050px] mb-3">
       {reviewData.map((review) => {
         return <ReviewItem key={review.id} data={review} />;
       })}

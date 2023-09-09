@@ -1,6 +1,7 @@
 import { FcGoogle } from 'react-icons/fc';
 import { RiKakaoTalkFill } from 'react-icons/ri';
 import { ImManWoman } from 'react-icons/im';
+import { useAuthStore } from '../../store/store';
 
 const OauthBtn = ({ bgColor, color, icon, text, onClick }) => {
   return (
@@ -39,6 +40,8 @@ export const GoogleBtn = () => {
   const googleSocialLogin = () => {
     window.location.href = `${process.env.REACT_APP_API_URL}/oauth2/authorization/google`;
   };
+
+  const setToken = useAuthStore((state) => state.setToken);
 
   return (
     <OauthBtn

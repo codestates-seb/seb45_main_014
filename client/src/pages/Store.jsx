@@ -5,6 +5,7 @@ import MenuTab from '../components/store/MenuTab.jsx';
 import StoreReviewTab from '../components/store/StoreReviewTab.jsx';
 import axios from 'axios';
 import LoadingSpinner from '../components/Loading.jsx';
+import menuData from '../assets/data/menuData';
 
 const Store = () => {
   const { id } = useParams();

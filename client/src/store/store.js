@@ -106,3 +106,9 @@ export const useCartItemStore = create((set) => ({
     });
   },
 }));
+
+export const useAuthStore = create((set) => ({
+  token: null, // 초기에는 토큰이 없으므로 null로 설정
+  setToken: (newToken) => set({ token: newToken }), // 토큰을 설정하는 메서드
+  clearToken: () => set({ token: null }), // 토큰을 지우는 메서드
+}));
