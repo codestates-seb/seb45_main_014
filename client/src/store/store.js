@@ -100,9 +100,18 @@ export const useCartItemStore = create((set) => ({
   },
 }));
 
-export const useUserStore = create((set) => ({
+export const useAuthStore = create((set) => ({
   isLoggedIn: false,
-  token: null,
-  setLogin: (token) => set({ isLoggedIn: true, token }),
-  logout: () => set({ isLoggedIn: false, token: null }),
+  accessToken: null,
+  refreshToken: null,
+  login: (access, refresh) => {
+    set({ isLoggedIn: true, accessToken: access, refreshToken: refresh });
+    localStorage.setItem('access_token', access);
+    localStorage.setItem('refresh_token', refresh);
+  },
+  logout: () => {
+    set({ isLoggedIn: false, accessToken: null, refreshToken: null });
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+  },
 }));

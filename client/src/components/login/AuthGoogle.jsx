@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoadingSpinner from '../Loading.jsx';
+import { useAuthStore } from '../../store/store';
 
 const AuthGoogle = () => {
   const navigate = useNavigate();
+  const login = useAuthStore((state) => state.login);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -11,15 +13,11 @@ const AuthGoogle = () => {
     const refreshToken = urlParams.get('refresh_token');
 
     if (accessToken && refreshToken) {
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('refreshToken', refreshToken);
+      login(accessToken, refreshToken);
     }
 
-    console.log('accessToken', accessToken);
-    console.log('refreshToken', refreshToken);
-
     navigate('/');
-  }, [navigate]);
+  }, [login, navigate]);
 
   return <LoadingSpinner />;
 };

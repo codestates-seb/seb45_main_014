@@ -21,18 +21,6 @@ function App() {
   const location = useLocation();
   const showFooter = location.pathname !== '/mypage';
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const accessToken = urlParams.get('access_token');
-  const refreshToken = urlParams.get('refresh_token');
-
-  if (accessToken && refreshToken) {
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('refreshToken', refreshToken);
-  }
-
-  console.log('accessToken', accessToken);
-  console.log('refreshToken', refreshToken);
-
   return (
     <>
       <GlobalStyle />
