@@ -39,6 +39,9 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         @Override
         public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
             var oAuth2User = (OAuth2User)authentication.getPrincipal();
+            // OAuth2User extends OAuth2AuthenticatedPrincipal extends AuthenticatedPrincipal extends Principal
+            // Map<String, Object> attributes = oAuth2User.getAttributes(); 을 사용한 것입니다.
+            // OAuth2User 인터페이스를 구현한 구글, 페이스북, 네이버, 카카오 등의 OAuth2User 객체를 받아올 수 있습니다.
             String email = String.valueOf(oAuth2User.getAttributes().get("email")); // (3)
             String nickname = String.valueOf(oAuth2User.getAttributes().get("name"));
             String img = String.valueOf(oAuth2User.getAttributes().get("picture"));
@@ -112,7 +115,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
                     .scheme("http")
                     .host("localhost")
                     .port(3000) // 추후 포트번호 변경 시 작성
-//                    .path("/receive-token.html")
+                    .path("/auth/google")
                     .queryParams(queryParams)
                     .build()
                     .toUri();
