@@ -65,13 +65,6 @@ export const useModalStore = create((set) => ({
   closeModal: () => set({ isModalOpen: false }),
 }));
 
-export const useSignStore = create((set) => ({
-  isLogin: false,
-  token: null,
-  setLogin: (value) => set({ isLogin: value }),
-  setToken: (value) => set({ token: value }),
-}));
-
 export const useLoginModalStore = create((set) => ({
   isLoginModalOpen: false,
   openLoginModal: () => set({ isLoginModalOpen: true }),
@@ -104,5 +97,21 @@ export const useCartItemStore = create((set) => ({
       });
       return { cartItems: newCartItems };
     });
+  },
+}));
+
+export const useAuthStore = create((set) => ({
+  isLoggedIn: false,
+  accessToken: null,
+  refreshToken: null,
+  login: (access, refresh) => {
+    set({ isLoggedIn: true, accessToken: access, refreshToken: refresh });
+    localStorage.setItem('access_token', access);
+    localStorage.setItem('refresh_token', refresh);
+  },
+  logout: () => {
+    set({ isLoggedIn: false, accessToken: null, refreshToken: null });
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
   },
 }));

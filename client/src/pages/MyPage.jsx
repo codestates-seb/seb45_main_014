@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '../assets/buttons/Button.jsx';
 import { styled } from 'styled-components';
 import Reviews from '../components/myPage/Reviews.jsx';
 import Orders from '../components/myPage/Orders.jsx';
 import Favorites from '../components/myPage/Favorites.jsx';
+import axios from 'axios';
+import { useAuthStore } from '../store/store.js';
 
 import { Link } from 'react-router-dom';
 
@@ -37,6 +39,22 @@ const TabContainer = styled.ul`
 
 const MyPage = () => {
   const [currentTab, setCurrentTab] = useState('리뷰 관리');
+  const accessToken = useAuthStore((state) => state.accessToken);
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/api/member`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [accessToken]);
 
   return (
     <div className="max-w-screen-lg mx-auto p-10">
