@@ -75,9 +75,9 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
             String uri = createURI(accessToken, refreshToken).toString();   // createURI 메서드를 통해 고정주소 + accessToken, refreshToken을 함께 주는 메서드
             System.out.println("redirect to URI : " + uri);
+            System.out.println(request.getRequestURL());
 
             getRedirectStrategy().sendRedirect(request, response, uri);   // sendRedirect 메서드를 통해 redirect
-
         }
 
         private String delegateAccessToken(String username, List<String> authorities) {
@@ -120,4 +120,20 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
                     .build()
                     .toUri();
         }
+
+    private URI createDeployURI(String accessToken, String refreshToken) {
+        MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
+        queryParams.add("access_token", accessToken);
+        queryParams.add("refresh_token", refreshToken);
+
+        return UriComponentsBuilder
+                .newInstance()
+                .scheme("http")
+                .host("bbangorder.s3-website.ap-northeast-2.amazonaws.com")
+//                .port(3000) // 추후 포트번호 변경 시 작성
+                .path("/auth/google")
+                .queryParams(queryParams)
+                .build()
+                .toUri();
+    }
     }
