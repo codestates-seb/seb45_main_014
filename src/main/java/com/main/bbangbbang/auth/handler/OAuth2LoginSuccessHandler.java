@@ -3,6 +3,7 @@ package com.main.bbangbbang.auth.handler;
 import com.main.bbangbbang.auth.jwt.JwtTokenizer;
 import com.main.bbangbbang.auth.utils.CustomAuthorityUtils;
 import com.main.bbangbbang.member.service.MemberService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -21,6 +22,9 @@ import java.util.List;
 import java.util.Map;
 
 public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {   // (1)
+
+    @Value("${app.frontend.deployment.url}")  // 배포된 프론트엔드 URL을 프로퍼티 파일로부터 읽어옴
+    private String frontendDeploymentUrl;
 
         private final CustomAuthorityUtils authorityUtils;
         private final JwtTokenizer jwtTokenizer;
@@ -110,27 +114,25 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
             queryParams.add("access_token", accessToken);
             queryParams.add("refresh_token", refreshToken);
 
-            return UriComponentsBuilder
-                    .newInstance()
-                    .scheme("http")
-                    .host("localhost")
-                    .port(3000) // 추후 포트번호 변경 시 작성
-                    .path("/auth/google")
-                    .queryParams(queryParams)
-                    .build()
-                    .toUri();
-        }
+        String host;  // 호스트 이름을 저장할 변수
+        int port;  // 포트 번호를 저장할 변수
 
-    private URI createDeployURI(String accessToken, String refreshToken) {
-        MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
-        queryParams.add("access_token", accessToken);
-        queryParams.add("refresh_token", refreshToken);
+        // 프론트 배포 환경 체크
+        if (frontendDeploymentUrl != null && !frontendDeploymentUrl.isEmpty()) {
+            // 배포 환경일 경우
+            host = frontendDeploymentUrl;
+            port = 80;  // 기본 HTTP 포트, 필요에 따라 변경 가능
+        } else {
+            // 개발 환경일 경우
+            host = "localhost";
+            port = 3000;
+        }
 
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
-                .host("bbangorder.s3-website.ap-northeast-2.amazonaws.com")
-//                .port(3000) // 추후 포트번호 변경 시 작성
+                .host(host)
+                .port(port) // 추후 포트번호 변경 시 작성
                 .path("/auth/google")
                 .queryParams(queryParams)
                 .build()
