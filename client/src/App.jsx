@@ -7,6 +7,7 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import LoadingSpinner from './components/Loading.jsx';
 import ScrollButton from './assets/buttons/ScrollButton.jsx';
+import AuthGoogle from './components/login/AuthGoogle.jsx';
 
 const NotFound = lazy(() => import('./pages/NotFound.jsx'));
 const MainPage = lazy(() => import('./pages/main/MainPage.jsx'));
@@ -19,6 +20,18 @@ const Cart = lazy(() => import('./pages/cart/Cart.jsx'));
 function App() {
   const location = useLocation();
   const showFooter = location.pathname !== '/mypage';
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const accessToken = urlParams.get('access_token');
+  const refreshToken = urlParams.get('refresh_token');
+
+  if (accessToken && refreshToken) {
+    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('refreshToken', refreshToken);
+  }
+
+  console.log('accessToken', accessToken);
+  console.log('refreshToken', refreshToken);
 
   return (
     <>
@@ -35,6 +48,7 @@ function App() {
             <Route path="/stores/:id" element={<Store />} />
             <Route path="/search" element={<SearchResult />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/auth/google" element={<AuthGoogle />} />
           </Routes>
         </Suspense>
       </main>
