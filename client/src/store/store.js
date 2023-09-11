@@ -83,28 +83,4 @@ export const useCartItemStore = create((set) => ({
   checkItem: [],
   setCartItem: (data) => set({ cartItem: data }),
   setCheckItem: (data) => set({ checkItem: data }),
-
-  // 수량 변경 함수
-  quantityPlus: (id) => {
-    set((state) => {
-      const newCartItems = state.cartItems.map((item) => {
-        if (item.id === id) {
-          return { ...item, quantity: item.quantity + 1 };
-        }
-        return item;
-      });
-      return { cartItems: newCartItems };
-    });
-  },
-  quantityMinus: (id) => {
-    set((state) => {
-      const newCartItems = state.cartItems.map((item) => {
-        if (item.id === id) {
-          return { ...item, quantity: item.quantity - 1 };
-        }
-        return item;
-      });
-      return { cartItems: newCartItems };
-    });
-  },
 }));
