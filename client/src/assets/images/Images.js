@@ -11,6 +11,7 @@ import boxchecked from './boxchecked.svg';
 import boxunchecked from './boxunchecked.svg';
 import magnifier from './magnifier.svg';
 import cart from './cart.svg';
+import closebutton from './closebutton.svg';
 
 const images = {
   githublogo,
@@ -26,6 +27,7 @@ const images = {
   boxunchecked,
   magnifier,
   cart,
+  closebutton,
 };
 
 export default images;
