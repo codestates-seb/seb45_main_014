@@ -22,8 +22,10 @@ function App() {
   const location = useLocation();
   const showFooter = location.pathname !== '/mypage';
   const API = `${process.env.REACT_APP_API_URL}/api`;
+
   // 웹페이지 최초 로딩 시 장바구니 데이터 가져오기
   const { setCartItem, setCheckItem } = useCartItemStore();
+
   useEffect(() => {
     axios
       .get(`${API}/cart`)
