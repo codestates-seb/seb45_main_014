@@ -9,6 +9,9 @@ import menu from './menu_img1.png';
 import notfound from './notFound.png';
 import boxchecked from './boxchecked.svg';
 import boxunchecked from './boxunchecked.svg';
+import magnifier from './magnifier.svg';
+import cart from './cart.svg';
+import closebutton from './closebutton.svg';
 
 const images = {
   githublogo,
@@ -22,6 +25,9 @@ const images = {
   notfound,
   boxchecked,
   boxunchecked,
+  magnifier,
+  cart,
+  closebutton,
 };
 
 export default images;

@@ -11,6 +11,7 @@ const Button = styled.button`
   color: ${(props) => props.color || '#debe8f'};
   opacity: ${(props) => (props.disabled ? '0.5' : '1')};
   cursor: pointer;
+  transition: all 0.2s;
   &:hover {
     background-color: ${(props) => props.hovercolor || '#debe8f'};
     color: ${(props) => props.color || '#FFFFFF'};
