@@ -4,12 +4,14 @@ import CheckBox from '../../components/cart/Checkbox.jsx';
 import { useState } from 'react';
 import DeleteModal from './DeleteModal.jsx';
 import { ReactComponent as Delete } from '../../assets/images/closebutton.svg';
+import { useCartItemStore } from '../../store/store.js';
 
 const ItemCard = styled.li`
   display: flex;
+  width: 100%;
   position: relative;
   align-items: center;
-  padding: 20px 0;
+  padding: 30px 0;
 `;
 
 const ItemImg = styled(Link)`
@@ -38,6 +40,9 @@ const ButtonBox = styled.div`
     border: none;
     background: none;
     font-size: 20px;
+    &:disabled {
+      color: rgb(156, 163, 175);
+    }
   }
   div {
     display: inline-flex;
@@ -69,6 +74,7 @@ const CartItem = ({
   //-, +버튼으로 quantity를 조절하는 함수
   // const { quantityUp, quantityDown } = useCartItemStore();
   const [amount, setAmount] = useState(quantity);
+  const { cartItem, setCartItem } = useCartItemStore();
 
   const quantityUp = () => {
     const updatedAmount = amount + 1;
@@ -114,12 +120,17 @@ const CartItem = ({
       <ItemImg to={'/'} />
       <div>
         <Link to={'/'}>
-          <p className="text-sm text-gray-400 w-[300px]">{storeName}</p>
+          <p className="text-sm text-gray-400 w-64">{storeName}</p>
           <p>{menuName}</p>
         </Link>
       </div>
       <ButtonBox>
-        <button type="button" aria-label="수량내리기" onClick={quantityDown}>
+        <button
+          type="button"
+          aria-label="수량내리기"
+          onClick={quantityDown}
+          disabled={amount === 1}
+        >
           -
         </button>
         <div>{amount}</div>
