@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import CheckBox from '../../components/cart/Checkbox.jsx';
 import { useState } from 'react';
 import DeleteModal from './DeleteModal.jsx';
+import { ReactComponent as Delete } from '../../assets/images/closebutton.svg';
 
 const ItemCard = styled.li`
   display: flex;
@@ -94,6 +95,19 @@ const CartItem = ({
     localStorage.setItem('cartItems', JSON.stringify(localItems));
   };
 
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleRemoveClick = () => {
+    openModal();
+  };
+
   return (
     <ItemCard>
       <CheckBox onChange={onChange} checked={checked} />
@@ -122,6 +136,17 @@ const CartItem = ({
           {(price * amount).toLocaleString()}원
         </span>
       </PriceBox>
+      <button
+        type="button"
+        aria-label="삭제하기"
+        className="pl-4"
+        onClick={handleRemoveClick}
+      >
+        <Delete />
+      </button>
+      {isModalOpen && (
+        <DeleteModal onClose={closeModal} onDelete={handleRemoveClick} />
+      )}
     </ItemCard>
   );
 };
