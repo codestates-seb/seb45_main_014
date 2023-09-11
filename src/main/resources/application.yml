@@ -4,6 +4,8 @@ spring:
     console:
       enabled: true
       path: /h2
+      settings:
+        web-allow-others: true
   datasource:
     url: jdbc:h2:mem:test
   jpa:
@@ -33,3 +35,9 @@ jwt:
     secret: ${JWT_SECRET_KEY}
   access-token-expiration-minutes: 30
   refresh-token-expiration-minutes: 30
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
