@@ -12,6 +12,10 @@ import boxunchecked from './boxunchecked.svg';
 import magnifier from './magnifier.svg';
 import cart from './cart.svg';
 import closebutton from './closebutton.svg';
+import bbang1 from './bbang1.jpg';
+import bbang2 from './bbang2.jpg';
+import bbang3 from './bbang3.jpg';
+import bbang4 from './bbang4.jpg';
 
 const images = {
   githublogo,
@@ -28,6 +32,10 @@ const images = {
   magnifier,
   cart,
   closebutton,
+  bbang1,
+  bbang2,
+  bbang3,
+  bbang4,
 };
 
 export default images;

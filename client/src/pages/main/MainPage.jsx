@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useAuthStore } from '../../store/store.js';
 import { StoreImage } from '../../assets/Styles.jsx';
+import images from '../../assets/images/Images.js';
 
 const Title = styled.h1`
   margin: 1rem 0;
@@ -22,13 +23,17 @@ export const getFavoriteStores = () => {
   return storeData.filter((store) => store.is_favorite === true);
 };
 
-const HotPlace = ({ region }) => {
+const HotPlace = ({ id, src }) => {
   return (
-    <div className="relative w-72">
-      <StoreImage />
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-lg drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
-        {region}
-      </div>
+    <div className="relative w-72 cursor-pointer">
+      <Link
+        to={`/search?search_keyword=${id}&search_target=regionpage=1&size=10`}
+      >
+        <StoreImage src={src} />
+        <div className="flex w-full absolute justify-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,1)]">
+          {id} TOP 10
+        </div>
+      </Link>
     </div>
   );
 };
@@ -71,10 +76,10 @@ const MainPage = () => {
       <Content>
         <Title>현재 핫플레이스</Title>
         <div className="flex gap-4">
-          <HotPlace id="강남" region={'강남구 TOP10'} />
-          <HotPlace id="강북" region={'강북구 TOP10'} />
-          <HotPlace id="강서" region={'강서구 TOP10'} />
-          <HotPlace id="강동" region={'강동구 TOP10'} />
+          <HotPlace id="강남" src={images.bbang1} />
+          <HotPlace id="강북" src={images.bbang2} />
+          <HotPlace id="강서" src={images.bbang3} />
+          <HotPlace id="강동" src={images.bbang4} />
         </div>
       </Content>
 
