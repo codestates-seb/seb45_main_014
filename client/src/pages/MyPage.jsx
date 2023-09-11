@@ -90,6 +90,7 @@ const MyPage = () => {
         console.error(error);
       }
     };
+    getReviews();
 
     // 주문 내역 가져오기
     const getOrders = async () => {
@@ -104,10 +105,12 @@ const MyPage = () => {
         );
         setOrders(response.data);
         setOrderCount(response.data.length);
+        console.log(response.data);
       } catch (error) {
         console.error(error);
       }
     };
+    getOrders();
 
     // 즐겨찾기 가져오기
     const getFavorites = async () => {
@@ -126,6 +129,7 @@ const MyPage = () => {
         console.error(error);
       }
     };
+    getFavorites();
   }, [isLoggedIn, accessToken]);
 
   return (
