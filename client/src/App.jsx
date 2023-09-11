@@ -9,6 +9,7 @@ import LoadingSpinner from './components/Loading.jsx';
 import ScrollButton from './assets/buttons/ScrollButton.jsx';
 import axios from 'axios';
 import { useCartItemStore } from './store/store';
+import AuthGoogle from './components/login/AuthGoogle.jsx';
 
 const NotFound = lazy(() => import('./pages/NotFound.jsx'));
 const MainPage = lazy(() => import('./pages/main/MainPage.jsx'));
@@ -17,30 +18,6 @@ const Store = lazy(() => import('./pages/Store.jsx'));
 const EditProfile = lazy(() => import('./components/myPage/EditProfile.jsx'));
 const SearchResult = lazy(() => import('./pages/search/SearchResult.jsx'));
 const Cart = lazy(() => import('./pages/cart/Cart.jsx'));
-
-const GlobalStyle = createGlobalStyle`
-  @font-face {
-    font-family: 'GmarketSans';
-    src: url(${GmarketSans}) format('truetype');
-    font-weight: 300;
-    font-style: normal;
-  }
-  * {
-    box-sizing: border-box;
-  }
-  html, body {
-    font-family: 'GmarketSans', sans-serif;
-    height: 100%;
-    padding: 0;
-    margin: 0;
-  }
-  body {
-    padding-top: 65px;
-  }
-  ul, li {
-    list-style-type: none;
-  }
-  `;
 
 function App() {
   const location = useLocation();
@@ -79,6 +56,7 @@ function App() {
             <Route path="/stores/:id" element={<Store />} />
             <Route path="/search" element={<SearchResult />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/auth/google" element={<AuthGoogle />} />
           </Routes>
         </Suspense>
       </main>
@@ -88,3 +66,27 @@ function App() {
 }
 
 export default App;
+
+const GlobalStyle = createGlobalStyle`
+  @font-face {
+    font-family: 'GmarketSans';
+    src: url(${GmarketSans}) format('truetype');
+    font-weight: 300;
+    font-style: normal;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  html, body {
+    font-family: 'GmarketSans', sans-serif;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+  }
+  body {
+    padding-top: 65px;
+  }
+  ul, li {
+    list-style-type: none;
+  }
+  `;
