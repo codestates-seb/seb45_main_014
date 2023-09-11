@@ -4,9 +4,11 @@ import Header from './components/header/Header.jsx';
 import { createGlobalStyle } from 'styled-components';
 import GmarketSans from './assets/fonts/GmarketSansTTFMedium.ttf';
 import { Route, Routes, useLocation } from 'react-router-dom';
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import LoadingSpinner from './components/Loading.jsx';
 import ScrollButton from './assets/buttons/ScrollButton.jsx';
+import axios from 'axios';
+import { useCartItemStore } from './store/store';
 
 const NotFound = lazy(() => import('./pages/NotFound.jsx'));
 const MainPage = lazy(() => import('./pages/main/MainPage.jsx'));
@@ -43,6 +45,32 @@ const GlobalStyle = createGlobalStyle`
 function App() {
   const location = useLocation();
   const showFooter = location.pathname !== '/mypage';
+  const API = `${process.env.REACT_APP_API_URL}/api`;
+  // 웹페이지 최초 로딩 시 장바구니 데이터 가져오기
+  const { setCartItem, setCheckItem } = useCartItemStore();
+  useEffect(() => {
+    axios
+      .get(`${API}/cart`)
+      .then((res) => {
+        const orderMenus = res.data.order.order_menus;
+        setCartItem(orderMenus);
+
+        const idQuantity = orderMenus.map((item) => {
+          return { id: item.id, quantity: item.quantity };
+        });
+        localStorage.setItem('cartItems', JSON.stringify(idQuantity));
+        // localstorage에 저장된 id와 cartitem의 id가 같으면 cartitem의 quantity를 localstorage의 quantity로 변경
+        const localItems = JSON.parse(localStorage.getItem('cartItems'));
+        for (const localItem of localItems) {
+          for (const cartItem of orderMenus) {
+            if (localItem.id === cartItem.id) {
+              cartItem.quantity = localItem.quantity;
+            }
+          }
+        }
+      })
+      .catch((err) => console.log('에러임', err));
+  }, [API, setCartItem, setCheckItem]);
 
   return (
     <>
