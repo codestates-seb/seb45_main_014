@@ -21,8 +21,8 @@ const UserIconWrapper = styled.div`
 const MenuDropdown = styled.div`
   position: absolute;
   top: 110%;
-  right: -135%;
-  width: 150px;
+  right: -110%;
+  width: 130px;
   background-color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   z-index: 2;
@@ -30,6 +30,9 @@ const MenuDropdown = styled.div`
 `;
 
 const MenuList = styled.ul`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   list-style: none;
   background-color: white;
   padding: 0;
