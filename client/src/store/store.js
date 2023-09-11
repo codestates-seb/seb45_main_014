@@ -80,7 +80,9 @@ export const useLoginModalStore = create((set) => ({
 
 export const useCartItemStore = create((set) => ({
   cartItem: [],
+  checkItem: [],
   setCartItem: (data) => set({ cartItem: data }),
+  setCheckItem: (data) => set({ checkItem: data }),
 
   // 수량 변경 함수
   quantityPlus: (id) => {
