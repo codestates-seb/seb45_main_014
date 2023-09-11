@@ -41,8 +41,3 @@ logging:
     org:
       springframework:
         security: DEBUG
-
-app:
-  frontend:
-    deployment:
-      url: "http://localhost:3000" # 로컬주소
