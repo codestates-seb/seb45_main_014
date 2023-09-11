@@ -84,7 +84,7 @@ const MyPage = () => {
             },
             params: {
               page: 1,
-              size: 10,
+              size: 6,
             },
           },
         );
@@ -107,7 +107,7 @@ const MyPage = () => {
             },
             params: {
               page: 1,
-              size: 10,
+              size: 16,
             },
           },
         );
@@ -128,10 +128,14 @@ const MyPage = () => {
             headers: {
               Authorization: `Bearer ${accessToken}`,
             },
+            params: {
+              page: 1,
+              size: 8,
+            },
           },
         );
-        setFavorites(response.data);
-        setFavoriteCount(response.data.length);
+        setFavorites(response.data.stores);
+        setFavoriteCount(response.data.stores.length);
       } catch (error) {
         console.error(error);
       }
