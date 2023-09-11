@@ -80,22 +80,6 @@ public class MemberController {
         }
     }
 
-//    @GetMapping(value = "/{member-id}", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<MemberResponseDto> getMember(@PathVariable("member-id") Long id) {
-//        try {
-//            // memberId를 사용하여 회원을 조회하고, 조회된 회원 정보를 MemberResponseDto로 변환
-//            Member member = memberService.findMemberById(id);
-//            if (member == null) {
-//                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//            }
-//            MemberResponseDto responseDto = memberMapper.memberToMemberResponseDto(member);
-//            return new ResponseEntity<>(responseDto, HttpStatus.OK);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
-
         // 회원 탈퇴
         @DeleteMapping
         public ResponseEntity<MemberResponseDto> deleteMember (Authentication authentication){
