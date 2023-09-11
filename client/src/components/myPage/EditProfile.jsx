@@ -33,6 +33,7 @@ const EditProfile = ({ onClose }) => {
         console.log(res);
         alert('회원정보가 수정되었습니다.');
         onClose();
+        window.location.reload();
       })
       .catch((err) => {
         console.log(err);
