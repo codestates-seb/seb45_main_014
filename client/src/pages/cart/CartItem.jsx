@@ -1,7 +1,8 @@
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
 import CheckBox from '../../components/cart/Checkbox.jsx';
-import { useCartItemStore } from '../../store/store.js';
+import { useState } from 'react';
+import DeleteModal from './DeleteModal.jsx';
 
 const ItemCard = styled.li`
   display: flex;
@@ -16,7 +17,9 @@ const ItemImg = styled(Link)`
   height: 78px;
   margin-right: 20px;
   // 여기에 Menu 이미지가 오면 될듯?
-  background: url('https://img-cf.kurly.com/shop/data/goods/1653036991865l0.jpeg');
+  background: ${(props) =>
+    props.img ||
+    `url('https://img-cf.kurly.com/shop/data/goods/1653036991865l0.jpeg')`};
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
@@ -60,9 +63,36 @@ const CartItem = ({
   price,
   onChange,
   checked,
+  id,
 }) => {
   //-, +버튼으로 quantity를 조절하는 함수
-  const { quantityUp, quantityDown } = useCartItemStore();
+  // const { quantityUp, quantityDown } = useCartItemStore();
+  const [amount, setAmount] = useState(quantity);
+
+  const quantityUp = () => {
+    const updatedAmount = amount + 1;
+    setAmount(updatedAmount);
+    // 로컬 스토리지 업데이트
+    updateQuantity(id, updatedAmount);
+  };
+  const quantityDown = () => {
+    if (amount > 1) {
+      const updatedAmount = amount - 1;
+      setAmount(updatedAmount);
+      // 로컬 스토리지 업데이트
+      updateQuantity(id, updatedAmount);
+    }
+  };
+  // id와 localstorage에 저장된 id가 같은 경우 quantity를 업데이트
+  const updateQuantity = (itemId, updatedQuantity) => {
+    const localItems = JSON.parse(localStorage.getItem('cartItems'));
+    for (const localItem of localItems) {
+      if (localItem.id === itemId) {
+        localItem.quantity = updatedQuantity;
+      }
+    }
+    localStorage.setItem('cartItems', JSON.stringify(localItems));
+  };
 
   return (
     <ItemCard>
@@ -78,7 +108,7 @@ const CartItem = ({
         <button type="button" aria-label="수량내리기" onClick={quantityDown}>
           -
         </button>
-        <div>{quantity}</div>
+        <div>{amount}</div>
         <button type="button" aria-label="수량올리기" onClick={quantityUp}>
           +
         </button>
@@ -89,7 +119,7 @@ const CartItem = ({
           data-testid="product-price"
           className="font-bold"
         >
-          {(price * quantity).toLocaleString()}원
+          {(price * amount).toLocaleString()}원
         </span>
       </PriceBox>
     </ItemCard>

@@ -60,16 +60,18 @@ const Cart = () => {
   // const [cartItem, setCartItem] = useState([]);
   const { cartItem, setCartItem } = useCartItemStore();
   // 체크된 아이템을 담을 배열
-  const [checkItems, setCheckItems] = useState(cartItem);
+  const [checkItem, setCheckItem] = useState(cartItem);
 
   // 체크박스 단일 선택
   const handleSingleCheck = (checked, item) => {
     if (checked) {
       // 단일 선택 시 체크된 아이템을 배열에 추가
-      setCheckItems((prev) => [...prev, item]);
+      setCheckItem((prev) => [...prev, item]);
+      console.log(checkItem);
     } else {
       // 단일 선택 해제 시 체크된 아이템을 제외한 배열 (필터)
-      setCheckItems(checkItems.filter((el) => el.id !== item.id));
+      setCheckItem(checkItem.filter((el) => el.id !== item.id));
+      console.log(checkItem);
     }
   };
 
@@ -77,37 +79,41 @@ const Cart = () => {
   const handleAllCheck = (checked) => {
     if (checked) {
       // 전체 선택 클릭 시 데이터의 모든 아이템(id)를 담은 배열로 checkItems 상태 업데이트
-      setCheckItems([...cartItem]);
+      setCheckItem([...cartItem]);
     } else {
       // 전체 선택 해제 시 checkItems 를 빈 배열로 상태 업데이트
-      setCheckItems([]);
+      setCheckItem([]);
     }
   };
 
   // 체크박스에 포함된 아이템 삭제
   const handleDelete = () => {
     // 체크박스에 포함된 아이템을 제외한 배열 (필터)
-    setCartItem(cartItem.filter((el) => !checkItems.includes(el)));
+    setCartItem(cartItem.filter((el) => !checkItem.includes(el)));
     // 체크박스에 포함된 아이템을 제외한 배열 (필터)
-    setCheckItems(checkItems.filter((el) => !checkItems.includes(el)));
+    setCheckItem(checkItem.filter((el) => !checkItem.includes(el)));
   };
 
-  // 총액 계산 함수
-  // const calculateTotalPrice = () => {
-  //   let totalPrice = 0;
-  //   for (const checkedItem of checkItems) {
-  //     totalPrice += checkedItem.order_menus[0].price;
-  //   }
-  //   return totalPrice;
-  // };
+  // 총 금액 계산
+  const calculateTotalPrice = () => {
+    if (checkItem.length === 0) {
+      return 0; // checkItem 배열이 비어있는 경우 0을 반환
+    }
 
-  const API = `${process.env.REACT_APP_API_URL}/api`;
-  useEffect(() => {
-    axios
-      .get(`${API}/cart`)
-      .then((res) => setCartItem(res.data.order.order_menus))
-      .catch((err) => console.log('에러임', err));
-  }, [API, setCartItem]);
+    let totalPrice = 0;
+    for (const item of checkItem) {
+      totalPrice += item.price * item.quantity;
+    }
+    return totalPrice;
+  };
+
+  // const API = `${process.env.REACT_APP_API_URL}/api`;
+  // useEffect(() => {
+  //   axios
+  //     .get(`${API}/cart`)
+  //     .then((res) => setCartItem(res.data.order.order_menus))
+  //     .catch((err) => console.log('에러임', err));
+  // }, [API, setCartItem]);
 
   return (
     <section className="max-w-screen-lg mx-auto pb-16">
@@ -118,13 +124,13 @@ const Cart = () => {
             <CheckBox
               onChange={(e) => handleAllCheck(e.target.checked)}
               checked={
-                checkItems.length !== cartItem.length || cartItem.length === 0
+                checkItem.length !== cartItem.length || cartItem.length === 0
                   ? false
                   : true
               }
             />
             <span className="pr-[40px]">
-              전체선택 ({checkItems.length}/{cartItem.length})
+              전체선택 ({checkItem.length}/{cartItem.length})
             </span>
             <button onClick={handleDelete}>선택삭제</button>
           </CartMenu>
@@ -132,8 +138,9 @@ const Cart = () => {
           {cartItem.map((item, idx) => (
             <CartItem
               onChange={(e) => handleSingleCheck(e.target.checked, item)}
-              checked={checkItems.includes(item)}
+              checked={checkItem.includes(item)}
               key={idx}
+              id={item.id}
               menuName={item.menu_name === null ? '엄청난 빵' : item.menu_name}
               storeName={!item.store_name ? '엄청난 빵집' : item.store_name}
               price={!item.price ? 3500 : item.price}
@@ -145,7 +152,7 @@ const Cart = () => {
           <TotalBox>
             <TotalItem>
               <span>상품 총 금액</span>
-              {/* <span>{calculateTotalPrice()}원</span> */}
+              <span>{calculateTotalPrice()}원</span>
             </TotalItem>
             <TotalItem>
               <span>픽업 시간</span>
