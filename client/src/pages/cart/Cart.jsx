@@ -5,7 +5,7 @@ import CartItem from './CartItem.jsx';
 import { useState } from 'react';
 import { useCartItemStore } from '../../store/store.js';
 import axios from 'axios';
-import DeleteSelectedModal from './SubmitModal.jsx';
+import SubmitModal from './SubmitModal.jsx';
 
 const ShoppingCart = styled.div`
   width: 100%;
@@ -65,8 +65,10 @@ const TotalItem = styled.div`
 const Cart = () => {
   const { cartItem, setCartItem } = useCartItemStore();
   const [checkItem, setCheckItem] = useState(cartItem.map((item) => item.id)); // CartItem의 id를 저장하는 상태 변수
-  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
-  const [pickupTime, setPickupTime] = useState(0); // 픽업 시간을 저장하는 상태 변수
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // 삭제 모달 상태 추가
+  const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false); // 주문 모달 상태 추가
+  const [pickupTime, setPickupTime] = useState(30); // 픽업 시간을 저장하는 상태 변수
+  const API = `${process.env.REACT_APP_API_URL}/api`;
 
   // 픽업 시간을 변경할 때 호출되는 함수
   const handlePickupTimeChange = (e) => {
@@ -74,14 +76,22 @@ const Cart = () => {
     setPickupTime(selectedTime);
   };
 
-  const openModal = () => {
-    setIsModalOpen(true);
+  const openModal = (modalType) => {
+    if (modalType === 'delete') {
+      setIsDeleteModalOpen(true);
+    } else if (modalType === 'submit') {
+      checkItem.length === 0
+        ? alert('선택된 상품이 없습니다.')
+        : setIsSubmitModalOpen(true);
+    }
   };
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-  const handleRemoveClick = () => {
-    openModal();
+
+  const closeModal = (modalType) => {
+    if (modalType === 'delete') {
+      setIsDeleteModalOpen(false);
+    } else if (modalType === 'submit') {
+      setIsSubmitModalOpen(false);
+    }
   };
 
   // 체크박스가 체크되면 checkItem에 아이템 추가
@@ -107,12 +117,22 @@ const Cart = () => {
   };
   // 체크박스에 포함된 아이템을 axios DELETE 요청
   const handleDelete = () => {
-    const API = `${process.env.REACT_APP_API_URL}/api`;
     const checkedId = checkItem.map((item) => item.id);
     axios
       .delete(`${API}/cart`, { data: { checked_item: checkedId } })
       .then((res) => {
         setCartItem(res.data.order.order_menus);
+        setCheckItem([]);
+      })
+      .catch((err) => console.log('에러임', err));
+  };
+
+  const handleSubmit = () => {
+    axios
+      .post(`${API}/cart?pickup_time=${pickupTime}`)
+      .then((res) => {
+        console.log(res);
+        setCartItem([]);
         setCheckItem([]);
       })
       .catch((err) => console.log('에러임', err));
@@ -147,15 +167,15 @@ const Cart = () => {
               전체선택 ({checkItem.length}/{cartItem.length})
             </span>
             <button
-              onClick={handleRemoveClick}
+              onClick={() => openModal('delete')}
               disabled={checkItem.length === 0}
             >
               선택삭제
             </button>
-            {isModalOpen && (
-              <DeleteSelectedModal
-                onClose={closeModal}
-                onDelete={handleDelete}
+            {isDeleteModalOpen && (
+              <SubmitModal
+                onClose={() => closeModal('delete')}
+                onSubmit={handleDelete}
                 message={`선택한 ${checkItem.length}개의 상품을 삭제하시겠습니까?`}
                 cancelLabel={'취소'}
                 submitLabel={'삭제'}
@@ -178,22 +198,41 @@ const Cart = () => {
           <TotalBox>
             <TotalItem>
               <span>상품 총 금액</span>
-              <span>{calculateTotalPrice().toLocaleString()}원</span>
+              <div>
+                <span className="font-semibold">
+                  {calculateTotalPrice().toLocaleString()}
+                </span>
+                <span className="pl-1">원</span>
+              </div>
             </TotalItem>
             <TotalItem>
               <span>픽업 시간</span>
-              <select
-                className="rounded-lg border-2 border-gray-300"
-                value={pickupTime}
-                onChange={handlePickupTimeChange}
-              >
-                <option value={30}>30분</option>
-                <option value={60}>1시간</option>
-                <option value={90}>1시간 30분</option>
-                <option value={120}>2시간</option>
-              </select>
+              <div>
+                <select
+                  className="h-full rounded-lg border-2 text-right border-gray-300"
+                  value={pickupTime}
+                  onChange={handlePickupTimeChange}
+                >
+                  <option value={30}>30분</option>
+                  <option value={60}>1시간</option>
+                  <option value={90}>1시간 30분</option>
+                  <option value={120}>2시간</option>
+                </select>
+                <span className="pl-1">후</span>
+              </div>
             </TotalItem>
-            <Button fontsize="16px">주문하기</Button>
+            <Button fontsize="16px" onClick={() => openModal('submit')}>
+              주문하기
+            </Button>
+            {isSubmitModalOpen && (
+              <SubmitModal
+                onClose={() => closeModal('submit')}
+                onSubmit={handleSubmit}
+                message={'정말 주문하시겠습니까?'}
+                cancelLabel={'취소'}
+                submitLabel={'주문'}
+              />
+            )}
           </TotalBox>
         </Total>
       </ShoppingCart>
