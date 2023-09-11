@@ -82,10 +82,14 @@ const MyPage = () => {
             headers: {
               Authorization: `Bearer ${accessToken}`,
             },
+            params: {
+              page: 1,
+              size: 10,
+            },
           },
         );
-        setReviews(response.data);
-        setReviewCount(response.data.length);
+        setReviews(response.data.reviews);
+        setReviewCount(response.data.reviews.length);
       } catch (error) {
         console.error(error);
       }
@@ -101,11 +105,14 @@ const MyPage = () => {
             headers: {
               Authorization: `Bearer ${accessToken}`,
             },
+            params: {
+              page: 1,
+              size: 10,
+            },
           },
         );
-        setOrders(response.data);
-        setOrderCount(response.data.length);
-        console.log(response.data);
+        setOrders(response.data.orders);
+        setOrderCount(response.data.orders.length);
       } catch (error) {
         console.error(error);
       }
