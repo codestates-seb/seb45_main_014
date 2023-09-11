@@ -64,7 +64,7 @@ const TotalItem = styled.div`
 
 const Cart = () => {
   const { cartItem, setCartItem } = useCartItemStore();
-  const [checkItem, setCheckItem] = useState([]); // 체크된 아이템을 담을 배열
+  const [checkItem, setCheckItem] = useState(cartItem.map((item) => item.id)); // CartItem의 id를 저장하는 상태 변수
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
   const [pickupTime, setPickupTime] = useState(0); // 픽업 시간을 저장하는 상태 변수
 
