@@ -9,6 +9,8 @@ import { useAuthStore, useModalStore } from '../store/store.js';
 
 import { Link } from 'react-router-dom';
 import EditProfile from '../components/myPage/EditProfile.jsx';
+import formatDate from '../utils/formatDate.js';
+import ImageUploadModal from '../components/myPage/ImageUploadModal.jsx';
 
 const TabContainer = styled.ul`
   display: flex;
@@ -50,7 +52,24 @@ const MyPage = () => {
   const [orderCount, setOrderCount] = useState(0);
   const [favoriteCount, setFavoriteCount] = useState(0);
 
-  const { isModalOpen, openModal, closeModal } = useModalStore();
+  const [isEditProfileModalOpen, setEditProfileModalOpen] = useState(false);
+  const [isImageModalOpen, setImageModalOpen] = useState(false);
+
+  const openEditProfileModal = () => {
+    setEditProfileModalOpen(true);
+  };
+
+  const closeEditProfileModal = () => {
+    setEditProfileModalOpen(false);
+  };
+
+  const openImageModal = () => {
+    setImageModalOpen(true);
+  };
+
+  const closeImageModal = () => {
+    setImageModalOpen(false);
+  };
 
   useEffect(() => {
     if (!isLoggedIn || !accessToken) {
@@ -148,22 +167,26 @@ const MyPage = () => {
 
   return (
     <div className="max-w-screen-lg mx-auto p-10">
-      <div className="flex justify-between">
-        <div className="flex">
-          <img
-            src={member.img}
-            alt="유저 이미지"
-            className="flex justify-center items-center border-2 w-24 h-24 rounded-full"
-          ></img>
-          <div className="flex items-center ml-5">{member.nickname}</div>
-        </div>
-        <div className="flex">
-          <Button className="ml-5" onClick={openModal}>
-            프로필 수정
-          </Button>
+      <div className="flex gap-5">
+        <img
+          src={member.img}
+          alt="유저 이미지"
+          className="flex justify-center items-center border-2 w-28 rounded-full"
+        ></img>
+        <div className="flex flex-col justify-center gap-2">
+          <h1 className="">{member.nickname}</h1>
+          <div>가입일: {formatDate(member.createdAt)}</div>
+          <div className="flex gap-2">
+            <Button className="" onClick={openImageModal}>
+              이미지 변경
+            </Button>
+            <Button className="" onClick={openEditProfileModal}>
+              프로필 수정
+            </Button>
+          </div>
         </div>
       </div>
-      <TabContainer className="mb-5">
+      <TabContainer className="my-5">
         <li className="w-full">
           <Link to="#review" onClick={() => setCurrentTab('리뷰 관리')}>
             리뷰 관리 ({reviewCount})
@@ -185,8 +208,10 @@ const MyPage = () => {
         {currentTab === '주문 내역' && <Orders data={orders} />}
         {currentTab === '즐겨찾기' && <Favorites data={favorites} />}
       </div>
-
-      {isModalOpen && <EditProfile onClose={closeModal} />}
+      {isEditProfileModalOpen && (
+        <EditProfile onClose={closeEditProfileModal} />
+      )}
+      {isImageModalOpen && <ImageUploadModal onClose={closeImageModal} />}
     </div>
   );
 };

@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useAuthStore } from '../../store/store.js';
 import { Modal, ModalOverlay } from '../../assets/Modal.jsx';
 
-const CancelButton = styled(Button)`
+export const CancelButton = styled(Button)`
   background-color: rgba(255, 255, 255, 0.4);
 `;
 
