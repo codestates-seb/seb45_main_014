@@ -34,7 +34,7 @@ const Button = ({ label, onClick }) => (
 
 const SubmitModal = ({
   onClose,
-  onDelete,
+  onSubmit,
   message,
   cancelLabel,
   submitLabel,
@@ -46,7 +46,7 @@ const SubmitModal = ({
         <ModalContent message={message} />
         <ButtonContainer>
           <Button label={cancelLabel} onClick={onClose} />
-          <Button label={submitLabel} onClick={onDelete} />
+          <Button label={submitLabel} onClick={onSubmit} />
         </ButtonContainer>
       </Modal>
     </>

@@ -156,8 +156,8 @@ const CartItem = ({ menuName, quantity, price, onChange, checked, id }) => {
       </button>
       {isModalOpen && (
         <DeleteModal
-          onClose={closeModal}
-          onDelete={handleRemoveClick}
+          onClose={openModal}
+          onSubmit={handleRemoveClick}
           message={'정말 삭제하시겠습니까?'}
           cancelLabel={'취소'}
           submitLabel={'삭제'}
