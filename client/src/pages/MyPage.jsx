@@ -5,9 +5,10 @@ import Reviews from '../components/myPage/Reviews.jsx';
 import Orders from '../components/myPage/Orders.jsx';
 import Favorites from '../components/myPage/Favorites.jsx';
 import axios from 'axios';
-import { useAuthStore } from '../store/store.js';
+import { useAuthStore, useModalStore } from '../store/store.js';
 
 import { Link } from 'react-router-dom';
+import EditProfile from '../components/myPage/EditProfile.jsx';
 
 const TabContainer = styled.ul`
   display: flex;
@@ -48,6 +49,8 @@ const MyPage = () => {
   const [reviewCount, setReviewCount] = useState(0);
   const [orderCount, setOrderCount] = useState(0);
   const [favoriteCount, setFavoriteCount] = useState(0);
+
+  const { isModalOpen, openModal, closeModal } = useModalStore();
 
   useEffect(() => {
     if (!isLoggedIn || !accessToken) {
@@ -155,8 +158,8 @@ const MyPage = () => {
           <div className="flex items-center ml-5">{member.nickname}</div>
         </div>
         <div className="flex">
-          <Button className="ml-5">
-            <Link to="/mypage/edit">프로필 수정</Link>
+          <Button className="ml-5" onClick={openModal}>
+            프로필 수정
           </Button>
         </div>
       </div>
@@ -182,6 +185,8 @@ const MyPage = () => {
         {currentTab === '주문 내역' && <Orders data={orders} />}
         {currentTab === '즐겨찾기' && <Favorites data={favorites} />}
       </div>
+
+      {isModalOpen && <EditProfile onClose={closeModal} />}
     </div>
   );
 };
