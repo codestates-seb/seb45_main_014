@@ -5,10 +5,12 @@ import com.main.bbangbbang.member.dto.responseDto.MemberResponseDto;
 import com.main.bbangbbang.member.entity.Member;
 import com.main.bbangbbang.member.mapper.MemberMapper;
 import com.main.bbangbbang.member.service.MemberService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -16,14 +18,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/api/member")
 
 
 public class MemberController {
-    @Autowired
     private MemberService memberService;
-    @Autowired
     private MemberMapper memberMapper;
 
     // 회원 정보 수정
