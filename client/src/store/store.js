@@ -86,7 +86,6 @@ export const useAuthStore = create((set) => ({
     set({ isLoggedIn: true, accessToken: access, refreshToken: refresh });
     localStorage.setItem('access_token', access);
     localStorage.setItem('refresh_token', refresh);
-    console.log('login', access, refresh);
   },
   logout: () => {
     set({ isLoggedIn: false, accessToken: null, refreshToken: null });

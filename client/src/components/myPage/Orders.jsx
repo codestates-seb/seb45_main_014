@@ -1,5 +1,4 @@
 import { styled } from 'styled-components';
-import orderData from '../../assets/data/orderData.js';
 import formatDate from '../../utils/formatDate';
 import Button from '../../assets/buttons/Button.jsx';
 import PostReview from './PostReview.jsx';
@@ -37,7 +36,7 @@ const OrdersItem = ({ data, openModal }) => {
   );
 };
 
-const Orders = () => {
+const Orders = ({ data }) => {
   const [currentModalData, setCurrentModalData] = useState(null);
 
   const openModal = (data) => setCurrentModalData(data);
@@ -52,7 +51,7 @@ const Orders = () => {
   return (
     <div className="flex justify-center">
       <div className="grid grid-flow-row-dense grid-cols-4 gap-4">
-        {orderData.map((item, index) => (
+        {data.map((item, index) => (
           <OrdersItem key={index} data={item} openModal={openModal} />
         ))}
       </div>
