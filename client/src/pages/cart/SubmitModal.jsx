@@ -20,25 +20,37 @@ const ButtonContainer = styled.div`
   }
 `;
 
-const DeleteModal = ({ onClose, onDelete }) => {
+const ModalContent = ({ message }) => (
+  <div className="flex flex-col items-center py-10 px-8 w-[350px]">
+    <p>{message}</p>
+  </div>
+);
+
+const Button = ({ label, onClick }) => (
+  <button className="w-full hover:bg-gray-100" onClick={onClick}>
+    {label}
+  </button>
+);
+
+const SubmitModal = ({
+  onClose,
+  onDelete,
+  message,
+  cancelLabel,
+  submitLabel,
+}) => {
   return (
     <>
       <ModalOverlay onClick={onClose} />
       <Modal padding={'0'} top={'45%'}>
-        <div className="flex flex-col items-center py-10 px-8 w-[350px]">
-          <p>정말 삭제하시겠습니까?</p>
-        </div>
+        <ModalContent message={message} />
         <ButtonContainer>
-          <button className="w-full hover:bg-gray-100" onClick={onClose}>
-            취소
-          </button>
-          <button className="w-full hover:bg-gray-100" onClick={onDelete}>
-            삭제
-          </button>
+          <Button label={cancelLabel} onClick={onClose} />
+          <Button label={submitLabel} onClick={onDelete} />
         </ButtonContainer>
       </Modal>
     </>
   );
 };
 
-export default DeleteModal;
+export default SubmitModal;
