@@ -1,5 +1,7 @@
 package com.main.bbangbbang.order.service;
 
+import com.main.bbangbbang.exception.BusinessLogicException;
+import com.main.bbangbbang.exception.ExceptionCode;
 import com.main.bbangbbang.member.entity.Member;
 import com.main.bbangbbang.member.service.MemberService;
 import com.main.bbangbbang.menu.entity.Menu;
@@ -89,9 +91,10 @@ public class OrderService {
 
     @Transactional
     public void addCart(Order order, Menu menu, Integer quantity) {
+        validateSameStore(order, menu); // 같은 매장의 매뉴임? 아니면 -> Exception!!
         for (OrderMenu orderMenu : order.getOrderMenus())
             if (orderMenu.getMenu().getId().equals(menu.getId())) {
-                orderMenu.setQuantity(orderMenu.getQuantity() + quantity);
+                orderMenu.setQuantity(quantity);
                 return;
             }
 
@@ -104,6 +107,12 @@ public class OrderService {
         }
         if (orders.size() > 1) {
             throw new RuntimeException(); // 추후 BusinessException 구현하여 적용 예정
+        }
+    }
+
+    private void validateSameStore(Order order, Menu menu) {
+        if (!order.getStore().getId().equals(menu.getStore().getId())) {
+            throw new BusinessLogicException(ExceptionCode.NOT_SAME_STORE);
         }
     }
 }
