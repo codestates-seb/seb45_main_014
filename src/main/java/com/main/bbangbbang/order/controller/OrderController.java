@@ -59,13 +59,14 @@ public class OrderController { // jwt토큰 parsing하여 Member확인이 가능
     @PostMapping("/cart/{menu-id}")
     public ResponseEntity<?> addCart(@PathVariable("menu-id") Long menuId,
                                      @RequestParam("quantity") Integer quantity,
-                                     @RequestParam("new_order") Boolean isNewOrder) {
+                                     @RequestParam(value = "new_order", defaultValue = "false") Boolean isNewOrder) { // order.storeId에 대한 비교도 필요 -> exception for frontend
         Menu menu = menuService.findMenu(menuId);
         Store store = storeService.findStoreByMenu(menu);
         Member member = memberService.findMember("hellobread1@googol.com"); // 임시 1번 멤버
         Order order;
 
         if (isNewOrder) {
+            orderService.findActiveOrder(1L).setOrderStatus(OrderStatus.CANCELED); // active가 있다면 해당 order -> canceled
             order = orderService.createOrder(member, store);
         } else {
             order = orderService.findActiveOrder(1L);
