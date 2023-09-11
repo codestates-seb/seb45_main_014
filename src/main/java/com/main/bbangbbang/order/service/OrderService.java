@@ -66,7 +66,7 @@ public class OrderService {
     }
 
     @Transactional
-    public void removeOrder(Long orderId) {
+    public void removeOrder(Member member, Long orderId) {
         Optional<Order> optionalOrder = orderRepository.findById(orderId);
         Order order = optionalOrder.orElseThrow(NoSuchElementException::new);
         order.setOrderStatus(OrderStatus.DELETED);
