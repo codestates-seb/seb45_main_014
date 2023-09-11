@@ -10,6 +10,7 @@ import com.main.bbangbbang.ordermenu.entity.OrderMenu;
 import com.main.bbangbbang.ordermenu.service.OrderMenuService;
 import com.main.bbangbbang.store.entity.Store;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -31,6 +32,7 @@ public class OrderService {
         Order order = new Order();
         order.setMember(memberService.findMember("hellobread1@googol.com")); // 임시 1번 member
         order.setStore(store);
+        order.setOrderMenus(new ArrayList<>());
         order.setOrderStatus(OrderStatus.ACTIVE);
 
         return orderRepository.save(order);
