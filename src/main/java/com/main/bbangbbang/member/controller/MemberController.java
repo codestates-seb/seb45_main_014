@@ -28,7 +28,6 @@ public class MemberController {
     private MemberMapper memberMapper;
 
     // 회원 정보 수정
-    @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
     @PatchMapping
     public ResponseEntity<MemberResponseDto> patchMember(@RequestBody MemberPatchDto memberPatchDto,
                                       Authentication authentication) {
