@@ -71,6 +71,14 @@ const MyPage = () => {
     setImageModalOpen(false);
   };
 
+  // 해시값 인식 후 초기 렌더링 시 해시 값에 따라 탭 변경
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash === '#review') setCurrentTab('리뷰 관리');
+    if (hash === '#order') setCurrentTab('주문 내역');
+    if (hash === '#favorite') setCurrentTab('즐겨찾기');
+  }, []);
+
   useEffect(() => {
     if (!isLoggedIn || !accessToken) {
       alert('로그인이 필요합니다.');
