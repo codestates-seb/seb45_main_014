@@ -55,19 +55,11 @@ function App() {
         const orderMenus = res.data.order.order_menus;
         setCartItem(orderMenus);
 
+        // 장바구니에 담긴 메뉴의 id와 수량을 localStorage에 저장(API 구현되면 삭제할 것)
         const idQuantity = orderMenus.map((item) => {
           return { id: item.id, quantity: item.quantity };
         });
         localStorage.setItem('cartItems', JSON.stringify(idQuantity));
-        // localstorage에 저장된 id와 cartitem의 id가 같으면 cartitem의 quantity를 localstorage의 quantity로 변경
-        const localItems = JSON.parse(localStorage.getItem('cartItems'));
-        for (const localItem of localItems) {
-          for (const cartItem of orderMenus) {
-            if (localItem.id === cartItem.id) {
-              cartItem.quantity = localItem.quantity;
-            }
-          }
-        }
       })
       .catch((err) => console.log('에러임', err));
   }, [API, setCartItem, setCheckItem]);
