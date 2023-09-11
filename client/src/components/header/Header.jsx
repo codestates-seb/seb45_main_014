@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Button from '../../assets/buttons/Button.jsx';
 import SearchBar from './SearchBar.jsx';
 import Login from '../login/Login.jsx';
+import UserMenu from './Usermenu.jsx';
 import { useModalStore, useCartItemStore } from '../../store/store.js';
 import { ReactComponent as CartIcon } from '../../assets/images/cart.svg';
 import { ReactComponent as UserIcon } from '../../assets/images/user.svg';
@@ -24,7 +25,7 @@ const HeaderBox = styled.header`
     0 2px 8px hsla(0, 0%, 0%, 0.05);
 `;
 
-const Logo = styled.a`
+const Logo = styled(Link)`
   display: flex;
   width: 200px;
   align-items: center;
@@ -59,10 +60,6 @@ const CartBox = styled.div`
 
 const UserBox = styled.div`
   margin-left: 15px;
-  transition: all 0.2s ease;
-  &:hover {
-    transform: scale(1.2);
-  }
 `;
 
 const ItemBadge = styled.span`
@@ -103,7 +100,7 @@ const Header = () => {
   return (
     <>
       <HeaderBox>
-        <Logo href="/">
+        <Logo to="/">
           {/* <img src={images.mainlogo} alt="main logo" width="50" /> */}
           BBANG ORDER
         </Logo>
@@ -114,16 +111,17 @@ const Header = () => {
           <Button onClick={openModal} weight="800">
             로그인
           </Button>
-          <UserBox aria-label="마이페이지">
-            <Link to={'/mypage'}>
+          <UserBox aria-label="유저 메뉴">
+            {/* <Link to={'/mypage'}>
               <UserIcon />
-            </Link>
+            </Link> */}
+            <UserMenu />
           </UserBox>
           <CartBox aria-label="장바구니">
             <Link to={'/cart'}>
               <CartIcon />
               {/*cartItem의 길이가 0보다 크면 ItemBadge를 렌더링*/}
-              {cartItem.length >= 0 && <ItemBadge>{cartItem.length}</ItemBadge>}
+              {cartItem.length > 0 && <ItemBadge>{cartItem.length}</ItemBadge>}
             </Link>
           </CartBox>
         </MenuBox>
