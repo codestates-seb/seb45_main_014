@@ -39,31 +39,43 @@ const TabContainer = styled.ul`
 
 const MyPage = () => {
   const [currentTab, setCurrentTab] = useState('리뷰 관리');
-  const accessToken = useAuthStore((state) => state.accessToken);
+  const { isLoggedIn, accessToken } = useAuthStore((state) => state);
+  const [member, setMember] = useState([]);
 
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/api/member`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [accessToken]);
+    if (!isLoggedIn || !accessToken) {
+      alert('로그인이 필요합니다.');
+      return;
+    }
+
+    const getMember = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/api/member`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          },
+        );
+        setMember(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getMember();
+  }, [isLoggedIn, accessToken]);
 
   return (
     <div className="max-w-screen-lg mx-auto p-10">
       <div className="flex justify-between">
         <div className="flex">
-          <div className="flex justify-center items-center border-2 w-16 h-16 border-red-500 rounded-full">
-            아바타
-          </div>
-          <div className="flex items-center ml-5">유저이름</div>
+          <img
+            src={member.img}
+            alt="유저 이미지"
+            className="flex justify-center items-center border-2 w-24 h-24 rounded-full"
+          ></img>
+          <div className="flex items-center ml-5">{member.nickname}</div>
         </div>
         <div className="flex">
           <Button className="ml-5">
@@ -71,9 +83,9 @@ const MyPage = () => {
           </Button>
         </div>
       </div>
-      <div className="w-full h-48 border-zinc-700 border-2 my-6">
+      {/* <div className="w-full h-48 border-zinc-700 border-2 my-6">
         유저 이미지
-      </div>
+      </div> */}
       <TabContainer className="mb-5">
         <li className="w-full">
           <Link to="#review" onClick={() => setCurrentTab('리뷰 관리')}>
