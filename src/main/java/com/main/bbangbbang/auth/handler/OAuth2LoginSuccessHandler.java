@@ -23,9 +23,6 @@ import java.util.Map;
 
 public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {   // (1)
 
-    @Value("${app.frontend.deployment.url}")  // 배포된 프론트엔드 URL을 프로퍼티 파일로부터 읽어옴
-    private String frontendDeploymentUrl;
-
     private final CustomAuthorityUtils authorityUtils;
     private final JwtTokenizer jwtTokenizer;
     private final MemberService memberService;
@@ -85,7 +82,6 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         System.out.println("redirect to URI : " + uri);
         System.out.println(request.getRequestURL());
 
-        getRedirectStrategy().sendRedirect(request, response, uri);   // sendRedirect 메서드를 통해 redirect
     }
 
     private String delegateAccessToken(String username, List<String> authorities) {
@@ -118,29 +114,15 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         queryParams.add("access_token", accessToken);
         queryParams.add("refresh_token", refreshToken);
 
-    String host;  // 호스트 이름을 저장할 변수
-    int port;  // 포트 번호를 저장할 변수
-
-    // 프론트 배포 환경 체크
-    if (frontendDeploymentUrl != null && !frontendDeploymentUrl.isEmpty()) {
-        // 배포 환경일 경우
-        host = frontendDeploymentUrl;
-        port = 80;  // 기본 HTTP 포트, 필요에 따라 변경 가능
-    } else {
-        // 개발 환경일 경우
-        host = "localhost";
-        port = 3000;
+        return UriComponentsBuilder
+                .newInstance()
+                .scheme("http")
+                .host("localhost")
+                .port(3000) // 추후 포트번호 변경 시 작성
+                .path("/auth/google")
+                .queryParams(queryParams)
+                .build()
+                .toUri();
     }
-
-    return UriComponentsBuilder
-            .newInstance()
-            .scheme("http")
-            .host(host)
-            .port(port) // 추후 포트번호 변경 시 작성
-            .path("/auth/google")
-            .queryParams(queryParams)
-            .build()
-            .toUri();
-}
 }
 
