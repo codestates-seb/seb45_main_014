@@ -27,8 +27,8 @@ const Login = ({ onClose }) => {
           <section className="rounded-lg mt-5">
             <div>
               <GoogleBtn />
-              <KakaoBtn />
-              <GuestBtn />
+              {/* <KakaoBtn />
+              <GuestBtn /> */}
             </div>
           </section>
         </div>
