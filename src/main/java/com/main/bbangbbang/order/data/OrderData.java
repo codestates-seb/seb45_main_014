@@ -15,6 +15,7 @@ public class OrderData {
     private Long id;
     private Long storeId;
     private String orderStatus;
+    private String storeName;
     private LocalDateTime pickupTime;
     private LocalDateTime lastModifiedAt;
     private LocalDateTime createdAt;
