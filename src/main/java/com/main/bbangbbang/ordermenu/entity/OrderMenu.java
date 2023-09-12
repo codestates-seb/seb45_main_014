@@ -30,4 +30,7 @@ public class OrderMenu {
 
     @Column
     private Integer quantity;
+
+    @Column
+    private String img;
 }
