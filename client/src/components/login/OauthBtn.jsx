@@ -1,6 +1,7 @@
 import { FcGoogle } from 'react-icons/fc';
 import { RiKakaoTalkFill } from 'react-icons/ri';
 import { ImManWoman } from 'react-icons/im';
+import { useAuthStore } from '../../store/store';
 
 const OauthBtn = ({ bgColor, color, icon, text, onClick }) => {
   return (

@@ -3,9 +3,8 @@ import { calculateDate } from '../../utils/calculateDate';
 import { useState, useEffect, useRef } from 'react';
 
 const StoreReviewTab = ({ reviewData }) => {
-  const reviewsPerPage = 5; // 페이지당 보여줄 리뷰 수
+  const reviewsPerPage = 10; // 페이지당 보여줄 리뷰 수
   const [currentPage, setCurrentPage] = useState(1);
-  const totalReviews = reviewData.length;
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -17,13 +16,13 @@ const StoreReviewTab = ({ reviewData }) => {
   const currentReviews = reviewData.slice(startIndex, endIndex);
 
   return (
-    <div className="flex flex-col w-[1050px]">
-      {reviewData.map((review) => {
-        return <ReviewItem key={review.id} data={review} />;
-      })}
+    <div className="flex flex-col w-[1050px] mb-3">
+      {currentReviews.map((review) => (
+        <ReviewItem key={review.id} data={review} />
+      ))}
       <Pagination
         currentPage={currentPage}
-        totalPages={Math.ceil(totalReviews / reviewsPerPage)}
+        totalPages={Math.ceil(reviewData.length / reviewsPerPage)}
         onPageChange={handlePageChange}
       />
     </div>
@@ -96,8 +95,8 @@ export const ReviewItem = ({ data }) => {
   };
 
   return (
-    <div className="flex p-[10px] border-b">
-      <div className="grow">
+    <div className="flex w-[1070px] p-[10px] border-b">
+      <div className="w-[750px]">
         <div className="flex mb-1">
           <span className="mr-3">{data.nickname}</span>
           <div>{calculateDate(data.created_at)}일 전</div>
@@ -120,7 +119,7 @@ export const ReviewItem = ({ data }) => {
         )}
       </div>
       <img
-        className="w-[300px] h-[200px] object-cover rounded-lg ml-3 "
+        className="w-[300px] h-[200px] object-cover rounded-lg ml-3"
         src={data.img}
         alt="후기 이미지"
       />

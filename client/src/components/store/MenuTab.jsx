@@ -1,83 +1,97 @@
-import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import axios from 'axios';
 
+import SuccessModal from './modal/SuccessModal.jsx';
+import FalseModal from './modal/FalseModal.jsx';
+
 const MenuTab = ({ menuData }) => {
+  const [isFalseModalOpen, setIsFalseModalOpen] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+
+  const openSuccessModal = () => setIsSuccessModalOpen(true);
+  const closeSuccessModal = () => setIsSuccessModalOpen(false);
+  const openFalseModal = () => setIsFalseModalOpen(true);
+  const closeFalseModal = () => setIsFalseModalOpen(false);
+
+  const handleSuccessModal = () => {
+    openSuccessModal();
+    closeFalseModal(); // Close the false modal if it's open
+  };
+
   return (
     <div className="flex flex-col">
       {menuData.map((menu) => (
-        <MenuItem key={menu.id} data={menu} />
+        <MenuItem
+          key={menu.id}
+          data={menu}
+          openSuccessModal={handleSuccessModal}
+          openFalseModal={openFalseModal}
+        />
       ))}
+
+      {isSuccessModalOpen && (
+        <SuccessModal closeSuccessModal={closeSuccessModal} />
+      )}
+      {isFalseModalOpen && <FalseModal closeFalseModal={closeFalseModal} />}
     </div>
   );
 };
 
 export default MenuTab;
 
-export const MenuItem = ({ data }) => {
+const MenuItem = ({ data, openFalseModal, openSuccessModal }) => {
   const apiUrl = process.env.REACT_APP_API_URL;
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const { id } = useParams();
-  console.log('메뉴 데이터', data);
+  const [isMenuModalOpen, setIsMenuModalOpen] = useState(false);
   const [isCount, setIsCount] = useState(1);
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+  const openModal = () => setIsMenuModalOpen(true);
+  const closeModal = () => setIsMenuModalOpen(false);
 
   const addToCart = () => {
-    // POST 요청에 필요한 데이터를 객체로 만듭니다.
-    const cartItem = {
-      quantity: isCount,
-      new_order: 'true',
-    };
+    const cartItem = { quantity: isCount };
 
-    // 서버에 POST 요청을 보내기 위해 addToCartItem 함수 호출
-    addToCartItem(cartItem);
-  };
-
-  const addToCartItem = async (cartItem) => {
-    try {
-      const response = await axios.post(
-        `${apiUrl}/api/cart/${data.id}?quantity=${cartItem.quantity}&new_order=${cartItem.new_order}`,
+    axios
+      .post(
+        `${apiUrl}/api/cart/${data.id}?quantity=${cartItem.quantity}`,
         cartItem,
-      );
-      console.log('주문 완료', response.data);
-    } catch (error) {
-      console.error('주문 실패', error);
-    }
+      )
+      .then((response) => {
+        const statusData = response.status;
+        console.log(statusData);
+        if (statusData === 200) {
+          openSuccessModal();
+        } else {
+          openFalseModal();
+        }
+      })
+      .catch((error) => {
+        console.log('500에러', error);
+      });
   };
 
   return (
     <div className="flex p-[10px] border-b">
-      <div className="w-[750px]">
-        <h3 className="text-[25px]">{data.menu_name}</h3>
-        <div className="text-[15px]">{data.menu_desc}</div>
+      <div className="xl:w-[750px]">
+        <h3 className="xl:text-[25px]">{data.menu_name}</h3>
+        <div className="xl:text-[15px]">{data.menu_desc}</div>
       </div>
       <div>
-        <div onClick={openModal} className="cursor-pointer mb-2">
-          <img
-            className="w-[300px] h-[200px] object-cover rounded-lg"
-            src={data.img}
-            alt="메뉴 이미지"
-          ></img>
+        <div
+          onClick={openModal}
+          className="cursor-pointer mb-2 overflow-hidden rounded-lg"
+        >
+          <StyledImage src={data.img} alt="메뉴 이미지" />
         </div>
-        <div className="flex space-x-36">
+        <div className="flex xl:space-x-36">
           <div>{data.price.toLocaleString()}원</div>
           <div>남은 수량: {data.stock}</div>
         </div>
       </div>
-      {isModalOpen && (
+      {isMenuModalOpen && (
         <ModalBg
           onClick={(e) => {
-            if (e.target === e.currentTarget) {
-              closeModal(); // 배경 클릭 시에만 모달 닫기 함수 호출
-            }
+            if (e.target === e.currentTarget) closeModal();
           }}
         >
           <div className="relative bg-white w-[500px] h-[350px] p-4 rounded-lg shadow-lg">
@@ -99,9 +113,7 @@ export const MenuItem = ({ data }) => {
                 <button
                   className="w-[32px] border rounded-lg pt-1"
                   onClick={() => {
-                    if (isCount > 1) {
-                      setIsCount(isCount - 1);
-                    }
+                    if (isCount > 1) setIsCount(isCount - 1);
                   }}
                 >
                   -
@@ -110,9 +122,7 @@ export const MenuItem = ({ data }) => {
                 <button
                   className="w-[32px] border rounded-lg pt-1"
                   onClick={() => {
-                    if (isCount < data.stock) {
-                      setIsCount(isCount + 1);
-                    }
+                    if (isCount < data.stock) setIsCount(isCount + 1);
                   }}
                 >
                   +
@@ -144,6 +154,18 @@ const ModalBg = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
+  z-index: 1100;
   background-color: rgba(76, 76, 76, 0.5);
+`;
+
+const StyledImage = styled.img`
+  width: 300px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.1);
+  }
 `;

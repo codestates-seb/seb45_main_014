@@ -1,16 +1,19 @@
 import ShopInfo from '../components/store/ShopInfo.jsx';
-import { useParams, Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useEffect, useState, useRef } from 'react';
 import MenuTab from '../components/store/MenuTab.jsx';
 import StoreReviewTab from '../components/store/StoreReviewTab.jsx';
 import axios from 'axios';
 import LoadingSpinner from '../components/Loading.jsx';
+import menuData from '../assets/data/menuData';
+import reviewDmData from '../assets/data/reviewData';
 
 const Store = () => {
   const { id } = useParams();
-  const [currentTab, setCurrentTab] = useState('메뉴');
   const [storeData, setStoreData] = useState(null);
   const [reviewData, setReviewData] = useState([]);
+  const menuRef = useRef(null);
+  const reviewRef = useRef(null);
   const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
@@ -40,32 +43,49 @@ const Store = () => {
     return <LoadingSpinner />;
   }
 
+  const handleTabClick = (tab) => {
+    let targetRef;
+    if (tab === '메뉴') {
+      targetRef = menuRef;
+    } else if (tab === '리뷰') {
+      targetRef = reviewRef;
+    }
+
+    if (targetRef && targetRef.current) {
+      const stickyTabHeight = 43; // 스티키 탭의 높이
+      const targetOffset = targetRef.current.offsetTop - stickyTabHeight;
+      window.scrollTo({ top: targetOffset, behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="flex flex-col relative">
       <ShopInfo store={storeData} />
       <ul className="flex justify-center text-center w-[1070px] mx-auto border-b mb-1 sticky top-[65px] bg-white z-10">
         <li className="w-full hover:bg-[#ccc] border-r py-3">
-          <Link
-            to="#매장"
-            className="block w-full"
-            onClick={() => setCurrentTab('메뉴')}
+          <a
+            href="#메뉴"
+            className="block w-full cursor-pointer"
+            onClick={() => handleTabClick('메뉴')}
           >
             메뉴 ({storeData.menus.length})
-          </Link>
+          </a>
         </li>
         <li className="w-full hover:bg-[#ccc] py-3">
-          <Link
-            to="#매장"
-            className="block w-full"
-            onClick={() => setCurrentTab('후기')}
+          <a
+            href="#리뷰"
+            className="block w-full cursor-pointer"
+            onClick={() => handleTabClick('리뷰')}
           >
-            후기 ({reviewData.length})
-          </Link>
+            리뷰 ({reviewData.length})
+          </a>
         </li>
       </ul>
-      <div className="flex mx-auto">
-        {currentTab === '메뉴' && <MenuTab menuData={storeData.menus} />}
-        {currentTab === '후기' && <StoreReviewTab reviewData={reviewData} />}
+      <div className="flex flex-col mx-auto">
+        <div id="메뉴" ref={menuRef}></div>
+        <MenuTab menuData={menuData} /> {/*storeData.menus*/}
+        <div id="리뷰" ref={reviewRef}></div>
+        <StoreReviewTab reviewData={reviewDmData} /> {/*reviewData*/}
       </div>
     </div>
   );
