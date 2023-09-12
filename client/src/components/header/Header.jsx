@@ -6,7 +6,6 @@ import Login from '../login/Login.jsx';
 import UserMenu from './Usermenu.jsx';
 import { useModalStore, useCartItemStore } from '../../store/store.js';
 import { ReactComponent as CartIcon } from '../../assets/images/cart.svg';
-import { ReactComponent as UserIcon } from '../../assets/images/user.svg';
 
 const HeaderBox = styled.header`
   padding: 12px;
@@ -112,9 +111,6 @@ const Header = () => {
             로그인
           </Button>
           <UserBox aria-label="유저 메뉴">
-            {/* <Link to={'/mypage'}>
-              <UserIcon />
-            </Link> */}
             <UserMenu />
           </UserBox>
           <CartBox aria-label="장바구니">

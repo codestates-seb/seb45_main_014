@@ -132,6 +132,7 @@ const Cart = () => {
       .post(`${API}/cart?pickup_time=${pickupTime}`)
       .then((res) => {
         console.log(res);
+        alert('주문이 완료되었습니다.');
         setCartItem([]);
         setCheckItem([]);
       })

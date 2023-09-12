@@ -19,6 +19,11 @@ const BookmarkButton = ({ is_favorite, toggleBookmark }) => {
   );
 };
 
+const Price = styled.div`
+  font-size: 18px;
+  font-weight: 700;
+`;
+
 const FavoriteStoreImage = styled(StoreImage)`
   width: 500px;
 `;
@@ -39,37 +44,65 @@ export const FavoriteStoreCard = ({ store }) => {
 };
 
 const StoreCard = ({ store }) => {
-  const { store_name, region_name, rating, img, is_favorite } = store;
+  const {
+    store_name,
+    region_name,
+    rating,
+    img,
+    is_favorite,
+    store_id,
+    menu_name,
+    price,
+  } = store;
 
-  const formattedStoreRating = rating.toFixed(1);
+  const formattedStoreRating = rating ? rating.toFixed(1) : null;
 
   const { isBookmarked, toggleBookmark } = useBookmarkStore();
 
+  // 검색 타겟에 따른 조건부 렌더링
   return (
-    <div className="w-72 relative m-2">
+    <div className="w-72 relative m-4">
       <Link to={`/stores/${store.id}`}>
         <div className=" overflow-hidden rounded-lg">
-          <StoreImage
-            className="object-cover"
-            src={img}
-            alt="매장 대표 이미지"
-          />
+          <StoreImage className="object-cover" src={img} alt="대표 이미지" />
         </div>
       </Link>
-      <BookmarkButton
-        is_favorite={is_favorite}
-        toggleBookmark={() => toggleBookmark(store.id)}
-      />
+      {is_favorite && (
+        <BookmarkButton
+          is_favorite={is_favorite}
+          toggleBookmark={() => toggleBookmark(store.id)}
+        />
+      )}
       <Link to={`/stores/${store.id}`}>
-        <div className="flex justify-between">
-          <div className="flex flex-col">
-            <div className="flex">
-              <h2>{store_name}</h2>
-              <h2 className="ml-2 text-yellow-500">{formattedStoreRating}</h2>
+        {menu_name ? (
+          <div className="flex justify-between">
+            <div className="flex flex-col">
+              <div className="flex">
+                <h2>{menu_name}</h2>
+              </div>
+              <div className="text-gray-400 pb-2">
+                <span>{store_name}</span>
+              </div>
+              <Price>
+                <span>{price.toLocaleString()}원</span>
+              </Price>
             </div>
-            <div className="">{region_name}</div>
           </div>
-        </div>
+        ) : (
+          <div className="flex justify-between">
+            <div className="flex flex-col">
+              <div className="flex">
+                <h2>{store_name}</h2>
+                {formattedStoreRating && (
+                  <h2 className="ml-2 text-yellow-500">
+                    {formattedStoreRating}
+                  </h2>
+                )}
+              </div>
+              <div className="text-gray-400">{region_name}</div>
+            </div>
+          </div>
+        )}
       </Link>
     </div>
   );

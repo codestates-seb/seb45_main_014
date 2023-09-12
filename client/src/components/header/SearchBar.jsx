@@ -3,6 +3,7 @@ import { useSearchStore } from '../../store/store';
 import { useNavigate } from 'react-router-dom';
 import DropdownMenu from './DropdownMenu.jsx';
 import { useState } from 'react';
+import SearchDropdown from './SearchDropdown.jsx';
 
 const SearchbarContainer = styled.form`
   display: flex;
@@ -105,6 +106,7 @@ const SearchBar = () => {
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
         ></SearchboxInput>
+        {isFocused && <SearchDropdown />}
       </div>
     </SearchbarContainer>
   );

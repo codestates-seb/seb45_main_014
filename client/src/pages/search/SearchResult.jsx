@@ -8,7 +8,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import LoadingSpinner from '../../components/Loading.jsx';
 
 const Wrapper = styled.section`
-  max-width: 650px;
+  max-width: 1024px;
   height: 100%;
   margin: 0 auto 0 auto;
   padding-top: 30px;
@@ -52,16 +52,19 @@ const SearchResult = () => {
   const [data, setData] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false); // isLoading 상태 추가
   const location = useLocation();
 
   // 페이지 번호를 인수로 받아 데이터를 가져오는 함수
   const fetchData = useCallback(
     (pageNumber) => {
       const API = `${process.env.REACT_APP_API_URL}/api`;
+      setIsLoading(true); // 요청 시작 시 isLoading을 true로 설정
       axios
         .get(`${API}/search${location.search}&page=${pageNumber}&size=10`)
         .then((res) => {
-          const newData = res.data.stores;
+          const newData = res.data.menus || res.data.stores; // search_target에 따라 데이터를 다르게 가져옴
+
           if (newData.length === 0) {
             setHasMore(false); // 더 이상 데이터가 없을 때 hasMore를 false로 설정
           } else {
@@ -75,6 +78,9 @@ const SearchResult = () => {
         .catch((err) => {
           console.log('에러임', err);
           setHasMore(false); // 데이터를 가져오는 동안 에러가 발생하면 hasMore를 false로 설정하여 무한 스크롤을 중지
+        })
+        .finally(() => {
+          setIsLoading(false); // 요청이 완료되면 isLoading을 false로 설정
         });
     },
     [location, setData, setHasMore, setPage],
@@ -95,6 +101,7 @@ const SearchResult = () => {
 
   const [searchParams] = useSearchParams();
   const query = searchParams.get('search_keyword');
+  const searchTarget = searchParams.get('search_target');
 
   return (
     <Wrapper>
@@ -104,29 +111,35 @@ const SearchResult = () => {
           <p>에 대한 검색결과</p>
         </span>
       </div>
-      {data.length === 0 && (
+      {/* 요청이 pending 후에 NoResult를 표시 */}
+      {isLoading ? (
+        <div className="flex justify-center pt-14">
+          <LoadingSpinner position="absolute" />
+        </div>
+      ) : data.length === 0 ? (
         <NoResult>
           <Magnifier />
           <p className="pt-8">검색된 결과가 없습니다.</p>
         </NoResult>
+      ) : (
+        // 무한 스크롤 구현
+        <InfiniteScroll
+          dataLength={data.length}
+          next={() => fetchData(page)} // 다음 페이지 데이터 로드
+          hasMore={hasMore} // 무한 스크롤을 계속할지 여부
+          loader={
+            <div className="flex justify-center pt-14" hidden>
+              로딩중...
+            </div>
+          }
+        >
+          <DataContainer>
+            {data.map((item, idx) => (
+              <StoreCard key={idx} store={item} />
+            ))}
+          </DataContainer>
+        </InfiniteScroll>
       )}
-      {/*무한 스크롤 구현*/}
-      <InfiniteScroll
-        dataLength={data.length}
-        next={() => fetchData(page)} // 다음 페이지 데이터 로드
-        hasMore={hasMore} // 무한 스크롤을 계속할지 여부
-        loader={
-          <div className="flex justify-center pt-14">
-            <LoadingSpinner position="static" />
-          </div>
-        }
-      >
-        <DataContainer>
-          {data.map((store, idx) => (
-            <StoreCard key={idx} store={store} />
-          ))}
-        </DataContainer>
-      </InfiniteScroll>
     </Wrapper>
   );
 };
