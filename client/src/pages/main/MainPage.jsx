@@ -87,6 +87,10 @@ const MainPage = () => {
     [setStores, setHasMore, setPage],
   );
 
+  useEffect(() => {
+    fetchData(1);
+  }, [fetchData]);
+
   return (
     <>
       {/* 즐겨찾기 */}
