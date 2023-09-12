@@ -256,8 +256,8 @@ values ('박우현', 'hellobread1@googol.com'), --1
 
 
 INSERT INTO orders (store_id, member_id, order_status)
-values (1, 1, 'ACTIVE'), --1번가게 1번손님 생성
-       (1, 2, 'ACTIVE'), --1번가게 2번손님 담는중
+values (1, 1, 'ACTIVE'), --1번가게 1번손님 담는중
+       (1, 2, 'CREATED'), --1번가게 2번손님 생성
        (2, 3, 'BAKING'), --2번가게 3번손님 준비중
        (2, 4, 'READY'), --2번가게 4번손님 준비완료
        (2, 5, 'PICKUP'), --2번가게 5번손님 픽업
@@ -302,6 +302,8 @@ values (1, 1, 'ACTIVE'), --1번가게 1번손님 생성
        (34, 36, 'BAKING'),
        (35, 36, 'REVIEWED'),
        (36, 36, 'CANCELED');
+
+
 
 
 INSERT INTO order_menu (orders_id, menu_id, quantity)
