@@ -4,6 +4,7 @@ import Button from '../../assets/buttons/Button.jsx';
 import SearchBar from './SearchBar.jsx';
 import Login from '../login/Login.jsx';
 import UserMenu from './Usermenu.jsx';
+import Greeting from './Greeting.jsx';
 import {
   useModalStore,
   useCartItemStore,
@@ -30,7 +31,7 @@ const HeaderBox = styled.header`
 
 const Logo = styled(Link)`
   display: flex;
-  width: 200px;
+  width: 300px;
   align-items: center;
   text-align: center;
   font-size: 24px;
@@ -41,7 +42,7 @@ const Logo = styled(Link)`
 const MenuBox = styled.div`
   padding-right: 10px;
   display: flex;
-  width: 200px;
+  width: 300px;
   justify-content: flex-end;
   align-items: center;
 `;
@@ -113,6 +114,7 @@ const Header = () => {
         </SearchBox>
         {isLoggedIn ? (
           <MenuBox>
+            <Greeting />
             <UserBox aria-label="유저 메뉴">
               <UserMenu />
             </UserBox>
