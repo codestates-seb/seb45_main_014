@@ -5,7 +5,9 @@ import com.main.bbangbbang.review.dto.ReviewsResponseDto;
 import com.main.bbangbbang.review.entity.Review;
 import com.main.bbangbbang.review.mapper.ReviewMapper;
 import com.main.bbangbbang.review.service.ReviewService;
+import com.main.bbangbbang.store.data.StoreData;
 import com.main.bbangbbang.store.dto.StoreResponseDto;
+import com.main.bbangbbang.store.dto.StoresResponseDto;
 import com.main.bbangbbang.store.entity.Store;
 import com.main.bbangbbang.store.mapper.StoreMapper;
 import com.main.bbangbbang.store.service.StoreService;
@@ -51,4 +53,18 @@ public class StoreController { // 매장 상세 페이지
 
         return ResponseEntity.ok(new ReviewsResponseDto(reviews, pageInfo));
     }
+
+    @GetMapping("/stores")
+    public ResponseEntity<?> getStores(@RequestParam("page") int page,
+                                       @RequestParam("size") int size) {
+        Page<Store> storePage = storeService.findStores(page, size);
+        PageInfo pageInfo = PageInfo.of(page, size, storePage);
+
+        List<StoreData> stores = storePage.stream()
+                .map(storeMapper::storeToStoreBriefData)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(new StoresResponseDto(stores,pageInfo));
+    }
 }
+

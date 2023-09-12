@@ -8,6 +8,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +33,11 @@ public class StoreService {
         Store store = optionalStore.orElseThrow(NoSuchElementException::new);
 
         return store;
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Store> findStores(int page, int size) {
+        return storeRepository.findAll(PageRequest.of(page-1, size));
     }
 
     @Transactional(readOnly = true)
