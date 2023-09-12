@@ -2,7 +2,7 @@ import { GoogleBtn, GuestBtn, KakaoBtn } from './OauthBtn.jsx';
 import { styled } from 'styled-components';
 import { ModalOverlay, Modal } from '../../assets/Modal.jsx';
 
-const CloseButton = styled.button`
+export const CloseButton = styled.button`
   position: absolute;
   top: 0px;
   right: 15px;
@@ -27,8 +27,8 @@ const Login = ({ onClose }) => {
           <section className="rounded-lg mt-5">
             <div>
               <GoogleBtn />
-              <KakaoBtn />
-              <GuestBtn />
+              {/* <KakaoBtn />
+              <GuestBtn /> */}
             </div>
           </section>
         </div>

@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 import { StoreImage } from '../../assets/Styles.jsx';
 import { RedButton } from '../../assets/buttons/RedButton.jsx';
 import axios from 'axios';
+import { useAuthStore } from '../../store/store';
+import SubmitModal from '../../pages/cart/SubmitModal.jsx';
 
 const OrdersImage = styled(StoreImage)`
   width: 200px;
@@ -18,13 +20,33 @@ const OrdersItem = ({ data, openModal }) => {
   const menuLength = data.order_menus.length;
   const menuImage = data.order_menus[0].img;
 
+  const { accessToken } = useAuthStore((state) => state);
+
+  const [isSubmitModalOpen, setSubmitModalOpen] = useState(false);
+
+  // 모달 열기
+  const openSubmitModal = () => {
+    setSubmitModalOpen(true);
+  };
+
+  // 모달 닫기
+  const closeSubmitModal = () => {
+    setSubmitModalOpen(false);
+  };
+
   // 주문 내역 삭제
   const deleteOrder = async () => {
     try {
       const res = await axios.delete(
-        `${process.env.REACT_APP_API_URL}/api/members/orders/${data.id}}`,
+        `${process.env.REACT_APP_API_URL}/api/members/orders/${data.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
       );
-      console.log(res);
+      closeSubmitModal();
+      window.location.reload();
     } catch (err) {
       console.log(err);
     }
@@ -46,9 +68,18 @@ const OrdersItem = ({ data, openModal }) => {
       <Button onClick={() => openModal(data)} className="w-full">
         리뷰 작성
       </Button>
-      <RedButton onClick={deleteOrder} className="w-full text-xs">
+      <RedButton onClick={openSubmitModal} className="w-full text-xs">
         주문 내역 삭제
       </RedButton>
+      {isSubmitModalOpen && (
+        <SubmitModal
+          onClose={closeSubmitModal}
+          onSubmit={deleteOrder}
+          message="정말 주문 내역을 삭제하시겠어요?"
+          cancelLabel="취소"
+          submitLabel="확인"
+        />
+      )}
     </div>
   );
 };
@@ -64,6 +95,13 @@ const Orders = ({ data }) => {
 
     if (isConfirmed) setCurrentModalData(null);
   };
+
+  if (data.length === 0)
+    return (
+      <h1 className="h-[50vh] flex items-center justify-center">
+        주문하신 내역이 없습니다.
+      </h1>
+    );
 
   return (
     <div className="flex justify-center">
