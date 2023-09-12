@@ -9,6 +9,8 @@ import axios from 'axios';
 import { useAuthStore } from '../../store/store.js';
 import { StoreImage } from '../../assets/Styles.jsx';
 import images from '../../assets/images/Images.js';
+import { useState } from 'react';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 const Title = styled.h1`
   margin: 1rem 0;
@@ -42,6 +44,7 @@ const MainPage = () => {
   const favoriteStores = getFavoriteStores();
 
   const { isLoggedIn } = useAuthStore((state) => state);
+  const [stores, setStores] = useState([]);
 
   const settings = {
     dots: true,
@@ -52,6 +55,20 @@ const MainPage = () => {
     autoplay: true,
     autoplaySpeed: 1500,
   };
+
+  axios
+    .get(`${process.env.REACT_APP_API_URL}/api/stores`, {
+      params: {
+        page: 1,
+        size: 10,
+      },
+    })
+    .then((res) => {
+      setStores(res.data.stores);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 
   return (
     <>
@@ -89,7 +106,7 @@ const MainPage = () => {
           <Title className="flex">이 달의 빵집 추천</Title>
         </div>
         <div className="flex flex-wrap justify-center">
-          {storeData.map((store, index) => (
+          {stores.map((store, index) => (
             <StoreCard key={index} store={store} />
           ))}
         </div>
