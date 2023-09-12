@@ -70,8 +70,7 @@ public class SecurityConfiguration {
                                 .anyRequest().permitAll()
                 )
                 .oauth2Login(oauth2 -> oauth2
-                        .successHandler(new OAuth2LoginSuccessHandler(
-                                jwtTokenizer, authorityUtils, memberService))    // tokenizer() 메서드 호출하여 인스턴스 사용
+                        .successHandler(new OAuth2LoginSuccessHandler(jwtTokenizer, authorityUtils, memberService))    // tokenizer() 메서드 호출하여 인스턴스 사용
                         .failureHandler((request, response, exception) -> {
                             System.out.println("OAuth2LoginAuthenticationFailureHandler");
                             exception.printStackTrace();
