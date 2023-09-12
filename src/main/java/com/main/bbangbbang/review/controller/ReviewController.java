@@ -1,5 +1,7 @@
 package com.main.bbangbbang.review.controller;
 
+import com.main.bbangbbang.exception.BusinessLogicException;
+import com.main.bbangbbang.exception.ExceptionCode;
 import com.main.bbangbbang.member.entity.Member;
 import com.main.bbangbbang.member.service.MemberService;
 import com.main.bbangbbang.order.entity.Order;
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,9 +40,13 @@ public class ReviewController {
     @PostMapping("/orders/{order-id}/reviews")
     public ResponseEntity<?> postReview(@PathVariable("order-id") Long orderId,
                                         @RequestParam(name = "content") String content,
-                                        @RequestParam(name = "rating") Integer rating) {
-        // Todo : make sure order.getMemberId() == memberId from token
+                                        @RequestParam(name = "rating") Integer rating,
+                                        Authentication authentication) {
+        String email = authentication.getPrincipal().toString();
+        Member member = memberService.findMember(email);
         Order order = orderService.findOrder(orderId);
+        validateSameMember(member, order);
+
         Review review = reviewService.createReview(order, content, rating); //need img
         order.setOrderStatus(OrderStatus.REVIEWED);
 
@@ -48,8 +55,10 @@ public class ReviewController {
 
     @GetMapping("/reviews")
     public ResponseEntity<?> getReviews(@RequestParam(name = "page") Integer page,
-                                        @RequestParam(name = "size") Integer size) {
-        Member member = memberService.findMember("hellobread1@googol.com"); // 임시 1번 멤버
+                                        @RequestParam(name = "size") Integer size,
+                                        Authentication authentication) {
+        String email = authentication.getPrincipal().toString();
+        Member member = memberService.findMember(email);
         Page<Review> reviewPage = reviewService.findReviews(member.getId(), page, size);
         PageInfo pageInfo = PageInfo.of(page, size, reviewPage);
 
@@ -61,10 +70,21 @@ public class ReviewController {
     }
 
     @DeleteMapping("/orders/{order-id}/reviews")
-    public ResponseEntity<?> deleteReview(@PathVariable("order-id") Long orderId) {
-        // Todo : make sure order.getMemberId() == memberId from token
+    public ResponseEntity<?> deleteReview(@PathVariable("order-id") Long orderId,
+                                          Authentication authentication) {
+        String email = authentication.getPrincipal().toString();
+        Member member = memberService.findMember(email);
+        Order order = orderService.findOrder(orderId);
+
+        validateSameMember(member, order);
         reviewService.deleteReview(orderId);
 
         return ResponseEntity.noContent().build();
+    }
+
+    private void validateSameMember(Member member, Order order) {
+        if (!order.getMember().getId().equals(member.getId())) {
+            throw new BusinessLogicException(ExceptionCode.NO_ACCESS);
+        }
     }
 }
