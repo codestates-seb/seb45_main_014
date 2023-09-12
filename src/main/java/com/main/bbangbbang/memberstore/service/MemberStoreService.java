@@ -1,5 +1,6 @@
 package com.main.bbangbbang.memberstore.service;
 
+import com.main.bbangbbang.member.service.MemberService;
 import com.main.bbangbbang.memberstore.entity.MemberStore;
 import com.main.bbangbbang.memberstore.repository.MemberStoreRepository;
 import com.main.bbangbbang.store.service.StoreService;
@@ -14,28 +15,37 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberStoreService {
     private final MemberStoreRepository memberStoreRepository;
     private final StoreService storeService;
+    private final MemberService memberService;
 
     @Transactional
     public MemberStore changeFavorite(Long memberId, Long storeId) {
-        try {
+        if (existFavorite(memberId, storeId)) {
             MemberStore memberStore = findMemberStore(memberId, storeId);
             memberStore.setIsFavorite(!memberStore.getIsFavorite());
-            return memberStore;
-        } catch (NoSuchMethodException e) {
-            return createFavorite(memberId, storeId);
+
+            return memberStoreRepository.save(memberStore);
         }
+
+        return createFavorite(memberId, storeId);
     }
 
     @Transactional
     public MemberStore createFavorite(Long memberId, Long storeId) {
         MemberStore memberStore = new MemberStore();
         memberStore.setStore(storeService.findStore(storeId));
-        memberStore.setMember(null);
+        memberStore.setMember(memberService.findMemberById(memberId));
+
         return memberStoreRepository.save(memberStore);
     }
 
-    private MemberStore findMemberStore(Long memberId, Long storeId) throws NoSuchMethodException {
+    private MemberStore findMemberStore(Long memberId, Long storeId) {
         Optional<MemberStore> optionalMemberStore = memberStoreRepository.findByMemberIdAndStoreId(memberId, storeId);
+
         return optionalMemberStore.orElseThrow(NoSuchElementException::new);
+    }
+
+    private boolean existFavorite(long memberId, long storeId) {
+
+        return memberStoreRepository.findByMemberIdAndStoreId(memberId, storeId).isPresent();
     }
 }

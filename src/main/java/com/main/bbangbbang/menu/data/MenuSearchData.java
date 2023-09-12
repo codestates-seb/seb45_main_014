@@ -9,6 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MenuSearchData extends MenuData{
+    private String storeId;
     private String storeName;
     private String img;
 }
