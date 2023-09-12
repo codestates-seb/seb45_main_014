@@ -12,6 +12,7 @@ import formatDate from '../../utils/formatDate.js';
 import { Modal, ModalOverlay } from '../../assets/Modal.jsx';
 import { useState } from 'react';
 import axios from 'axios';
+import { CloseButton } from '../login/Login.jsx';
 
 const TextBox = styled.textarea`
   border: 1px solid #b6a280;
@@ -139,6 +140,7 @@ const PostReview = ({ data, closeModal }) => {
       <ModalOverlay onClick={handleCloseModal} />
       <Modal>
         <div className="max-w-screen-sm mx-auto flex flex-col gap-4">
+          <CloseButton onClick={handleCloseModal}>×</CloseButton>
           <div className="flex justify-between">
             <h2>{orderDate}</h2>
           </div>
