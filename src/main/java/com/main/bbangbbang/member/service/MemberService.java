@@ -1,5 +1,7 @@
 package com.main.bbangbbang.member.service;
 
+import com.main.bbangbbang.exception.BusinessLogicException;
+import com.main.bbangbbang.exception.ExceptionCode;
 import com.main.bbangbbang.member.entity.Member;
 import com.main.bbangbbang.member.repository.MemberRepository;
 import lombok.AllArgsConstructor;
@@ -31,7 +33,7 @@ public class MemberService {
         Optional<Member> optionalMember = memberRepository.findByEmail(email);
         Member findMember =
                 optionalMember.orElseThrow(() ->
-                        new NoSuchElementException("Member not found"));
+                        new BusinessLogicException(ExceptionCode.NO_MEMBER));
         return findMember;
 //        return memberRepository.findByEmail(email).orElseThrow(NoSuchElementException::new);
     }
