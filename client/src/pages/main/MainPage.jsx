@@ -9,8 +9,9 @@ import axios from 'axios';
 import { useAuthStore } from '../../store/store.js';
 import { StoreImage } from '../../assets/Styles.jsx';
 import images from '../../assets/images/Images.js';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import LoadingSpinner from '../../components/Loading.jsx';
 
 const Title = styled.h1`
   margin: 1rem 0;
@@ -42,9 +43,10 @@ const HotPlace = ({ id, src }) => {
 
 const MainPage = () => {
   const favoriteStores = getFavoriteStores();
-
   const { isLoggedIn } = useAuthStore((state) => state);
   const [stores, setStores] = useState([]);
+  const [hasMore, setHasMore] = useState(true);
+  const [page, setPage] = useState(1);
 
   const settings = {
     dots: true,
@@ -56,19 +58,34 @@ const MainPage = () => {
     autoplaySpeed: 1500,
   };
 
-  axios
-    .get(`${process.env.REACT_APP_API_URL}/api/stores`, {
-      params: {
-        page: 1,
-        size: 10,
-      },
-    })
-    .then((res) => {
-      setStores(res.data.stores);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  const fetchData = useCallback(
+    (pageNumber) => {
+      axios
+        .get(`${process.env.REACT_APP_API_URL}/api/stores`, {
+          params: {
+            page: pageNumber,
+            size: 10,
+          },
+        })
+        .then((res) => {
+          const newData = res.data.stores;
+          if (newData.length === 0) {
+            setHasMore(false);
+          } else {
+            setStores((prevData) => [...prevData, ...newData]);
+            if (newData.length < 10) {
+              setHasMore(false);
+            }
+            setPage(pageNumber + 1);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          setHasMore(false);
+        });
+    },
+    [setStores, setHasMore, setPage],
+  );
 
   return (
     <>
@@ -105,11 +122,22 @@ const MainPage = () => {
         <div>
           <Title className="flex">이 달의 빵집 추천</Title>
         </div>
-        <div className="flex flex-wrap justify-center">
-          {stores.map((store, index) => (
-            <StoreCard key={index} store={store} />
-          ))}
-        </div>
+        <InfiniteScroll
+          dataLength={stores.length}
+          next={() => fetchData(page)}
+          hasMore={hasMore}
+          loader={
+            <div className="flex justify-center pt-14">
+              <LoadingSpinner position="static" />
+            </div>
+          }
+        >
+          <div className="flex flex-wrap justify-center">
+            {stores.map((store, index) => (
+              <StoreCard key={index} store={store} />
+            ))}
+          </div>
+        </InfiniteScroll>
       </Content>
     </>
   );
