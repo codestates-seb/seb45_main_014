@@ -9,6 +9,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", uses = OrderMenuMapper.class)
 public interface OrderMapper {
     @Mapping(source = "store.id", target = "storeId")
+    @Mapping(source = "store.storeName", target = "storeName")
     @Mapping(source = "orderStatus.status", target = "orderStatus")
     @Mapping(source = "orderMenus", target = "orderMenus")
     OrderData orderToOrderData(Order order);
