@@ -13,6 +13,7 @@ const SearchbarContainer = styled.form`
 
 const SearchboxInput = styled.input`
   border-radius: 10px;
+  max-height: 41px;
   border: 2px solid #debe8f;
   width: 40%;
   font-size: 14px;
