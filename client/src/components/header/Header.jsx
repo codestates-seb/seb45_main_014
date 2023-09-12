@@ -4,7 +4,11 @@ import Button from '../../assets/buttons/Button.jsx';
 import SearchBar from './SearchBar.jsx';
 import Login from '../login/Login.jsx';
 import UserMenu from './Usermenu.jsx';
-import { useModalStore, useCartItemStore } from '../../store/store.js';
+import {
+  useModalStore,
+  useCartItemStore,
+  useAuthStore,
+} from '../../store/store.js';
 import { ReactComponent as CartIcon } from '../../assets/images/cart.svg';
 
 const HeaderBox = styled.header`
@@ -93,6 +97,7 @@ const ItemBadge = styled.span`
 
 const Header = () => {
   const { isModalOpen, openModal, closeModal } = useModalStore();
+  const { isLoggedIn } = useAuthStore();
   // Zustand에서 cartItem을 가져옴
   const { cartItem } = useCartItemStore();
 
@@ -106,23 +111,29 @@ const Header = () => {
         <SearchBox>
           <SearchBar />
         </SearchBox>
-        <MenuBox>
-          <Button onClick={openModal} weight="800">
-            로그인
-          </Button>
-          <UserBox aria-label="유저 메뉴">
-            <UserMenu />
-          </UserBox>
-          <CartBox aria-label="장바구니">
-            <Link to={'/cart'}>
-              <CartIcon />
-              {/*cartItem의 길이가 0보다 크면 ItemBadge를 렌더링*/}
-              {cartItem.length > 0 && <ItemBadge>{cartItem.length}</ItemBadge>}
-            </Link>
-          </CartBox>
-        </MenuBox>
+        {isLoggedIn ? (
+          <MenuBox>
+            <UserBox aria-label="유저 메뉴">
+              <UserMenu />
+            </UserBox>
+            <CartBox aria-label="장바구니">
+              <Link to={'/cart'}>
+                <CartIcon />
+                {/*cartItem의 길이가 0보다 크면 ItemBadge를 렌더링*/}
+                {cartItem.length > 0 && (
+                  <ItemBadge>{cartItem.length}</ItemBadge>
+                )}
+              </Link>
+            </CartBox>
+          </MenuBox>
+        ) : (
+          <MenuBox>
+            <Button onClick={openModal} weight="800">
+              로그인
+            </Button>
+          </MenuBox>
+        )}
       </HeaderBox>
-
       {isModalOpen && <Login onClose={closeModal} />}
     </>
   );
