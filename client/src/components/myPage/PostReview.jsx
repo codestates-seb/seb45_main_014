@@ -167,13 +167,18 @@ const PostReview = ({ data, closeModal }) => {
             {`${text.length} / ${MAX_BYTE_LIMIT} 글자`}
           </ByteCount>
           <div className="flex justify-between items-center">
-            <input type="file" accept="image/*" onChange={handleImageChange} />
+            <input
+              className="w-1/3"
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+            />
             {selectedImage && (
               <div className="flex items-center">
                 <img
                   src={URL.createObjectURL(selectedImage)}
                   alt="선택한 이미지"
-                  style={{ maxWidth: '100%', height: 'auto' }}
+                  className="w-20 h-20 object-cover"
                 />
               </div>
             )}
