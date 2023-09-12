@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 import { useState, useEffect, useCallback } from 'react';
 import StoreCard from '../../assets/StoreCard.jsx';
+import MenuCard from '../../assets/MenuCard.jsx';
 import axios from 'axios';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { ReactComponent as Magnifier } from '../../assets/images/magnifier.svg';
@@ -61,7 +62,8 @@ const SearchResult = () => {
       axios
         .get(`${API}/search${location.search}&page=${pageNumber}&size=10`)
         .then((res) => {
-          const newData = res.data.stores;
+          const newData = res.data.menus || res.data.stores; // search_target에 따라 데이터를 다르게 가져옴
+
           if (newData.length === 0) {
             setHasMore(false); // 더 이상 데이터가 없을 때 hasMore를 false로 설정
           } else {
@@ -104,12 +106,6 @@ const SearchResult = () => {
           <p>에 대한 검색결과</p>
         </span>
       </div>
-      {data.length === 0 && (
-        <NoResult>
-          <Magnifier />
-          <p className="pt-8">검색된 결과가 없습니다.</p>
-        </NoResult>
-      )}
       {/*무한 스크롤 구현*/}
       <InfiniteScroll
         dataLength={data.length}
@@ -122,9 +118,21 @@ const SearchResult = () => {
         }
       >
         <DataContainer>
-          {data.map((store, idx) => (
-            <StoreCard key={idx} store={store} />
-          ))}
+          {data.length === 0 && (
+            <NoResult>
+              <Magnifier />
+              <p className="pt-8">검색된 결과가 없습니다.</p>
+            </NoResult>
+          )}
+          {data.map((item, idx) => {
+            if (location.search.includes('search_target=menu')) {
+              // If the URL contains 'search_target=menu', render MenuCard
+              return <MenuCard key={idx} item={item} />;
+            } else {
+              // Otherwise, render StoreCard
+              return <StoreCard key={idx} store={item} />;
+            }
+          })}
         </DataContainer>
       </InfiniteScroll>
     </Wrapper>
