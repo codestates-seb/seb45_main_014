@@ -16,14 +16,12 @@ const EditProfile = ({ onClose }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const nickname = e.target.nickname.value;
-    const phone_num = e.target.phone.value;
 
     axios
       .patch(
         `${process.env.REACT_APP_API_URL}/api/member`,
         {
           nickname,
-          phone_num,
         },
         {
           headers: {
@@ -34,6 +32,8 @@ const EditProfile = ({ onClose }) => {
       .then((res) => {
         console.log(res);
         alert('회원정보가 수정되었습니다.');
+        onClose();
+        window.location.reload();
       })
       .catch((err) => {
         console.log(err);
@@ -64,17 +64,6 @@ const EditProfile = ({ onClose }) => {
                   type="text"
                   id="nickname"
                   placeholder="빵돌이"
-                  required=""
-                />
-              </InputBox>
-              <InputBox>
-                <label htmlFor="phone" className="block">
-                  전화번호
-                </label>
-                <Input
-                  type="tel"
-                  id="phone"
-                  placeholder="01012345678"
                   required=""
                 />
               </InputBox>

@@ -2,8 +2,10 @@ import { styled } from 'styled-components';
 import formatDate from '../../utils/formatDate';
 import Button from '../../assets/buttons/Button.jsx';
 import PostReview from './PostReview.jsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { StoreImage } from '../../assets/Styles.jsx';
+import { RedButton } from '../../assets/buttons/RedButton.jsx';
+import axios from 'axios';
 
 const OrdersImage = styled(StoreImage)`
   width: 200px;
@@ -15,6 +17,18 @@ const OrdersItem = ({ data, openModal }) => {
   const menuName = data.order_menus[0].menu_name;
   const menuLength = data.order_menus.length;
   const menuImage = data.order_menus[0].img;
+
+  // 주문 내역 삭제
+  const deleteOrder = async () => {
+    try {
+      const res = await axios.delete(
+        `${process.env.REACT_APP_API_URL}/api/members/orders/${data.id}}`,
+      );
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <div className="flex flex-col items-center">
@@ -32,6 +46,9 @@ const OrdersItem = ({ data, openModal }) => {
       <Button onClick={() => openModal(data)} className="w-full">
         리뷰 작성
       </Button>
+      <RedButton onClick={deleteOrder} className="w-full text-xs">
+        주문 내역 삭제
+      </RedButton>
     </div>
   );
 };
