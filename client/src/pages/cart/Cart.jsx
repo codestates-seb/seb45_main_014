@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { useCartItemStore } from '../../store/store.js';
 import axios from 'axios';
 import SubmitModal from './SubmitModal.jsx';
+import Dropdown from '../../assets/Dropdown.jsx';
 
 const ShoppingCart = styled.div`
   width: 100%;
@@ -53,6 +54,7 @@ const TotalBox = styled.div`
 
 const TotalItem = styled.div`
   display: flex;
+  align-items: center;
   justify-content: space-between;
   padding-top: 12px;
   padding-bottom: 12px;
@@ -69,11 +71,17 @@ const Cart = () => {
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false); // 주문 모달 상태 추가
   const [pickupTime, setPickupTime] = useState(30); // 픽업 시간을 저장하는 상태 변수
   const API = `${process.env.REACT_APP_API_URL}/api`;
+  // Dropdown 옵션
+  const options = [
+    { value: 30, name: '30분' },
+    { value: 60, name: '1시간' },
+    { value: 90, name: '1시간 30분' },
+    { value: 120, name: '2시간' },
+  ];
 
-  // 픽업 시간을 변경할 때 호출되는 함수
-  const handlePickupTimeChange = (e) => {
-    const selectedTime = e.target.value;
-    setPickupTime(selectedTime);
+  //dropdown에서 선택한 시간을 setPickupTime 하는 함수
+  const handlePickupTimeChange = (selectedOption) => {
+    setPickupTime(selectedOption.value);
   };
 
   const openModal = (modalType) => {
@@ -208,8 +216,8 @@ const Cart = () => {
             </TotalItem>
             <TotalItem>
               <span>픽업 시간</span>
-              <div>
-                <select
+              <div className="flex h-[30px]">
+                {/* <select
                   className="h-full rounded-lg border-2 text-right border-gray-300"
                   value={pickupTime}
                   onChange={handlePickupTimeChange}
@@ -218,8 +226,13 @@ const Cart = () => {
                   <option value={60}>1시간</option>
                   <option value={90}>1시간 30분</option>
                   <option value={120}>2시간</option>
-                </select>
-                <span className="pl-1">후</span>
+                </select> */}
+                <Dropdown
+                  options={options}
+                  defaultOption={options[0]}
+                  onSelect={handlePickupTimeChange}
+                />
+                <span className="pl-1 my-auto">후</span>
               </div>
             </TotalItem>
             <Button fontsize="16px" onClick={() => openModal('submit')}>
