@@ -65,6 +65,13 @@ const Orders = ({ data }) => {
     if (isConfirmed) setCurrentModalData(null);
   };
 
+  if (data.length === 0)
+    return (
+      <h1 className="h-[50vh] flex items-center justify-center">
+        주문하신 내역이 없습니다.
+      </h1>
+    );
+
   return (
     <div className="flex justify-center">
       <div className="grid grid-flow-row-dense grid-cols-4 gap-4">

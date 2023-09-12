@@ -5,7 +5,7 @@ import Reviews from '../components/myPage/Reviews.jsx';
 import Orders from '../components/myPage/Orders.jsx';
 import Favorites from '../components/myPage/Favorites.jsx';
 import axios from 'axios';
-import { useAuthStore, useModalStore } from '../store/store.js';
+import { useAuthStore } from '../store/store.js';
 
 import { Link } from 'react-router-dom';
 import EditProfile from '../components/myPage/EditProfile.jsx';
@@ -24,6 +24,10 @@ const TabContainer = styled.ul`
     height: 3rem;
     align-items: center;
     cursor: pointer;
+
+    &.active {
+      background-color: #ddd;
+    }
 
     &:hover {
       background-color: #ccc;
@@ -120,6 +124,7 @@ const MyPage = () => {
         );
         setReviews(response.data.reviews);
         setReviewCount(response.data.reviews.length);
+        console.log(response.data.reviews); // 임시
       } catch (error) {
         console.error(error);
       }
@@ -143,6 +148,7 @@ const MyPage = () => {
         );
         setOrders(response.data.orders);
         setOrderCount(response.data.orders.length);
+        console.log(response.data.orders); // 임시
       } catch (error) {
         console.error(error);
       }
@@ -166,6 +172,7 @@ const MyPage = () => {
         );
         setFavorites(response.data.stores);
         setFavoriteCount(response.data.stores.length);
+        console.log(response.data.stores); // 임시
       } catch (error) {
         console.error(error);
       }
@@ -195,17 +202,20 @@ const MyPage = () => {
         </div>
       </div>
       <TabContainer className="my-5">
-        <li className="w-full">
+        {/* 리뷰 관리 탭 */}
+        <li className={`w-full ${currentTab === '리뷰 관리' ? 'active' : ''}`}>
           <Link to="#review" onClick={() => setCurrentTab('리뷰 관리')}>
             리뷰 관리 ({reviewCount})
           </Link>
         </li>
-        <li className="w-full">
+        {/* 주문 내역 탭 */}
+        <li className={`w-full ${currentTab === '주문 내역' ? 'active' : ''}`}>
           <Link to="#order" onClick={() => setCurrentTab('주문 내역')}>
             주문 내역 ({orderCount})
           </Link>
         </li>
-        <li className="w-full">
+        {/* 즐겨찾기 탭 */}
+        <li className={`w-full ${currentTab === '즐겨찾기' ? 'active' : ''}`}>
           <Link to="#favorite" onClick={() => setCurrentTab('즐겨찾기')}>
             즐겨찾기 ({favoriteCount})
           </Link>
