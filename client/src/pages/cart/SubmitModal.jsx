@@ -26,10 +26,8 @@ const ModalContent = ({ message }) => (
   </div>
 );
 
-const Button = ({ label, onClick }) => (
-  <button className="w-full hover:bg-gray-100" onClick={onClick}>
-    {label}
-  </button>
+const Button = ({ label }) => (
+  <button className="w-full hover:bg-gray-100">{label}</button>
 );
 
 const SubmitModal = ({
