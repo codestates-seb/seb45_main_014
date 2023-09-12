@@ -92,7 +92,7 @@ const MainPage = () => {
   }, [fetchData]);
 
   return (
-    <>
+    <div className="h-full">
       {/* 즐겨찾기 */}
       {isLoggedIn && (
         <Content>
@@ -143,7 +143,7 @@ const MainPage = () => {
           </div>
         </InfiniteScroll>
       </Content>
-    </>
+    </div>
   );
 };
 
