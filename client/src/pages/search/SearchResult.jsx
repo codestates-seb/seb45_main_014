@@ -1,7 +1,6 @@
 import { styled } from 'styled-components';
 import { useState, useEffect, useCallback } from 'react';
 import StoreCard from '../../assets/StoreCard.jsx';
-import MenuCard from '../../assets/MenuCard.jsx';
 import axios from 'axios';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { ReactComponent as Magnifier } from '../../assets/images/magnifier.svg';
@@ -9,7 +8,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import LoadingSpinner from '../../components/Loading.jsx';
 
 const Wrapper = styled.section`
-  max-width: 650px;
+  max-width: 1024px;
   height: 100%;
   margin: 0 auto 0 auto;
   padding-top: 30px;
@@ -102,6 +101,7 @@ const SearchResult = () => {
 
   const [searchParams] = useSearchParams();
   const query = searchParams.get('search_keyword');
+  const searchTarget = searchParams.get('search_target');
 
   return (
     <Wrapper>
@@ -127,18 +127,16 @@ const SearchResult = () => {
           dataLength={data.length}
           next={() => fetchData(page)} // 다음 페이지 데이터 로드
           hasMore={hasMore} // 무한 스크롤을 계속할지 여부
-          loader={<div className="flex justify-center pt-14">로딩중...</div>}
+          loader={
+            <div className="flex justify-center pt-14" hidden>
+              로딩중...
+            </div>
+          }
         >
           <DataContainer>
-            {data.map((item, idx) => {
-              if (location.search.includes('search_target=menu')) {
-                // search_target이 menu인 경우 MenuCard를 렌더링
-                return <MenuCard key={idx} item={item} />;
-              } else {
-                // search_target이 store, region인 경우 StoreCard를 렌더링
-                return <StoreCard key={idx} store={item} />;
-              }
-            })}
+            {data.map((item, idx) => (
+              <StoreCard key={idx} store={item} />
+            ))}
           </DataContainer>
         </InfiniteScroll>
       )}
