@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 public interface MenuMapper {
     MenuDetailData menuToMenuDetailData(Menu menu);
     MenuBriefData menuToMenuBriefData(Menu menu);
+    @Mapping(source = "store.id", target = "storeId")
     @Mapping(source = "store.storeName", target = "storeName")
     MenuSearchData menuToMenuSearchData(Menu menu);
 }
