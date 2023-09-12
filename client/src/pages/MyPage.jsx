@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import Button from '../assets/buttons/Button.jsx';
 import { styled } from 'styled-components';
 import Reviews from '../components/myPage/Reviews.jsx';
@@ -83,154 +83,110 @@ const MyPage = () => {
     if (hash === '#favorite') setCurrentTab('즐겨찾기');
   }, []);
 
+  const fetchData = useCallback(
+    async (url, setState, setCount) => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}${url}`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          },
+        );
+        setState(response.data);
+        setCount(response.data.length);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    [accessToken],
+  );
+
   useEffect(() => {
     if (!isLoggedIn || !accessToken) {
       alert('로그인이 필요합니다.');
       return;
     }
 
-    // 회원 정보 가져오기
-    const getMember = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/member`,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          },
-        );
-        setMember(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    getMember();
+    fetchData('/api/member', setMember, () => {});
+    fetchData('/api/reviews', setReviews, setReviewCount);
+    fetchData('/api/members/orders', setOrders, setOrderCount);
+    fetchData('/api/members/favorites', setFavorites, setFavoriteCount);
+  }, [isLoggedIn, accessToken, fetchData]);
 
-    // 리뷰 가져오기
-    const getReviews = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/reviews`,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-            params: {
-              page: 1,
-              size: 6,
-            },
-          },
-        );
-        setReviews(response.data.reviews);
-        setReviewCount(response.data.reviews.length);
-        console.log(response.data.reviews); // 임시
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    getReviews();
+  const tabComponents = useMemo(
+    () => ({
+      '리뷰 관리': <Reviews data={reviews} />,
+      '주문 내역': <Orders data={orders} />,
+      즐겨찾기: <Favorites data={favorites} />,
+    }),
+    [reviews, orders, favorites],
+  );
 
-    // 주문 내역 가져오기
-    const getOrders = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/members/orders`,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-            params: {
-              page: 1,
-              size: 16,
-            },
-          },
-        );
-        setOrders(response.data.orders);
-        setOrderCount(response.data.orders.length);
-        console.log(response.data.orders); // 임시
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    getOrders();
-
-    // 즐겨찾기 가져오기
-    const getFavorites = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/members/favorites`,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-            params: {
-              page: 1,
-              size: 8,
-            },
-          },
-        );
-        setFavorites(response.data.stores);
-        setFavoriteCount(response.data.stores.length);
-        console.log(response.data.stores); // 임시
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    getFavorites();
-  }, [isLoggedIn, accessToken]);
-
-  return (
-    <div className="max-w-screen-lg mx-auto p-10">
-      <div className="flex gap-5">
-        <img
-          src={member.img}
-          alt="유저 이미지"
-          className="flex justify-center items-center border-2 w-28 rounded-full"
-        ></img>
-        <div className="flex flex-col justify-center gap-2">
-          <h1 className="">{member.nickname}</h1>
-          <div>가입일: {formatDate(member.createdAt)}</div>
-          <div className="flex gap-2">
-            <Button className="" onClick={openImageModal}>
-              이미지 변경
-            </Button>
-            <Button className="" onClick={openEditProfileModal}>
-              프로필 수정
-            </Button>
+  return useMemo(
+    () => (
+      <div className="max-w-screen-lg mx-auto p-10">
+        <div className="flex gap-5">
+          <img
+            src={member.img}
+            alt="유저 이미지"
+            className="flex justify-center items-center border-2 w-28 rounded-full"
+          ></img>
+          <div className="flex flex-col justify-center gap-2">
+            <h1 className="">{member.nickname}</h1>
+            <div>가입일: {formatDate(member.createdAt)}</div>
+            <div className="flex gap-2">
+              <Button className="" onClick={openImageModal}>
+                이미지 변경
+              </Button>
+              <Button className="" onClick={openEditProfileModal}>
+                프로필 수정
+              </Button>
+            </div>
           </div>
         </div>
+        <TabContainer className="my-5">
+          {/* 리뷰 관리 탭 */}
+          <li
+            className={`w-full ${currentTab === '리뷰 관리' ? 'active' : ''}`}
+          >
+            <Link to="#review" onClick={() => setCurrentTab('리뷰 관리')}>
+              리뷰 관리 ({reviewCount})
+            </Link>
+          </li>
+          {/* 주문 내역 탭 */}
+          <li
+            className={`w-full ${currentTab === '주문 내역' ? 'active' : ''}`}
+          >
+            <Link to="#order" onClick={() => setCurrentTab('주문 내역')}>
+              주문 내역 ({orderCount})
+            </Link>
+          </li>
+          {/* 즐겨찾기 탭 */}
+          <li className={`w-full ${currentTab === '즐겨찾기' ? 'active' : ''}`}>
+            <Link to="#favorite" onClick={() => setCurrentTab('즐겨찾기')}>
+              즐겨찾기 ({favoriteCount})
+            </Link>
+          </li>
+        </TabContainer>
+        <div className="flex justify-center">{tabComponents[currentTab]}</div>
+        {isEditProfileModalOpen && (
+          <EditProfile onClose={closeEditProfileModal} />
+        )}
+        {isImageModalOpen && <ImageUploadModal onClose={closeImageModal} />}
       </div>
-      <TabContainer className="my-5">
-        {/* 리뷰 관리 탭 */}
-        <li className={`w-full ${currentTab === '리뷰 관리' ? 'active' : ''}`}>
-          <Link to="#review" onClick={() => setCurrentTab('리뷰 관리')}>
-            리뷰 관리 ({reviewCount})
-          </Link>
-        </li>
-        {/* 주문 내역 탭 */}
-        <li className={`w-full ${currentTab === '주문 내역' ? 'active' : ''}`}>
-          <Link to="#order" onClick={() => setCurrentTab('주문 내역')}>
-            주문 내역 ({orderCount})
-          </Link>
-        </li>
-        {/* 즐겨찾기 탭 */}
-        <li className={`w-full ${currentTab === '즐겨찾기' ? 'active' : ''}`}>
-          <Link to="#favorite" onClick={() => setCurrentTab('즐겨찾기')}>
-            즐겨찾기 ({favoriteCount})
-          </Link>
-        </li>
-      </TabContainer>
-      <div className="flex justify-center">
-        {currentTab === '리뷰 관리' && <Reviews data={reviews} />}
-        {currentTab === '주문 내역' && <Orders data={orders} />}
-        {currentTab === '즐겨찾기' && <Favorites data={favorites} />}
-      </div>
-      {isEditProfileModalOpen && (
-        <EditProfile onClose={closeEditProfileModal} />
-      )}
-      {isImageModalOpen && <ImageUploadModal onClose={closeImageModal} />}
-    </div>
+    ),
+    [
+      member,
+      reviewCount,
+      orderCount,
+      favoriteCount,
+      currentTab,
+      tabComponents,
+      isEditProfileModalOpen,
+      isImageModalOpen,
+    ],
   );
 };
 
