@@ -42,7 +42,6 @@ public class OrderController { // jwt토큰 parsing하여 Member확인이 가능
     public ResponseEntity<OrderResponseDto> getActiveOrder(Authentication authentication) {
         String email = authentication.getPrincipal().toString();
         Member member = memberService.findMember(email);
-
         Order order = orderService.findActiveOrder(member.getId());
 
         return ResponseEntity.ok(new OrderResponseDto(orderMapper.orderToOrderData(order)));
@@ -71,13 +70,12 @@ public class OrderController { // jwt토큰 parsing하여 Member확인이 가능
                                      Authentication authentication) {
         String email = authentication.getPrincipal().toString();
         Member member = memberService.findMember(email);
-
         Menu menu = menuService.findMenu(menuId);
         Store store = storeService.findStoreByMenu(menu);
         Order order;
 
         if (isNewOrder) {
-            orderService.findActiveOrder(member.getId()).setOrderStatus(OrderStatus.CANCELED); // active가 있다면 해당 order -> canceled
+            orderService.cancelActiveOrder(member.getId()); // active가 있다면 해당 order -> canceled
             order = orderService.createOrder(member, store);
         } else {
             order = orderService.findActiveOrder(member.getId());

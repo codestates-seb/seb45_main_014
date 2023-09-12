@@ -32,12 +32,29 @@ public class OrderService {
     @Transactional
     public Order createOrder(Member member, Store store) {
         Order order = new Order();
-        order.setMember(memberService.findMember("hellobread1@googol.com")); // 임시 1번 member
+        order.setMember(member); // 임시 1번 member
         order.setStore(store);
         order.setOrderMenus(new ArrayList<>());
         order.setOrderStatus(OrderStatus.ACTIVE);
 
         return orderRepository.save(order);
+    }
+
+    @Transactional(readOnly = true)
+    public boolean existActiveOrder(Long memberId) {
+
+        return orderRepository.findByOrderStatusAndMemberId(OrderStatus.ACTIVE, memberId).size() > 0;
+    }
+
+    @Transactional
+    public Order cancelActiveOrder(Long memberId) {
+        if (existActiveOrder(memberId)) {
+            Order order = findActiveOrder(memberId);
+            order.setOrderStatus(OrderStatus.CANCELED);
+
+            return orderRepository.save(order);
+        }
+        return null;
     }
 
     @Transactional(readOnly = true)
@@ -103,10 +120,10 @@ public class OrderService {
 
     private void validateOneActiveOrder(List<Order> orders) {
         if (orders.size() == 0) {
-            throw new NoSuchElementException();
+            throw new BusinessLogicException(ExceptionCode.NO_ACTIVE_ORDER);
         }
         if (orders.size() > 1) {
-            throw new RuntimeException(); // 추후 BusinessException 구현하여 적용 예정
+            throw new BusinessLogicException(ExceptionCode.MANY_ACTIVE_ORDER);
         }
     }
 
