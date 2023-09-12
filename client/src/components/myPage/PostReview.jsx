@@ -3,12 +3,15 @@ import {
   useRatingStore,
   useImageStore,
   useByteSizeStore,
+  useAuthStore,
 } from '../../store/store.js';
 import { styled } from 'styled-components';
 import { StoreImage } from '../../assets/Styles.jsx';
 import Button from '../../assets/buttons/Button.jsx';
 import formatDate from '../../utils/formatDate.js';
 import { Modal, ModalOverlay } from '../../assets/Modal.jsx';
+import { useState } from 'react';
+import axios from 'axios';
 
 const TextBox = styled.textarea`
   border: 1px solid #b6a280;
@@ -49,9 +52,13 @@ const PostReview = ({ data, closeModal }) => {
   const { rating, setRating } = useRatingStore();
   const { selectedImage, setSelectedImage } = useImageStore();
   const { text, setText } = useByteSizeStore();
+  const [isSubmitting, setIsSubmitting] = useState(false); // 전송 중 여부
+  const { accessToken } = useAuthStore((state) => state);
 
   const menu = data.order_menus;
   const orderDate = formatDate(data.created_at);
+
+  const apiUrl = `${process.env.REACT_APP_API_URL}`;
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -77,6 +84,54 @@ const PostReview = ({ data, closeModal }) => {
     setText('');
 
     closeModal(rating, selectedImage, text);
+  };
+
+  const handleReviewSubmit = async () => {
+    setIsSubmitting(true); // 전송 시작
+
+    // 첫 번째 요청: 이미지 업로드
+    const formData = new FormData();
+    formData.append('image', selectedImage);
+
+    try {
+      const imageResponse = await axios.post(
+        `${apiUrl}/api/orders.${data.id}/reviews`, // 아마 이미지 업로드 API 주소로 수정할 것
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+
+      // 리뷰 데이터 저장
+      const reviewData = {
+        content: text,
+        rating,
+        imageUrl: imageResponse.data.url,
+      };
+
+      const reviewResponse = await axios.post(
+        `${apiUrl}/api/orders.${data.id}/reviews`,
+        reviewData,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+
+      if (reviewResponse.status === 200) {
+        alert('리뷰가 작성되었습니다.');
+        setIsSubmitting(false);
+        handleCloseModal();
+      }
+    } catch (error) {
+      console.error(error);
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -121,7 +176,12 @@ const PostReview = ({ data, closeModal }) => {
               </div>
             )}
           </div>
-          <Button>리뷰 작성</Button>
+          <Button
+            onClick={isSubmitting ? null : handleReviewSubmit}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? '전송 중...' : '리뷰 작성'}
+          </Button>
         </div>
       </Modal>
     </>
