@@ -3,7 +3,10 @@ import { Link } from 'react-router-dom';
 import Button from '../../assets/buttons/Button.jsx';
 import SearchBar from './SearchBar.jsx';
 import Login from '../login/Login.jsx';
-import { useModalStore } from '../../store/store.js';
+import UserMenu from './Usermenu.jsx';
+import { useModalStore, useCartItemStore } from '../../store/store.js';
+import { ReactComponent as CartIcon } from '../../assets/images/cart.svg';
+import { ReactComponent as UserIcon } from '../../assets/images/user.svg';
 
 const HeaderBox = styled.header`
   padding: 12px;
@@ -24,6 +27,7 @@ const HeaderBox = styled.header`
 
 const Logo = styled(Link)`
   display: flex;
+  width: 200px;
   align-items: center;
   text-align: center;
   font-size: 24px;
@@ -32,8 +36,10 @@ const Logo = styled(Link)`
 `;
 
 const MenuBox = styled.div`
+  padding-right: 10px;
   display: flex;
-  justify-content: stretch;
+  width: 200px;
+  justify-content: flex-end;
   align-items: center;
 `;
 
@@ -43,8 +49,53 @@ const SearchBox = styled.div`
   align-items: center;
 `;
 
+const CartBox = styled.div`
+  margin-left: 15px;
+  position: relative;
+  transition: all 0.2s ease;
+  &:hover {
+    transform: scale(1.15);
+  }
+`;
+
+const UserBox = styled.div`
+  margin-left: 15px;
+`;
+
+const ItemBadge = styled.span`
+  position: absolute;
+  right: -4px;
+  top: -1px;
+  width: 20px;
+  height: 20px;
+  padding: 0 4px;
+  border: 2px solid rgb(255, 255, 255);
+  border-radius: 10px;
+  background-color: #b39260;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    'Open Sans',
+    'Helvetica Neue',
+    sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgb(255, 255, 255);
+  line-height: 15px;
+  text-align: center;
+  white-space: nowrap;
+`;
+
 const Header = () => {
   const { isModalOpen, openModal, closeModal } = useModalStore();
+  // Zustand에서 cartItem을 가져옴
+  const { cartItem } = useCartItemStore();
 
   return (
     <>
@@ -60,6 +111,19 @@ const Header = () => {
           <Button onClick={openModal} weight="800">
             로그인
           </Button>
+          <UserBox aria-label="유저 메뉴">
+            {/* <Link to={'/mypage'}>
+              <UserIcon />
+            </Link> */}
+            <UserMenu />
+          </UserBox>
+          <CartBox aria-label="장바구니">
+            <Link to={'/cart'}>
+              <CartIcon />
+              {/*cartItem의 길이가 0보다 크면 ItemBadge를 렌더링*/}
+              {cartItem.length > 0 && <ItemBadge>{cartItem.length}</ItemBadge>}
+            </Link>
+          </CartBox>
         </MenuBox>
       </HeaderBox>
 

@@ -2,52 +2,95 @@ import { styled } from 'styled-components';
 import { InputBox, Input } from '../../assets/Styles.jsx';
 import images from '../../assets/images/Images';
 import Button from '../../assets/buttons/Button.jsx';
-import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { useAuthStore } from '../../store/store.js';
+import { Modal, ModalOverlay } from '../../assets/Modal.jsx';
 
-const CancelButton = styled(Button)`
+export const CancelButton = styled(Button)`
   background-color: rgba(255, 255, 255, 0.4);
 `;
 
-const EditProfile = () => {
+const EditProfile = ({ onClose }) => {
+  const { accessToken } = useAuthStore((state) => state);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const nickname = e.target.nickname.value;
+    const phone_num = e.target.phone.value;
+
+    axios
+      .patch(
+        `${process.env.REACT_APP_API_URL}/api/member`,
+        {
+          nickname,
+          phone_num,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      )
+      .then((res) => {
+        console.log(res);
+        alert('회원정보가 수정되었습니다.');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
-    <div className="flex flex-col items-center">
-      <img
-        src={images.mainlogo}
-        alt="main logo"
-        width={'200px'}
-        className="mt-8"
-      />
-      <section className="bg-amber-200 p-5 mt-5 rounded-lg">
-        <form className="flex flex-col items-center">
-          {/* 기존 사용자일 경우 placeholder가 아닌 기존 닉네임이 value에 들어감 */}
-          <InputBox>
-            <label htmlFor="nickname" className="block">
-              닉네임
-            </label>
-            <Input type="text" id="nickname" placeholder="빵돌이" required="" />
-          </InputBox>
-          <InputBox>
-            <label htmlFor="phone" className="block">
-              전화번호
-            </label>
-            <Input
-              type="tel"
-              id="phone"
-              placeholder="01012345678"
-              required=""
-            />
-          </InputBox>
-          <div className="flex gap-4">
-            {/* 초기 회원일 경우 입력으로 바뀜 */}
-            {/* 초기 회원일 경우 필수로 입력하지 않으면 경고창 */}
-            <Button className="mt-5">회원정보 수정</Button>
-            <CancelButton className="mt-5">
-              <Link to="/mypage">취소</Link>
-            </CancelButton>
-          </div>
-        </form>
-      </section>
-    </div>
+    <>
+      <ModalOverlay onClick={onClose} />
+      <Modal>
+        <div className="flex flex-col items-center">
+          <img
+            src={images.mainlogo}
+            alt="main logo"
+            width={'200px'}
+            className="mt-8"
+          />
+          <section className="bg-amber-200 p-5 mt-5 rounded-lg">
+            <form
+              className="flex flex-col items-center"
+              onSubmit={handleSubmit}
+            >
+              <InputBox>
+                <label htmlFor="nickname" className="block">
+                  닉네임
+                </label>
+                <Input
+                  type="text"
+                  id="nickname"
+                  placeholder="빵돌이"
+                  required=""
+                />
+              </InputBox>
+              <InputBox>
+                <label htmlFor="phone" className="block">
+                  전화번호
+                </label>
+                <Input
+                  type="tel"
+                  id="phone"
+                  placeholder="01012345678"
+                  required=""
+                />
+              </InputBox>
+              <div className="flex gap-4">
+                <Button className="mt-5" type="submit">
+                  회원정보 수정
+                </Button>
+                <CancelButton className="mt-5" type="button" onClick={onClose}>
+                  취소
+                </CancelButton>
+              </div>
+            </form>
+          </section>
+        </div>
+      </Modal>
+    </>
   );
 };
 

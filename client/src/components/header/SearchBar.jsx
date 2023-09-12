@@ -1,6 +1,6 @@
 import { styled, keyframes } from 'styled-components';
 import { useSearchStore } from '../../store/store';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import DropdownMenu from './DropdownMenu.jsx';
 import { useState } from 'react';
 
@@ -54,32 +54,27 @@ const DarkOverlay = styled.div`
 
 const SearchBar = () => {
   const { searchQuery, setSearchQuery, searchFilter } = useSearchStore();
-  // const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const [isFocused, setIsFocused] = useState(false);
 
   const handleSearchQuery = (e) => {
     const query = e.target.value;
     setSearchQuery(query);
-    console.log(`searchQuery 값은 ${searchQuery}`);
   };
 
   const searchSubmitHandler = (e) => {
     e.preventDefault();
 
     if (searchQuery.trim()) {
-      // setSearchParams({
-      //   search_keyword: searchQuery.trim(),
-      //   search_target: searchFilter,
-      //   page: 1,
-      //   size: 10,
-      // });
-      navigate(
-        `/search?search_keyword=${searchQuery.trim()}&search_target=${searchFilter}&page=1&size=10`,
-      );
+      navigate({
+        pathname: '/search',
+        search: `?search_keyword=${searchQuery.trim()}&search_target=${searchFilter}`,
+      });
 
       // 검색창 focus 해제하기
       document.activeElement.blur();
+      // 페이지 이동시 강제 스크롤 이동
+      window.scrollTo(0, 0);
     } else {
       // 검색 키워드가 존재하지 않는 경우 경고창 띄우기
       alert('검색어를 입력해 주세요!');

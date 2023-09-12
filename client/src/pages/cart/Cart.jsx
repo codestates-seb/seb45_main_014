@@ -2,9 +2,10 @@ import { styled } from 'styled-components';
 import Button from '../../assets/buttons/Button.jsx';
 import CheckBox from '../../components/cart/Checkbox.jsx';
 import CartItem from './CartItem.jsx';
-import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useCartItemStore } from '../../store/store.js';
+import axios from 'axios';
+import SubmitModal from './SubmitModal.jsx';
 
 const ShoppingCart = styled.div`
   width: 100%;
@@ -24,6 +25,11 @@ const CartMenu = styled.div`
   font-size: 14px;
   line-height: 26px;
   align-items: center;
+  button {
+    &:disabled {
+      color: rgb(156, 163, 175);
+    }
+  }
 `;
 
 const Total = styled.div`
@@ -57,57 +63,91 @@ const TotalItem = styled.div`
 `;
 
 const Cart = () => {
-  // const [cartItem, setCartItem] = useState([]);
   const { cartItem, setCartItem } = useCartItemStore();
-  // 체크된 아이템을 담을 배열
-  const [checkItems, setCheckItems] = useState(cartItem);
+  const [checkItem, setCheckItem] = useState(cartItem.map((item) => item.id)); // CartItem의 id를 저장하는 상태 변수
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // 삭제 모달 상태 추가
+  const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false); // 주문 모달 상태 추가
+  const [pickupTime, setPickupTime] = useState(30); // 픽업 시간을 저장하는 상태 변수
+  const API = `${process.env.REACT_APP_API_URL}/api`;
 
-  // 체크박스 단일 선택
+  // 픽업 시간을 변경할 때 호출되는 함수
+  const handlePickupTimeChange = (e) => {
+    const selectedTime = e.target.value;
+    setPickupTime(selectedTime);
+  };
+
+  const openModal = (modalType) => {
+    if (modalType === 'delete') {
+      setIsDeleteModalOpen(true);
+    } else if (modalType === 'submit') {
+      checkItem.length === 0
+        ? alert('선택된 상품이 없습니다.')
+        : setIsSubmitModalOpen(true);
+    }
+  };
+
+  const closeModal = (modalType) => {
+    if (modalType === 'delete') {
+      setIsDeleteModalOpen(false);
+    } else if (modalType === 'submit') {
+      setIsSubmitModalOpen(false);
+    }
+  };
+
+  // 체크박스가 체크되면 checkItem에 아이템 추가
   const handleSingleCheck = (checked, item) => {
     if (checked) {
-      // 단일 선택 시 체크된 아이템을 배열에 추가
-      setCheckItems((prev) => [...prev, item]);
+      setCheckItem([...checkItem, item.id]); // 여기에서 id만 추가
+      console.log(checkItem);
     } else {
-      // 단일 선택 해제 시 체크된 아이템을 제외한 배열 (필터)
-      setCheckItems(checkItems.filter((el) => el.id !== item.id));
+      setCheckItem(checkItem.filter((id) => id !== item.id)); // 여기에서도 id로 비교
+      console.log(checkItem);
     }
   };
-
-  // 체크박스 전체 선택
+  // 전체선택 체크박스
   const handleAllCheck = (checked) => {
     if (checked) {
-      // 전체 선택 클릭 시 데이터의 모든 아이템(id)를 담은 배열로 checkItems 상태 업데이트
-      setCheckItems([...cartItem]);
+      const allItemIds = cartItem.map((item) => item.id); // 모든 아이템의 id 배열 생성
+      setCheckItem(allItemIds); // 모든 아이템을 선택
+      console.log(checkItem);
     } else {
-      // 전체 선택 해제 시 checkItems 를 빈 배열로 상태 업데이트
-      setCheckItems([]);
+      setCheckItem([]); // 모든 아이템 선택 해제
+      console.log(checkItem);
     }
   };
-
-  // 체크박스에 포함된 아이템 삭제
+  // 체크박스에 포함된 아이템을 axios DELETE 요청
   const handleDelete = () => {
-    // 체크박스에 포함된 아이템을 제외한 배열 (필터)
-    setCartItem(cartItem.filter((el) => !checkItems.includes(el)));
-    // 체크박스에 포함된 아이템을 제외한 배열 (필터)
-    setCheckItems(checkItems.filter((el) => !checkItems.includes(el)));
+    const checkedId = checkItem.map((item) => item.id);
+    axios
+      .delete(`${API}/cart`, { data: { checked_item: checkedId } })
+      .then((res) => {
+        setCartItem(res.data.order.order_menus);
+        setCheckItem([]);
+      })
+      .catch((err) => console.log('에러임', err));
   };
 
-  // 총액 계산 함수
-  // const calculateTotalPrice = () => {
-  //   let totalPrice = 0;
-  //   for (const checkedItem of checkItems) {
-  //     totalPrice += checkedItem.order_menus[0].price;
-  //   }
-  //   return totalPrice;
-  // };
-
-  const API = `${process.env.REACT_APP_API_URL}/api`;
-  useEffect(() => {
+  const handleSubmit = () => {
     axios
-      .get(`${API}/cart`)
-      .then((res) => setCartItem(res.data.order.order_menus))
+      .post(`${API}/cart?pickup_time=${pickupTime}`)
+      .then((res) => {
+        console.log(res);
+        setCartItem([]);
+        setCheckItem([]);
+      })
       .catch((err) => console.log('에러임', err));
-  }, [API, setCartItem]);
+  };
+
+  // checked = true인 아이템의 총 가격을 계산
+  const calculateTotalPrice = () => {
+    let totalPrice = 0;
+    cartItem.forEach((item) => {
+      if (checkItem.includes(item.id)) {
+        totalPrice += item.price * item.quantity;
+      }
+    });
+    return totalPrice;
+  };
 
   return (
     <section className="max-w-screen-lg mx-auto pb-16">
@@ -118,24 +158,37 @@ const Cart = () => {
             <CheckBox
               onChange={(e) => handleAllCheck(e.target.checked)}
               checked={
-                checkItems.length !== cartItem.length || cartItem.length === 0
+                checkItem.length !== cartItem.length || cartItem.length === 0
                   ? false
                   : true
               }
             />
-            <span className="pr-[40px]">
-              전체선택 ({checkItems.length}/{cartItem.length})
+            <span className="w-[150px] pr-[40px]">
+              전체선택 ({checkItem.length}/{cartItem.length})
             </span>
-            <button onClick={handleDelete}>선택삭제</button>
+            <button
+              onClick={() => openModal('delete')}
+              disabled={checkItem.length === 0}
+            >
+              선택삭제
+            </button>
+            {isDeleteModalOpen && (
+              <SubmitModal
+                onClose={() => closeModal('delete')}
+                onSubmit={handleDelete}
+                message={`선택한 ${checkItem.length}개의 상품을 삭제하시겠습니까?`}
+                cancelLabel={'취소'}
+                submitLabel={'삭제'}
+              />
+            )}
           </CartMenu>
-          아이템 들어가는 곳
           {cartItem.map((item, idx) => (
             <CartItem
               onChange={(e) => handleSingleCheck(e.target.checked, item)}
-              checked={checkItems.includes(item)}
+              checked={checkItem.includes(item.id)}
               key={idx}
+              id={item.id}
               menuName={item.menu_name === null ? '엄청난 빵' : item.menu_name}
-              storeName={!item.store_name ? '엄청난 빵집' : item.store_name}
               price={!item.price ? 3500 : item.price}
               quantity={item.quantity}
             />
@@ -145,12 +198,41 @@ const Cart = () => {
           <TotalBox>
             <TotalItem>
               <span>상품 총 금액</span>
-              {/* <span>{calculateTotalPrice()}원</span> */}
+              <div>
+                <span className="font-semibold">
+                  {calculateTotalPrice().toLocaleString()}
+                </span>
+                <span className="pl-1">원</span>
+              </div>
             </TotalItem>
             <TotalItem>
               <span>픽업 시간</span>
+              <div>
+                <select
+                  className="h-full rounded-lg border-2 text-right border-gray-300"
+                  value={pickupTime}
+                  onChange={handlePickupTimeChange}
+                >
+                  <option value={30}>30분</option>
+                  <option value={60}>1시간</option>
+                  <option value={90}>1시간 30분</option>
+                  <option value={120}>2시간</option>
+                </select>
+                <span className="pl-1">후</span>
+              </div>
             </TotalItem>
-            <Button fontsize="16px">주문하기</Button>
+            <Button fontsize="16px" onClick={() => openModal('submit')}>
+              주문하기
+            </Button>
+            {isSubmitModalOpen && (
+              <SubmitModal
+                onClose={() => closeModal('submit')}
+                onSubmit={handleSubmit}
+                message={'정말 주문하시겠습니까?'}
+                cancelLabel={'취소'}
+                submitLabel={'주문'}
+              />
+            )}
           </TotalBox>
         </Total>
       </ShoppingCart>

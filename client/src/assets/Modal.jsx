@@ -11,12 +11,12 @@ export const fadeIn = keyframes`
 
 export const Modal = styled.div`
   position: fixed;
-  top: 50%;
+  top: ${(props) => props.top || '50%'};
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 9999;
   background-color: white;
-  padding: 50px;
+  padding: ${(props) => props.padding || '50px'};
   border-radius: 10px;
   border: 1px solid #debe8f;
 `;
