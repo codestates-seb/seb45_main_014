@@ -16,7 +16,7 @@ const Title = styled.h1`
 
 const Content = styled.div`
   max-width: 1024px;
-  margin: 12px auto;
+  margin: 0 auto 12px auto;
 `;
 
 export const getFavoriteStores = () => {
@@ -27,7 +27,7 @@ const HotPlace = ({ id, src }) => {
   return (
     <div className="relative w-72 cursor-pointer">
       <Link
-        to={`/search?search_keyword=${id}&search_target=regionpage=1&size=10`}
+        to={`/search?search_keyword=${id}&search_target=region&page=1&size=10`}
       >
         <StoreImage src={src} />
         <div className="flex w-full absolute justify-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,1)]">

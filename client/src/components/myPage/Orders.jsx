@@ -46,7 +46,9 @@ const OrdersItem = ({ data, openModal }) => {
       <Button onClick={() => openModal(data)} className="w-full">
         리뷰 작성
       </Button>
-      <RedButton className="w-full text-xs">주문 내역 삭제</RedButton>
+      <RedButton onClick={deleteOrder} className="w-full text-xs">
+        주문 내역 삭제
+      </RedButton>
     </div>
   );
 };
