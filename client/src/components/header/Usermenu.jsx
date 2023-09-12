@@ -41,6 +41,8 @@ const MenuList = styled.ul`
 `;
 
 const MenuItem = styled.li`
+  text-align: center;
+  width: 100%;
   padding: 10px;
   font-weight: 500;
   &:hover {
