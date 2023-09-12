@@ -95,8 +95,8 @@ export const ReviewItem = ({ data }) => {
   };
 
   return (
-    <div className="flex p-[10px] border-b">
-      <div className="grow">
+    <div className="flex w-[1070px] p-[10px] border-b">
+      <div className="w-[750px]">
         <div className="flex mb-1">
           <span className="mr-3">{data.nickname}</span>
           <div>{calculateDate(data.created_at)}일 전</div>
@@ -119,7 +119,7 @@ export const ReviewItem = ({ data }) => {
         )}
       </div>
       <img
-        className="w-[300px] h-[200px] object-cover rounded-lg ml-3 "
+        className="w-[300px] h-[200px] object-cover rounded-lg ml-3"
         src={data.img}
         alt="후기 이미지"
       />

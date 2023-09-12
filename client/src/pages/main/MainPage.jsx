@@ -6,7 +6,6 @@ import storeData from '../../assets/data/storeData';
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { useSignStore } from '../../store/store.js';
 
 const Title = styled.h1`
   margin: 1rem 0;
@@ -18,19 +17,6 @@ export const getFavoriteStores = () => {
 
 const MainPage = () => {
   const favoriteStores = getFavoriteStores();
-  const { token } = useSignStore();
-
-  const fetchData = async () => {
-    const response = await axios.get(
-      `${process.env.REACT_APP_API_URL}/api/login`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
-    console.log(response.data);
-  };
 
   const settings = {
     dots: true,

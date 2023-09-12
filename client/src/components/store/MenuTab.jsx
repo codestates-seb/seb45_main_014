@@ -1,40 +1,80 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
+import SuccessModal from './modal/SuccessModal.jsx';
+import FalseModal from './modal/FalseModal.jsx';
 import axios from 'axios';
 
 const MenuTab = ({ menuData }) => {
+  const [isFalseModalOpen, setIsFalseModalOpen] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  {
+    /*장바구니 추가 완료 모달*/
+  }
+  const openSuccessModal = () => {
+    setIsSuccessModalOpen(true);
+  };
+
+  const closeSuccessModal = () => {
+    setIsSuccessModalOpen(false);
+  };
+
+  {
+    /* 장바구니 추가  실패 모달*/
+  }
+  const openFalseModal = () => {
+    setIsFalseModalOpen(true);
+  };
+
+  const closeFalseModal = () => {
+    setIsFalseModalOpen(false);
+  };
+
   return (
     <div className="flex flex-col">
       {menuData.map((menu) => (
-        <MenuItem key={menu.id} data={menu} />
+        <MenuItem
+          key={menu.id}
+          data={menu}
+          openSuccessModal={openSuccessModal}
+          openFalseModal={openFalseModal}
+        />
       ))}
+
+      {/* SuccessModal 열기 */}
+      {isSuccessModalOpen && (
+        <SuccessModal closeSuccessModal={closeSuccessModal} />
+      )}
+
+      {/* FalseModal 열기 */}
+      {isFalseModalOpen && <FalseModal closeFalseModal={closeFalseModal} />}
     </div>
   );
 };
 
 export default MenuTab;
 
-export const MenuItem = ({ data }) => {
+export const MenuItem = ({ data, openFalseModal, openSuccessModal }) => {
   const apiUrl = process.env.REACT_APP_API_URL;
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const { id } = useParams();
-  console.log('메뉴 데이터', data);
+  const [isMenuModalOpen, setIsMenuModalOpen] = useState(false);
   const [isCount, setIsCount] = useState(1);
 
+  {
+    /*메뉴 상세 모달*/
+  }
+
   const openModal = () => {
-    setIsModalOpen(true);
+    setIsMenuModalOpen(true);
   };
 
   const closeModal = () => {
-    setIsModalOpen(false);
+    setIsMenuModalOpen(false);
   };
 
   const addToCart = () => {
     // POST 요청에 필요한 데이터를 객체로 만듭니다.
     const cartItem = {
       quantity: isCount,
-      new_order: 'true',
     };
 
     // 서버에 POST 요청을 보내기 위해 addToCartItem 함수 호출
@@ -44,10 +84,17 @@ export const MenuItem = ({ data }) => {
   const addToCartItem = async (cartItem) => {
     try {
       const response = await axios.post(
-        `${apiUrl}/api/cart/${data.id}?quantity=${cartItem.quantity}&new_order=${cartItem.new_order}`,
+        `${apiUrl}/api/cart/${data.id}?quantity=${cartItem.quantity}`,
         cartItem,
       );
-      console.log('주문 완료', response.data);
+      const headerData = response.headers;
+      const statusCode = headerData.status;
+
+      if (statusCode === 200) {
+        openSuccessModal();
+      } else {
+        openFalseModal();
+      }
     } catch (error) {
       console.error('주문 실패', error);
     }
@@ -71,7 +118,7 @@ export const MenuItem = ({ data }) => {
           <div>남은 수량: {data.stock}</div>
         </div>
       </div>
-      {isModalOpen && (
+      {isMenuModalOpen && (
         <ModalBg
           onClick={(e) => {
             if (e.target === e.currentTarget) {
@@ -143,7 +190,7 @@ const ModalBg = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
+  z-index: 1100;
   background-color: rgba(76, 76, 76, 0.5);
 `;
 

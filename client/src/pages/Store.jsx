@@ -1,5 +1,5 @@
 import ShopInfo from '../components/store/ShopInfo.jsx';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useEffect, useState, useRef } from 'react';
 import MenuTab from '../components/store/MenuTab.jsx';
 import StoreReviewTab from '../components/store/StoreReviewTab.jsx';
@@ -10,7 +10,6 @@ import reviewDmData from '../assets/data/reviewData';
 
 const Store = () => {
   const { id } = useParams();
-  const [currentTab, setCurrentTab] = useState('메뉴');
   const [storeData, setStoreData] = useState(null);
   const [reviewData, setReviewData] = useState([]);
   const menuRef = useRef(null);
@@ -45,11 +44,17 @@ const Store = () => {
   }
 
   const handleTabClick = (tab) => {
-    setCurrentTab(tab);
+    let targetRef;
     if (tab === '메뉴') {
-      menuRef.current.scrollIntoView({ behavior: 'smooth' });
+      targetRef = menuRef;
     } else if (tab === '리뷰') {
-      reviewRef.current.scrollIntoView({ behavior: 'smooth' });
+      targetRef = reviewRef;
+    }
+
+    if (targetRef && targetRef.current) {
+      const stickyTabHeight = 43; // 스티키 탭의 높이
+      const targetOffset = targetRef.current.offsetTop - stickyTabHeight;
+      window.scrollTo({ top: targetOffset, behavior: 'smooth' });
     }
   };
 
@@ -61,7 +66,7 @@ const Store = () => {
           <a
             href="#메뉴"
             className="block w-full cursor-pointer"
-            onClick={() => setCurrentTab('메뉴')}
+            onClick={() => handleTabClick('메뉴')}
           >
             메뉴 ({storeData.menus.length})
           </a>
@@ -70,21 +75,17 @@ const Store = () => {
           <a
             href="#리뷰"
             className="block w-full cursor-pointer"
-            onClick={() => setCurrentTab('리뷰')}
+            onClick={() => handleTabClick('리뷰')}
           >
             리뷰 ({reviewData.length})
           </a>
         </li>
       </ul>
       <div className="flex flex-col mx-auto">
-        <div id="메뉴" ref={menuRef}>
-          메뉴
-          <MenuTab menuData={menuData} />
-        </div>
-        <div id="리뷰" ref={reviewRef}>
-          리뷰
-          <StoreReviewTab reviewData={reviewDmData} />
-        </div>
+        <div id="메뉴" ref={menuRef}></div>
+        <MenuTab menuData={menuData} /> {/*storeData.menus*/}
+        <div id="리뷰" ref={reviewRef}></div>
+        <StoreReviewTab reviewData={reviewDmData} /> {/*reviewData*/}
       </div>
     </div>
   );

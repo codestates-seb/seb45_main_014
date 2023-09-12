@@ -41,8 +41,6 @@ export const GoogleBtn = () => {
     window.location.href = `${process.env.REACT_APP_API_URL}/oauth2/authorization/google`;
   };
 
-  const setToken = useAuthStore((state) => state.setToken);
-
   return (
     <OauthBtn
       bgColor="#f6f6f2"
