@@ -7,6 +7,7 @@ import axios from 'axios';
 import LoadingSpinner from '../components/Loading.jsx';
 import menuData from '../assets/data/menuData';
 import reviewDmData from '../assets/data/reviewData';
+import { styled } from 'styled-components';
 
 const Store = () => {
   const { id } = useParams();
@@ -43,17 +44,10 @@ const Store = () => {
     return <LoadingSpinner />;
   }
 
-  const handleTabClick = (tab) => {
-    let targetRef;
-    if (tab === '메뉴') {
-      targetRef = menuRef;
-    } else if (tab === '리뷰') {
-      targetRef = reviewRef;
-    }
-
-    if (targetRef && targetRef.current) {
+  const scrollTo = (ref) => {
+    if (ref.current) {
       const stickyTabHeight = 43; // 스티키 탭의 높이
-      const targetOffset = targetRef.current.offsetTop - stickyTabHeight;
+      const targetOffset = ref.current.offsetTop - stickyTabHeight;
       window.scrollTo({ top: targetOffset, behavior: 'smooth' });
     }
   };
@@ -63,32 +57,46 @@ const Store = () => {
       <ShopInfo store={storeData} />
       <ul className="flex justify-center text-center w-[1070px] mx-auto border-b mb-1 sticky top-[65px] bg-white z-10">
         <li className="w-full hover:bg-[#ccc] border-r py-3">
-          <a
-            href="#메뉴"
+          <button
             className="block w-full cursor-pointer"
-            onClick={() => handleTabClick('메뉴')}
+            onClick={() => scrollTo(menuRef)}
           >
             메뉴 ({storeData.menus.length})
-          </a>
+          </button>
         </li>
         <li className="w-full hover:bg-[#ccc] py-3">
-          <a
-            href="#리뷰"
+          <button
             className="block w-full cursor-pointer"
-            onClick={() => handleTabClick('리뷰')}
+            onClick={() => scrollTo(reviewRef)}
           >
             리뷰 ({reviewData.length})
-          </a>
+          </button>
         </li>
       </ul>
       <div className="flex flex-col mx-auto">
-        <div id="메뉴" ref={menuRef}></div>
-        <MenuTab menuData={menuData} /> {/*storeData.menus*/}
-        <div id="리뷰" ref={reviewRef}></div>
-        <StoreReviewTab reviewData={reviewDmData} /> {/*reviewData*/}
+        <div ref={menuRef}></div>
+        <MenuTab menuData={menuData} />
+        <div ref={reviewRef}></div>
+        <StoreReviewTab reviewData={reviewDmData} />
       </div>
+      <ScrollButton onClick={() => scrollTo(menuRef)}>메뉴</ScrollButton>
+      <ScrollButton onClick={() => scrollTo(reviewRef)}>리뷰</ScrollButton>
     </div>
   );
 };
 
 export default Store;
+
+const ScrollButton = styled.button`
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
+  cursor: pointer;
+`;

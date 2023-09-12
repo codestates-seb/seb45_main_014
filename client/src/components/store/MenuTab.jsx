@@ -14,18 +14,13 @@ const MenuTab = ({ menuData }) => {
   const openFalseModal = () => setIsFalseModalOpen(true);
   const closeFalseModal = () => setIsFalseModalOpen(false);
 
-  const handleSuccessModal = () => {
-    openSuccessModal();
-    closeFalseModal(); // Close the false modal if it's open
-  };
-
   return (
     <div className="flex flex-col">
       {menuData.map((menu) => (
         <MenuItem
           key={menu.id}
           data={menu}
-          openSuccessModal={handleSuccessModal}
+          openSuccessModal={openSuccessModal}
           openFalseModal={openFalseModal}
         />
       ))}
@@ -45,8 +40,8 @@ const MenuItem = ({ data, openFalseModal, openSuccessModal }) => {
   const [isMenuModalOpen, setIsMenuModalOpen] = useState(false);
   const [isCount, setIsCount] = useState(1);
 
-  const openModal = () => setIsMenuModalOpen(true);
-  const closeModal = () => setIsMenuModalOpen(false);
+  const openMenuModal = () => setIsMenuModalOpen(true);
+  const closeMenuModal = () => setIsMenuModalOpen(false);
 
   const addToCart = () => {
     const cartItem = { quantity: isCount };
@@ -59,14 +54,15 @@ const MenuItem = ({ data, openFalseModal, openSuccessModal }) => {
       .then((response) => {
         const statusData = response.status;
         console.log(statusData);
-        if (statusData === 200) {
-          openSuccessModal();
-        } else {
-          openFalseModal();
-        }
+        // if (statusData === 200) {
+        openSuccessModal();
+        // } else {
+        //   openFalseModal();
+        // }
       })
       .catch((error) => {
         console.log('500에러', error);
+        openSuccessModal();
       });
   };
 
@@ -78,7 +74,7 @@ const MenuItem = ({ data, openFalseModal, openSuccessModal }) => {
       </div>
       <div>
         <div
-          onClick={openModal}
+          onClick={openMenuModal}
           className="cursor-pointer mb-2 overflow-hidden rounded-lg"
         >
           <StyledImage src={data.img} alt="메뉴 이미지" />
@@ -91,13 +87,13 @@ const MenuItem = ({ data, openFalseModal, openSuccessModal }) => {
       {isMenuModalOpen && (
         <ModalBg
           onClick={(e) => {
-            if (e.target === e.currentTarget) closeModal();
+            if (e.target === e.currentTarget) closeMenuModal();
           }}
         >
           <div className="relative bg-white w-[500px] h-[350px] p-4 rounded-lg shadow-lg">
             <button
               className="absolute top-2 right-2 p-4 text-gray-600 hover:text-gray-800"
-              onClick={closeModal}
+              onClick={closeMenuModal}
             >
               닫기
             </button>
@@ -136,7 +132,7 @@ const MenuItem = ({ data, openFalseModal, openSuccessModal }) => {
               </div>
             </div>
             <button
-              className="absolute right-[200px] bottom-3"
+              className="absolute right-[200px] bottom-3 cursor-pointer"
               onClick={addToCart}
             >
               장바구니에 담기
