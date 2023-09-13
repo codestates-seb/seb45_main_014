@@ -1,4 +1,4 @@
-import { styled } from 'styled-components';
+import { styled, keyframes } from 'styled-components';
 import { useSearchStore } from '../../store/store';
 import { useState, useEffect, useRef } from 'react';
 
@@ -6,10 +6,27 @@ const Wrapper = styled.div`
   padding-right: 4px;
 `;
 
+const slideInAnimation = keyframes`
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+  `;
+
+const DropDownPosition = styled.div`
+  position: absolute;
+  width: 70px;
+  height: 200px;
+  overflow: hidden;
+  z-index: 1;
+`;
+
 const DropdownWrapper = styled.ul`
-  display: flex;
+  position: absolute;
+  width: 70px;
   margin-top: 4px;
-  flex-direction: column;
   text-align: center;
   border: 2px solid #debe8f;
   background-color: white;
@@ -17,9 +34,15 @@ const DropdownWrapper = styled.ul`
   font-size: 14px;
   font-weight: 600;
   overflow: hidden;
+  transform-origin: top center;
+  transform: scaleY(${(props) => (props.isOpen ? 1 : 0)});
+  transition: transform 0.2s ease-in-out;
+  animation: ${(props) => (props.isOpen ? slideInAnimation : 'none')} 0.2s
+    ease-in-out;
 `;
 
 const DropdownHeader = styled.label`
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -30,6 +53,7 @@ const DropdownHeader = styled.label`
   font-size: 14px;
   font-weight: 600;
   background-color: #debe8f;
+  z-index: 1;
   color: white;
   cursor: pointer;
   &:hover {
@@ -84,23 +108,23 @@ const DropdownMenu = () => {
   };
 
   return (
-    <Wrapper>
-      <DropdownHeader onClick={handleToggleDropdown}>
-        {selectedOption.name}
-      </DropdownHeader>
+    <Wrapper onClick={handleToggleDropdown}>
+      <DropdownHeader>{selectedOption.name}</DropdownHeader>
       {isOpen && (
-        <DropdownWrapper ref={dropdownRef}>
-          {options.map((option) => (
-            <li
-              key={option.value}
-              role="presentation"
-              onClick={() => handleSelectOption(option)}
-              className="py-2 hover:bg-gray-100 cursor-pointer"
-            >
-              {option.name}
-            </li>
-          ))}
-        </DropdownWrapper>
+        <DropDownPosition>
+          <DropdownWrapper isOpen={isOpen} ref={dropdownRef}>
+            {options.map((option) => (
+              <li
+                key={option.value}
+                role="presentation"
+                onClick={() => handleSelectOption(option)}
+                className="py-2 hover:bg-gray-100 cursor-pointer"
+              >
+                {option.name}
+              </li>
+            ))}
+          </DropdownWrapper>
+        </DropDownPosition>
       )}
     </Wrapper>
   );
