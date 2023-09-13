@@ -21,7 +21,7 @@ const Cart = lazy(() => import('./pages/cart/Cart.jsx'));
 function App() {
   const location = useLocation();
   const showFooter = location.pathname !== '/mypage';
-  const { setCartItem, setCheckItem, setStoreId } = useCartItemStore();
+  const { setCartItem, setStoreId } = useCartItemStore();
   const { accessToken } = useAuthStore((state) => state);
   const { isLoggedIn } = useAuthStore();
 
@@ -40,15 +40,9 @@ function App() {
           const orderMenus = res.data.order.order_menus;
           setCartItem(orderMenus);
           setStoreId(storeId);
-
-          // 장바구니에 담긴 메뉴의 id와 수량을 localStorage에 저장(API 구현되면 삭제할 것)
-          const idQuantity = orderMenus.map((item) => {
-            return { id: item.id, quantity: item.quantity };
-          });
-          localStorage.setItem('cartItems', JSON.stringify(idQuantity));
         })
         .catch((err) => console.log('에러임', err));
-  }, [setCartItem, setCheckItem, accessToken, isLoggedIn, setStoreId]);
+  }, [setCartItem, accessToken, isLoggedIn, setStoreId]);
 
   return (
     <>
