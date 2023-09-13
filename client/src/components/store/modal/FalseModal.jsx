@@ -39,6 +39,7 @@ const FalseModal = ({ closeFalseModal, dataId, quantity }) => {
     axios
       .post(
         `${apiUrl}/api/cart/${dataId}?quantity=${quantity}&new_order=true`,
+        null,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,

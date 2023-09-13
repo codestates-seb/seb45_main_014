@@ -14,7 +14,7 @@ const ShopInfo = ({ store }) => {
   const { isBookmarked, toggleBookmark } = useBookmarkStore();
   const currentUrl = window.location;
   const placeId = store.place_id;
-
+  console.log(placeId);
   const handleCopyUrl = () => {
     copy(currentUrl);
     alert('URL이 복사되었습니다.');

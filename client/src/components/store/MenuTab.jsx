@@ -63,7 +63,7 @@ const MenuItem = ({ data, openFalseModal, openSuccessModal }) => {
     axios
       .post(
         `${apiUrl}/api/cart/${data.id}?quantity=${cartItem.quantity}`,
-        cartItem,
+        null,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -76,13 +76,11 @@ const MenuItem = ({ data, openFalseModal, openSuccessModal }) => {
         console.log(exception);
         if (statusData === 200) {
           openSuccessModal();
-        } else if (statusData === 400 && exception === 900) {
-          openFalseModal(data, isCount);
         }
       })
       .catch((error) => {
         console.log('500에러', error);
-        // openFalseModal(data, isCount);
+        openFalseModal(data, isCount);
       });
   };
 
