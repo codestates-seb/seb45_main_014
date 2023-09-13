@@ -60,17 +60,13 @@ public class SecurityConfiguration {
 //                .authenticationEntryPoint(new MemberAuthenticationEntryPoint())  // JWT Filter
 //                .accessDeniedHandler(new MemberAccessDeniedHandler())            // 기본 403에러 말고 다른 처리 해주고 싶을 때
 //                .and()
-                .apply(new CustomFilterConfigurer())  //
+                .apply(new CustomFilterConfigurer())
                 .and()
-                .authorizeHttpRequests(authorize -> authorize // url authorization 전체 추가
-//                        .antMatchers(HttpMethod.POST, "/*/members").permitAll()    // OAuth 2로 로그인하므로 회원 정보 등록 필요 없음.
-//                        .antMatchers(HttpMethod.PATCH, "/*/members/**").hasRole("USER") // OAuth 2로 로그인하므로 회원 정보 수정 필요 없음.
-//                        .antMatchers(HttpMethod.GET, "/*/members").hasRole("ADMIN")  // OAuth 2로 로그인하므로 회원 정보 수정 필요 없음.
-//                        .antMatchers(HttpMethod.GET, "/*/members/**").hasAnyRole("USER", "ADMIN")  // OAuth 2로 로그인하므로 회원 정보 수정 필요 없음.
-//                        .antMatchers(HttpMethod.DELETE, "/*/members/**").hasRole("USER") // OAuth 2로 로그인하므로 회원 정보 수정 필요 없음.
-//
-//                                .antMatchers(HttpMethod.GET, "/api/**").hasRole("USER")
-                                .anyRequest().permitAll()
+                .authorizeHttpRequests(authorize -> authorize
+                        .antMatchers(HttpMethod.POST, "/api/logout", "/api/member/upload","/api/members/favorites/**", "/api/cart", "/api/orders/**/reviews").hasRole("USER")
+                        .antMatchers(HttpMethod.GET, "/api/member","/api/reviews", "/api/members/orders", "/api/members/favorites", "/api/cart").hasRole("USER")
+                        .antMatchers(HttpMethod.PATCH, "/api/member").hasRole("USER")
+                        .antMatchers(HttpMethod.DELETE, "/api/member", "/api/reviews/**", "/api/members/orders/**", "/api/cart/**").hasRole("USER")
                 )
                 .oauth2Login(oauth2 -> oauth2
                         .successHandler(new OAuth2LoginSuccessHandler(jwtTokenizer, authorityUtils, memberService, tokenService))    // tokenizer() 메서드 호출하여 인스턴스 사용
