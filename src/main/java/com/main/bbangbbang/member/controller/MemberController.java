@@ -26,6 +26,17 @@ import javax.servlet.http.HttpServletRequest;
 public class MemberController {
     private MemberService memberService;
     private MemberMapper memberMapper;
+    private JwtTokenizer jwtTokenizer;
+
+    @PostMapping("/logout")
+    public ResponseEntity logout(HttpServletRequest request) {
+        String authorizationHeader = request.getHeader("Authorization");
+        String jws = authorizationHeader.substring(7);    // "Bearer " 이후의 토큰 문자열 추출
+
+        jwtTokenizer.addToTokenBlacklist(jws);     //블랙리스트에 jws 추가, 접근 막음
+
+        return ResponseEntity.ok().body("Successfully logged out");
+    }
 
     // 회원 정보 수정
     @PatchMapping
