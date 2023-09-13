@@ -2,16 +2,16 @@ package com.main.bbangbbang.auth.filter;
 
 import com.main.bbangbbang.auth.jwt.JwtTokenizer;
 import com.main.bbangbbang.auth.utils.CustomAuthorityUtils;
-import com.main.bbangbbang.exception.AuthLogicException;
-import com.main.bbangbbang.exception.ExceptionCode;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -37,8 +37,8 @@ public class JwtVerificationFilter extends OncePerRequestFilter {  // (1)   JWT 
         try {
             Map<String, Object> claims = verifyJws(request, response);
             setAuthenticationToContext(claims);
-        } catch (AuthLogicException be) {
-            if (be.getExceptionCode() == ExceptionCode.UNAUTHENTICATED_USER) {
+        } catch (ResponseStatusException be) {
+            if (be.getStatus() == HttpStatus.UNAUTHORIZED) {
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, be.getMessage());
                 return;
             }
@@ -66,7 +66,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {  // (1)   JWT 
 
         if (jwtTokenizer.getTokenBlackList().containsKey(jws)){
 //            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Blacklisted JWT Token");
-            throw new AuthLogicException(ExceptionCode.UNAUTHENTICATED_USER);
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
         Map<String, Object> claims = jwtTokenizer.getClaims(jws, base64EncodedSecretKey).getBody();
