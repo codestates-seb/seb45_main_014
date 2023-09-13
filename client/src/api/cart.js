@@ -90,5 +90,18 @@ export const useCartApi = () => {
     }
   };
 
-  return { fetchCart, addCart, deleteCart, orderCart, updateCart };
+  // 장바구니 재고 확인
+  const getStock = async (storeId, itemId) => {
+    try {
+      const response = await axios.get(
+        `${API}/api/stores/${storeId}/menus/${itemId}`,
+      );
+      console.log(`재고량: ${response.data.menu.stock}`);
+      return response.data.menu.stock;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return { fetchCart, addCart, deleteCart, orderCart, updateCart, getStock };
 };
