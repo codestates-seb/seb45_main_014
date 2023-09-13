@@ -1,6 +1,9 @@
 package com.main.bbangbbang.auth.jwt;
 
+import com.main.bbangbbang.exception.AuthLogicException;
+import com.main.bbangbbang.exception.ExceptionCode;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -76,13 +79,19 @@ public class JwtTokenizer {
     }
 
     // 단순히 검증만 하는 용도로 쓰일 경우
-    public void verifySignature(String jws, String base64EncodedSecretKey) {
-        Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
-
-        Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(jws);
+    public Jws<Claims> verifySignature(String jws) {
+        // 주어진 jwt 토큰이 블랙리스트에 있는지 확인하여 만료 처리된 토큰인지 확인
+        if (tokenBlackList.get(jws) != null) {
+            throw new AuthLogicException(ExceptionCode.JWT_TOKEN_EXPIRED);
+        }
+        try {   // parser로 토큰이 올바르게 서명되었는지 확인하고 Claims를 반환
+            return Jwts.parserBuilder()
+                    .setSigningKey(getKey())
+                    .build()
+                    .parseClaimsJws(jws);
+        } catch (ExpiredJwtException exception) {
+            throw new AuthLogicException(ExceptionCode.JWT_TOKEN_EXPIRED);
+        }
     }
 
     public Date getTokenExpiration(int expirationMinutes) {
