@@ -108,4 +108,15 @@ public class JwtTokenizer {
 
         return key;
     }
+
+    public void addToTokenBlacklist(String jws) {
+        tokenBlackList.put(jws, System.currentTimeMillis());
+    }
+
+    //
+    private Key getKey() {
+        String base64EncodedSecretKey = encodeBase64SecretKey(getSecretKey());
+
+        return getKeyFromBase64EncodedKey(base64EncodedSecretKey);
+    }
 }
