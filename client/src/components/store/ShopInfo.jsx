@@ -14,7 +14,7 @@ const ShopInfo = ({ store }) => {
   const { isBookmarked, toggleBookmark } = useBookmarkStore();
   const currentUrl = window.location;
   const placeId = store.place_id;
-  console.log(placeId);
+
   const handleCopyUrl = () => {
     copy(currentUrl);
     alert('URL이 복사되었습니다.');
@@ -29,7 +29,7 @@ const ShopInfo = ({ store }) => {
       window.kakao.maps.load(() => {
         const container = document.getElementById('map');
         const options = {
-          center: new window.kakao.maps.LatLng(), // 서버에서 받아오는 좌표
+          center: new window.kakao.maps.LatLng(33.450701, 126.570667), // 서버에서 받아오는 좌표
           level: 3,
         };
         const map = new window.kakao.maps.Map(container, options);
