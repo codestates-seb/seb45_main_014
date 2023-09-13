@@ -114,6 +114,10 @@ const CartItem = ({ menuName, quantity, price, onChange, checked, id }) => {
     openModal();
   };
 
+  const handleDelete = () => {
+    // 로컬 스토리지에서 삭제
+  };
+
   return (
     <ItemCard>
       <CheckBox onChange={onChange} checked={checked} />
@@ -157,7 +161,7 @@ const CartItem = ({ menuName, quantity, price, onChange, checked, id }) => {
       {isModalOpen && (
         <DeleteModal
           onClose={() => closeModal()}
-          onSubmit={handleRemoveClick}
+          onSubmit={handleDelete}
           message={'정말 삭제하시겠습니까?'}
           cancelLabel={'취소'}
           submitLabel={'삭제'}
