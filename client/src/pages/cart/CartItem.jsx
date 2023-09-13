@@ -65,7 +65,7 @@ const PriceBox = styled.div`
 const CartItem = ({ menuName, quantity, price, onChange, checked, id }) => {
   //-, +버튼으로 quantity를 조절하는 함수
   const [amount, setAmount] = useState(quantity);
-  const { cartItem, setCartItem } = useCartItemStore();
+  const { cartItem, setCartItem, storeId } = useCartItemStore();
 
   const quantityUp = () => {
     const updatedAmount = amount + 1;
@@ -114,12 +114,16 @@ const CartItem = ({ menuName, quantity, price, onChange, checked, id }) => {
     openModal();
   };
 
+  const handleDelete = () => {
+    // 로컬 스토리지에서 삭제
+  };
+
   return (
     <ItemCard>
       <CheckBox onChange={onChange} checked={checked} />
-      <ItemImg to={'/'} />
+      <ItemImg to={`/stores/${storeId}`} />
       <div className="flex-1">
-        <Link to={'/'}>
+        <Link to={`/stores/${storeId}`}>
           <p>{menuName}</p>
         </Link>
       </div>
@@ -157,7 +161,7 @@ const CartItem = ({ menuName, quantity, price, onChange, checked, id }) => {
       {isModalOpen && (
         <DeleteModal
           onClose={() => closeModal()}
-          onSubmit={handleRemoveClick}
+          onSubmit={handleDelete}
           message={'정말 삭제하시겠습니까?'}
           cancelLabel={'취소'}
           submitLabel={'삭제'}
