@@ -63,10 +63,18 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigurer())
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-                        .antMatchers(HttpMethod.POST, "/api/logout", "/api/member/upload","/api/members/favorites/**", "/api/cart", "/api/orders/**/reviews").hasRole("USER")
-                        .antMatchers(HttpMethod.GET, "/api/member","/api/reviews", "/api/members/orders", "/api/members/favorites", "/api/cart").hasRole("USER")
+                        .antMatchers(HttpMethod.POST, "/api/logout", "/api/member/upload",
+                                "/api/members/favorites/**", "/api/cart", "/api/cart/**",
+                                "/api/orders/**/reviews", "/api/orders/**/image").hasRole("USER")
+
+                        .antMatchers(HttpMethod.GET, "/api/member","/api/reviews", "/api/members/orders",
+                                "/api/members/favorites", "/api/cart").hasRole("USER")
+
                         .antMatchers(HttpMethod.PATCH, "/api/member").hasRole("USER")
-                        .antMatchers(HttpMethod.DELETE, "/api/member", "/api/reviews/**", "/api/members/orders/**", "/api/cart/**").hasRole("USER")
+
+                        .antMatchers(HttpMethod.DELETE, "/api/member", "/api/reviews/**",
+                                "/api/members/orders/**", "/api/cart").hasRole("USER")
+                        .anyRequest().permitAll()
                 )
                 .oauth2Login(oauth2 -> oauth2
                         .successHandler(new OAuth2LoginSuccessHandler(jwtTokenizer, authorityUtils, memberService, tokenService))    // tokenizer() 메서드 호출하여 인스턴스 사용
