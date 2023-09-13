@@ -21,7 +21,7 @@ const Cart = lazy(() => import('./pages/cart/Cart.jsx'));
 function App() {
   const location = useLocation();
   const showFooter = location.pathname !== '/mypage';
-  const { setCartItem, setStoreId } = useCartItemStore();
+  const { setCartItem, setStoreId, setCheckItem } = useCartItemStore();
   const { accessToken } = useAuthStore((state) => state);
   const { isLoggedIn } = useAuthStore();
 
@@ -39,10 +39,11 @@ function App() {
           const storeId = res.data.order.store_id;
           const orderMenus = res.data.order.order_menus;
           setCartItem(orderMenus);
+          setCheckItem(orderMenus.map((menu) => menu.id));
           setStoreId(storeId);
         })
         .catch((err) => console.log('에러임', err));
-  }, [setCartItem, accessToken, isLoggedIn, setStoreId]);
+  }, [setCartItem, accessToken, isLoggedIn, setStoreId, setCheckItem]);
 
   return (
     <>
