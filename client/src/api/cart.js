@@ -10,6 +10,16 @@ export const useCartApi = () => {
       Authorization: `Bearer ${accessToken}`,
     },
   };
+  // 시간 변환 함수
+  const parseDate = (date) => {
+    const year = date.substring(0, 4);
+    const month = date.substring(5, 7);
+    const day = date.substring(8, 10);
+    const hour = date.substring(11, 13);
+    const minute = date.substring(14, 16);
+    return `${month}월 ${day}일 ${hour}시 ${minute}분`;
+  };
+
   // 장바구니 GET 요청
   const fetchCart = async () => {
     try {
@@ -44,13 +54,19 @@ export const useCartApi = () => {
   // 장바구니에 체크된 아이템 주문 POST 요청
   const orderCart = async (pickupTime) => {
     try {
-      await axios.post(
+      const response = await axios.post(
         `${API}/api/cart?pickup_time=${pickupTime}`,
         null,
         config,
       );
-      // 성공한 경우
-      alert('주문이 완료되었습니다.');
+      // 성공 시 response
+      const pickup_time = response.data.order.pickup_time;
+
+      alert(
+        `주문이 정상적으로 완료되었습니다.\n픽업 시간은 ${parseDate(
+          pickup_time,
+        )} 입니다.`,
+      );
     } catch (error) {
       console.error('주문 중 오류가 발생했습니다.', error);
       alert('주문 중 오류가 발생했습니다.');
