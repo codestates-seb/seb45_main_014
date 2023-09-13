@@ -56,7 +56,12 @@ const ImageUploadModal = ({ onClose }) => {
               <img className="w-full h-full" src={preview} alt="미리보기" />
             )}
           </div>
-          <input type="file" ref={inputRef} onChange={handlePreview} />
+          <input
+            className="w-2/3"
+            type="file"
+            ref={inputRef}
+            onChange={handlePreview}
+          />
           <div className="flex gap-4">
             <Button type="submit">업로드</Button>
             <CancelButton type="button" onClick={onClose}>
