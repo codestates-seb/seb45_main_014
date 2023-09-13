@@ -69,21 +69,27 @@ public class ReviewController {
         return ResponseEntity.ok(new ReviewsResponseDto(reviews, pageInfo));
     }
 
-    @DeleteMapping("/orders/{order-id}/reviews")
-    public ResponseEntity<?> deleteReview(@PathVariable("order-id") Long orderId,
+    @DeleteMapping("/reviews/{review-id}")
+    public ResponseEntity<?> deleteReview(@PathVariable("review-id") Long reviewId,
                                           Authentication authentication) {
         String email = authentication.getPrincipal().toString();
         Member member = memberService.findMember(email);
-        Order order = orderService.findOrder(orderId);
+        Review review = reviewService.findReview(reviewId);
 
-        validateSameMember(member, order);
-        reviewService.deleteReview(orderId);
+        validateSameMember(member, review);
+        reviewService.deleteReview(reviewId);
 
         return ResponseEntity.noContent().build();
     }
 
     private void validateSameMember(Member member, Order order) {
         if (!order.getMember().getId().equals(member.getId())) {
+            throw new BusinessLogicException(ExceptionCode.NO_ACCESS);
+        }
+    }
+
+    private void validateSameMember(Member member, Review review) {
+        if (!review.getMember().getId().equals(member.getId())) {
             throw new BusinessLogicException(ExceptionCode.NO_ACCESS);
         }
     }

@@ -1,5 +1,7 @@
 package com.main.bbangbbang.ordermenu.service;
 
+import com.main.bbangbbang.exception.BusinessLogicException;
+import com.main.bbangbbang.exception.ExceptionCode;
 import com.main.bbangbbang.menu.entity.Menu;
 import com.main.bbangbbang.menu.service.MenuService;
 import com.main.bbangbbang.order.entity.Order;
@@ -34,5 +36,14 @@ public class OrderMenuService {
     @Transactional
     public void doOrderMenu(OrderMenu orderMenu) throws RuntimeException {
         menuService.calculateStock(orderMenu.getMenu(), orderMenu.getQuantity());
+    }
+
+    @Transactional
+    public void deleteOrderMenus(List<Long> menuIds, Long orderId) {
+        for (Long menuId : menuIds) {
+            OrderMenu orderMenu = orderMenuRepository.findByMenuIdAndOrderId(menuId, orderId)
+                    .orElseThrow(() -> new BusinessLogicException(ExceptionCode.NO_ITEM));
+            orderMenuRepository.delete(orderMenu);
+        }
     }
 }
