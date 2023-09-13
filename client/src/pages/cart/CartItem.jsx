@@ -66,16 +66,8 @@ const PriceBox = styled.div`
 const CartItem = ({ menuName, quantity, price, onChange, checked, id }) => {
   //-, +버튼으로 quantity를 조절하는 함수
   const [amount, setAmount] = useState(quantity);
-  const { cartItem, setCartItem, storeId } = useCartItemStore();
-  const { deleteCart, updateCart } = useCartApi();
-  const handleDeleteCartItem = async () => {
-    try {
-      await deleteCart(id);
-      setCartItem(cartItem.filter((item) => item.id !== id));
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  const { setCartItem, storeId, setCheckItem } = useCartItemStore();
+  const { deleteCart, updateCart, fetchCart } = useCartApi();
 
   const quantityUp = () => {
     const updatedAmount = amount + 1;
@@ -91,7 +83,6 @@ const CartItem = ({ menuName, quantity, price, onChange, checked, id }) => {
       updateQuantity(id, updatedAmount);
     }
   };
-  // quantity가 변화가 있을 경우 변화된 값을 axios post로 보내서 업데이트
 
   const updateQuantity = async (itemId, updatedQuantity) => {
     await updateCart(itemId, updatedQuantity);
@@ -110,8 +101,19 @@ const CartItem = ({ menuName, quantity, price, onChange, checked, id }) => {
     openModal();
   };
 
-  const handleDelete = () => {
-    // 로컬 스토리지에서 삭제
+  const handleDelete = async () => {
+    try {
+      await deleteCart([id]);
+      // 삭제된 내역 업데이트
+      const newData = await fetchCart().then((res) => res.order_menus);
+      setCartItem(newData);
+      setCheckItem(newData.map((item) => item.id));
+      console.log(newData);
+    } catch (error) {
+      console.error('에러임', error);
+    } finally {
+      closeModal();
+    }
   };
 
   return (
