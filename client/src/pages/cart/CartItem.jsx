@@ -5,6 +5,7 @@ import { useState } from 'react';
 import DeleteModal from './SubmitModal.jsx';
 import { ReactComponent as Delete } from '../../assets/images/closebutton.svg';
 import { useCartItemStore } from '../../store/store.js';
+import { useCartApi } from '../../api/cart.js';
 
 const ItemCard = styled.li`
   display: flex;
@@ -66,6 +67,15 @@ const CartItem = ({ menuName, quantity, price, onChange, checked, id }) => {
   //-, +버튼으로 quantity를 조절하는 함수
   const [amount, setAmount] = useState(quantity);
   const { cartItem, setCartItem, storeId } = useCartItemStore();
+  const { deleteCart, updateCart } = useCartApi();
+  const handleDeleteCartItem = async () => {
+    try {
+      await deleteCart(id);
+      setCartItem(cartItem.filter((item) => item.id !== id));
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const quantityUp = () => {
     const updatedAmount = amount + 1;
@@ -81,24 +91,10 @@ const CartItem = ({ menuName, quantity, price, onChange, checked, id }) => {
       updateQuantity(id, updatedAmount);
     }
   };
-  // id와 localstorage에 저장된 id가 같은 경우 quantity를 업데이트 (API 구현되면 삭제할 것)
-  const updateQuantity = (itemId, updatedQuantity) => {
-    const localItems = JSON.parse(localStorage.getItem('cartItems'));
-    for (const localItem of localItems) {
-      if (localItem.id === itemId) {
-        localItem.quantity = updatedQuantity;
-      }
-    }
-    localStorage.setItem('cartItems', JSON.stringify(localItems));
-    //localstorage에 있는 id와 cartitem.id가 같은 경우 cartitem.quantity를 localstorage에 있는 quantity로 업데이트
-    const updatedCartItems = cartItem.map((cartItem) => {
-      if (cartItem.id === itemId) {
-        return { ...cartItem, quantity: updatedQuantity };
-      }
-      return cartItem;
-    });
-    setCartItem(updatedCartItems);
-    console.log(cartItem);
+  // quantity가 변화가 있을 경우 변화된 값을 axios post로 보내서 업데이트
+
+  const updateQuantity = async (itemId, updatedQuantity) => {
+    await updateCart(itemId, updatedQuantity);
   };
 
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
