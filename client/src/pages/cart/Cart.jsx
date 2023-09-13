@@ -3,7 +3,7 @@ import Button from '../../assets/buttons/Button.jsx';
 import CheckBox from '../../components/cart/Checkbox.jsx';
 import CartItem from './CartItem.jsx';
 import { useState } from 'react';
-import { useCartItemStore } from '../../store/store.js';
+import { useCartItemStore, useAuthStore } from '../../store/store.js';
 import axios from 'axios';
 import SubmitModal from './SubmitModal.jsx';
 import Dropdown from '../../assets/Dropdown.jsx';
@@ -71,6 +71,7 @@ const Cart = () => {
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false); // 주문 모달 상태 추가
   const [pickupTime, setPickupTime] = useState(30); // 픽업 시간을 저장하는 상태 변수
   const API = `${process.env.REACT_APP_API_URL}/api`;
+  const { accessToken } = useAuthStore();
   // Dropdown 옵션
   const options = [
     { value: 30, name: '30분' },
@@ -124,15 +125,34 @@ const Cart = () => {
     }
   };
   // 체크박스에 포함된 아이템을 axios DELETE 요청
-  const handleDelete = () => {
-    const checkedId = checkItem.map((item) => item.id);
-    axios
-      .delete(`${API}/cart`, { data: { checked_item: checkedId } })
-      .then((res) => {
-        setCartItem(res.data.order.order_menus);
-        setCheckItem([]);
-      })
-      .catch((err) => console.log('에러임', err));
+  const handleDelete = async () => {
+    try {
+      const checkedId = checkItem;
+
+      // 삭제 요청
+      await axios.delete(`${API}/cart`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        data: checkedId,
+      });
+
+      // 삭제된 내역 업데이트
+      const response = await axios.get(`${API}/cart`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      const newData = response.data.order.order_menus;
+      setCartItem(newData);
+      setCheckItem(newData.map((item) => item.id));
+      console.log(newData);
+    } catch (error) {
+      console.error('에러임', error);
+    } finally {
+      setIsDeleteModalOpen(false);
+    }
   };
 
   const handleSubmit = () => {
