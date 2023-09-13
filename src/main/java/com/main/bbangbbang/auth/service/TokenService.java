@@ -19,7 +19,6 @@ import java.util.Map;
 public class TokenService {
 
     private final JwtTokenizer jwtTokenizer;
-    private final MemberService memberService;
 
     public Jws<Claims> checkAccessToken(String authorization) {
 
