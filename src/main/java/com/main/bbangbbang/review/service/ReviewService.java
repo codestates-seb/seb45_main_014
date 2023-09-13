@@ -36,8 +36,8 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public Review findReview() {
-        return null;
+    public Review findReview(long reviewId) {
+        return reviewRepository.findById(reviewId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NO_ITEM));
     }
 
     @Transactional(readOnly = true)
@@ -51,8 +51,8 @@ public class ReviewService {
     }
 
     @Transactional
-    public void deleteReview(Long orderId) {
-        Review review = reviewRepository.findByOrderId(orderId).orElseThrow(NoSuchElementException::new);
+    public void deleteReview(Long reviewId) {
+        Review review = reviewRepository.findById(reviewId).orElseThrow(NoSuchElementException::new);
         reviewRepository.delete(review);
     }
 }
