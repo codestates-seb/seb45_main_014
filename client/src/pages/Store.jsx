@@ -75,9 +75,9 @@ const Store = () => {
       </ul>
       <div className="flex flex-col mx-auto">
         <div ref={menuRef}></div>
-        <MenuTab menuData={menuData} />
+        <MenuTab menuData={storeData.menus} />
         <div ref={reviewRef}></div>
-        <StoreReviewTab reviewData={reviewDmData} />
+        <StoreReviewTab reviewData={reviewData} />
       </div>
       <ScrollButton onClick={() => scrollTo(menuRef)}>메뉴</ScrollButton>
       <ScrollButton onClick={() => scrollTo(reviewRef)}>리뷰</ScrollButton>

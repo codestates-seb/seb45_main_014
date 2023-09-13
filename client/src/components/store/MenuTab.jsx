@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import axios from 'axios';
+import { useAuthStore } from '../../store/store';
 
 import SuccessModal from './modal/SuccessModal.jsx';
 import FalseModal from './modal/FalseModal.jsx';
@@ -8,10 +9,16 @@ import FalseModal from './modal/FalseModal.jsx';
 const MenuTab = ({ menuData }) => {
   const [isFalseModalOpen, setIsFalseModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [currentData, setCurrentData] = useState(null);
+  const [currentCount, setCurrentCount] = useState(1);
 
   const openSuccessModal = () => setIsSuccessModalOpen(true);
   const closeSuccessModal = () => setIsSuccessModalOpen(false);
-  const openFalseModal = () => setIsFalseModalOpen(true);
+  const openFalseModal = (data, count) => {
+    setCurrentData(data);
+    setCurrentCount(count);
+    setIsFalseModalOpen(true);
+  };
   const closeFalseModal = () => setIsFalseModalOpen(false);
 
   return (
@@ -28,7 +35,13 @@ const MenuTab = ({ menuData }) => {
       {isSuccessModalOpen && (
         <SuccessModal closeSuccessModal={closeSuccessModal} />
       )}
-      {isFalseModalOpen && <FalseModal closeFalseModal={closeFalseModal} />}
+      {isFalseModalOpen && (
+        <FalseModal
+          closeFalseModal={closeFalseModal}
+          dataId={currentData.id}
+          quantity={currentCount}
+        />
+      )}
     </div>
   );
 };
@@ -39,6 +52,7 @@ const MenuItem = ({ data, openFalseModal, openSuccessModal }) => {
   const apiUrl = process.env.REACT_APP_API_URL;
   const [isMenuModalOpen, setIsMenuModalOpen] = useState(false);
   const [isCount, setIsCount] = useState(1);
+  const { isLoggedIn, accessToken } = useAuthStore((state) => state);
 
   const openMenuModal = () => setIsMenuModalOpen(true);
   const closeMenuModal = () => setIsMenuModalOpen(false);
@@ -50,21 +64,32 @@ const MenuItem = ({ data, openFalseModal, openSuccessModal }) => {
       .post(
         `${apiUrl}/api/cart/${data.id}?quantity=${cartItem.quantity}`,
         cartItem,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
       )
       .then((response) => {
         const statusData = response.status;
-        console.log(statusData);
-        // if (statusData === 200) {
-        openSuccessModal();
-        // } else {
-        //   openFalseModal();
-        // }
+        const exception = response.headers['Bbangbbang_exception'];
+        console.log(exception);
+        if (statusData === 200) {
+          openSuccessModal();
+        } else if (statusData === 400 && exception === 900) {
+          openFalseModal(data, isCount);
+        }
       })
       .catch((error) => {
         console.log('500에러', error);
-        openSuccessModal();
+        // openFalseModal(data, isCount);
       });
   };
+
+  if (!isLoggedIn || !accessToken) {
+    alert('로그인이 필요합니다.');
+    return;
+  }
 
   return (
     <div className="flex p-[10px] border-b">
