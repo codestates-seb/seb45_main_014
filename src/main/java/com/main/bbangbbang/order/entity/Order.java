@@ -4,6 +4,7 @@ import com.main.bbangbbang.member.entity.Member;
 import com.main.bbangbbang.ordermenu.entity.OrderMenu;
 import com.main.bbangbbang.store.entity.Store;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -41,7 +42,7 @@ public class Order {
     private Member member;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<OrderMenu> orderMenus;
+    private List<OrderMenu> orderMenus = new ArrayList<>();
 
     @Column
     @LastModifiedDate
@@ -68,7 +69,7 @@ public class Order {
         CANCELED("취소"),
         DELETED("삭제");
 
-        private String status;
+        private final String status;
 
         OrderStatus(String status) {
             this.status = status;
