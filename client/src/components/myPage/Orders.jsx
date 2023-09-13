@@ -8,7 +8,6 @@ import { RedButton } from '../../assets/buttons/RedButton.jsx';
 import axios from 'axios';
 import { useAuthStore } from '../../store/store';
 import SubmitModal from '../../pages/cart/SubmitModal.jsx';
-import orderData from '../../assets/data/orderData';
 
 const OrdersImage = styled(StoreImage)`
   width: 200px;
@@ -36,21 +35,20 @@ const OrdersItem = ({ data, openModal }) => {
   };
 
   // 주문 내역 삭제
-  const deleteOrder = async () => {
-    try {
-      const res = await axios.delete(
+  const deleteOrder = () => {
+    axios
+      .delete(
         `${process.env.REACT_APP_API_URL}/api/members/orders/${data.id}`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         },
-      );
-      closeSubmitModal();
-      window.location.reload();
-    } catch (err) {
-      console.log(err);
-    }
+      )
+      .then((res) => {
+        window.location.reload();
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -85,11 +83,8 @@ const OrdersItem = ({ data, openModal }) => {
   );
 };
 
-// const Orders = ({ data }) => {
-const Orders = () => {
+const Orders = ({ data }) => {
   const [currentModalData, setCurrentModalData] = useState(null);
-
-  const data = orderData;
 
   const openModal = (data) => setCurrentModalData(data);
   const closeModal = () => {
