@@ -1,14 +1,14 @@
 package com.main.bbangbbang.auth.config;
 
-//import com.main.bbangbbang.auth.handler.MemberAuthenticationFailureHandler;
-//import com.main.bbangbbang.auth.handler.MemberAuthenticationSuccessHandler;
 import com.main.bbangbbang.auth.filter.JwtVerificationFilter;
 import com.main.bbangbbang.auth.handler.OAuth2LoginSuccessHandler;
 import com.main.bbangbbang.auth.jwt.JwtTokenizer;
+import com.main.bbangbbang.auth.service.TokenService;
 import com.main.bbangbbang.auth.utils.CustomAuthorityUtils;
 import com.main.bbangbbang.member.service.MemberService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -33,12 +33,15 @@ public class SecurityConfiguration {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
     private final MemberService memberService;
+    private final TokenService tokenService;
 
     public SecurityConfiguration(JwtTokenizer jwtTokenizer,
-                                 CustomAuthorityUtils authorityUtils, MemberService memberService) {
+                                 CustomAuthorityUtils authorityUtils, MemberService memberService,
+                                 TokenService tokenService) {
         this.jwtTokenizer = jwtTokenizer;
         this.authorityUtils = authorityUtils;
         this.memberService = memberService;
+        this.tokenService = tokenService;
     }
 
     //  JwtTokenizer 객체를 빈으로 등록
@@ -70,7 +73,7 @@ public class SecurityConfiguration {
                                 .anyRequest().permitAll()
                 )
                 .oauth2Login(oauth2 -> oauth2
-                        .successHandler(new OAuth2LoginSuccessHandler(jwtTokenizer, authorityUtils, memberService))    // tokenizer() 메서드 호출하여 인스턴스 사용
+                        .successHandler(new OAuth2LoginSuccessHandler(jwtTokenizer, authorityUtils, memberService, tokenService))    // tokenizer() 메서드 호출하여 인스턴스 사용
                         .failureHandler((request, response, exception) -> {
                             System.out.println("OAuth2LoginAuthenticationFailureHandler");
                             exception.printStackTrace();
