@@ -1,9 +1,10 @@
 import axios from 'axios';
-import { useAuthStore } from '../store/store';
+import { useAuthStore, useCartItemStore } from '../store/store';
 
 export const useCartApi = () => {
   const { accessToken } = useAuthStore();
   const API = process.env.REACT_APP_API_URL;
+  const { setCartItem, setStoreId } = useCartItemStore();
   const config = {
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -56,5 +57,21 @@ export const useCartApi = () => {
     }
   };
 
-  return { fetchCart, addCart, deleteCart, orderCart };
+  // 장바구니의 아이템이 수량이 변경된 경우 POST 요청
+  const updateCart = async (itemId, quantity) => {
+    try {
+      await axios.post(
+        `${API}/api/cart/${itemId}?quantity=${quantity}`,
+        null,
+        config,
+      );
+      const response = await fetchCart();
+      setCartItem(response.order_menus);
+      setStoreId(response.store_id);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return { fetchCart, addCart, deleteCart, orderCart, updateCart };
 };
