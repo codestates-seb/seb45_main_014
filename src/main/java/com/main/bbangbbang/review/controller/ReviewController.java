@@ -13,6 +13,7 @@ import com.main.bbangbbang.review.dto.ReviewsResponseDto;
 import com.main.bbangbbang.review.entity.Review;
 import com.main.bbangbbang.review.mapper.ReviewMapper;
 import com.main.bbangbbang.review.service.ReviewService;
+import com.main.bbangbbang.s3.S3Service;
 import com.main.bbangbbang.utils.PageInfo;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,7 +27,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @AllArgsConstructor
@@ -35,22 +38,36 @@ public class ReviewController {
     private final ReviewService reviewService;
     private final OrderService orderService;
     private final MemberService memberService;
+    private final S3Service s3Service;
     private final ReviewMapper reviewMapper;
 
-    @PostMapping("/orders/{order-id}/reviews")
-    public ResponseEntity<?> postReview(@PathVariable("order-id") Long orderId,
-                                        @RequestParam(name = "content") String content,
-                                        @RequestParam(name = "rating") Integer rating,
-                                        Authentication authentication) {
+    @PostMapping("/orders/{order-id}/reviews/image")
+    public ResponseEntity<?> postReviewImage(@PathVariable("order-id") Long orderId,
+                                             @RequestPart("file") MultipartFile multipartFile,
+                                             Authentication authentication) {
         String email = authentication.getPrincipal().toString();
         Member member = memberService.findMember(email);
         Order order = orderService.findOrder(orderId);
         validateSameMember(member, order);
 
-        Review review = reviewService.createReview(order, content, rating); //need img
+        Review review = reviewService.findOrNewReview(order);
+        String img = s3Service.uploadImage(multipartFile, "review", review.getId());
+        reviewService.setReviewImage(review, img); //need img
+
+        return ResponseEntity.ok(img);
+    }
+
+    @PostMapping("/orders/{order-id}/reviews")
+    public ResponseEntity<?> postReview(@PathVariable("order-id") Long orderId,
+                                        @RequestParam(name = "content") String content,
+                                        @RequestParam(name = "rating") Integer rating) {
+        Order order = orderService.findOrder(orderId);
+        Review review = reviewService.findOrNewReview(order);
+
+        Review doneReview = reviewService.setReviewData(review, content, rating); //need img
         order.setOrderStatus(OrderStatus.REVIEWED);
 
-        return ResponseEntity.ok(new ReviewResponseDto(reviewMapper.reviewToReviewDataWithStoreName(review)));
+        return ResponseEntity.ok(new ReviewResponseDto(reviewMapper.reviewToReviewDataWithStoreName(doneReview)));
     }
 
     @GetMapping("/reviews")
