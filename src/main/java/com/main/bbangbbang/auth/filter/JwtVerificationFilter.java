@@ -4,12 +4,14 @@ import com.main.bbangbbang.auth.jwt.JwtTokenizer;
 import com.main.bbangbbang.auth.utils.CustomAuthorityUtils;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -32,11 +34,15 @@ public class JwtVerificationFilter extends OncePerRequestFilter {  // (1)   JWT 
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        // System.out.println("# JwtVerificationFilter");
-
         try {
-            Map<String, Object> claims = verifyJws(request);
+            Map<String, Object> claims = verifyJws(request, response);
             setAuthenticationToContext(claims);
+        } catch (ResponseStatusException be) {
+            if (be.getStatus() == HttpStatus.UNAUTHORIZED) {
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, be.getMessage());
+                return;
+            }
+            request.setAttribute("exception", be);
         } catch (SignatureException se) {
             request.setAttribute("exception", se);
         } catch (ExpiredJwtException ee) {
@@ -55,8 +61,13 @@ public class JwtVerificationFilter extends OncePerRequestFilter {  // (1)   JWT 
         return authorization == null || !authorization.startsWith("Bearer");
     }
 
-    private Map<String, Object> verifyJws(HttpServletRequest request) {
+    private Map<String, Object> verifyJws(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String jws = request.getHeader("Authorization").replace("Bearer ", "");
+
+        if (jwtTokenizer.getTokenBlackList().containsKey(jws)){
+//            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Blacklisted JWT Token");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        }
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
         Map<String, Object> claims = jwtTokenizer.getClaims(jws, base64EncodedSecretKey).getBody();
 
