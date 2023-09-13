@@ -4,7 +4,7 @@ import { useAuthStore, useCartItemStore } from '../store/store';
 export const useCartApi = () => {
   const { accessToken } = useAuthStore();
   const API = process.env.REACT_APP_API_URL;
-  const { setCartItem, setStoreId } = useCartItemStore();
+  const { setCartItem, setStoreId, setCheckItem } = useCartItemStore();
   const config = {
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -67,6 +67,7 @@ export const useCartApi = () => {
       );
       const response = await fetchCart();
       setCartItem(response.order_menus);
+      setCheckItem(response.order_menus.map((item) => item.id));
       setStoreId(response.store_id);
     } catch (error) {
       console.error(error);
