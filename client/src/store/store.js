@@ -74,8 +74,10 @@ export const useLoginModalStore = create((set) => ({
 export const useCartItemStore = create((set) => ({
   cartItem: [],
   checkItem: [],
+  storeId: 0,
   setCartItem: (data) => set({ cartItem: data }),
   setCheckItem: (data) => set({ checkItem: data }),
+  setStoreId: (data) => set({ storeId: data }),
 }));
 
 export const useAuthStore = create((set) => ({
