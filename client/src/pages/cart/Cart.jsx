@@ -65,8 +65,7 @@ const TotalItem = styled.div`
 `;
 
 const Cart = () => {
-  const { cartItem, setCartItem } = useCartItemStore();
-  const [checkItem, setCheckItem] = useState(cartItem.map((item) => item.id)); // CartItem의 id를 저장하는 상태 변수
+  const { cartItem, setCartItem, checkItem, setCheckItem } = useCartItemStore();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // 삭제 모달 상태 추가
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false); // 주문 모달 상태 추가
   const [pickupTime, setPickupTime] = useState(30); // 픽업 시간을 저장하는 상태 변수
