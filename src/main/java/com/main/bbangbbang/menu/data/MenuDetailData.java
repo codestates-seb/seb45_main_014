@@ -10,6 +10,5 @@ import lombok.Setter;
 @Setter
 public class MenuDetailData extends MenuData {
     private String menuDesc;
-    private Integer stock;
     private String img;
 }

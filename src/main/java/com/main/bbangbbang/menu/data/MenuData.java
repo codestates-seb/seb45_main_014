@@ -12,4 +12,5 @@ public abstract class MenuData {
     private Long id;
     private String menuName;
     private Integer price;
+    private Integer stock;
 }

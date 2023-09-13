@@ -12,7 +12,6 @@ import com.main.bbangbbang.ordermenu.entity.OrderMenu;
 import com.main.bbangbbang.ordermenu.service.OrderMenuService;
 import com.main.bbangbbang.store.entity.Store;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -34,7 +33,6 @@ public class OrderService {
         Order order = new Order();
         order.setMember(member); // 임시 1번 member
         order.setStore(store);
-        order.setOrderMenus(new ArrayList<>());
         order.setOrderStatus(OrderStatus.ACTIVE);
 
         return orderRepository.save(order);
@@ -91,15 +89,12 @@ public class OrderService {
 
     @Transactional
     public Order doOrder(Order order, Integer minutes) {
-        try {
-            for (OrderMenu orderMenu : order.getOrderMenus()) {
-                orderMenuService.doOrderMenu(orderMenu);
-            }
-        } catch (RuntimeException e) {
-            order.setOrderStatus(OrderStatus.CANCELED);
-            return order;
-        }
+        List<OrderMenu> orderMenus = order.getOrderMenus();
+        if (orderMenus.size() == 0) throw new BusinessLogicException(ExceptionCode.NO_ITEM);
 
+        for (OrderMenu orderMenu : order.getOrderMenus()) {
+            orderMenuService.doOrderMenu(orderMenu);
+        }
         order.setPickupTime(LocalDateTime.now().plusMinutes(minutes));
         order.setOrderStatus(OrderStatus.READY);
 
@@ -116,6 +111,20 @@ public class OrderService {
             }
 
         order.addOrderMenu(orderMenuService.createOrderMenu(order, menu, quantity));
+    }
+
+    @Transactional
+    public Order findOrNewOrder(Boolean isNewOrder, Member member, Store store) {
+        Order order;
+        if (isNewOrder) {
+            cancelActiveOrder(member.getId()); // active가 있다면 해당 order -> canceled
+            order = createOrder(member, store);
+        } else if (!existActiveOrder(member.getId())) {
+            order = createOrder(member, store);
+        } else {
+            order = findActiveOrder(member.getId());
+        }
+        return order;
     }
 
     private void validateOneActiveOrder(List<Order> orders) {

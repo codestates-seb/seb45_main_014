@@ -10,4 +10,9 @@ public class BusinessLogicException extends RuntimeException{
         super(exceptionCode.getMessage());
         this.exceptionCode = exceptionCode;
     }
+
+    public BusinessLogicException(ExceptionCode exceptionCode, String detail) {
+        super(exceptionCode.getMessage() + "\n" + detail);
+        this.exceptionCode = exceptionCode;
+    }
 }
