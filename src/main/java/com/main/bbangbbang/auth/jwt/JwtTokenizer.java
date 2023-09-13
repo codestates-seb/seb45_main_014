@@ -1,7 +1,5 @@
 package com.main.bbangbbang.auth.jwt;
 
-import com.main.bbangbbang.exception.AuthLogicException;
-import com.main.bbangbbang.exception.ExceptionCode;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
@@ -11,7 +9,9 @@ import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -82,7 +82,7 @@ public class JwtTokenizer {
     public Jws<Claims> verifySignature(String jws) {
         // 주어진 jwt 토큰이 블랙리스트에 있는지 확인하여 만료 처리된 토큰인지 확인
         if (tokenBlackList.get(jws) != null) {
-            throw new AuthLogicException(ExceptionCode.JWT_TOKEN_EXPIRED);
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다.");
         }
         try {   // parser로 토큰이 올바르게 서명되었는지 확인하고 Claims를 반환
             return Jwts.parserBuilder()
@@ -90,7 +90,7 @@ public class JwtTokenizer {
                     .build()
                     .parseClaimsJws(jws);
         } catch (ExpiredJwtException exception) {
-            throw new AuthLogicException(ExceptionCode.JWT_TOKEN_EXPIRED);
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다.");
         }
     }
 
