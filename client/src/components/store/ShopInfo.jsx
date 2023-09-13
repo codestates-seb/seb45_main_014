@@ -13,7 +13,8 @@ import 'slick-carousel/slick/slick-theme.css';
 const ShopInfo = ({ store }) => {
   const { isBookmarked, toggleBookmark } = useBookmarkStore();
   const currentUrl = window.location;
-
+  const placeId = store.place_id;
+  console.log(placeId);
   const handleCopyUrl = () => {
     copy(currentUrl);
     alert('URL이 복사되었습니다.');
@@ -125,7 +126,7 @@ const ShopInfo = ({ store }) => {
           <div className="flex flex-col text-left text-2xl">
             <span className="mb-3">매장 위치</span>
             <div
-              className="rounded-s-lg"
+              className="rounded-lg"
               id="map"
               style={{ width: '450px', height: '400px' }}
             ></div>
