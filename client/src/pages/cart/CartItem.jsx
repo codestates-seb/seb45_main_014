@@ -67,19 +67,25 @@ const CartItem = ({ menuName, quantity, price, onChange, checked, id }) => {
   //-, +버튼으로 quantity를 조절하는 함수
   const [amount, setAmount] = useState(quantity);
   const { setCartItem, storeId, setCheckItem } = useCartItemStore();
-  const { deleteCart, updateCart, fetchCart } = useCartApi();
+  const { deleteCart, updateCart, fetchCart, getStock } = useCartApi();
 
-  const quantityUp = () => {
+  const quantityUp = async () => {
+    const stock = await getStock(storeId, id);
     const updatedAmount = amount + 1;
+    console.dir(`현재 재고 : ${stock}`);
+
+    // updatedAmount가 stock보다 크면 경고 메시지를 표시하고 함수를 종료
+    if (updatedAmount > stock) {
+      alert('재고가 부족합니다.');
+      return;
+    }
     setAmount(updatedAmount);
-    // 로컬 스토리지 업데이트
     updateQuantity(id, updatedAmount);
   };
   const quantityDown = () => {
     if (amount > 1) {
       const updatedAmount = amount - 1;
       setAmount(updatedAmount);
-      // 로컬 스토리지 업데이트
       updateQuantity(id, updatedAmount);
     }
   };
