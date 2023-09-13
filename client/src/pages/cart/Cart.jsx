@@ -143,14 +143,13 @@ const Cart = () => {
 
   const handleSubmit = async () => {
     try {
-      orderCart(pickupTime);
-      const newData = await fetchCart().then((res) => res.order_menus);
-      setCartItem(newData);
-      setCheckItem(newData.map((item) => item.id));
+      await orderCart(pickupTime);
     } catch (error) {
       console.log('에러임', error);
     } finally {
       setIsSubmitModalOpen(false);
+      // 마이페이지- 주문내역으로 이동
+      window.location.href = '/mypage#order';
     }
   };
 
