@@ -1,6 +1,7 @@
 package com.main.bbangbbang.auth.jwt;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -8,12 +9,15 @@ import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 @Component
@@ -29,6 +33,9 @@ public class JwtTokenizer {
     @Getter
     @Value("${jwt.refresh-token-expiration-minutes}")
     private int refreshTokenExpirationMinutes;
+
+    @Getter
+    private final Map<String, Long> tokenBlackList = new HashMap<>();
 
     public String encodeBase64SecretKey(String secretKey) {
         return Encoders.BASE64.encode(secretKey.getBytes(StandardCharsets.UTF_8));
@@ -72,13 +79,19 @@ public class JwtTokenizer {
     }
 
     // 단순히 검증만 하는 용도로 쓰일 경우
-    public void verifySignature(String jws, String base64EncodedSecretKey) {
-        Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
-
-        Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(jws);
+    public Jws<Claims> verifySignature(String jws) {
+        // 주어진 jwt 토큰이 블랙리스트에 있는지 확인하여 만료 처리된 토큰인지 확인
+        if (tokenBlackList.get(jws) != null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다.");
+        }
+        try {   // parser로 토큰이 올바르게 서명되었는지 확인하고 Claims를 반환
+            return Jwts.parserBuilder()
+                    .setSigningKey(getKey())
+                    .build()
+                    .parseClaimsJws(jws);
+        } catch (ExpiredJwtException exception) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다.");
+        }
     }
 
     public Date getTokenExpiration(int expirationMinutes) {
@@ -94,5 +107,16 @@ public class JwtTokenizer {
         Key key = Keys.hmacShaKeyFor(keyBytes);
 
         return key;
+    }
+
+    public void addToTokenBlacklist(String jws) {
+        tokenBlackList.put(jws, System.currentTimeMillis());
+    }
+
+    //
+    private Key getKey() {
+        String base64EncodedSecretKey = encodeBase64SecretKey(getSecretKey());
+
+        return getKeyFromBase64EncodedKey(base64EncodedSecretKey);
     }
 }

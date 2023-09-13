@@ -1,9 +1,9 @@
 package com.main.bbangbbang.auth.handler;
 
 import com.main.bbangbbang.auth.jwt.JwtTokenizer;
+import com.main.bbangbbang.auth.service.TokenService;
 import com.main.bbangbbang.auth.utils.CustomAuthorityUtils;
 import com.main.bbangbbang.member.service.MemberService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -17,24 +17,25 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {   // (1)
 
     private final CustomAuthorityUtils authorityUtils;
     private final JwtTokenizer jwtTokenizer;
     private final MemberService memberService;
+    private final TokenService tokenService;
 
     // (2)
     public OAuth2LoginSuccessHandler(JwtTokenizer jwtTokenizer,
                                      CustomAuthorityUtils authorityUtils
-                                     , MemberService memberService
+                                     , MemberService memberService,
+                                     TokenService tokenService
     ) {
         this.jwtTokenizer = jwtTokenizer;
         this.authorityUtils = authorityUtils;
         this.memberService = memberService;
+        this.tokenService = tokenService;
     }
 
     @Override
@@ -68,7 +69,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
     }
 
     private void redirect(HttpServletRequest request, HttpServletResponse response, String username, String nickname, List<String> authorities) throws IOException {
-        String accessToken = delegateAccessToken(username, authorities);
+        String accessToken = tokenService.delegateAccessToken(username, authorities);
         System.out.println("Access Token : " + accessToken);
 
         String refreshToken = delegateRefreshToken(username);
@@ -84,22 +85,6 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
         getRedirectStrategy().sendRedirect(request, response, uri);   // sendRedirect 메서드를 통해 redirect
 
-    }
-
-
-    private String delegateAccessToken(String username, List<String> authorities) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("username", username);
-        claims.put("roles", authorities);
-
-        String subject = username;
-        Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getAccessTokenExpirationMinutes());
-
-        String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
-
-        String accessToken = jwtTokenizer.generateAccessToken(claims, subject, expiration, base64EncodedSecretKey);
-
-        return accessToken;
     }
 
     private String delegateRefreshToken(String username) {
@@ -120,6 +105,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
+//                .host("bbangorder.s3-website.ap-northeast-2.amazonaws.com")
                 .host("localhost")
                 .port(3000) // 추후 포트번호 변경 시 작성
                 .path("/auth/google")
@@ -128,4 +114,3 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
                 .toUri();
     }
 }
-
