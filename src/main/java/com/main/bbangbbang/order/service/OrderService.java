@@ -96,7 +96,7 @@ public class OrderService {
             orderMenuService.doOrderMenu(orderMenu);
         }
         order.setPickupTime(LocalDateTime.now().plusMinutes(minutes));
-        order.setOrderStatus(OrderStatus.READY);
+        order.setOrderStatus(OrderStatus.PICKUP);
 
         return order;
     }
