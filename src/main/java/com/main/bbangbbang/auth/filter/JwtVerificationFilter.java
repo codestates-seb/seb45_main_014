@@ -2,6 +2,8 @@ package com.main.bbangbbang.auth.filter;
 
 import com.main.bbangbbang.auth.jwt.JwtTokenizer;
 import com.main.bbangbbang.auth.utils.CustomAuthorityUtils;
+import com.main.bbangbbang.exception.AuthLogicException;
+import com.main.bbangbbang.exception.ExceptionCode;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,11 +34,15 @@ public class JwtVerificationFilter extends OncePerRequestFilter {  // (1)   JWT 
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        // System.out.println("# JwtVerificationFilter");
-
         try {
-            Map<String, Object> claims = verifyJws(request);
+            Map<String, Object> claims = verifyJws(request, response);
             setAuthenticationToContext(claims);
+        } catch (AuthLogicException be) {
+            if (be.getExceptionCode() == ExceptionCode.UNAUTHENTICATED_USER) {
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, be.getMessage());
+                return;
+            }
+            request.setAttribute("exception", be);
         } catch (SignatureException se) {
             request.setAttribute("exception", se);
         } catch (ExpiredJwtException ee) {
