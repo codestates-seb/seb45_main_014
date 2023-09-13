@@ -65,7 +65,7 @@ const PriceBox = styled.div`
 const CartItem = ({ menuName, quantity, price, onChange, checked, id }) => {
   //-, +버튼으로 quantity를 조절하는 함수
   const [amount, setAmount] = useState(quantity);
-  const { cartItem, setCartItem } = useCartItemStore();
+  const { cartItem, setCartItem, storeId } = useCartItemStore();
 
   const quantityUp = () => {
     const updatedAmount = amount + 1;
@@ -117,9 +117,9 @@ const CartItem = ({ menuName, quantity, price, onChange, checked, id }) => {
   return (
     <ItemCard>
       <CheckBox onChange={onChange} checked={checked} />
-      <ItemImg to={'/'} />
+      <ItemImg to={`/stores/${storeId}`} />
       <div className="flex-1">
-        <Link to={'/'}>
+        <Link to={`/stores/${storeId}`}>
           <p>{menuName}</p>
         </Link>
       </div>
