@@ -7,6 +7,7 @@ import com.main.bbangbbang.order.entity.Order.OrderStatus;
 import com.main.bbangbbang.review.entity.Review;
 import com.main.bbangbbang.review.repository.ReviewRepository;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,14 +20,31 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
 
     @Transactional
-    public Review createReview(Order order, String content, Integer rating) {
+    public Review findOrNewReview(Order order) {
         if (order.getOrderStatus() != OrderStatus.PICKUP) {
             throw new RuntimeException("주문 상태가 PICKUP이 아닙니다.");
         }
 
+        Optional<Review> optionalReview = reviewRepository.findByOrderId(order.getId());
+        if (optionalReview.isPresent()) return optionalReview.get();
+
         Review review = new Review();
         review.setOrder(order);
         review.setMember(order.getMember());
+
+        return reviewRepository.save(review);
+    }
+
+    @Transactional
+    public Review setReviewImage(Review review, String img) {
+        review.setImg(img);
+
+        return reviewRepository.save(review);
+    }
+
+    @Transactional
+    public Review setReviewData(Review review, String content, Integer rating) {
+        review.setContent(content);
         review.setRating(rating);
 
         return reviewRepository.save(review);
