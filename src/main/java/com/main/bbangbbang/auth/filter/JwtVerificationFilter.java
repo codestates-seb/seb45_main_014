@@ -55,8 +55,13 @@ public class JwtVerificationFilter extends OncePerRequestFilter {  // (1)   JWT 
         return authorization == null || !authorization.startsWith("Bearer");
     }
 
-    private Map<String, Object> verifyJws(HttpServletRequest request) {
+    private Map<String, Object> verifyJws(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String jws = request.getHeader("Authorization").replace("Bearer ", "");
+
+        if (jwtTokenizer.getTokenBlackList().containsKey(jws)){
+//            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Blacklisted JWT Token");
+            throw new AuthLogicException(ExceptionCode.UNAUTHENTICATED_USER);
+        }
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
         Map<String, Object> claims = jwtTokenizer.getClaims(jws, base64EncodedSecretKey).getBody();
 
