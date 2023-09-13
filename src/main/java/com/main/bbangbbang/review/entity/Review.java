@@ -14,7 +14,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -31,13 +30,11 @@ public class Review {
     private Long id;
 
     @Column
-    @NotNull
     @Min(1)
     @Max(5)
     private Integer rating;
 
     @Column
-    @NotNull
     private String content;
 
     @Column
