@@ -8,7 +8,6 @@ import com.main.bbangbbang.order.data.OrderData;
 import com.main.bbangbbang.order.dto.OrderResponseDto;
 import com.main.bbangbbang.order.dto.OrdersResponseDto;
 import com.main.bbangbbang.order.entity.Order;
-import com.main.bbangbbang.order.entity.Order.OrderStatus;
 import com.main.bbangbbang.order.mapper.OrderMapper;
 import com.main.bbangbbang.order.service.OrderService;
 import com.main.bbangbbang.store.entity.Store;
@@ -55,10 +54,6 @@ public class OrderController { // jwt토큰 parsing하여 Member확인이 가능
 
         Order order = orderService.findActiveOrder(member.getId());
         Order doneOrder = orderService.doOrder(order, minutes);
-
-        if (doneOrder.getOrderStatus() == OrderStatus.CANCELED) { // 취소됐을 때 재주문에 대한 로직 필요
-            return ResponseEntity.status(410).build(); // test 확인용 임시 코드
-        }
 
         return ResponseEntity.ok(new OrderResponseDto(orderMapper.orderToOrderData(doneOrder)));
     }

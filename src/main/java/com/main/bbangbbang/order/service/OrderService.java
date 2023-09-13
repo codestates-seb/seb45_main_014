@@ -12,7 +12,6 @@ import com.main.bbangbbang.ordermenu.entity.OrderMenu;
 import com.main.bbangbbang.ordermenu.service.OrderMenuService;
 import com.main.bbangbbang.store.entity.Store;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -90,15 +89,12 @@ public class OrderService {
 
     @Transactional
     public Order doOrder(Order order, Integer minutes) {
-        try {
-            for (OrderMenu orderMenu : order.getOrderMenus()) {
-                orderMenuService.doOrderMenu(orderMenu);
-            }
-        } catch (RuntimeException e) {
-            order.setOrderStatus(OrderStatus.CANCELED);
-            return order;
-        }
+        List<OrderMenu> orderMenus = order.getOrderMenus();
+        if (orderMenus.size() == 0) throw new BusinessLogicException(ExceptionCode.NO_ITEM);
 
+        for (OrderMenu orderMenu : order.getOrderMenus()) {
+            orderMenuService.doOrderMenu(orderMenu);
+        }
         order.setPickupTime(LocalDateTime.now().plusMinutes(minutes));
         order.setOrderStatus(OrderStatus.READY);
 
