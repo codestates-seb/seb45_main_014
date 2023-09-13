@@ -1,28 +1,28 @@
 package com.main.bbangbbang.member.controller;
 
+import com.main.bbangbbang.auth.jwt.JwtTokenizer;
 import com.main.bbangbbang.member.dto.requestDto.MemberPatchDto;
 import com.main.bbangbbang.member.dto.responseDto.MemberResponseDto;
 import com.main.bbangbbang.member.entity.Member;
 import com.main.bbangbbang.member.mapper.MemberMapper;
 import com.main.bbangbbang.member.service.MemberService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/member")
-
-
 public class MemberController {
     private MemberService memberService;
     private MemberMapper memberMapper;
