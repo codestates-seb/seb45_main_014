@@ -3,10 +3,10 @@ import Button from '../../assets/buttons/Button.jsx';
 import CheckBox from '../../components/cart/Checkbox.jsx';
 import CartItem from './CartItem.jsx';
 import { useState } from 'react';
-import { useCartItemStore, useAuthStore } from '../../store/store.js';
-import axios from 'axios';
+import { useCartItemStore } from '../../store/store.js';
 import SubmitModal from './SubmitModal.jsx';
 import Dropdown from '../../assets/Dropdown.jsx';
+import { useCartApi } from '../../api/cart.js';
 
 const ShoppingCart = styled.div`
   width: 100%;
@@ -70,8 +70,7 @@ const Cart = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // 삭제 모달 상태 추가
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false); // 주문 모달 상태 추가
   const [pickupTime, setPickupTime] = useState(30); // 픽업 시간을 저장하는 상태 변수
-  const API = `${process.env.REACT_APP_API_URL}/api`;
-  const { accessToken } = useAuthStore();
+  const { fetchCart, deleteCart, orderCart } = useCartApi();
   // Dropdown 옵션
   const options = [
     { value: 30, name: '30분' },
@@ -128,23 +127,11 @@ const Cart = () => {
   const handleDelete = async () => {
     try {
       const checkedId = checkItem;
-
       // 삭제 요청
-      await axios.delete(`${API}/cart`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        data: checkedId,
-      });
+      await deleteCart(checkedId);
 
       // 삭제된 내역 업데이트
-      const response = await axios.get(`${API}/cart`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-
-      const newData = response.data.order.order_menus;
+      const newData = await fetchCart().then((res) => res.order_menus);
       setCartItem(newData);
       setCheckItem(newData.map((item) => item.id));
       console.log(newData);
@@ -155,16 +142,17 @@ const Cart = () => {
     }
   };
 
-  const handleSubmit = () => {
-    axios
-      .post(`${API}/cart?pickup_time=${pickupTime}`)
-      .then((res) => {
-        console.log(res);
-        alert('주문이 완료되었습니다.');
-        setCartItem([]);
-        setCheckItem([]);
-      })
-      .catch((err) => console.log('에러임', err));
+  const handleSubmit = async () => {
+    try {
+      orderCart(pickupTime);
+      const newData = await fetchCart().then((res) => res.order_menus);
+      setCartItem(newData);
+      setCheckItem(newData.map((item) => item.id));
+    } catch (error) {
+      console.log('에러임', error);
+    } finally {
+      setIsSubmitModalOpen(false);
+    }
   };
 
   // checked = true인 아이템의 총 가격을 계산
@@ -237,16 +225,6 @@ const Cart = () => {
             <TotalItem>
               <span>픽업 시간</span>
               <div className="flex h-[30px]">
-                {/* <select
-                  className="h-full rounded-lg border-2 text-right border-gray-300"
-                  value={pickupTime}
-                  onChange={handlePickupTimeChange}
-                >
-                  <option value={30}>30분</option>
-                  <option value={60}>1시간</option>
-                  <option value={90}>1시간 30분</option>
-                  <option value={120}>2시간</option>
-                </select> */}
                 <Dropdown
                   options={options}
                   defaultOption={options[0]}
