@@ -14,7 +14,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import LoadingSpinner from '../../components/Loading.jsx';
 
 const Title = styled.h1`
-  margin: 1rem 0;
+  padding: 1rem 0;
 `;
 
 const Content = styled.div`

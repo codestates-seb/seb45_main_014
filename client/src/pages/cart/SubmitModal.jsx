@@ -26,8 +26,10 @@ const ModalContent = ({ message }) => (
   </div>
 );
 
-const Button = ({ label }) => (
-  <button className="w-full hover:bg-gray-100">{label}</button>
+const Button = ({ label, onClick }) => (
+  <button className="w-full hover:bg-gray-100" onClick={onClick}>
+    {label}
+  </button>
 );
 
 const SubmitModal = ({
@@ -43,8 +45,8 @@ const SubmitModal = ({
       <Modal padding={'0'} top={'45%'}>
         <ModalContent message={message} />
         <ButtonContainer>
-          <Button label={cancelLabel} onClick={onClose} />
-          <Button label={submitLabel} onClick={onSubmit} />
+          <Button label={cancelLabel} onClick={() => onClose()} />
+          <Button label={submitLabel} onClick={() => onSubmit()} />
         </ButtonContainer>
       </Modal>
     </>

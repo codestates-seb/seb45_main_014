@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ReactComponent as UserIcon } from '../../assets/images/user.svg';
 import { styled } from 'styled-components';
+import { useAuthStore } from '../../store/store.js';
 
 const UserMenuContainer = styled.div`
   position: relative;
@@ -52,6 +53,7 @@ const MenuItem = styled.li`
 
 const UserMenu = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { logout } = useAuthStore();
   const dropdownRef = useRef(null);
 
   const toggleMenu = () => {
@@ -94,7 +96,10 @@ const UserMenu = () => {
             <Link to="/mypage">마이페이지</Link>
           </MenuItem>
           <MenuItem>
-            <a href="/logout">로그아웃</a>
+            {/* <a href="/logout">로그아웃</a> */}
+            <Link to="/" onClick={logout}>
+              로그아웃
+            </Link>
           </MenuItem>
         </MenuList>
       </MenuDropdown>

@@ -18,7 +18,7 @@ const Wrapper = styled.section`
 const DataContainer = styled.div`
   display: flex;
   width: 100%;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   flex-wrap: wrap;
 `;

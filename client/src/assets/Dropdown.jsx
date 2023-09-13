@@ -1,9 +1,8 @@
+import React, { useState, useEffect, useRef } from 'react';
 import { styled, keyframes } from 'styled-components';
-import { useSearchStore } from '../../store/store';
-import { useState, useEffect, useRef } from 'react';
 
 const Wrapper = styled.div`
-  padding-right: 4px;
+  z-index: 800;
 `;
 
 const slideInAnimation = keyframes`
@@ -15,19 +14,11 @@ const slideInAnimation = keyframes`
   }
   `;
 
-const DropDownPosition = styled.div`
-  position: absolute;
-  width: 70px;
-  height: 200px;
-  overflow: hidden;
-  z-index: 1;
-`;
-
 const DropdownWrapper = styled.ul`
-  position: absolute;
-  width: 70px;
+  display: flex;
   margin-top: 4px;
   text-align: center;
+  flex-direction: column;
   border: 2px solid #debe8f;
   background-color: white;
   border-radius: 10px;
@@ -41,6 +32,14 @@ const DropdownWrapper = styled.ul`
     ease-in-out;
 `;
 
+const DropDownPosition = styled.div`
+  position: absolute;
+  width: 85px;
+  height: 200px;
+  overflow: hidden;
+  z-index: 1;
+`;
+
 const DropdownHeader = styled.label`
   position: relative;
   display: flex;
@@ -48,28 +47,21 @@ const DropdownHeader = styled.label`
   justify-content: center;
   text-align: center;
   border-radius: 10px;
-  width: 70px;
-  height: 41px;
+  border: 2px solid #debe8f;
+  width: 85px;
+  height: 31px;
   font-size: 14px;
   font-weight: 600;
-  background-color: #debe8f;
-  z-index: 1;
-  color: white;
+  background-color: white;
   cursor: pointer;
   &:hover {
-    background-color: #b3915f;
+    background-color: #debe8f;
   }
 `;
 
-const DropdownMenu = () => {
-  const { setSearchFilter } = useSearchStore();
-  const options = [
-    { value: 'store', name: '가게명' },
-    { value: 'region', name: '지역명' },
-    { value: 'menu', name: '메뉴명' },
-  ];
+const DropdownMenu = ({ options, defaultOption, onSelect }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(options[0]);
+  const [selectedOption, setSelectedOption] = useState(defaultOption);
   const dropdownRef = useRef(null);
 
   const closeMenu = () => {
@@ -77,34 +69,31 @@ const DropdownMenu = () => {
   };
 
   useEffect(() => {
-    // 전역 클릭 이벤트 핸들러
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         closeMenu();
       }
     };
 
-    // 드롭다운이 열렸을 때 이벤트 핸들러 등록
     if (isOpen) {
       document.addEventListener('mousedown', handleClickOutside);
     } else {
       document.removeEventListener('mousedown', handleClickOutside);
     }
 
-    // 컴포넌트 언마운트 시 이벤트 핸들러 제거
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isOpen]);
+
   const handleToggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
   const handleSelectOption = (option) => {
     setSelectedOption(option);
-    setSearchFilter(option.value);
+    onSelect(option);
     setIsOpen(false);
-    console.log(`searchFilter 값은 ${option.value}`);
   };
 
   return (

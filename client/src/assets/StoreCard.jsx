@@ -61,7 +61,7 @@ const StoreCard = ({ store }) => {
 
   // 검색 타겟에 따른 조건부 렌더링
   return (
-    <div className="w-72 relative m-4">
+    <div className="w-72 relative m-4 border border-solid">
       <Link to={`/stores/${store.id}`}>
         <div className=" overflow-hidden rounded-lg">
           <StoreImage className="object-cover" src={img} alt="대표 이미지" />
