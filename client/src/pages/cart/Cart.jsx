@@ -197,6 +197,11 @@ const Cart = () => {
               />
             )}
           </CartMenu>
+          {cartItem.length === 0 && (
+            <div className="flex justify-center items-center h-[300px] text-lg text-gray-400">
+              <p>장바구니에 담긴 상품이 없습니다.</p>
+            </div>
+          )}
           {cartItem.map((item, idx) => (
             <CartItem
               onChange={(e) => handleSingleCheck(e.target.checked, item)}
