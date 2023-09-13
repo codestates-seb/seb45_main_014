@@ -72,14 +72,8 @@ public class OrderController { // jwt토큰 parsing하여 Member확인이 가능
         Member member = memberService.findMember(email);
         Menu menu = menuService.findMenu(menuId);
         Store store = storeService.findStoreByMenu(menu);
-        Order order;
+        Order order = orderService.findOrNewOrder(isNewOrder, member, store);
 
-        if (isNewOrder) {
-            orderService.cancelActiveOrder(member.getId()); // active가 있다면 해당 order -> canceled
-            order = orderService.createOrder(member, store);
-        } else {
-            order = orderService.findActiveOrder(member.getId());
-        }
         orderService.addCart(order, menu, quantity);
 
         return ResponseEntity.ok().body(new OrderResponseDto(orderMapper.orderToOrderData(order)));

@@ -118,6 +118,20 @@ public class OrderService {
         order.addOrderMenu(orderMenuService.createOrderMenu(order, menu, quantity));
     }
 
+    @Transactional
+    public Order findOrNewOrder(Boolean isNewOrder, Member member, Store store) {
+        Order order;
+        if (isNewOrder) {
+            cancelActiveOrder(member.getId()); // active가 있다면 해당 order -> canceled
+            order = createOrder(member, store);
+        } else if (!existActiveOrder(member.getId())) {
+            order = createOrder(member, store);
+        } else {
+            order = findActiveOrder(member.getId());
+        }
+        return order;
+    }
+
     private void validateOneActiveOrder(List<Order> orders) {
         if (orders.size() == 0) {
             throw new BusinessLogicException(ExceptionCode.NO_ACTIVE_ORDER);
