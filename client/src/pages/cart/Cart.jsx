@@ -78,6 +78,7 @@ const Cart = () => {
 
   useEffect(() => {
     if (!isLoggedIn || !accessToken) {
+      alert('로그인이 필요합니다.');
       navigate('/');
     }
   }, [accessToken, isLoggedIn, navigate]);
