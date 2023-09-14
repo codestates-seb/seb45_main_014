@@ -9,7 +9,6 @@ import com.main.bbangbbang.member.service.MemberService;
 import com.main.bbangbbang.s3.S3Service;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -145,7 +143,6 @@ public class MemberController {
 
         String img = s3Service.uploadImage(multipartFile, "members", member.getId());
 
-        // 업로드된 이미지의 URL을 회원 정보에 저장 (이 부분은 회원 엔터티와 서비스에 따라 다를 수 있습니다)
         member.setImg(img);
         memberService.updateMember(member);
 
