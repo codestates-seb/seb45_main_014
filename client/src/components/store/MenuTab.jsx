@@ -60,7 +60,7 @@ const MenuItem = ({ data, openFalseModal, openSuccessModal }) => {
   const closeMenuModal = () => setIsMenuModalOpen(false);
 
   const notify = () => toast.error('제품이 품절 되었습니다.');
-
+  const notifysuccess = () => toast.success('장바구니에 추가 되었습니다.');
   const addToCart = () => {
     const cartItem = { quantity: isCount };
 
@@ -80,6 +80,7 @@ const MenuItem = ({ data, openFalseModal, openSuccessModal }) => {
         console.log(exception);
         if (statusData === 200) {
           openSuccessModal();
+          notifysuccess();
         }
       })
       .catch((error) => {

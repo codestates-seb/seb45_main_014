@@ -1,6 +1,28 @@
 import React from 'react';
 import { styled } from 'styled-components';
 
+const SuccessModal = ({ closeSuccessModal }) => {
+  const handleBackgroundClick = () => {
+    closeSuccessModal(); // 배경 클릭 시 closeSuccessModal 실행
+  };
+
+  const currentURL = window.location.href; // 현재 페이지의 URL 가져오기
+
+  return (
+    <ModalContainer onClick={handleBackgroundClick}>
+      <ModalContent>
+        <h2>장바구니 등록 완료</h2>
+        <p>장바구니에 상품이 정상적으로 추가되었습니다.</p>
+        <a href={currentURL}>
+          <CloseButton>더 담으러 가기</CloseButton>
+        </a>
+      </ModalContent>
+    </ModalContainer>
+  );
+};
+
+export default SuccessModal;
+
 const ModalContainer = styled.div`
   position: fixed;
   top: 0;
@@ -43,25 +65,3 @@ const CloseButton = styled.span`
     background-color: #debe8f;
   }
 `;
-
-const SuccessModal = ({ closeSuccessModal }) => {
-  const handleBackgroundClick = () => {
-    closeSuccessModal(); // 배경 클릭 시 closeSuccessModal 실행
-  };
-
-  const currentURL = window.location.href; // 현재 페이지의 URL 가져오기
-
-  return (
-    <ModalContainer onClick={handleBackgroundClick}>
-      <ModalContent>
-        <h2>장바구니 등록 완료</h2>
-        <p>장바구니에 상품이 정상적으로 추가되었습니다.</p>
-        <a href={currentURL}>
-          <CloseButton>더 담으러 가기</CloseButton>
-        </a>
-      </ModalContent>
-    </ModalContainer>
-  );
-};
-
-export default SuccessModal;
