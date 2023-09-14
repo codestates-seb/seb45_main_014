@@ -22,6 +22,7 @@ public class SearchService {
     private final MenuService menuService;
 
     public Page<Store> findByName(String storeName, int page, int size) {
+
         return storeService.findStoresByName(storeName, PageRequest.of(page-1, size));
     }
 
