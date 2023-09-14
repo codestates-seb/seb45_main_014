@@ -14,7 +14,7 @@ export const Modal = styled.div`
   top: ${(props) => props.top || '50%'};
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 9999;
+  z-index: 2000;
   background-color: white;
   padding: ${(props) => props.padding || '50px'};
   border-radius: 10px;
@@ -28,7 +28,7 @@ export const ModalOverlay = styled.div`
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 9999;
+  z-index: 2000;
 
   animation: ${fadeIn} 0.3s ease-in-out;
 `;
