@@ -3,17 +3,20 @@ import axios from 'axios';
 import { Modal, ModalOverlay } from '../../assets/Modal.jsx';
 import Button from '../../assets/buttons/Button.jsx';
 import { CancelButton } from './EditProfile.jsx';
+import { useAuthStore } from '../../store/store.js';
 
 const ImageUploadModal = ({ onClose }) => {
   const inputRef = useRef(null);
 
   const [preview, setPreview] = useState(null);
 
+  const accessToken = useAuthStore((state) => state.accessToken);
+
   const handleUpload = async (event) => {
     event.preventDefault();
 
     const formData = new FormData();
-    formData.append('image', inputRef.current.files[0]);
+    formData.append('file', inputRef.current.files[0]); // input 태그를 통해 사용자가 선택한 첫 번째 파일
 
     try {
       const response = await axios.post(
@@ -22,11 +25,12 @@ const ImageUploadModal = ({ onClose }) => {
         {
           headers: {
             'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${accessToken}`,
           },
         },
       );
-      const { image_url } = response.data;
 
+      console.log(response.data);
       onClose();
     } catch (error) {
       console.error('이미지 업로드 실패:', error);

@@ -118,7 +118,7 @@ const PostReview = ({ data, closeModal }) => {
         if (selectedImage) {
           // 두 번째 요청: 이미지 업로드 (이미지가 선택된 경우에만 실행)
           const formData = new FormData();
-          formData.append('image', selectedImage);
+          formData.append('file', selectedImage);
 
           console.log(
             `Image File: ${selectedImage.name}, Size: ${selectedImage.size}, Type: ${selectedImage.type}`,
