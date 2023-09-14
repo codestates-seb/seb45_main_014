@@ -20,15 +20,17 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
 
     @Transactional
-    public Review createReview(Order order) {
+    public Review createReview(Order order, ReviewRequestDto reviewRequestDto) {
         if (order.getOrderStatus() != OrderStatus.PICKUP) {
             throw new RuntimeException("주문 상태가 PICKUP이 아닙니다.");
         }
 
-        Review review = new Review();
-        review.setOrder(order);
-        review.setMember(order.getMember());
-        review.setStore(order.getStore());
+        Review review = Review.of(
+                reviewRequestDto.getRating(),
+                reviewRequestDto.getContent(),
+                order.getStore(),
+                order.getMember(),
+                order);
 
         return reviewRepository.save(review);
     }
