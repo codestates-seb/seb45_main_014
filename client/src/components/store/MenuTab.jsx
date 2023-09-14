@@ -1,65 +1,63 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled } from 'styled-components';
 import axios from 'axios';
 import { useAuthStore } from '../../store/store';
 import toast, { Toaster } from 'react-hot-toast';
 
-import SuccessModal from './modal/SuccessModal.jsx';
 import FalseModal from './modal/FalseModal.jsx';
 
 const MenuTab = ({ menuData }) => {
   const [isFalseModalOpen, setIsFalseModalOpen] = useState(false);
-  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [currentData, setCurrentData] = useState(null);
   const [currentCount, setCurrentCount] = useState(1);
+  const [isMenuModalOpen, setIsMenuModalOpen] = useState(false);
 
-  const openSuccessModal = () => setIsSuccessModalOpen(true);
-  const closeSuccessModal = () => setIsSuccessModalOpen(false);
   const openFalseModal = (data, count) => {
     setCurrentData(data);
     setCurrentCount(count);
     setIsFalseModalOpen(true);
   };
   const closeFalseModal = () => setIsFalseModalOpen(false);
-
+  const MenuModalhandle = () => setIsMenuModalOpen(!isMenuModalOpen);
   return (
     <div className="flex flex-col">
       {menuData.map((menu) => (
         <MenuItem
           key={menu.id}
           data={menu}
-          openSuccessModal={openSuccessModal}
           openFalseModal={openFalseModal}
+          menuModalhandle={MenuModalhandle}
+          isMenuModalOpen={isMenuModalOpen}
         />
       ))}
 
-      {isSuccessModalOpen && (
-        <SuccessModal closeSuccessModal={closeSuccessModal} />
-      )}
       {isFalseModalOpen && (
         <FalseModal
+          menuModalhandle={MenuModalhandle}
           closeFalseModal={closeFalseModal}
           dataId={currentData.id}
           quantity={currentCount}
         />
       )}
-      <Toaster />
     </div>
   );
 };
 
 export default MenuTab;
 
-const MenuItem = ({ data, openFalseModal, openSuccessModal }) => {
+const MenuItem = ({
+  data,
+  openFalseModal,
+  menuModalhandle,
+  isMenuModalOpen,
+}) => {
   const apiUrl = process.env.REACT_APP_API_URL;
-  const [isMenuModalOpen, setIsMenuModalOpen] = useState(false);
+
   const [isCount, setIsCount] = useState(1);
   const { isLoggedIn, accessToken } = useAuthStore((state) => state);
 
-  const openMenuModal = () => setIsMenuModalOpen(true);
-  const closeMenuModal = () => setIsMenuModalOpen(false);
-
   const notify = () => toast.error('제품이 품절 되었습니다.');
+  const notifysuccess = () => toast.success('장바구니에 추가 되었습니다.');
 
   const addToCart = () => {
     const cartItem = { quantity: isCount };
@@ -79,7 +77,8 @@ const MenuItem = ({ data, openFalseModal, openSuccessModal }) => {
         const exception = response.headers['Bbangbbang_exception'];
         console.log(exception);
         if (statusData === 200) {
-          openSuccessModal();
+          notifysuccess();
+          menuModalhandle();
         }
       })
       .catch((error) => {
@@ -103,9 +102,10 @@ const MenuItem = ({ data, openFalseModal, openSuccessModal }) => {
         <div
           onClick={() => {
             if (data.stock > 0) {
-              openMenuModal();
+              menuModalhandle();
             } else {
               notify();
+              window.location.reload();
             }
           }}
           className="cursor-pointer mb-2 overflow-hidden rounded-lg"
@@ -120,13 +120,13 @@ const MenuItem = ({ data, openFalseModal, openSuccessModal }) => {
       {isMenuModalOpen && (
         <ModalBg
           onClick={(e) => {
-            if (e.target === e.currentTarget) closeMenuModal();
+            if (e.target === e.currentTarget) menuModalhandle();
           }}
         >
           <div className="relative bg-white w-[500px] h-[350px] p-4 rounded-lg shadow-lg">
             <button
               className="absolute top-2 right-2 p-4 text-gray-600 hover:text-gray-800"
-              onClick={closeMenuModal}
+              onClick={menuModalhandle}
             >
               닫기
             </button>
