@@ -5,6 +5,7 @@ import { useAuthStore, useCartItemStore } from '../../store/store';
 import toast from 'react-hot-toast';
 import FalseModal from './modal/FalseModal.jsx';
 import { useCartApi } from '../../api/cart';
+import MenuModal from './modal/MenuModal.jsx';
 
 const ModalBg = styled.div`
   position: fixed;
@@ -61,6 +62,22 @@ const MenuItem = ({ data }) => {
   const allClose = () => {
     setIsFalseModalOpen(false);
     setIsMenuModalOpen(false);
+  };
+
+  const quantityUp = () => {
+    if (isCount > data.stock) {
+      toast.error('재고가 부족합니다.', {
+        id: 'stock',
+        duration: 3000,
+      });
+      return;
+    }
+    setIsCount(isCount + 1);
+  };
+  const quantityDown = () => {
+    if (isCount > 1) {
+      setIsCount(isCount - 1);
+    }
   };
 
   const addToCart = async () => {
@@ -123,68 +140,22 @@ const MenuItem = ({ data }) => {
         </div>
       </div>
       {isMenuModalOpen && (
-        <ModalBg
-          onClick={(e) => {
-            if (e.target === e.currentTarget) menuModalClose();
-          }}
-        >
-          <div className="relative bg-white w-[500px] h-[350px] p-4 rounded-lg shadow-lg">
-            <button
-              className="absolute top-2 right-2 p-4 text-gray-600 hover:text-gray-800"
-              onClick={menuModalClose}
-            >
-              닫기
-            </button>
-            <div className="p-3">
-              <h2 className="mb-1">{data.menu_name}</h2>
-              <p className="w-[450px] h-[100px] py-2 px-2 mb-2 border">
-                {data.menu_desc}
-              </p>
-              <div>메뉴 가격 : {data.price.toLocaleString()}원</div>
-              <div className="py-1">남은 수량 : {data.stock}</div>
-              <div className="flex py-1 border-b pb-2">
-                <span className="mr-1 pt-[5px]">주문 수량 </span>
-                <button
-                  className="w-[32px] border rounded-lg pt-1"
-                  onClick={() => {
-                    if (isCount > 1) setIsCount(isCount - 1);
-                  }}
-                >
-                  -
-                </button>
-                <div className="w-[32px] pt-1 text-center">{isCount}</div>
-                <button
-                  className="w-[32px] border rounded-lg pt-1"
-                  onClick={() => {
-                    if (isCount < data.stock) setIsCount(isCount + 1);
-                  }}
-                >
-                  +
-                </button>
-              </div>
-              <div className="flex py-2 justify-end">
-                <span>총 결제 금액 :</span>
-                <div className="text-right w-[70px]">
-                  {(isCount * data.price).toLocaleString()}원
-                </div>
-              </div>
-            </div>
-            <button
-              className="absolute right-[200px] bottom-3 cursor-pointer"
-              onClick={addToCart}
-            >
-              장바구니에 담기
-            </button>
-          </div>
-          {isFalseModalOpen && (
-            <FalseModal
-              closeFalseModal={closeFalseModal}
-              dataId={currentData.id}
-              quantity={currentCount}
-              allClose={allClose}
-            />
-          )}
-        </ModalBg>
+        <MenuModal
+          onClose={menuModalClose}
+          onSubmit={addToCart}
+          amount={isCount}
+          quantityUp={quantityUp}
+          quantityDown={quantityDown}
+          data={data}
+        />
+      )}
+      {isFalseModalOpen && (
+        <FalseModal
+          closeFalseModal={closeFalseModal}
+          dataId={currentData.id}
+          quantity={currentCount}
+          allClose={allClose}
+        />
       )}
     </div>
   );
