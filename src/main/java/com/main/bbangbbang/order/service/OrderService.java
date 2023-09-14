@@ -123,7 +123,7 @@ public class OrderService {
 
     @Transactional
     public Order findOrNewOrder(Boolean isNewOrder, Member member, Store store) {
-        if (isNewOrder) {
+        if (isNewOrder || !existUnderActiveOrder(member.getId())) {
             cancelUnderActiveOrder(member.getId()); // active가 있다면 해당 order -> canceled
             return createOrder(member, store);
         }
