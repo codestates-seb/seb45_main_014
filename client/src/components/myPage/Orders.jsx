@@ -60,8 +60,11 @@ const OrdersItem = ({ data, openModal }) => {
           {menuName}
           {menuLength > 1 ? ` 외 ${menuLength - 1}개` : ''}
         </div>
-        <div className="text-sm text-stone-500">
-          {formatDate(data.created_at)}
+        <div className="flex justify-between">
+          <div className="text-sm text-stone-500">
+            {formatDate(data.created_at)}
+          </div>
+          <div className="text-sm text-stone-500">{data.order_status}</div>
         </div>
       </div>
       <Button onClick={() => openModal(data)} className="w-full">
