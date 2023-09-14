@@ -65,7 +65,7 @@ export const useCartApi = () => {
       alert(
         `주문이 정상적으로 완료되었습니다.\n픽업 시간은 ${parseDate(
           pickup_time,
-        )} 입니다.`,
+        )} 까지입니다.`,
       );
     } catch (error) {
       console.error('주문 중 오류가 발생했습니다.', error);
