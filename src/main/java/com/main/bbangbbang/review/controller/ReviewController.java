@@ -8,6 +8,7 @@ import com.main.bbangbbang.order.entity.Order;
 import com.main.bbangbbang.order.entity.Order.OrderStatus;
 import com.main.bbangbbang.order.service.OrderService;
 import com.main.bbangbbang.review.data.ReviewData;
+import com.main.bbangbbang.review.dto.ReviewRequestDto;
 import com.main.bbangbbang.review.dto.ReviewResponseDto;
 import com.main.bbangbbang.review.dto.ReviewsResponseDto;
 import com.main.bbangbbang.review.entity.Review;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -41,33 +43,37 @@ public class ReviewController {
     private final S3Service s3Service;
     private final ReviewMapper reviewMapper;
 
-    @PostMapping("/orders/{order-id}/reviews/image")
-    public ResponseEntity<?> postReviewImage(@PathVariable("order-id") Long orderId,
-                                             @RequestPart("file") MultipartFile multipartFile,
-                                             Authentication authentication) {
+    @PostMapping("/orders/{order-id}/reviews")
+    public ResponseEntity<?> postReview(@PathVariable("order-id") Long orderId,
+                                        @RequestBody ReviewRequestDto reviewRequestDto,
+                                        Authentication authentication) {
         String email = authentication.getPrincipal().toString();
         Member member = memberService.findMember(email);
         Order order = orderService.findOrder(orderId);
         validateSameMember(member, order);
 
-        Review review = reviewService.findOrNewReview(order);
-        String img = s3Service.uploadImage(multipartFile, "review", review.getId());
-        reviewService.setReviewImage(review, img); //need img
-
-        return ResponseEntity.ok(img);
-    }
-
-    @PostMapping("/orders/{order-id}/reviews")
-    public ResponseEntity<?> postReview(@PathVariable("order-id") Long orderId,
-                                        @RequestParam(name = "content") String content,
-                                        @RequestParam(name = "rating") Integer rating) {
-        Order order = orderService.findOrder(orderId);
-        Review review = reviewService.findOrNewReview(order);
-
-        Review doneReview = reviewService.setReviewData(review, content, rating); //need img
+        Review review = reviewService.createReview(order);
+        Review doneReview = reviewService.setReviewData(review, reviewRequestDto);
         order.setOrderStatus(OrderStatus.REVIEWED);
 
         return ResponseEntity.ok(new ReviewResponseDto(reviewMapper.reviewToReviewDataWithStoreName(doneReview)));
+    }
+
+    @PostMapping("/reviews/{review-id}/image")
+    public ResponseEntity<?> postReviewImage(@PathVariable("review-id") Long reviewId,
+                                             @RequestPart("file") MultipartFile multipartFile,
+                                             Authentication authentication) {
+        String email = authentication.getPrincipal().toString();
+        Member member = memberService.findMember(email);
+        Review review = reviewService.findReview(reviewId);
+        Order order = review.getOrder();
+
+        validateSameMember(member, order);
+
+        String img = s3Service.uploadImage(multipartFile, "review", review.getId());
+        reviewService.setReviewImage(review, img);
+
+        return ResponseEntity.ok(img);
     }
 
     @GetMapping("/reviews")
