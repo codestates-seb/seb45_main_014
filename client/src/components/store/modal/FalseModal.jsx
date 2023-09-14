@@ -5,7 +5,7 @@ import toast, { Toaster } from 'react-hot-toast';
 
 import axios from 'axios';
 
-const FalseModal = ({ closeFalseModal, dataId, quantity }) => {
+const FalseModal = ({ menuModalhandle, closeFalseModal, dataId, quantity }) => {
   const { accessToken } = useAuthStore();
   const apiUrl = process.env.REACT_APP_API_URL;
   const notify = () => toast.success('장바구니에 추가 되었습니다.'); // 토스트 메시지 추가 함수 작성
@@ -24,13 +24,12 @@ const FalseModal = ({ closeFalseModal, dataId, quantity }) => {
         console.log('정상 요청 완료', response.status);
         // Add any additional logic you want to perform after adding to cart here.
         notify();
+        closeFalseModal();
+        menuModalhandle();
       })
       .catch((error) => {
         console.log('오류', error);
       });
-
-    // Close the modal
-    closeFalseModal();
   };
 
   const handleBackgroundClick = () => {
