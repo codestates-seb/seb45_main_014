@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '../assets/buttons/Button.jsx';
 import { styled } from 'styled-components';
 import Reviews from '../components/myPage/Reviews.jsx';
@@ -7,10 +7,12 @@ import Favorites from '../components/myPage/Favorites.jsx';
 import axios from 'axios';
 import { useAuthStore } from '../store/store.js';
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import EditProfile from '../components/myPage/EditProfile.jsx';
 import formatDate from '../utils/formatDate.js';
 import ImageUploadModal from '../components/myPage/ImageUploadModal.jsx';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import LoadingSpinner from '../components/Loading.jsx';
 
 const TabContainer = styled.ul`
   display: flex;
@@ -48,9 +50,6 @@ const MyPage = () => {
   const [currentTab, setCurrentTab] = useState('리뷰 관리');
   const { isLoggedIn, accessToken } = useAuthStore((state) => state);
   const [member, setMember] = useState([]);
-  const [reviews, setReviews] = useState([]);
-  const [orders, setOrders] = useState([]);
-  const [favorites, setFavorites] = useState([]);
 
   const [reviewCount, setReviewCount] = useState(0);
   const [orderCount, setOrderCount] = useState(0);
@@ -59,18 +58,172 @@ const MyPage = () => {
   const [isEditProfileModalOpen, setEditProfileModalOpen] = useState(false);
   const [isImageModalOpen, setImageModalOpen] = useState(false);
 
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [data, setData] = useState([]);
+
+  const navigate = useNavigate();
+
+  // 데이터 가져오기
+  useEffect(() => {
+    // 기존 탭 데이터 초기화
+    setData([]);
+    setPage(1);
+    setHasMore(true);
+
+    // 각 탭 갯수 가져오기
+    const fetchInitialData = async () => {
+      const tabs = ['리뷰 관리', '주문 내역', '즐겨찾기'];
+      for (const tab of tabs) {
+        let apiUrl = '';
+        if (tab === '리뷰 관리') {
+          apiUrl = `${process.env.REACT_APP_API_URL}/api/reviews`;
+        }
+        if (tab === '주문 내역') {
+          apiUrl = `${process.env.REACT_APP_API_URL}/api/members/orders`;
+        }
+        if (tab === '즐겨찾기') {
+          apiUrl = `${process.env.REACT_APP_API_URL}/api/members/favorites`;
+        }
+
+        try {
+          const response = await axios.get(apiUrl, {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+            params: {
+              page: 1,
+              size: 1, // 최소한의 데이터만 가져옴
+            },
+          });
+
+          const total_elements = response.data.pageInfo.total_elements;
+          if (tab === '리뷰 관리') {
+            setReviewCount(total_elements);
+          }
+          if (tab === '주문 내역') {
+            setOrderCount(total_elements);
+          }
+          if (tab === '즐겨찾기') {
+            setFavoriteCount(total_elements);
+          }
+        } catch (error) {
+          console.error(`[${tab}] 데이터를 가져오는데 실패함: `, error);
+        }
+      }
+    };
+
+    // 회원 정보 가져오기
+    const getMember = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/api/member`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          },
+        );
+        setMember(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    // 데이터 가져오기
+    const fetchData = async () => {
+      // URL 초기화
+      let apiUrl = '';
+      // 데이터 키 초기화
+      let dataKey = '';
+
+      // 현재 탭에 따라 URL 및 데이터 키 변경
+      if (currentTab === '리뷰 관리') {
+        apiUrl = `${process.env.REACT_APP_API_URL}/api/reviews`;
+        dataKey = 'reviews';
+      }
+      if (currentTab === '주문 내역') {
+        apiUrl = `${process.env.REACT_APP_API_URL}/api/members/orders`;
+        dataKey = 'orders';
+      }
+      if (currentTab === '즐겨찾기') {
+        apiUrl = `${process.env.REACT_APP_API_URL}/api/members/favorites`;
+        dataKey = 'stores';
+      }
+
+      // 데이터 가져오기
+      try {
+        const response = await axios.get(apiUrl, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          params: {
+            page: page,
+            size: 5,
+          },
+        });
+
+        // 데이터가 있으면 기존 데이터에 추가
+        setData((prevData) => [...prevData, ...response.data[dataKey]]);
+
+        // 각 요소 수량 설정
+        if (currentTab === '리뷰 관리') {
+          setReviewCount(response.data.pageInfo.total_elements);
+        }
+        if (currentTab === '주문 내역') {
+          setOrderCount(response.data.pageInfo.total_elements);
+        }
+        if (currentTab === '즐겨찾기') {
+          setFavoriteCount(response.data.pageInfo.total_elements);
+        }
+
+        // 데이터가 없으면 더 이상 가져올 데이터가 없다고 설정
+        if (response.data[dataKey].length < 5) {
+          setHasMore(false);
+        }
+      } catch (error) {
+        console.error('데이터를 가져오는데 실패함', error);
+      }
+    };
+
+    // 로그인 상태이고 accessToken이 있으면 데이터 가져오기
+    if (isLoggedIn && accessToken) {
+      fetchInitialData();
+      getMember();
+      fetchData();
+    } else {
+      // 로그인 상태가 아니면 메인 페이지로 이동
+      alert('로그인이 필요합니다.');
+      navigate('/');
+    }
+  }, [accessToken, currentTab, isLoggedIn, navigate, page]);
+
+  // 무한 스크롤
+  const fetchMoreData = () => {
+    setPage((prevPage) => prevPage + 1);
+  };
+
+  // 무한 스크롤에 사용할 컴포넌트
+  const renderDataComponent = () => {
+    if (currentTab === '리뷰 관리') {
+      return <Reviews data={data} />;
+    } else if (currentTab === '주문 내역') {
+      return <Orders data={data} />;
+    } else if (currentTab === '즐겨찾기') {
+      return <Favorites data={data} />;
+    }
+  };
+
+  // 모달 관련 함수
   const openEditProfileModal = () => {
     setEditProfileModalOpen(true);
   };
-
   const closeEditProfileModal = () => {
     setEditProfileModalOpen(false);
   };
-
   const openImageModal = () => {
     setImageModalOpen(true);
   };
-
   const closeImageModal = () => {
     setImageModalOpen(false);
   };
@@ -83,110 +236,60 @@ const MyPage = () => {
     if (hash === '#favorite') setCurrentTab('즐겨찾기');
   }, []);
 
-  const fetchData = useCallback(
-    async (url, setState, setCount) => {
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}${url}`,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          },
-        );
-        setState(response.data);
-        setCount(response.data.length);
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    [accessToken],
-  );
-
-  useEffect(() => {
-    if (!isLoggedIn || !accessToken) {
-      alert('로그인이 필요합니다.');
-      return;
-    }
-
-    fetchData('/api/member', setMember, () => {});
-    fetchData('/api/reviews', setReviews, setReviewCount);
-    fetchData('/api/members/orders', setOrders, setOrderCount);
-    fetchData('/api/members/favorites', setFavorites, setFavoriteCount);
-  }, [isLoggedIn, accessToken, fetchData]);
-
-  const tabComponents = useMemo(
-    () => ({
-      '리뷰 관리': <Reviews data={reviews} />,
-      '주문 내역': <Orders data={orders} />,
-      즐겨찾기: <Favorites data={favorites} />,
-    }),
-    [reviews, orders, favorites],
-  );
-
-  return useMemo(
-    () => (
-      <div className="max-w-screen-lg mx-auto p-10">
-        <div className="flex gap-5">
-          <img
-            src={member.img}
-            alt="유저 이미지"
-            className="flex justify-center items-center border-2 w-28 rounded-full"
-          ></img>
-          <div className="flex flex-col justify-center gap-2">
-            <h1 className="">{member.nickname}</h1>
-            <div>가입일: {formatDate(member.createdAt)}</div>
-            <div className="flex gap-2">
-              <Button className="" onClick={openImageModal}>
-                이미지 변경
-              </Button>
-              <Button className="" onClick={openEditProfileModal}>
-                프로필 수정
-              </Button>
-            </div>
+  return (
+    <div className="max-w-screen-lg mx-auto p-10">
+      <div className="flex gap-5">
+        <img
+          src={member.img}
+          alt="유저 이미지"
+          className="flex justify-center items-center border-2 w-28 rounded-full"
+        ></img>
+        <div className="flex flex-col justify-center gap-2">
+          <h1 className="">{member.nickname}</h1>
+          <div>가입일: {formatDate(member.createdAt)}</div>
+          <div className="flex gap-2">
+            <Button className="" onClick={openImageModal}>
+              이미지 변경
+            </Button>
+            <Button className="" onClick={openEditProfileModal}>
+              프로필 수정
+            </Button>
           </div>
         </div>
-        <TabContainer className="my-5">
-          {/* 리뷰 관리 탭 */}
-          <li
-            className={`w-full ${currentTab === '리뷰 관리' ? 'active' : ''}`}
-          >
-            <Link to="#review" onClick={() => setCurrentTab('리뷰 관리')}>
-              리뷰 관리 ({reviewCount})
-            </Link>
-          </li>
-          {/* 주문 내역 탭 */}
-          <li
-            className={`w-full ${currentTab === '주문 내역' ? 'active' : ''}`}
-          >
-            <Link to="#order" onClick={() => setCurrentTab('주문 내역')}>
-              주문 내역 ({orderCount})
-            </Link>
-          </li>
-          {/* 즐겨찾기 탭 */}
-          <li className={`w-full ${currentTab === '즐겨찾기' ? 'active' : ''}`}>
-            <Link to="#favorite" onClick={() => setCurrentTab('즐겨찾기')}>
-              즐겨찾기 ({favoriteCount})
-            </Link>
-          </li>
-        </TabContainer>
-        <div className="flex justify-center">{tabComponents[currentTab]}</div>
-        {isEditProfileModalOpen && (
-          <EditProfile onClose={closeEditProfileModal} />
-        )}
-        {isImageModalOpen && <ImageUploadModal onClose={closeImageModal} />}
       </div>
-    ),
-    [
-      member,
-      reviewCount,
-      orderCount,
-      favoriteCount,
-      currentTab,
-      tabComponents,
-      isEditProfileModalOpen,
-      isImageModalOpen,
-    ],
+      <TabContainer className="my-5">
+        {/* 리뷰 관리 탭 */}
+        <li className={`w-full ${currentTab === '리뷰 관리' ? 'active' : ''}`}>
+          <Link to="#review" onClick={() => setCurrentTab('리뷰 관리')}>
+            리뷰 관리 ({reviewCount})
+          </Link>
+        </li>
+        {/* 주문 내역 탭 */}
+        <li className={`w-full ${currentTab === '주문 내역' ? 'active' : ''}`}>
+          <Link to="#order" onClick={() => setCurrentTab('주문 내역')}>
+            주문 내역 ({orderCount})
+          </Link>
+        </li>
+        {/* 즐겨찾기 탭 */}
+        <li className={`w-full ${currentTab === '즐겨찾기' ? 'active' : ''}`}>
+          <Link to="#favorite" onClick={() => setCurrentTab('즐겨찾기')}>
+            즐겨찾기 ({favoriteCount})
+          </Link>
+        </li>
+      </TabContainer>
+      <InfiniteScroll
+        dataLength={data.length} // 현재 로딩된 데이터의 길이
+        next={fetchMoreData} // 추가 데이터를 로드하는 함수
+        hasMore={hasMore} // 더 가져올 데이터가 있는지 여부
+        loader={<LoadingSpinner />} // 로딩 중일 때 표시할 컴포넌트
+      >
+        <div className="flex justify-center">{renderDataComponent()}</div>
+      </InfiniteScroll>
+      {isEditProfileModalOpen && (
+        <EditProfile onClose={closeEditProfileModal} />
+      )}
+      {isImageModalOpen && <ImageUploadModal onClose={closeImageModal} />}
+    </div>
   );
 };
 

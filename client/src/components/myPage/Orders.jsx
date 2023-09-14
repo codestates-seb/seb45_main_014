@@ -2,7 +2,7 @@ import { styled } from 'styled-components';
 import formatDate from '../../utils/formatDate';
 import Button from '../../assets/buttons/Button.jsx';
 import PostReview from './PostReview.jsx';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { StoreImage } from '../../assets/Styles.jsx';
 import { RedButton } from '../../assets/buttons/RedButton.jsx';
 import axios from 'axios';
@@ -16,9 +16,9 @@ const OrdersImage = styled(StoreImage)`
 `;
 
 const OrdersItem = ({ data, openModal }) => {
-  const menuName = data.order_menus[0].menu_name;
-  const menuLength = data.order_menus.length;
-  const menuImage = data.order_menus[0].img;
+  const menuName = data.order_menus?.[0]?.menu_name;
+  const menuLength = data.order_menus?.length;
+  const menuImage = data.order_menus?.[0]?.img;
 
   const { accessToken } = useAuthStore((state) => state);
 
@@ -35,21 +35,20 @@ const OrdersItem = ({ data, openModal }) => {
   };
 
   // 주문 내역 삭제
-  const deleteOrder = async () => {
-    try {
-      const res = await axios.delete(
+  const deleteOrder = () => {
+    axios
+      .delete(
         `${process.env.REACT_APP_API_URL}/api/members/orders/${data.id}`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         },
-      );
-      closeSubmitModal();
-      window.location.reload();
-    } catch (err) {
-      console.log(err);
-    }
+      )
+      .then((res) => {
+        window.location.reload();
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -61,8 +60,11 @@ const OrdersItem = ({ data, openModal }) => {
           {menuName}
           {menuLength > 1 ? ` 외 ${menuLength - 1}개` : ''}
         </div>
-        <div className="text-sm text-stone-500">
-          {formatDate(data.created_at)}
+        <div className="flex justify-between">
+          <div className="text-sm text-stone-500">
+            {formatDate(data.created_at)}
+          </div>
+          <div className="text-sm text-stone-500">{data.order_status}</div>
         </div>
       </div>
       <Button onClick={() => openModal(data)} className="w-full">
@@ -96,7 +98,7 @@ const Orders = ({ data }) => {
     if (isConfirmed) setCurrentModalData(null);
   };
 
-  if (data.length === 0)
+  if (!data || data.length === 0)
     return (
       <h1 className="h-[50vh] flex items-center justify-center">
         주문하신 내역이 없습니다.

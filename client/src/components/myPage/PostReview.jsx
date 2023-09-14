@@ -13,6 +13,7 @@ import { Modal, ModalOverlay } from '../../assets/Modal.jsx';
 import { useState } from 'react';
 import axios from 'axios';
 import { CloseButton } from '../login/Login.jsx';
+import { useNavigate } from 'react-router-dom';
 
 const TextBox = styled.textarea`
   border: 1px solid #b6a280;
@@ -61,6 +62,8 @@ const PostReview = ({ data, closeModal }) => {
 
   const apiUrl = `${process.env.REACT_APP_API_URL}`;
 
+  const navigate = useNavigate();
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -90,31 +93,16 @@ const PostReview = ({ data, closeModal }) => {
   const handleReviewSubmit = async () => {
     setIsSubmitting(true); // 전송 시작
 
-    // 첫 번째 요청: 이미지 업로드
-    const formData = new FormData();
-    formData.append('image', selectedImage);
+    // 리뷰 데이터 저장
+    const reviewData = {
+      content: text,
+      rating,
+    };
 
     try {
-      const imageResponse = await axios.post(
-        `${apiUrl}/api/orders.${data.id}/reviews`, // 아마 이미지 업로드 API 주소로 수정할 것
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
-      );
-
-      // 리뷰 데이터 저장
-      const reviewData = {
-        content: text,
-        rating,
-        imageUrl: imageResponse.data.url,
-      };
-
+      // 첫 번째 요청 : 리뷰 작성
       const reviewResponse = await axios.post(
-        `${apiUrl}/api/orders.${data.id}/reviews`,
+        `${apiUrl}/api/orders/${data.id}/reviews`,
         reviewData,
         {
           headers: {
@@ -125,9 +113,31 @@ const PostReview = ({ data, closeModal }) => {
       );
 
       if (reviewResponse.status === 200) {
-        alert('리뷰가 작성되었습니다.');
+        if (selectedImage) {
+          // 두 번째 요청: 이미지 업로드 (이미지가 선택된 경우에만 실행)
+          const formData = new FormData();
+          formData.append('image', selectedImage);
+
+          const imageResponse = await axios.post(
+            `${apiUrl}/api/orders/${data.id}/reviews/images`,
+            formData,
+            {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+                Authorization: `Bearer ${accessToken}`,
+              },
+            },
+          );
+
+          if (imageResponse.status === 200) {
+            alert('리뷰와 이미지가 업로드되었습니다.');
+          }
+        } else {
+          alert('리뷰가 업로드되었습니다.');
+        }
         setIsSubmitting(false);
         handleCloseModal();
+        navigate('/mypage#review');
       }
     } catch (error) {
       console.error(error);
@@ -167,13 +177,18 @@ const PostReview = ({ data, closeModal }) => {
             {`${text.length} / ${MAX_BYTE_LIMIT} 글자`}
           </ByteCount>
           <div className="flex justify-between items-center">
-            <input type="file" accept="image/*" onChange={handleImageChange} />
+            <input
+              className="w-1/3"
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+            />
             {selectedImage && (
               <div className="flex items-center">
                 <img
                   src={URL.createObjectURL(selectedImage)}
                   alt="선택한 이미지"
-                  style={{ maxWidth: '100%', height: 'auto' }}
+                  className="w-20 h-20 object-cover"
                 />
               </div>
             )}
