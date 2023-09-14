@@ -7,6 +7,8 @@ import com.main.bbangbbang.store.service.StoreService;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +38,11 @@ public class MemberStoreService {
         memberStore.setMember(memberService.findMemberById(memberId));
 
         return memberStoreRepository.save(memberStore);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<MemberStore> findFavorite(Long memberId, int page, int size) {
+        return memberStoreRepository.findByMemberIdAndIsFavorite(memberId, true, PageRequest.of(page-1, size));
     }
 
     private MemberStore findMemberStore(Long memberId, Long storeId) {
