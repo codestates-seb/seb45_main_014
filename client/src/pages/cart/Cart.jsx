@@ -230,6 +230,7 @@ const Cart = () => {
               menuName={item.menu_name === null ? '엄청난 빵' : item.menu_name}
               price={!item.price ? 3500 : item.price}
               quantity={item.quantity}
+              image={item.img}
             />
           ))}
         </CartItems>
