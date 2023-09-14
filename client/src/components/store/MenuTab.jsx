@@ -43,7 +43,6 @@ const MenuTab = ({ menuData }) => {
           quantity={currentCount}
         />
       )}
-      <Toaster />
     </div>
   );
 };
