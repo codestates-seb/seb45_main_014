@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Button from '../assets/buttons/Button.jsx';
 import { styled } from 'styled-components';
 import Reviews from '../components/myPage/Reviews.jsx';
@@ -7,10 +7,11 @@ import Favorites from '../components/myPage/Favorites.jsx';
 import axios from 'axios';
 import { useAuthStore } from '../store/store.js';
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import EditProfile from '../components/myPage/EditProfile.jsx';
 import formatDate from '../utils/formatDate.js';
 import ImageUploadModal from '../components/myPage/ImageUploadModal.jsx';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 const TabContainer = styled.ul`
   display: flex;
@@ -59,36 +60,14 @@ const MyPage = () => {
   const [isEditProfileModalOpen, setEditProfileModalOpen] = useState(false);
   const [isImageModalOpen, setImageModalOpen] = useState(false);
 
-  const openEditProfileModal = () => {
-    setEditProfileModalOpen(true);
-  };
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [data, setData] = useState([]);
 
-  const closeEditProfileModal = () => {
-    setEditProfileModalOpen(false);
-  };
+  const navigate = useNavigate();
 
-  const openImageModal = () => {
-    setImageModalOpen(true);
-  };
-
-  const closeImageModal = () => {
-    setImageModalOpen(false);
-  };
-
-  // 해시값 인식 후 초기 렌더링 시 해시 값에 따라 탭 변경
+  // 데이터 가져오기
   useEffect(() => {
-    const hash = window.location.hash;
-    if (hash === '#review') setCurrentTab('리뷰 관리');
-    if (hash === '#order') setCurrentTab('주문 내역');
-    if (hash === '#favorite') setCurrentTab('즐겨찾기');
-  }, []);
-
-  useEffect(() => {
-    if (!isLoggedIn || !accessToken) {
-      alert('로그인이 필요합니다.');
-      return;
-    }
-
     // 회원 정보 가져오기
     const getMember = async () => {
       try {
@@ -107,78 +86,105 @@ const MyPage = () => {
     };
     getMember();
 
-    // 리뷰 가져오기
-    const getReviews = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/reviews`,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-            params: {
-              page: 1,
-              size: 6,
-            },
-          },
-        );
-        setReviews(response.data.reviews);
-        setReviewCount(response.data.reviews.length);
-        console.log(response.data.reviews); // 임시
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    getReviews();
+    // 데이터 가져오기
+    const fetchData = async () => {
+      // URL 초기화
+      let apiUrl = '';
+      // 데이터 키 초기화
+      let dataKey = '';
 
-    // 주문 내역 가져오기
-    const getOrders = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/members/orders`,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-            params: {
-              page: 1,
-              size: 16,
-            },
-          },
-        );
-        setOrders(response.data.orders);
-        setOrderCount(response.data.orders.length);
-        console.log(response.data.orders); // 임시
-      } catch (error) {
-        console.error(error);
+      // 현재 탭에 따라 URL 및 데이터 키 변경
+      if (currentTab === '리뷰 관리') {
+        apiUrl = `${process.env.REACT_APP_API_URL}/api/reviews`;
+        dataKey = 'reviews';
+      } else if (currentTab === '주문 내역') {
+        apiUrl = `${process.env.REACT_APP_API_URL}/api/members/orders`;
+        dataKey = 'orders';
+      } else if (currentTab === '즐겨찾기') {
+        apiUrl = `${process.env.REACT_APP_API_URL}/api/members/favorites`;
+        dataKey = 'stores';
       }
-    };
-    getOrders();
 
-    // 즐겨찾기 가져오기
-    const getFavorites = async () => {
+      // 데이터 가져오기
       try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/members/favorites`,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-            params: {
-              page: 1,
-              size: 8,
-            },
+        const response = await axios.get(apiUrl, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
           },
-        );
-        setFavorites(response.data.stores);
-        setFavoriteCount(response.data.stores.length);
-        console.log(response.data.stores); // 임시
+          params: {
+            page: page,
+            size: 5,
+          },
+        });
+
+        // 데이터가 있으면 기존 데이터에 추가
+        setData((prevData) => [...prevData, ...response.data[dataKey]]);
+
+        // 각 요소 수량 설정
+        if (currentTab === '리뷰 관리') {
+          setReviewCount(response.data.pageInfo.total_elements);
+        } else if (currentTab === '주문 내역') {
+          setOrderCount(response.data.pageInfo.total_elements);
+        } else if (currentTab === '즐겨찾기') {
+          setFavoriteCount(response.data.pageInfo.total_elements);
+        }
+
+        // 데이터가 없으면 더 이상 가져올 데이터가 없다고 설정
+        if (response.data[dataKey].length === 0) {
+          setHasMore(false);
+        }
       } catch (error) {
-        console.error(error);
+        console.error('데이터를 가져오는데 실패함', error);
       }
     };
-    getFavorites();
-  }, [isLoggedIn, accessToken]);
+
+    // 로그인 상태이고 accessToken이 있으면 데이터 가져오기
+    if (isLoggedIn && accessToken) {
+      fetchData();
+    } else {
+      // 로그인 상태가 아니면 메인 페이지로 이동
+      alert('로그인이 필요합니다.');
+      navigate('/');
+    }
+  }, [accessToken, currentTab, isLoggedIn, navigate, page]);
+
+  // 무한 스크롤
+  const fetchMoreData = () => {
+    setPage((prevPage) => prevPage + 1);
+  };
+
+  // 무한 스크롤에 사용할 컴포넌트
+  const renderDataComponent = () => {
+    if (currentTab === '리뷰 관리') {
+      return <Reviews data={data} />;
+    } else if (currentTab === '주문 내역') {
+      return <Orders data={data} />;
+    } else if (currentTab === '즐겨찾기') {
+      return <Favorites data={data} />;
+    }
+  };
+
+  // 모달 관련 함수
+  const openEditProfileModal = () => {
+    setEditProfileModalOpen(true);
+  };
+  const closeEditProfileModal = () => {
+    setEditProfileModalOpen(false);
+  };
+  const openImageModal = () => {
+    setImageModalOpen(true);
+  };
+  const closeImageModal = () => {
+    setImageModalOpen(false);
+  };
+
+  // 해시값 인식 후 초기 렌더링 시 해시 값에 따라 탭 변경
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash === '#review') setCurrentTab('리뷰 관리');
+    if (hash === '#order') setCurrentTab('주문 내역');
+    if (hash === '#favorite') setCurrentTab('즐겨찾기');
+  }, []);
 
   return (
     <div className="max-w-screen-lg mx-auto p-10">
@@ -221,11 +227,14 @@ const MyPage = () => {
           </Link>
         </li>
       </TabContainer>
-      <div className="flex justify-center">
-        {currentTab === '리뷰 관리' && <Reviews data={reviews} />}
-        {currentTab === '주문 내역' && <Orders data={orders} />}
-        {currentTab === '즐겨찾기' && <Favorites data={favorites} />}
-      </div>
+      <InfiniteScroll
+        dataLength={data.length} // 현재 로딩된 데이터의 길이
+        next={fetchMoreData} // 추가 데이터를 로드하는 함수
+        hasMore={hasMore} // 더 가져올 데이터가 있는지 여부
+        loader={<h4>Loading...</h4>} // 로딩 중일 때 표시할 컴포넌트
+      >
+        <div className="flex justify-center">{renderDataComponent()}</div>
+      </InfiniteScroll>
       {isEditProfileModalOpen && (
         <EditProfile onClose={closeEditProfileModal} />
       )}
