@@ -70,7 +70,7 @@ const Cart = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // 삭제 모달 상태 추가
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false); // 주문 모달 상태 추가
   const [pickupTime, setPickupTime] = useState(30); // 픽업 시간을 저장하는 상태 변수
-  const { fetchCart, deleteCart, orderCart } = useCartApi();
+  const { fetchCart, deleteCart, orderCart, orderSelectedCart } = useCartApi();
   const [maxItem, setMaxItem] = useState(0);
   const [checkedItem, setCheckedItem] = useState(0);
 
@@ -157,8 +157,14 @@ const Cart = () => {
   };
 
   const handleSubmit = async () => {
+    const itemId = cartItem.map((item) => item.id);
+    const uncheckedItem = itemId.filter((id) => !checkItem.includes(id));
     try {
-      await orderCart(pickupTime);
+      // checkitem.length === cartitem.length 일 경우에 orderCart 실행
+      // 아닐 경우에는 orderSelectedCart 실행
+      checkItem.length === cartItem.length
+        ? await orderCart(pickupTime)
+        : await orderSelectedCart(uncheckedItem, pickupTime);
     } catch (error) {
       console.log('에러임', error);
     } finally {
