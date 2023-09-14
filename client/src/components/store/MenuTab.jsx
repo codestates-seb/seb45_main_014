@@ -35,7 +35,7 @@ const MenuItem = ({ data }) => {
   const [isCount, setIsCount] = useState(1);
   const { isLoggedIn, accessToken } = useAuthStore((state) => state);
   const { fetchCart } = useCartApi();
-  const { setCartItem } = useCartItemStore((state) => state);
+  const { setCartItem, setCheckItem } = useCartItemStore((state) => state);
   const [currentData, setCurrentData] = useState(null);
   const [currentCount, setCurrentCount] = useState(1);
 
@@ -84,6 +84,8 @@ const MenuItem = ({ data }) => {
     } finally {
       const newData = await fetchCart().then((res) => res.order_menus);
       setCartItem(newData);
+      // 기존에 있던 checkItem에 새로운 데이터의 id를 추가
+      setCheckItem([...new Set([...newData.map((item) => item.id)])]);
     }
   };
 
