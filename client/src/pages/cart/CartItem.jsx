@@ -6,6 +6,7 @@ import DeleteModal from './SubmitModal.jsx';
 import { ReactComponent as Delete } from '../../assets/images/closebutton.svg';
 import { useCartItemStore } from '../../store/store.js';
 import { useCartApi } from '../../api/cart.js';
+import { toast } from 'react-hot-toast';
 
 const ItemCard = styled.li`
   display: flex;
@@ -76,7 +77,10 @@ const CartItem = ({ menuName, quantity, price, onChange, checked, id }) => {
 
     // updatedAmount가 stock보다 크면 경고 메시지를 표시하고 함수를 종료
     if (updatedAmount > stock) {
-      alert('재고가 부족합니다.');
+      toast.error('재고가 부족합니다.', {
+        id: 'stock',
+        duration: 3000,
+      });
       return;
     }
     setAmount(updatedAmount);

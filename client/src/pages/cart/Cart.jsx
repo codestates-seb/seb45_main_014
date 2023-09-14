@@ -7,6 +7,7 @@ import { useCartItemStore } from '../../store/store.js';
 import SubmitModal from './SubmitModal.jsx';
 import Dropdown from '../../assets/Dropdown.jsx';
 import { useCartApi } from '../../api/cart.js';
+import { toast } from 'react-hot-toast';
 
 const ShoppingCart = styled.div`
   width: 100%;
@@ -88,7 +89,10 @@ const Cart = () => {
       setIsDeleteModalOpen(true);
     } else if (modalType === 'submit') {
       checkItem.length === 0
-        ? alert('선택된 상품이 없습니다.')
+        ? toast.error('선택된 상품이 없습니다.', {
+            id: 'noItem',
+            duration: 3000,
+          })
         : setIsSubmitModalOpen(true);
     }
   };
@@ -148,8 +152,6 @@ const Cart = () => {
       console.log('에러임', error);
     } finally {
       setIsSubmitModalOpen(false);
-      // 마이페이지- 주문내역으로 이동
-      window.location.href = '/mypage#order';
     }
   };
 

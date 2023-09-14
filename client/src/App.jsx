@@ -10,6 +10,7 @@ import ScrollButton from './assets/buttons/ScrollButton.jsx';
 import axios from 'axios';
 import { useCartItemStore, useAuthStore } from './store/store';
 import AuthGoogle from './components/login/AuthGoogle.jsx';
+import { Toaster, useToasterStore, toast } from 'react-hot-toast';
 
 const NotFound = lazy(() => import('./pages/NotFound.jsx'));
 const MainPage = lazy(() => import('./pages/main/MainPage.jsx'));
@@ -24,6 +25,16 @@ function App() {
   const { setCartItem, setStoreId, setCheckItem } = useCartItemStore();
   const { accessToken } = useAuthStore((state) => state);
   const { isLoggedIn } = useAuthStore();
+  const { toasts } = useToasterStore();
+
+  // 토스트 메시지 최대 3개까지만 띄우기
+  const TOAST_LIMIT = 3;
+  useEffect(() => {
+    toasts
+      .filter((t) => t.visible)
+      .filter((_, i) => i >= TOAST_LIMIT)
+      .forEach((t) => toast.dismiss(t.id));
+  }, [toasts]);
 
   // 웹페이지 최초 로딩 시 장바구니 데이터 가져오기
   useEffect(() => {
@@ -47,6 +58,7 @@ function App() {
 
   return (
     <>
+      <Toaster containerStyle={{ position: 'fixed', top: '65px' }} />
       <GlobalStyle />
       <Header />
       <main className="w-full mx-auto min-h-screen">

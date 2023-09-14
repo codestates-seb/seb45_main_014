@@ -1,7 +1,13 @@
 import axios from 'axios';
 import { useAuthStore, useCartItemStore } from '../store/store';
+import toast from 'react-hot-toast';
 
 export const useCartApi = () => {
+  // 에러메시지 Toast message
+  const errNotify = (message) => toast.error(message, { id: 'err' });
+  const successNotify = (message) =>
+    toast.success(message, { id: 'success', duration: 2500 });
+
   const { accessToken } = useAuthStore();
   const API = process.env.REACT_APP_API_URL;
   const { setCartItem, setStoreId, setCheckItem } = useCartItemStore();
@@ -60,16 +66,14 @@ export const useCartApi = () => {
         config,
       );
       // 성공 시 response
-      const pickup_time = response.data.order.pickup_time;
-
-      alert(
-        `주문이 정상적으로 완료되었습니다.\n픽업 시간은 ${parseDate(
-          pickup_time,
-        )} 까지입니다.`,
-      );
+      const pickup_time = parseDate(response.data.order.pickup_time);
+      successNotify(`주문이 정상적으로 완료되었습니다.`);
+      setTimeout(() => {
+        window.location.href = `/mypage#order`;
+      }, 3000);
     } catch (error) {
       console.error('주문 중 오류가 발생했습니다.', error);
-      alert('주문 중 오류가 발생했습니다.');
+      errNotify('주문 중 오류가 발생했습니다.');
     }
   };
 
