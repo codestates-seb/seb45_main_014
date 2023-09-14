@@ -1,8 +1,3 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@font-face {
-  font-family: 'AritaSans'; /* 사용하고 싶은 font-family명을 지정 */
-  src: url('./assets/fonts/AritaSans-Medium.otf') format('opentype'); /* 폰트파일 불러오기 */
-}
