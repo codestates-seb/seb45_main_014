@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import axios from 'axios';
 import { useAuthStore } from '../../store/store';
+import toast, { Toaster } from 'react-hot-toast';
 
 import SuccessModal from './modal/SuccessModal.jsx';
 import FalseModal from './modal/FalseModal.jsx';
@@ -42,6 +43,7 @@ const MenuTab = ({ menuData }) => {
           quantity={currentCount}
         />
       )}
+      <Toaster />
     </div>
   );
 };
@@ -56,6 +58,8 @@ const MenuItem = ({ data, openFalseModal, openSuccessModal }) => {
 
   const openMenuModal = () => setIsMenuModalOpen(true);
   const closeMenuModal = () => setIsMenuModalOpen(false);
+
+  const notify = () => toast.error('제품이 품절 되었습니다.');
 
   const addToCart = () => {
     const cartItem = { quantity: isCount };
@@ -101,7 +105,7 @@ const MenuItem = ({ data, openFalseModal, openSuccessModal }) => {
             if (data.stock > 0) {
               openMenuModal();
             } else {
-              alert('품절되었습니다.');
+              notify();
             }
           }}
           className="cursor-pointer mb-2 overflow-hidden rounded-lg"
