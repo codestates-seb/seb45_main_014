@@ -5,9 +5,6 @@ import MenuTab from '../components/store/MenuTab.jsx';
 import StoreReviewTab from '../components/store/StoreReviewTab.jsx';
 import axios from 'axios';
 import LoadingSpinner from '../components/Loading.jsx';
-import menuData from '../assets/data/menuData';
-import reviewDmData from '../assets/data/reviewData';
-import { styled } from 'styled-components';
 
 const Store = () => {
   const { id } = useParams();
@@ -79,24 +76,8 @@ const Store = () => {
         <div ref={reviewRef}></div>
         <StoreReviewTab reviewData={reviewData} />
       </div>
-      <ScrollButton onClick={() => scrollTo(menuRef)}>메뉴</ScrollButton>
-      <ScrollButton onClick={() => scrollTo(reviewRef)}>리뷰</ScrollButton>
     </div>
   );
 };
 
 export default Store;
-
-const ScrollButton = styled.button`
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  font-size: 18px;
-  cursor: pointer;
-`;

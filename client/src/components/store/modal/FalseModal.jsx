@@ -66,8 +66,7 @@ const FalseModal = ({ closeFalseModal, dataId, quantity }) => {
           다른 매장의 상품과 같이 담을 수 없습니다. 장바구니를 비우고 새로 추가
           하시겠습니까?
         </p>
-        <div>Data Id: {dataId}</div>
-        <div>Quantity: {quantity}</div>
+
         <CloseButton onClick={handleAddToCart}>메뉴 담기</CloseButton>
       </ModalContent>
     </ModalContainer>
