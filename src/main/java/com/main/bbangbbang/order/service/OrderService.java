@@ -3,7 +3,6 @@ package com.main.bbangbbang.order.service;
 import com.main.bbangbbang.exception.BusinessLogicException;
 import com.main.bbangbbang.exception.ExceptionCode;
 import com.main.bbangbbang.member.entity.Member;
-import com.main.bbangbbang.member.service.MemberService;
 import com.main.bbangbbang.menu.entity.Menu;
 import com.main.bbangbbang.order.entity.Order;
 import com.main.bbangbbang.order.entity.Order.OrderStatus;
@@ -26,33 +25,33 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrderService {
     private final OrderMenuService orderMenuService;
     private final OrderRepository orderRepository;
-    private final MemberService memberService;
 
     @Transactional
     public Order createOrder(Member member, Store store) {
         Order order = new Order();
-        order.setMember(member); // 임시 1번 member
+        order.setMember(member);
         order.setStore(store);
-        order.setOrderStatus(OrderStatus.ACTIVE);
+        order.setOrderStatus(OrderStatus.CREATED);
 
         return orderRepository.save(order);
     }
 
     @Transactional(readOnly = true)
-    public boolean existActiveOrder(Long memberId) {
+    public boolean existUnderActiveOrder(Long memberId) {
 
-        return orderRepository.findByOrderStatusAndMemberId(OrderStatus.ACTIVE, memberId).size() > 0;
+        return orderRepository.findByOrderStatusInAndMemberId(
+                List.of(OrderStatus.ACTIVE,OrderStatus.CREATED),
+                memberId).size()
+                > 0;
     }
 
     @Transactional
-    public Order cancelActiveOrder(Long memberId) {
-        if (existActiveOrder(memberId)) {
-            Order order = findActiveOrder(memberId);
+    public void cancelUnderActiveOrder(Long memberId) {
+        if (existUnderActiveOrder(memberId)) {
+            Order order = findUnderActiveOrder(memberId);
             order.setOrderStatus(OrderStatus.CANCELED);
-
-            return orderRepository.save(order);
+            orderRepository.save(order);
         }
-        return null;
     }
 
     @Transactional(readOnly = true)
@@ -63,9 +62,11 @@ public class OrderService {
     }
 
     @Transactional(readOnly = true)
-    public Order findActiveOrder(Long memberId) {
-        List<Order> orders = orderRepository.findByOrderStatusAndMemberId(OrderStatus.ACTIVE, memberId);
-        validateOneActiveOrder(orders);
+    public Order findUnderActiveOrder(Long memberId) {
+        List<Order> orders = orderRepository.findByOrderStatusInAndMemberId(
+                List.of(OrderStatus.ACTIVE,OrderStatus.CREATED),
+                memberId);
+        validateOneUnderActiveOrder(orders);
 
         return orders.get(0);
     }
@@ -103,31 +104,33 @@ public class OrderService {
 
     @Transactional
     public void addCart(Order order, Menu menu, Integer quantity) {
-        validateSameStore(order, menu); // 같은 매장의 매뉴임? 아니면 -> Exception!!
-        for (OrderMenu orderMenu : order.getOrderMenus())
-            if (orderMenu.getMenu().getId().equals(menu.getId())) {
-                orderMenu.setQuantity(quantity);
-                return;
-            }
+        if (order.getOrderStatus() == OrderStatus.ACTIVE) {
+            validateSameStore(order, menu); // 같은 매장의 매뉴임? 아니면 -> Exception!!
+            for (OrderMenu orderMenu : order.getOrderMenus())
+                if (orderMenu.getMenu().getId().equals(menu.getId())) {
+                    orderMenu.setQuantity(quantity);
+                    return;
+                }
+        }
 
         order.addOrderMenu(orderMenuService.createOrderMenu(order, menu, quantity));
+
+        if (order.getOrderStatus() == OrderStatus.CREATED) {
+            order.setOrderStatus(OrderStatus.ACTIVE);
+        }
     }
 
     @Transactional
     public Order findOrNewOrder(Boolean isNewOrder, Member member, Store store) {
-        Order order;
         if (isNewOrder) {
-            cancelActiveOrder(member.getId()); // active가 있다면 해당 order -> canceled
-            order = createOrder(member, store);
-        } else if (!existActiveOrder(member.getId())) {
-            order = createOrder(member, store);
-        } else {
-            order = findActiveOrder(member.getId());
+            cancelUnderActiveOrder(member.getId()); // active가 있다면 해당 order -> canceled
+            return createOrder(member, store);
         }
-        return order;
+
+        return findUnderActiveOrder(member.getId());
     }
 
-    private void validateOneActiveOrder(List<Order> orders) {
+    private void validateOneUnderActiveOrder(List<Order> orders) {
         if (orders.size() == 0) {
             throw new BusinessLogicException(ExceptionCode.NO_ACTIVE_ORDER);
         }
