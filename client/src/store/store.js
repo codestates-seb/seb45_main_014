@@ -75,9 +75,24 @@ export const useAuthStore = create((set) => ({
     localStorage.setItem('access_token', access);
     localStorage.setItem('refresh_token', refresh);
   },
-  logout: () => {
-    set({ isLoggedIn: false, accessToken: null, refreshToken: null });
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
+  logout: async () => {
+    // 로그아웃 post 요청
+    try {
+      await axios.post(
+        `${process.env.REACT_APP_API_URL}/api/member/logout`,
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('refresh_token')}`,
+          },
+        },
+      );
+    } catch (error) {
+      console.error(error);
+    } finally {
+      set({ isLoggedIn: false, accessToken: null, refreshToken: null });
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+    }
   },
 }));
