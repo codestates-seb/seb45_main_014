@@ -47,6 +47,7 @@ const MainPage = () => {
   const [stores, setStores] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
+  const [isFetching, setIsFetching] = useState(false);
 
   const settings = {
     dots: true,
@@ -59,6 +60,8 @@ const MainPage = () => {
   };
 
   const fetchData = useCallback(() => {
+    setIsFetching(true);
+
     axios
       .get(`${process.env.REACT_APP_API_URL}/api/stores`, {
         params: {
@@ -77,16 +80,20 @@ const MainPage = () => {
           }
           setPage(page + 1);
         }
+        setIsFetching(false);
       })
       .catch((err) => {
         console.log(err);
         setHasMore(false);
+        setIsFetching(false);
       });
   }, [page]);
 
   useEffect(() => {
-    fetchData(1);
-  }, [fetchData]);
+    if (!isFetching) {
+      fetchData(1);
+    }
+  }, [fetchData, isFetching]);
 
   return (
     <div className="h-full">
