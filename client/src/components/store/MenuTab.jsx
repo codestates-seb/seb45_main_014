@@ -1,69 +1,52 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import axios from 'axios';
-import { useAuthStore } from '../../store/store';
-import toast, { Toaster } from 'react-hot-toast';
-
+import { useAuthStore, useCartItemStore } from '../../store/store';
+import toast from 'react-hot-toast';
 import FalseModal from './modal/FalseModal.jsx';
+import { useCartApi } from '../../api/cart';
 
-const MenuTab = ({ menuData }) => {
-  const [isFalseModalOpen, setIsFalseModalOpen] = useState(false);
-  const [currentData, setCurrentData] = useState(null);
-  const [currentCount, setCurrentCount] = useState(1);
-  const [isMenuModalOpen, setIsMenuModalOpen] = useState(false);
+const ModalBg = styled.div`
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+  background-color: rgba(76, 76, 76, 0.5);
+`;
 
-  const openFalseModal = (data, count) => {
-    setCurrentData(data);
-    setCurrentCount(count);
-    setIsFalseModalOpen(true);
-  };
-  const closeFalseModal = () => setIsFalseModalOpen(false);
-  const MenuModalhandle = () => setIsMenuModalOpen(!isMenuModalOpen);
-  return (
-    <div className="flex flex-col">
-      {menuData.map((menu) => (
-        <MenuItem
-          key={menu.id}
-          data={menu}
-          openFalseModal={openFalseModal}
-          menuModalhandle={MenuModalhandle}
-          isMenuModalOpen={isMenuModalOpen}
-        />
-      ))}
+const StyledImage = styled.img`
+  width: 300px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
 
-      {isFalseModalOpen && (
-        <FalseModal
-          menuModalhandle={MenuModalhandle}
-          closeFalseModal={closeFalseModal}
-          dataId={currentData.id}
-          quantity={currentCount}
-        />
-      )}
-    </div>
-  );
-};
+  &:hover {
+    transform: scale(1.1);
+  }
+`;
 
-export default MenuTab;
-
-const MenuItem = ({
-  data,
-  openFalseModal,
-  menuModalhandle,
-  isMenuModalOpen,
-}) => {
+const MenuItem = ({ data, openFalseModal }) => {
   const apiUrl = process.env.REACT_APP_API_URL;
-
+  const [isMenuModalOpen, setIsMenuModalOpen] = useState(false);
   const [isCount, setIsCount] = useState(1);
   const { isLoggedIn, accessToken } = useAuthStore((state) => state);
+  const { fetchCart } = useCartApi();
+  const { setCartItem } = useCartItemStore((state) => state);
 
   const notify = () => toast.error('제품이 품절 되었습니다.');
   const notifysuccess = () => toast.success('장바구니에 추가 되었습니다.');
 
-  const addToCart = () => {
-    const cartItem = { quantity: isCount };
+  const menuModalhandle = () => {
+    setIsMenuModalOpen(!isMenuModalOpen); // 모달 열고 닫는 함수
+  };
 
-    axios
-      .post(
+  const addToCart = async () => {
+    const cartItem = { quantity: isCount };
+    try {
+      const response = await axios.post(
         `${apiUrl}/api/cart/${data.id}?quantity=${cartItem.quantity}`,
         null,
         {
@@ -71,25 +54,26 @@ const MenuItem = ({
             Authorization: `Bearer ${accessToken}`,
           },
         },
-      )
-      .then((response) => {
-        const statusData = response.status;
-        const exception = response.headers['Bbangbbang_exception'];
-        console.log(exception);
-        if (statusData === 200) {
-          notifysuccess();
-          menuModalhandle();
-        }
-      })
-      .catch((error) => {
-        console.log('500에러', error);
-        openFalseModal(data, isCount);
-      });
+      );
+      const statusData = response.status;
+      const exception = response.headers['Bbangbbang_exception'];
+      // console.log(exception);
+      if (statusData === 200) {
+        notifysuccess();
+        setIsMenuModalOpen(false); // 모달을 닫도록 수정
+      }
+    } catch (error) {
+      console.log(error);
+      openFalseModal(data, isCount);
+    } finally {
+      const newData = await fetchCart().then((res) => res.order_menus);
+      setCartItem(newData);
+    }
   };
 
   if (!isLoggedIn || !accessToken) {
     alert('로그인이 필요합니다.');
-    return;
+    return null; // null을 반환하여 아무것도 렌더링되지 않도록 수정
   }
 
   return (
@@ -105,7 +89,6 @@ const MenuItem = ({
               menuModalhandle();
             } else {
               notify();
-              window.location.reload();
             }
           }}
           className="cursor-pointer mb-2 overflow-hidden rounded-lg"
@@ -177,24 +160,33 @@ const MenuItem = ({
   );
 };
 
-const ModalBg = styled.div`
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1100;
-  background-color: rgba(76, 76, 76, 0.5);
-`;
+const MenuTab = ({ menuData }) => {
+  const [isFalseModalOpen, setIsFalseModalOpen] = useState(false);
+  const [currentData, setCurrentData] = useState(null);
+  const [currentCount, setCurrentCount] = useState(1);
 
-const StyledImage = styled.img`
-  width: 300px;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 8px;
-  transition: transform 0.3s ease;
+  const openFalseModal = (data, count) => {
+    setCurrentData(data);
+    setCurrentCount(count);
+    setIsFalseModalOpen(true);
+  };
+  const closeFalseModal = () => setIsFalseModalOpen(false);
 
-  &:hover {
-    transform: scale(1.1);
-  }
-`;
+  return (
+    <div className="flex flex-col">
+      {menuData.map((menu) => (
+        <MenuItem key={menu.id} data={menu} openFalseModal={openFalseModal} />
+      ))}
+
+      {isFalseModalOpen && (
+        <FalseModal
+          closeFalseModal={closeFalseModal}
+          dataId={currentData.id}
+          quantity={currentCount}
+        />
+      )}
+    </div>
+  );
+};
+
+export default MenuTab;
