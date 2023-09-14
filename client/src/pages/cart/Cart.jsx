@@ -2,12 +2,13 @@ import { styled } from 'styled-components';
 import Button from '../../assets/buttons/Button.jsx';
 import CheckBox from '../../components/cart/Checkbox.jsx';
 import CartItem from './CartItem.jsx';
-import { useState } from 'react';
-import { useCartItemStore } from '../../store/store.js';
+import { useEffect, useState } from 'react';
+import { useAuthStore, useCartItemStore } from '../../store/store.js';
 import SubmitModal from './SubmitModal.jsx';
 import Dropdown from '../../assets/Dropdown.jsx';
 import { useCartApi } from '../../api/cart.js';
 import { toast } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const ShoppingCart = styled.div`
   width: 100%;
@@ -71,6 +72,16 @@ const Cart = () => {
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false); // 주문 모달 상태 추가
   const [pickupTime, setPickupTime] = useState(30); // 픽업 시간을 저장하는 상태 변수
   const { fetchCart, deleteCart, orderCart } = useCartApi();
+  const { isLoggedIn, accessToken } = useAuthStore((state) => state);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLoggedIn || !accessToken) {
+      navigate('/');
+    }
+  }, [accessToken, isLoggedIn, navigate]);
+
   // Dropdown 옵션
   const options = [
     { value: 30, name: '30분' },

@@ -64,6 +64,12 @@ const MyPage = () => {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (!isLoggedIn || !accessToken) {
+      navigate('/');
+    }
+  }, [accessToken, isLoggedIn, navigate]);
+
   // 데이터 가져오기
   useEffect(() => {
     // 기존 탭 데이터 초기화
