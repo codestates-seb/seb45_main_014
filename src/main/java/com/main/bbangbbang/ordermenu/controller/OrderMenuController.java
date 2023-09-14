@@ -30,10 +30,13 @@ public class OrderMenuController {
                                              Authentication authentication) {
         String email = authentication.getPrincipal().toString();
         Member member = memberService.findMember(email);
-        Order order = orderService.findActiveOrder(member.getId());
-        if (order.getOrderStatus() != OrderStatus.ACTIVE) throw new BusinessLogicException(ExceptionCode.NO_ACCESS);
+        Order order = orderService.findUnderActiveOrder(member.getId());
+        if (order.getOrderStatus() != OrderStatus.ACTIVE) throw new BusinessLogicException(ExceptionCode.NO_ITEM);
 
         orderMenuService.deleteOrderMenus(menuIds, order.getId());
+        if (orderMenuService.findOrderMenus(order.getId()).size() == 0) {
+            order.setOrderStatus(OrderStatus.CREATED);
+        }
 
         return ResponseEntity.noContent().build();
     }

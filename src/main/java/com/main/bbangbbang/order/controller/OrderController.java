@@ -1,5 +1,7 @@
 package com.main.bbangbbang.order.controller;
 
+import com.main.bbangbbang.exception.BusinessLogicException;
+import com.main.bbangbbang.exception.ExceptionCode;
 import com.main.bbangbbang.member.entity.Member;
 import com.main.bbangbbang.member.service.MemberService;
 import com.main.bbangbbang.menu.entity.Menu;
@@ -8,6 +10,7 @@ import com.main.bbangbbang.order.data.OrderData;
 import com.main.bbangbbang.order.dto.OrderResponseDto;
 import com.main.bbangbbang.order.dto.OrdersResponseDto;
 import com.main.bbangbbang.order.entity.Order;
+import com.main.bbangbbang.order.entity.Order.OrderStatus;
 import com.main.bbangbbang.order.mapper.OrderMapper;
 import com.main.bbangbbang.order.service.OrderService;
 import com.main.bbangbbang.store.entity.Store;
@@ -41,7 +44,7 @@ public class OrderController { // jwt토큰 parsing하여 Member확인이 가능
     public ResponseEntity<OrderResponseDto> getActiveOrder(Authentication authentication) {
         String email = authentication.getPrincipal().toString();
         Member member = memberService.findMember(email);
-        Order order = orderService.findActiveOrder(member.getId());
+        Order order = orderService.findUnderActiveOrder(member.getId());
 
         return ResponseEntity.ok(new OrderResponseDto(orderMapper.orderToOrderData(order)));
     }
@@ -52,7 +55,8 @@ public class OrderController { // jwt토큰 parsing하여 Member확인이 가능
         String email = authentication.getPrincipal().toString();
         Member member = memberService.findMember(email);
 
-        Order order = orderService.findActiveOrder(member.getId());
+        Order order = orderService.findUnderActiveOrder(member.getId());
+        if (order.getOrderStatus() != OrderStatus.ACTIVE) throw new BusinessLogicException(ExceptionCode.NO_ITEM);
         Order doneOrder = orderService.doOrder(order, minutes);
 
         return ResponseEntity.ok(new OrderResponseDto(orderMapper.orderToOrderData(doneOrder)));

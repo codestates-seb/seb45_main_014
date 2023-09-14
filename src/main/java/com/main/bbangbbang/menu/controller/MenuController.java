@@ -18,7 +18,7 @@ public class MenuController {
     private final MenuService menuService;
     private final MenuMapper menuMapper;
 
-    @GetMapping("/stores/{store-id}/menus/{menu-id}")
+    @GetMapping("/stores/{store-id}/menus/{menu-id}") // will be deleted: {store-id}
     public ResponseEntity<MenuResponseDto> getMenu(@PathVariable("store-id") Long storeId,
                                                    @PathVariable("menu-id") Long menuId) {
         Menu menu = menuService.findMenu(menuId);
