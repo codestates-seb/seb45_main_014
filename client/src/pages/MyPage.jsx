@@ -68,6 +68,57 @@ const MyPage = () => {
 
   // 데이터 가져오기
   useEffect(() => {
+    // 기존 탭 데이터 초기화
+    setData([]);
+    setPage(1);
+    setHasMore(true);
+
+    // 각 탭 갯수 가져오기
+    const fetchInitialData = async () => {
+      const tabs = ['리뷰 관리', '주문 내역', '즐겨찾기'];
+      for (const tab of tabs) {
+        let apiUrl = '';
+        if (tab === '리뷰 관리') {
+          apiUrl = `${process.env.REACT_APP_API_URL}/api/reviews`;
+        }
+        if (tab === '주문 내역') {
+          apiUrl = `${process.env.REACT_APP_API_URL}/api/members/orders`;
+        }
+        if (tab === '즐겨찾기') {
+          apiUrl = `${process.env.REACT_APP_API_URL}/api/members/favorites`;
+        }
+
+        try {
+          const response = await axios.get(apiUrl, {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+            params: {
+              page: 1,
+              size: 1, // 최소한의 데이터만 가져옴
+            },
+          });
+
+          const total_elements = response.data.pageInfo.total_elements;
+          if (tab === '리뷰 관리') {
+            setReviewCount(total_elements);
+          }
+          if (tab === '주문 내역') {
+            setOrderCount(total_elements);
+          }
+          if (tab === '즐겨찾기') {
+            setFavoriteCount(total_elements);
+          }
+        } catch (error) {
+          console.error(`[${tab}] 데이터를 가져오는데 실패함: `, error);
+        }
+      }
+    };
+
+    if (isLoggedIn && accessToken) {
+      fetchInitialData();
+    }
+
     // 회원 정보 가져오기
     const getMember = async () => {
       try {
@@ -97,10 +148,12 @@ const MyPage = () => {
       if (currentTab === '리뷰 관리') {
         apiUrl = `${process.env.REACT_APP_API_URL}/api/reviews`;
         dataKey = 'reviews';
-      } else if (currentTab === '주문 내역') {
+      }
+      if (currentTab === '주문 내역') {
         apiUrl = `${process.env.REACT_APP_API_URL}/api/members/orders`;
         dataKey = 'orders';
-      } else if (currentTab === '즐겨찾기') {
+      }
+      if (currentTab === '즐겨찾기') {
         apiUrl = `${process.env.REACT_APP_API_URL}/api/members/favorites`;
         dataKey = 'stores';
       }
@@ -123,14 +176,16 @@ const MyPage = () => {
         // 각 요소 수량 설정
         if (currentTab === '리뷰 관리') {
           setReviewCount(response.data.pageInfo.total_elements);
-        } else if (currentTab === '주문 내역') {
+        }
+        if (currentTab === '주문 내역') {
           setOrderCount(response.data.pageInfo.total_elements);
-        } else if (currentTab === '즐겨찾기') {
+        }
+        if (currentTab === '즐겨찾기') {
           setFavoriteCount(response.data.pageInfo.total_elements);
         }
 
         // 데이터가 없으면 더 이상 가져올 데이터가 없다고 설정
-        if (response.data[dataKey].length === 0) {
+        if (response.data[dataKey].length < 5) {
           setHasMore(false);
         }
       } catch (error) {
