@@ -19,7 +19,7 @@ const ImageUploadModal = ({ onClose }) => {
     formData.append('file', inputRef.current.files[0]); // input 태그를 통해 사용자가 선택한 첫 번째 파일
 
     try {
-      const response = await axios.post(
+      await axios.post(
         `${process.env.REACT_APP_API_URL}/api/member/image`,
         formData,
         {
@@ -30,8 +30,8 @@ const ImageUploadModal = ({ onClose }) => {
         },
       );
 
-      console.log(response.data);
-      onClose();
+      alert('이미지가 성공적으로 업로드되었습니다.');
+      window.location.reload();
     } catch (error) {
       console.error('이미지 업로드 실패:', error);
     }

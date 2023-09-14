@@ -13,7 +13,6 @@ import { Modal, ModalOverlay } from '../../assets/Modal.jsx';
 import { useState } from 'react';
 import axios from 'axios';
 import { CloseButton } from '../login/Login.jsx';
-import { useNavigate } from 'react-router-dom';
 
 const TextBox = styled.textarea`
   border: 1px solid #b6a280;
@@ -61,8 +60,6 @@ const PostReview = ({ data, closeModal }) => {
   const orderDate = formatDate(data.created_at);
 
   const apiUrl = `${process.env.REACT_APP_API_URL}`;
-
-  const navigate = useNavigate();
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -142,8 +139,7 @@ const PostReview = ({ data, closeModal }) => {
           alert('리뷰가 업로드되었습니다.');
         }
         setIsSubmitting(false);
-        handleCloseModal();
-        navigate('/mypage#review');
+        window.location.reload();
       }
     } catch (error) {
       console.error(error);
