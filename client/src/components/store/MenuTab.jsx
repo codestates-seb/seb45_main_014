@@ -105,6 +105,7 @@ const MenuItem = ({
               menuModalhandle();
             } else {
               notify();
+              window.location.reload();
             }
           }}
           className="cursor-pointer mb-2 overflow-hidden rounded-lg"

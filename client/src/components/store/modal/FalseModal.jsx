@@ -30,6 +30,8 @@ const FalseModal = ({ menuModalhandle, closeFalseModal, dataId, quantity }) => {
       .catch((error) => {
         console.log('오류', error);
       });
+
+    window.location.reload();
   };
 
   const handleBackgroundClick = () => {
