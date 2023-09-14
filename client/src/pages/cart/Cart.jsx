@@ -2,7 +2,7 @@ import { styled } from 'styled-components';
 import Button from '../../assets/buttons/Button.jsx';
 import CheckBox from '../../components/cart/Checkbox.jsx';
 import CartItem from './CartItem.jsx';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useCartItemStore } from '../../store/store.js';
 import SubmitModal from './SubmitModal.jsx';
 import Dropdown from '../../assets/Dropdown.jsx';
@@ -71,6 +71,17 @@ const Cart = () => {
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false); // 주문 모달 상태 추가
   const [pickupTime, setPickupTime] = useState(30); // 픽업 시간을 저장하는 상태 변수
   const { fetchCart, deleteCart, orderCart } = useCartApi();
+  const [maxItem, setMaxItem] = useState(0);
+  const [checkedItem, setCheckedItem] = useState(0);
+
+  useEffect(() => {
+    setCheckedItem(checkItem.length);
+  }, [checkItem]);
+
+  useEffect(() => {
+    setMaxItem(cartItem.length);
+  }, [cartItem]);
+
   // Dropdown 옵션
   const options = [
     { value: 30, name: '30분' },
@@ -181,7 +192,7 @@ const Cart = () => {
               }
             />
             <span className="w-[150px] pr-[40px]">
-              전체선택 ({checkItem.length}/{cartItem.length})
+              전체선택 ({checkedItem}/{maxItem})
             </span>
             <button
               onClick={() => openModal('delete')}
