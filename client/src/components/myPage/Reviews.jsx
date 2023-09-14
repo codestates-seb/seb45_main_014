@@ -6,6 +6,7 @@ import { RedButton } from '../../assets/buttons/RedButton.jsx';
 import axios from 'axios';
 import { useState } from 'react';
 import SubmitModal from '../../pages/cart/SubmitModal.jsx';
+import { useAuthStore } from '../../store/store.js';
 
 const ReviewDetailStyle = styled.div`
   width: 100%;
@@ -17,6 +18,7 @@ const ReviewDetailStyle = styled.div`
 
 const ReviewDetail = ({ data }) => {
   const [isModalOpen, setModalOpen] = useState(false);
+  const { accessToken } = useAuthStore((state) => state);
 
   // 모달 열기
   const openModal = () => {
@@ -30,9 +32,13 @@ const ReviewDetail = ({ data }) => {
 
   const handleDelete = () => {
     axios
-      .delete(`${process.env.REACT_APP_SERVER_URL}/api/reviews/${data.id}`)
+      .delete(`${process.env.REACT_APP_API_URL}/api/reviews/${data.id}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
       .then((res) => {
-        console.log(res);
+        window.location.reload();
       })
       .catch((err) => console.log(err));
   };
@@ -57,7 +63,7 @@ const ReviewDetail = ({ data }) => {
         <SubmitModal
           onClose={closeModal}
           onSubmit={handleDelete}
-          message="정말 주문 내역을 삭제하시겠어요?"
+          message="정말 리뷰 내역을 삭제하시겠어요?"
           cancelLabel="취소"
           submitLabel="확인"
         />
