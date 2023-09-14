@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
 import CheckBox from '../../components/cart/Checkbox.jsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DeleteModal from './SubmitModal.jsx';
 import { ReactComponent as Delete } from '../../assets/images/closebutton.svg';
 import { useCartItemStore } from '../../store/store.js';
@@ -69,6 +69,11 @@ const CartItem = ({ menuName, quantity, price, onChange, checked, id }) => {
   const [amount, setAmount] = useState(quantity);
   const { setCartItem, storeId, setCheckItem } = useCartItemStore();
   const { deleteCart, updateCart, fetchCart, getStock } = useCartApi();
+  const [storeNum, setStoreNum] = useState(0);
+
+  useEffect(() => {
+    setStoreNum(storeId);
+  }, [storeId]);
 
   const quantityUp = async () => {
     const stock = await getStock(storeId, id);
@@ -129,9 +134,9 @@ const CartItem = ({ menuName, quantity, price, onChange, checked, id }) => {
   return (
     <ItemCard>
       <CheckBox onChange={onChange} checked={checked} />
-      <ItemImg to={`/stores/${storeId}`} />
+      <ItemImg to={`/stores/${storeNum}`} />
       <div className="flex-1">
-        <Link to={`/stores/${storeId}`}>
+        <Link to={`/stores/${storeNum}`}>
           <p>{menuName}</p>
         </Link>
       </div>
