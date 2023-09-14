@@ -58,34 +58,31 @@ const MainPage = () => {
     autoplaySpeed: 1500,
   };
 
-  const fetchData = useCallback(
-    (pageNumber) => {
-      axios
-        .get(`${process.env.REACT_APP_API_URL}/api/stores`, {
-          params: {
-            page: pageNumber,
-            size: 10,
-          },
-        })
-        .then((res) => {
-          const newData = res.data.stores;
-          if (newData.length === 0) {
-            setHasMore(false);
-          } else {
-            setStores((prevData) => [...prevData, ...newData]);
-            if (newData.length < 10) {
-              setHasMore(false);
-            }
-            setPage(pageNumber + 1);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
+  const fetchData = useCallback(() => {
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/api/stores`, {
+        params: {
+          page: page,
+          size: 10,
+        },
+      })
+      .then((res) => {
+        const newData = res.data.stores;
+        if (newData.length === 0) {
           setHasMore(false);
-        });
-    },
-    [setStores, setHasMore, setPage],
-  );
+        } else {
+          setStores((prevData) => [...prevData, ...newData]);
+          if (newData.length < 10) {
+            setHasMore(false);
+          }
+          setPage(page + 1);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setHasMore(false);
+      });
+  }, [page]);
 
   useEffect(() => {
     fetchData(1);
