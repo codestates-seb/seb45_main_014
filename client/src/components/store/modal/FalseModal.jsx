@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import SubmitModal from '../../../pages/cart/SubmitModal.jsx';
 
-const FalseModal = ({ menuModalhandle, closeFalseModal, dataId, quantity }) => {
+const FalseModal = ({ closeFalseModal, dataId, quantity }) => {
   const { accessToken } = useAuthStore();
   const apiUrl = process.env.REACT_APP_API_URL;
   const { setCartItem, setCheckItem } = useCartItemStore((state) => state);
@@ -24,14 +24,13 @@ const FalseModal = ({ menuModalhandle, closeFalseModal, dataId, quantity }) => {
         .then((res) => res.data.order.order_menus);
       console.log(response);
       setCartItem(response);
-      setCheckItem(response.map((menu) => menu.id));
+      setCheckItem(response.map((item) => item.id));
 
       notify();
     } catch (error) {
       console.log('오류', error);
     } finally {
       closeFalseModal();
-      menuModalhandle();
     }
   };
 

@@ -28,19 +28,35 @@ const StyledImage = styled.img`
   }
 `;
 
-const MenuItem = ({ data, openFalseModal }) => {
+const MenuItem = ({ data }) => {
   const apiUrl = process.env.REACT_APP_API_URL;
   const [isMenuModalOpen, setIsMenuModalOpen] = useState(false);
+  const [isFalseModalOpen, setIsFalseModalOpen] = useState(false);
   const [isCount, setIsCount] = useState(1);
   const { isLoggedIn, accessToken } = useAuthStore((state) => state);
   const { fetchCart } = useCartApi();
   const { setCartItem } = useCartItemStore((state) => state);
+  const [currentData, setCurrentData] = useState(null);
+  const [currentCount, setCurrentCount] = useState(1);
 
   const notify = () => toast.error('제품이 품절 되었습니다.');
   const notifysuccess = () => toast.success('장바구니에 추가 되었습니다.');
 
-  const menuModalhandle = () => {
-    setIsMenuModalOpen(!isMenuModalOpen); // 모달 열고 닫는 함수
+  const menuModalClose = () => {
+    setIsMenuModalOpen(false); // 메뉴모달 닫기
+  };
+  const menuModalOpen = () => {
+    setIsMenuModalOpen(true); // 메뉴모달 열기
+  };
+
+  const openFalseModal = (data, count) => {
+    setCurrentData(data);
+    setCurrentCount(count);
+    setIsFalseModalOpen(true);
+  };
+  const closeFalseModal = () => {
+    setIsFalseModalOpen(false);
+    setIsMenuModalOpen(false); // FalseModal이 Close면 MenuModal도 Close
   };
 
   const addToCart = async () => {
@@ -86,7 +102,7 @@ const MenuItem = ({ data, openFalseModal }) => {
         <div
           onClick={() => {
             if (data.stock > 0) {
-              menuModalhandle();
+              menuModalOpen();
             } else {
               notify();
             }
@@ -103,13 +119,13 @@ const MenuItem = ({ data, openFalseModal }) => {
       {isMenuModalOpen && (
         <ModalBg
           onClick={(e) => {
-            if (e.target === e.currentTarget) menuModalhandle();
+            if (e.target === e.currentTarget) menuModalClose();
           }}
         >
           <div className="relative bg-white w-[500px] h-[350px] p-4 rounded-lg shadow-lg">
             <button
               className="absolute top-2 right-2 p-4 text-gray-600 hover:text-gray-800"
-              onClick={menuModalhandle}
+              onClick={menuModalClose}
             >
               닫기
             </button>
@@ -154,6 +170,13 @@ const MenuItem = ({ data, openFalseModal }) => {
               장바구니에 담기
             </button>
           </div>
+          {isFalseModalOpen && (
+            <FalseModal
+              closeFalseModal={closeFalseModal}
+              dataId={currentData.id}
+              quantity={currentCount}
+            />
+          )}
         </ModalBg>
       )}
     </div>
@@ -161,30 +184,11 @@ const MenuItem = ({ data, openFalseModal }) => {
 };
 
 const MenuTab = ({ menuData }) => {
-  const [isFalseModalOpen, setIsFalseModalOpen] = useState(false);
-  const [currentData, setCurrentData] = useState(null);
-  const [currentCount, setCurrentCount] = useState(1);
-
-  const openFalseModal = (data, count) => {
-    setCurrentData(data);
-    setCurrentCount(count);
-    setIsFalseModalOpen(true);
-  };
-  const closeFalseModal = () => setIsFalseModalOpen(false);
-
   return (
     <div className="flex flex-col">
       {menuData.map((menu) => (
-        <MenuItem key={menu.id} data={menu} openFalseModal={openFalseModal} />
+        <MenuItem key={menu.id} data={menu} />
       ))}
-
-      {isFalseModalOpen && (
-        <FalseModal
-          closeFalseModal={closeFalseModal}
-          dataId={currentData.id}
-          quantity={currentCount}
-        />
-      )}
     </div>
   );
 };
