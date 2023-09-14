@@ -36,6 +36,11 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
+    @Transactional
+    public void setOrderStatus(Order order, OrderStatus orderStatus) {
+        order.setOrderStatus(orderStatus);
+    }
+
     @Transactional(readOnly = true)
     public boolean existUnderActiveOrder(Long memberId) {
 
