@@ -6,6 +6,7 @@ import com.main.bbangbbang.member.dto.responseDto.MemberResponseDto;
 import com.main.bbangbbang.member.entity.Member;
 import com.main.bbangbbang.member.mapper.MemberMapper;
 import com.main.bbangbbang.member.service.MemberService;
+import com.main.bbangbbang.s3.S3Service;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,9 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -27,6 +30,7 @@ public class MemberController {
     private MemberService memberService;
     private MemberMapper memberMapper;
     private JwtTokenizer jwtTokenizer;
+    private S3Service s3Service;
 
     @PostMapping("/logout")
     public ResponseEntity logout(HttpServletRequest request) {
@@ -125,17 +129,23 @@ public class MemberController {
             }
         }
 
-        // 이미지 업로드 (미완성)
-//    @PostMapping(value ="/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-//    public ResponseEntity uploadImage(Authentication authentication,
-//                                      @RequestParam("file") MultipartFile file) {
-////        Member savedMember = memberService.uploadImage(authentication, file);
-////        String email = authentication.getAttribute("email");
-////        Member member = memberService.findMember(email);
-////        if (!file.isEmpty()) {
-////            // 파일 저장
-////        }
-////        memberService.updateMember(member);
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
+        // 회원 이미지 업로드
+        @PostMapping(value ="/image")
+        public ResponseEntity uploadImage(Authentication authentication, @RequestPart("file") MultipartFile multipartFile) {
+            System.out.println(multipartFile.getOriginalFilename());
+            // 파일이 비어있는 경우
+            if (multipartFile.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        String email = authentication.getPrincipal().toString();
+        Member member = memberService.findMember(email);
+
+        String img = s3Service.uploadImage(multipartFile, "members", member.getId());
+
+        member.setImg(img);
+        memberService.updateMember(member);
+
+        return new ResponseEntity<>(img, HttpStatus.OK);
+    }
     }
