@@ -1,10 +1,10 @@
 import { React } from 'react';
 import { useAuthStore, useCartItemStore } from '../../../store/store';
 import toast from 'react-hot-toast';
-import axios from 'axios';
+import axios, { all } from 'axios';
 import SubmitModal from '../../../pages/cart/SubmitModal.jsx';
 
-const FalseModal = ({ closeFalseModal, dataId, quantity }) => {
+const FalseModal = ({ closeFalseModal, dataId, quantity, allClose }) => {
   const { accessToken } = useAuthStore();
   const apiUrl = process.env.REACT_APP_API_URL;
   const { setCartItem, setCheckItem, setStoreId } = useCartItemStore(
@@ -32,12 +32,8 @@ const FalseModal = ({ closeFalseModal, dataId, quantity }) => {
     } catch (error) {
       console.log('오류', error);
     } finally {
-      closeFalseModal();
+      allClose();
     }
-  };
-
-  const handleBackgroundClick = () => {
-    closeFalseModal(); // 배경 클릭 시 closeSuccessModal 실행
   };
 
   return (
@@ -47,7 +43,7 @@ const FalseModal = ({ closeFalseModal, dataId, quantity }) => {
       secondMessage={`장바구니를 비우고 새로 추가 하시겠습니까?`}
       cancelLabel={`취소`}
       submitLabel={`담기`}
-      onClose={handleBackgroundClick}
+      onClose={closeFalseModal}
       onSubmit={handleAddToCart}
     />
   );

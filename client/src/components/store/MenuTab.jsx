@@ -56,7 +56,11 @@ const MenuItem = ({ data }) => {
   };
   const closeFalseModal = () => {
     setIsFalseModalOpen(false);
-    setIsMenuModalOpen(false); // FalseModal이 Close면 MenuModal도 Close
+  };
+  // 전부 닫기
+  const allClose = () => {
+    setIsFalseModalOpen(false);
+    setIsMenuModalOpen(false);
   };
 
   const addToCart = async () => {
@@ -177,6 +181,7 @@ const MenuItem = ({ data }) => {
               closeFalseModal={closeFalseModal}
               dataId={currentData.id}
               quantity={currentCount}
+              allClose={allClose}
             />
           )}
         </ModalBg>
