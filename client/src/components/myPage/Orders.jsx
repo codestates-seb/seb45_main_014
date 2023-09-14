@@ -16,9 +16,9 @@ const OrdersImage = styled(StoreImage)`
 `;
 
 const OrdersItem = ({ data, openModal }) => {
-  const menuName = data.order_menus[0].menu_name;
-  const menuLength = data.order_menus.length;
-  const menuImage = data.order_menus[0].img;
+  const menuName = data.order_menus?.[0]?.menu_name;
+  const menuLength = data.order_menus?.length;
+  const menuImage = data.order_menus?.[0]?.img;
 
   const { accessToken } = useAuthStore((state) => state);
 
@@ -98,7 +98,7 @@ const Orders = ({ data }) => {
     if (isConfirmed) setCurrentModalData(null);
   };
 
-  if (data.length === 0)
+  if (!data || data.length === 0)
     return (
       <h1 className="h-[50vh] flex items-center justify-center">
         주문하신 내역이 없습니다.
