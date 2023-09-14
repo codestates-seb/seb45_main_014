@@ -85,6 +85,7 @@ public class OrderService {
     public void removeOrder(Member member, Long orderId) {
         Optional<Order> optionalOrder = orderRepository.findById(orderId);
         Order order = optionalOrder.orElseThrow(NoSuchElementException::new);
+        if (!order.getMember().getId().equals(member.getId())) throw new BusinessLogicException(ExceptionCode.NO_ACCESS);
         order.setOrderStatus(OrderStatus.DELETED);
     }
 
