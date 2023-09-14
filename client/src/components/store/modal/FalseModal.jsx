@@ -7,7 +7,9 @@ import SubmitModal from '../../../pages/cart/SubmitModal.jsx';
 const FalseModal = ({ closeFalseModal, dataId, quantity }) => {
   const { accessToken } = useAuthStore();
   const apiUrl = process.env.REACT_APP_API_URL;
-  const { setCartItem, setCheckItem } = useCartItemStore((state) => state);
+  const { setCartItem, setCheckItem, setStoreId } = useCartItemStore(
+    (state) => state,
+  );
   const notify = () => toast.success('장바구니에 추가 되었습니다.'); // 토스트 메시지 추가 함수 작성
   const handleAddToCart = async () => {
     try {
@@ -21,10 +23,10 @@ const FalseModal = ({ closeFalseModal, dataId, quantity }) => {
             },
           },
         )
-        .then((res) => res.data.order.order_menus);
-      console.log(response);
-      setCartItem(response);
-      setCheckItem(response.map((item) => item.id));
+        .then((res) => res.data.order);
+      setCartItem(response.order_menus);
+      setCheckItem(response.order_menus.map((item) => item.id));
+      setStoreId(response.store_id);
 
       notify();
     } catch (error) {
