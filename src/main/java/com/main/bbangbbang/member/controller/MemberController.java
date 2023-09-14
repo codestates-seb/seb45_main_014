@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -131,8 +132,8 @@ public class MemberController {
         }
 
         // 회원 이미지 업로드
-        @PostMapping(value ="/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-        public ResponseEntity uploadImage(Authentication authentication, @RequestParam("file") MultipartFile multipartFile) {
+        @PostMapping(value ="/image")
+        public ResponseEntity uploadImage(Authentication authentication, @RequestPart("file") MultipartFile multipartFile) {
             System.out.println(multipartFile.getOriginalFilename());
             // 파일이 비어있는 경우
             if (multipartFile.isEmpty()) {
