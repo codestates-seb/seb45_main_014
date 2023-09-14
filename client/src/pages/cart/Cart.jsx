@@ -7,6 +7,7 @@ import { useCartItemStore } from '../../store/store.js';
 import SubmitModal from './SubmitModal.jsx';
 import Dropdown from '../../assets/Dropdown.jsx';
 import { useCartApi } from '../../api/cart.js';
+import { toast } from 'react-hot-toast';
 
 const ShoppingCart = styled.div`
   width: 100%;
@@ -65,8 +66,7 @@ const TotalItem = styled.div`
 `;
 
 const Cart = () => {
-  const { cartItem, setCartItem } = useCartItemStore();
-  const [checkItem, setCheckItem] = useState(cartItem.map((item) => item.id)); // CartItem의 id를 저장하는 상태 변수
+  const { cartItem, setCartItem, checkItem, setCheckItem } = useCartItemStore();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // 삭제 모달 상태 추가
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false); // 주문 모달 상태 추가
   const [pickupTime, setPickupTime] = useState(30); // 픽업 시간을 저장하는 상태 변수
@@ -89,7 +89,10 @@ const Cart = () => {
       setIsDeleteModalOpen(true);
     } else if (modalType === 'submit') {
       checkItem.length === 0
-        ? alert('선택된 상품이 없습니다.')
+        ? toast.error('선택된 상품이 없습니다.', {
+            id: 'noItem',
+            duration: 3000,
+          })
         : setIsSubmitModalOpen(true);
     }
   };
@@ -144,10 +147,7 @@ const Cart = () => {
 
   const handleSubmit = async () => {
     try {
-      orderCart(pickupTime);
-      const newData = await fetchCart().then((res) => res.order_menus);
-      setCartItem(newData);
-      setCheckItem(newData.map((item) => item.id));
+      await orderCart(pickupTime);
     } catch (error) {
       console.log('에러임', error);
     } finally {
@@ -199,6 +199,11 @@ const Cart = () => {
               />
             )}
           </CartMenu>
+          {cartItem.length === 0 && (
+            <div className="flex justify-center items-center h-[300px] text-lg text-gray-400">
+              <p>장바구니에 담긴 상품이 없습니다.</p>
+            </div>
+          )}
           {cartItem.map((item, idx) => (
             <CartItem
               onChange={(e) => handleSingleCheck(e.target.checked, item)}

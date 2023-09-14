@@ -5,6 +5,8 @@ import { useState } from 'react';
 import DeleteModal from './SubmitModal.jsx';
 import { ReactComponent as Delete } from '../../assets/images/closebutton.svg';
 import { useCartItemStore } from '../../store/store.js';
+import { useCartApi } from '../../api/cart.js';
+import { toast } from 'react-hot-toast';
 
 const ItemCard = styled.li`
   display: flex;
@@ -65,40 +67,35 @@ const PriceBox = styled.div`
 const CartItem = ({ menuName, quantity, price, onChange, checked, id }) => {
   //-, +버튼으로 quantity를 조절하는 함수
   const [amount, setAmount] = useState(quantity);
-  const { cartItem, setCartItem, storeId } = useCartItemStore();
+  const { setCartItem, storeId, setCheckItem } = useCartItemStore();
+  const { deleteCart, updateCart, fetchCart, getStock } = useCartApi();
 
-  const quantityUp = () => {
+  const quantityUp = async () => {
+    const stock = await getStock(storeId, id);
     const updatedAmount = amount + 1;
+    console.dir(`현재 재고 : ${stock}`);
+
+    // updatedAmount가 stock보다 크면 경고 메시지를 표시하고 함수를 종료
+    if (updatedAmount > stock) {
+      toast.error('재고가 부족합니다.', {
+        id: 'stock',
+        duration: 3000,
+      });
+      return;
+    }
     setAmount(updatedAmount);
-    // 로컬 스토리지 업데이트
     updateQuantity(id, updatedAmount);
   };
   const quantityDown = () => {
     if (amount > 1) {
       const updatedAmount = amount - 1;
       setAmount(updatedAmount);
-      // 로컬 스토리지 업데이트
       updateQuantity(id, updatedAmount);
     }
   };
-  // id와 localstorage에 저장된 id가 같은 경우 quantity를 업데이트 (API 구현되면 삭제할 것)
-  const updateQuantity = (itemId, updatedQuantity) => {
-    const localItems = JSON.parse(localStorage.getItem('cartItems'));
-    for (const localItem of localItems) {
-      if (localItem.id === itemId) {
-        localItem.quantity = updatedQuantity;
-      }
-    }
-    localStorage.setItem('cartItems', JSON.stringify(localItems));
-    //localstorage에 있는 id와 cartitem.id가 같은 경우 cartitem.quantity를 localstorage에 있는 quantity로 업데이트
-    const updatedCartItems = cartItem.map((cartItem) => {
-      if (cartItem.id === itemId) {
-        return { ...cartItem, quantity: updatedQuantity };
-      }
-      return cartItem;
-    });
-    setCartItem(updatedCartItems);
-    console.log(cartItem);
+
+  const updateQuantity = async (itemId, updatedQuantity) => {
+    await updateCart(itemId, updatedQuantity);
   };
 
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
@@ -114,8 +111,19 @@ const CartItem = ({ menuName, quantity, price, onChange, checked, id }) => {
     openModal();
   };
 
-  const handleDelete = () => {
-    // 로컬 스토리지에서 삭제
+  const handleDelete = async () => {
+    try {
+      await deleteCart([id]);
+      // 삭제된 내역 업데이트
+      const newData = await fetchCart().then((res) => res.order_menus);
+      setCartItem(newData);
+      setCheckItem(newData.map((item) => item.id));
+      console.log(newData);
+    } catch (error) {
+      console.error('에러임', error);
+    } finally {
+      closeModal();
+    }
   };
 
   return (
