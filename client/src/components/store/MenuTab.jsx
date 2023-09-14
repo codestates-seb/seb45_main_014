@@ -97,7 +97,13 @@ const MenuItem = ({ data, openFalseModal, openSuccessModal }) => {
       </div>
       <div>
         <div
-          onClick={openMenuModal}
+          onClick={() => {
+            if (data.stock > 0) {
+              openMenuModal();
+            } else {
+              alert('품절되었습니다.');
+            }
+          }}
           className="cursor-pointer mb-2 overflow-hidden rounded-lg"
         >
           <StyledImage src={data.img} alt="메뉴 이미지" />
@@ -125,10 +131,10 @@ const MenuItem = ({ data, openFalseModal, openSuccessModal }) => {
               <p className="w-[450px] h-[100px] py-2 px-2 mb-2 border">
                 {data.menu_desc}
               </p>
-              <div>가격 : {data.price.toLocaleString()}원</div>
+              <div>메뉴 가격 : {data.price.toLocaleString()}원</div>
               <div className="py-1">남은 수량 : {data.stock}</div>
-              <div className="flex py-1">
-                <span className="mr-1 pt-[5px]">주문수량</span>
+              <div className="flex py-1 border-b pb-2">
+                <span className="mr-1 pt-[5px]">주문 수량 </span>
                 <button
                   className="w-[32px] border rounded-lg pt-1"
                   onClick={() => {
@@ -147,10 +153,10 @@ const MenuItem = ({ data, openFalseModal, openSuccessModal }) => {
                   +
                 </button>
               </div>
-              <div className="flex py-2">
+              <div className="flex py-2 justify-end">
                 <span>총 결제 금액 :</span>
                 <div className="text-right w-[70px]">
-                  {(isCount * data.price).toLocaleString()}
+                  {(isCount * data.price).toLocaleString()}원
                 </div>
               </div>
             </div>
