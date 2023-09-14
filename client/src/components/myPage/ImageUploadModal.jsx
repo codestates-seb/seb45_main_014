@@ -17,7 +17,7 @@ const ImageUploadModal = ({ onClose }) => {
 
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/member/upload`,
+        `${process.env.REACT_APP_API_URL}/api/member/image`,
         formData,
         {
           headers: {

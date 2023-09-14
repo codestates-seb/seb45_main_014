@@ -113,13 +113,19 @@ const PostReview = ({ data, closeModal }) => {
       );
 
       if (reviewResponse.status === 200) {
+        const reviewId = reviewResponse.data.review.id;
+
         if (selectedImage) {
           // 두 번째 요청: 이미지 업로드 (이미지가 선택된 경우에만 실행)
           const formData = new FormData();
           formData.append('image', selectedImage);
 
+          console.log(
+            `Image File: ${selectedImage.name}, Size: ${selectedImage.size}, Type: ${selectedImage.type}`,
+          );
+
           const imageResponse = await axios.post(
-            `${apiUrl}/api/orders/${data.id}/reviews/images`,
+            `${apiUrl}/api/reviews/${reviewId}/image`,
             formData,
             {
               headers: {
