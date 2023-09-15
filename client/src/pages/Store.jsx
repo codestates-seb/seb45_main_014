@@ -5,6 +5,7 @@ import MenuTab from '../components/store/MenuTab.jsx';
 import StoreReviewTab from '../components/store/StoreReviewTab.jsx';
 import axios from 'axios';
 import LoadingSpinner from '../components/Loading.jsx';
+import { useAuthStore } from '../store/store.js';
 
 const Store = () => {
   const { id } = useParams();
@@ -13,6 +14,8 @@ const Store = () => {
   const menuRef = useRef(null);
   const reviewRef = useRef(null);
   const apiUrl = process.env.REACT_APP_API_URL;
+
+  const { accessToken } = useAuthStore((state) => state);
 
   //스크롤 위치에 따른 상태 추가
   const [isMenuTabActive, setIsMenuTabActive] = useState(false);
@@ -44,7 +47,11 @@ const Store = () => {
   useEffect(() => {
     // 상점 정보
     axios
-      .get(`${apiUrl}/api/stores/${id}`)
+      .get(`${apiUrl}/api/stores/${id}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
       .then((res) => {
         setStoreData(res.data.store);
         console.log(res.data.store);
