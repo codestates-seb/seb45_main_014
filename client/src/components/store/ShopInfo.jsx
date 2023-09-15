@@ -87,7 +87,7 @@ const ShopInfo = ({ store }) => {
   return (
     <div className="text-center">
       <div>
-        <div className="flex justify-center">
+        <div className="flex justify-center w-full">
           {/* <Slider {...settings} className="mb-10 w-11/12">
             {store.menus.map((menu, index) => (
               <StoreBanner menu={menu} key={index} />
