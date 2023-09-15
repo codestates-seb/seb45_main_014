@@ -59,7 +59,7 @@ const DropdownHeader = styled.label`
   color: white;
   cursor: pointer;
   &:hover {
-    background-color: #b3915f;
+    background-color: #c6a276;
   }
 `;
 
@@ -123,7 +123,7 @@ const DropdownMenu = () => {
   };
   return (
     <Wrapper onClick={handleToggleDropdown}>
-      <DropdownHeader>{searchFilterToKR()}</DropdownHeader>
+      <DropdownHeader>{searchFilterToKR() || selectedOption}</DropdownHeader>
       {isOpen && (
         <DropDownPosition>
           <DropdownWrapper isOpen={isOpen} ref={dropdownRef}>
