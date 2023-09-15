@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { styled } from 'styled-components';
+import { useSearchStore } from '../../store/store';
 
 const Dropdown = styled.div`
   position: absolute;
@@ -19,6 +20,11 @@ const Dropdown = styled.div`
 const SearchDropdown = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const { setSearchQuery } = useSearchStore();
+
+  const setQuery = (term) => {
+    setSearchQuery(term);
+  };
 
   const closeMenu = () => {
     setIsMenuOpen(false);
@@ -62,7 +68,10 @@ const SearchDropdown = () => {
             .map((term, index) => (
               <li
                 key={index}
-                className="text-gray-400 hover:bg-slate-100 py-1 px-2"
+                role="presentation"
+                value={term}
+                className="text-gray-400 hover:bg-slate-100 py-1 px-2 cursor-pointer"
+                onClick={() => setQuery(term)}
               >
                 {term}
               </li>
