@@ -6,6 +6,7 @@ import { useState } from 'react';
 import SearchDropdown from './SearchDropdown.jsx';
 import { ReactComponent as RemoveSVG } from '../../assets/images/deletebutton.svg';
 import { ReactComponent as SearchSVG } from '../../assets/images/magnifier.svg';
+import { toast } from 'react-hot-toast';
 
 const SearchbarContainer = styled.form`
   display: flex;
@@ -150,7 +151,10 @@ const SearchBar = () => {
       window.scrollTo(0, 0);
     } else {
       // 검색 키워드가 존재하지 않는 경우 경고창 띄우기
-      alert('검색어를 입력해 주세요!');
+      toast.error('검색어를 입력해 주세요.', {
+        id: 'noKeyword',
+        duration: 2000,
+      });
     }
   };
 
