@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import DropdownMenu from './DropdownMenu.jsx';
 import { useState } from 'react';
 import SearchDropdown from './SearchDropdown.jsx';
+import { ReactComponent as RemoveSVG } from '../../assets/images/deletebutton.svg';
+import { ReactComponent as SearchSVG } from '../../assets/images/magnifier.svg';
 
 const SearchbarContainer = styled.form`
   display: flex;
@@ -31,6 +33,40 @@ const SearchboxInput = styled.input`
   }
   &:focus {
     outline: none;
+  }
+`;
+
+const ButtonContainer = styled.div`
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  z-index: 150;
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+`;
+
+const SearchButton = styled.button`
+  position: absolute;
+  top: 50%;
+  left: 30px;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  z-index: 200;
+  svg {
+    width: 100%;
+    height: 100%;
   }
 `;
 
@@ -85,6 +121,12 @@ const SearchBar = () => {
     const recentSearches = getRecentSearches();
     recentSearches.unshift(term); // 최근 검색어 배열의 맨 앞에 추가
     localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
+
+    // 최근 검색어를 10개까지만 저장(queue)
+    if (recentSearches.length > 10) {
+      recentSearches.pop();
+      localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
+    }
   };
 
   // 로컬 스토리지에서 최근 검색어 불러오기
@@ -121,6 +163,13 @@ const SearchBar = () => {
       >
         <div className="flex flex-1 justify-center z-[101]">
           <DropdownMenu />
+          <ButtonContainer>
+            <RemoveSVG onClick={() => setSearchQuery('')} />
+            <SearchSVG
+              onClick={searchSubmitHandler}
+              className={'absolute top-0 right-8'}
+            />
+          </ButtonContainer>
           <SearchboxInput
             className={`searchbox ${isFocused ? 'focused' : ''}`}
             type="text"
