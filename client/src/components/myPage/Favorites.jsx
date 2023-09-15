@@ -1,13 +1,10 @@
 import StoreCard from '../../assets/StoreCard.jsx';
-import { getFavoriteStores } from '../../pages/main/MainPage.jsx';
 
-const Favorites = () => {
-  const favoriteStores = getFavoriteStores();
-
+const Favorites = ({ data }) => {
   return (
     <>
       <div className="flex flex-wrap justify-center mx-4">
-        {favoriteStores.map((store, index) => (
+        {data.map((store, index) => (
           <StoreCard key={index} store={store} />
         ))}
       </div>
