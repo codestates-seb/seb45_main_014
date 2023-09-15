@@ -22,7 +22,7 @@ const DropDownPosition = styled.div`
   width: 70px;
   height: 200px;
   overflow: hidden;
-  z-index: 1;
+  z-index: 1000;
 `;
 
 const DropdownWrapper = styled.ul`
@@ -55,7 +55,7 @@ const DropdownHeader = styled.label`
   font-size: 14px;
   font-weight: 600;
   background-color: #debe8f;
-  z-index: 1;
+  z-index: 1000;
   color: white;
   cursor: pointer;
   &:hover {
