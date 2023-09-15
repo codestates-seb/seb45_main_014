@@ -16,7 +16,7 @@ const Dropdown = styled.div`
   overflow: hidden;
 `;
 
-const SearchDropdown = () => {
+const SearchDropdown = ({ searchInputRef }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('recommended'); // 기본값은 추천 검색어
   const dropdownRef = useRef(null);
@@ -107,6 +107,7 @@ const SearchDropdown = () => {
                   onClick={() => {
                     setQuery(item.term);
                     setFilter(item.target);
+                    searchInputRef.current.focus();
                   }}
                 >
                   {item.term}
@@ -124,6 +125,7 @@ const SearchDropdown = () => {
               onClick={() => {
                 setQuery(item.term);
                 setFilter(item.target);
+                searchInputRef.current.focus();
               }}
             >
               {item.term}

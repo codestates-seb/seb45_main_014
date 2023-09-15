@@ -2,7 +2,7 @@ import { styled, keyframes } from 'styled-components';
 import { useSearchStore } from '../../store/store';
 import { useNavigate } from 'react-router-dom';
 import DropdownMenu from './DropdownMenu.jsx';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import SearchDropdown from './SearchDropdown.jsx';
 import { ReactComponent as RemoveSVG } from '../../assets/images/deletebutton.svg';
 import { ReactComponent as SearchSVG } from '../../assets/images/magnifier.svg';
@@ -97,6 +97,7 @@ const SearchBar = () => {
   const { searchQuery, setSearchQuery, searchFilter } = useSearchStore();
   const navigate = useNavigate();
   const [isFocused, setIsFocused] = useState(false);
+  const searchInputRef = useRef(null);
   const holder = (searchFilter) => {
     const message = {
       store: '검색할 매장명을 입력해 주세요',
@@ -175,12 +176,13 @@ const SearchBar = () => {
           </ButtonContainer>
           <SearchboxInput
             className={`searchbox ${isFocused ? 'focused' : ''}`}
+            ref={searchInputRef}
             type="text"
             placeholder={holder(searchFilter)}
             onChange={handleSearchQuery}
             value={searchQuery}
           ></SearchboxInput>
-          {isFocused && <SearchDropdown />}
+          {isFocused && <SearchDropdown searchInputRef={searchInputRef} />}
         </div>
       </SearchbarContainer>
       <DarkOverlay isFocused={isFocused} onClick={() => setIsFocused(false)} />
