@@ -200,7 +200,7 @@ const MyPage = () => {
   // 각 탭에 따라 렌더링할 컴포넌트 변경
   const renderDataComponent = () => {
     if (currentTab === '리뷰 관리') {
-      return <Reviews data={data} />;
+      return <Reviews />;
     } else if (currentTab === '주문 내역') {
       return <Orders />;
     } else if (currentTab === '즐겨찾기') {

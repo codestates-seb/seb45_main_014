@@ -101,7 +101,6 @@ const Reviews = () => {
       })
       .then((res) => {
         setData((prevData) => [...prevData, ...res.data.reviews]);
-        console.log(res.data.reviews);
 
         if (res.data.reviews.length < 10) {
           setHasMore(false);
