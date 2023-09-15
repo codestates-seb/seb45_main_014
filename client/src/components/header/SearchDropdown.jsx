@@ -19,6 +19,7 @@ const Dropdown = styled.div`
 
 const SearchDropdown = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState('recommended'); // 기본값은 추천 검색어
   const dropdownRef = useRef(null);
   const { setSearchQuery } = useSearchStore();
 
@@ -28,6 +29,10 @@ const SearchDropdown = () => {
 
   const closeMenu = () => {
     setIsMenuOpen(false);
+  };
+
+  const toggleTab = (tab) => {
+    setActiveTab(tab);
   };
 
   useEffect(() => {
@@ -52,32 +57,67 @@ const SearchDropdown = () => {
   }, [isMenuOpen]);
 
   const recentSearches = JSON.parse(localStorage.getItem('recentSearches'));
+  // 추천 검색어 하드코딩하기
+  const recommendedSearches = [
+    { term: '가게', target: 'store' },
+    { term: '빵', target: 'menu' },
+    { term: '서울', target: 'region' },
+    { term: '케이크', target: 'menu' },
+  ];
 
   return (
     <Dropdown isOpen={isMenuOpen} ref={dropdownRef}>
-      <h2 className="bg-[#debe8f] px-2 py-1 text-white font-semibold text-sm">
-        최근 검색어
-      </h2>
+      <div className="flex h-7 bg-[#debe8f] text-white font-semibold text-sm border-b-2 border-[#debe8f] ">
+        <button
+          onClick={() => toggleTab('recommended')}
+          className={`flex-1 ${
+            activeTab === 'recommended' ? 'bg-[#c6a276] active' : ''
+          }`}
+        >
+          추천 검색어
+        </button>
+        <button
+          onClick={() => toggleTab('recent')}
+          className={`flex-1 ${
+            activeTab === 'recent' ? 'bg-[#c6a276] active' : ''
+          }`}
+        >
+          최근 검색어
+        </button>
+      </div>
       <ul className="text-sm">
-        {!recentSearches ? (
-          <li className="pt-4 text-center text-lg text-gray-300">
-            최근 검색어가 없습니다.
-          </li>
-        ) : (
-          recentSearches
-            .map((term, index) => (
-              <li
-                key={index}
-                role="presentation"
-                value={term}
-                className="text-gray-400 hover:bg-slate-100 py-1 px-2 cursor-pointer"
-                onClick={() => setQuery(term)}
-              >
-                {term}
-              </li>
-            ))
-            .slice(0, 10)
-        )}
+        {activeTab === 'recent' &&
+          (!recentSearches ? (
+            <li className="pt-4 text-center text-lg text-gray-300">
+              최근 검색어가 없습니다.
+            </li>
+          ) : (
+            recentSearches
+              .map((term, index) => (
+                <li
+                  key={index}
+                  role="presentation"
+                  value={term}
+                  className="text-gray-400 hover:bg-slate-100 py-1 px-2 cursor-pointer"
+                  onClick={() => setQuery(term)}
+                >
+                  {term}
+                </li>
+              ))
+              .slice(0, 10)
+          ))}
+        {activeTab === 'recommended' &&
+          recommendedSearches.map((item, index) => (
+            <li
+              key={index}
+              role="presentation"
+              value={item.term}
+              className="text-gray-400 hover:bg-slate-100 py-1 px-2 cursor-pointer"
+              onClick={() => setQuery(item.term)}
+            >
+              {item.term}
+            </li>
+          ))}
       </ul>
     </Dropdown>
   );
