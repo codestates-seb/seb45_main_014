@@ -181,7 +181,7 @@ const MyPage = () => {
           setFavoriteCount(response.data.pageInfo.total_elements);
         }
       } catch (error) {
-        console.error('데이터를 가져오는데 실패함', error);
+        console.error('갯수 데이터 에러', error);
       }
     };
 
@@ -197,12 +197,12 @@ const MyPage = () => {
     }
   }, [accessToken, currentTab, isLoggedIn, navigate, page]);
 
-  // 무한 스크롤에 사용할 컴포넌트
+  // 각 탭에 따라 렌더링할 컴포넌트 변경
   const renderDataComponent = () => {
     if (currentTab === '리뷰 관리') {
       return <Reviews data={data} />;
     } else if (currentTab === '주문 내역') {
-      return <Orders data={data} />;
+      return <Orders />;
     } else if (currentTab === '즐겨찾기') {
       return <Favorites />;
     }

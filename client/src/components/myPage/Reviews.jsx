@@ -4,9 +4,11 @@ import { StoreImage } from '../../assets/Styles.jsx';
 import formatDate from '../../utils/formatDate';
 import { RedButton } from '../../assets/buttons/RedButton.jsx';
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SubmitModal from '../../pages/cart/SubmitModal.jsx';
 import { useAuthStore } from '../../store/store.js';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import LoadingComponent from './MyPageLoading.jsx';
 
 const ReviewDetailStyle = styled.div`
   width: 100%;
@@ -16,9 +18,8 @@ const ReviewDetailStyle = styled.div`
   justify-content: space-between;
 `;
 
-const ReviewDetail = ({ data }) => {
+const ReviewDetail = ({ data, accessToken }) => {
   const [isModalOpen, setModalOpen] = useState(false);
-  const { accessToken } = useAuthStore((state) => state);
 
   // 모달 열기
   const openModal = () => {
@@ -59,6 +60,7 @@ const ReviewDetail = ({ data }) => {
         </div>
         <StoreImage src={data.img} alt="매장 이미지"></StoreImage>
       </ReviewDetailStyle>
+
       {isModalOpen && (
         <SubmitModal
           onClose={closeModal}
@@ -72,7 +74,44 @@ const ReviewDetail = ({ data }) => {
   );
 };
 
-const Reviews = ({ data }) => {
+const Reviews = () => {
+  const [data, setData] = useState([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const { accessToken } = useAuthStore((state) => state);
+
+  const fetchMoreData = () => {
+    setTimeout(() => {
+      setPage((prevPage) => prevPage + 1);
+    }, 1000);
+  };
+
+  useEffect(() => {
+    setHasMore(true);
+
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/api/reviews`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          page: page,
+          size: 10,
+        },
+      })
+      .then((res) => {
+        setData((prevData) => [...prevData, ...res.data.reviews]);
+        console.log(res.data.reviews);
+
+        if (res.data.reviews.length < 10) {
+          setHasMore(false);
+        }
+      })
+      .catch((err) => {
+        console.log('리뷰 에러', err);
+      });
+  }, [accessToken, page]);
+
   if (data.length === 0)
     return (
       <h1 className="h-[50vh] flex items-center justify-center">
@@ -82,9 +121,18 @@ const Reviews = ({ data }) => {
 
   return (
     <div className="w-full">
-      {data.map((item, index) => (
-        <ReviewDetail key={index} data={item} />
-      ))}
+      <InfiniteScroll
+        dataLength={data.length} // 데이터 배열의 길이
+        next={fetchMoreData} // 다음 데이터를 불러오는 함수
+        hasMore={hasMore} // 다음 데이터를 불러올 수 있는지
+        loader={<LoadingComponent />}
+      >
+        <div className="w-full">
+          {data.map((item) => (
+            <ReviewDetail key={item.id} data={item} accessToken={accessToken} />
+          ))}
+        </div>
+      </InfiniteScroll>
     </div>
   );
 };
