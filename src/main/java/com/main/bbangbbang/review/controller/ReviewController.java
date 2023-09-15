@@ -52,11 +52,10 @@ public class ReviewController {
         Order order = orderService.findOrder(orderId);
         validateSameMember(member, order);
 
-        Review review = reviewService.createReview(order);
-        Review doneReview = reviewService.setReviewData(review, reviewRequestDto);
-        order.setOrderStatus(OrderStatus.REVIEWED);
+        Review review = reviewService.createReview(order, reviewRequestDto);
+        orderService.setOrderStatus(order, OrderStatus.REVIEWED);
 
-        return ResponseEntity.ok(new ReviewResponseDto(reviewMapper.reviewToReviewDataWithStoreName(doneReview)));
+        return ResponseEntity.ok(new ReviewResponseDto(reviewMapper.reviewToReviewDataWithStoreName(review)));
     }
 
     @PostMapping("/reviews/{review-id}/image")
