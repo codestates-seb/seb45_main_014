@@ -11,8 +11,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import EditProfile from '../components/myPage/EditProfile.jsx';
 import formatDate from '../utils/formatDate.js';
 import ImageUploadModal from '../components/myPage/ImageUploadModal.jsx';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import LoadingSpinner from '../components/Loading.jsx';
 
 const TabContainer = styled.ul`
   display: flex;
@@ -58,37 +56,21 @@ const MyPage = () => {
   const [isEditProfileModalOpen, setEditProfileModalOpen] = useState(false);
   const [isImageModalOpen, setImageModalOpen] = useState(false);
 
-  const [page, setPage] = useState(1);
-  const [data, setData] = useState([]);
-
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!isLoggedIn || !accessToken) {
-      navigate('/');
-    }
-  }, [accessToken, isLoggedIn, navigate]);
 
   // 데이터 가져오기
   useEffect(() => {
-    // 기존 탭 데이터 초기화
-    setData([]);
-    setPage(1);
-
     // 각 탭 갯수 가져오기
     const fetchInitialData = async () => {
       const tabs = ['리뷰 관리', '주문 내역', '즐겨찾기'];
       for (const tab of tabs) {
         let apiUrl = '';
-        if (tab === '리뷰 관리') {
+        if (tab === '리뷰 관리')
           apiUrl = `${process.env.REACT_APP_API_URL}/api/reviews`;
-        }
-        if (tab === '주문 내역') {
+        if (tab === '주문 내역')
           apiUrl = `${process.env.REACT_APP_API_URL}/api/members/orders`;
-        }
-        if (tab === '즐겨찾기') {
+        if (tab === '즐겨찾기')
           apiUrl = `${process.env.REACT_APP_API_URL}/api/members/favorites`;
-        }
 
         try {
           const response = await axios.get(apiUrl, {
@@ -97,20 +79,14 @@ const MyPage = () => {
             },
             params: {
               page: 1,
-              size: 1, // 최소한의 데이터만 가져옴
+              size: 1,
             },
           });
 
           const total_elements = response.data.pageInfo.total_elements;
-          if (tab === '리뷰 관리') {
-            setReviewCount(total_elements);
-          }
-          if (tab === '주문 내역') {
-            setOrderCount(total_elements);
-          }
-          if (tab === '즐겨찾기') {
-            setFavoriteCount(total_elements);
-          }
+          if (tab === '리뷰 관리') setReviewCount(total_elements);
+          if (tab === '주문 내역') setOrderCount(total_elements);
+          if (tab === '즐겨찾기') setFavoriteCount(total_elements);
         } catch (error) {
           console.error(`[${tab}] 데이터를 가져오는데 실패함: `, error);
         }
@@ -134,68 +110,16 @@ const MyPage = () => {
       }
     };
 
-    // 데이터 가져오기
-    const fetchData = async () => {
-      // URL 초기화
-      let apiUrl = '';
-      // 데이터 키 초기화
-      let dataKey = '';
-
-      // 현재 탭에 따라 URL 및 데이터 키 변경
-      if (currentTab === '리뷰 관리') {
-        apiUrl = `${process.env.REACT_APP_API_URL}/api/reviews`;
-        dataKey = 'reviews';
-      }
-      if (currentTab === '주문 내역') {
-        apiUrl = `${process.env.REACT_APP_API_URL}/api/members/orders`;
-        dataKey = 'orders';
-      }
-      if (currentTab === '즐겨찾기') {
-        apiUrl = `${process.env.REACT_APP_API_URL}/api/members/favorites`;
-        dataKey = 'stores';
-      }
-
-      // 데이터 가져오기
-      try {
-        const response = await axios.get(apiUrl, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-          params: {
-            page: page,
-            size: 5,
-          },
-        });
-
-        // 데이터가 있으면 기존 데이터에 추가
-        setData((prevData) => [...prevData, ...response.data[dataKey]]);
-
-        // 각 요소 수량 설정
-        if (currentTab === '리뷰 관리') {
-          setReviewCount(response.data.pageInfo.total_elements);
-        }
-        if (currentTab === '주문 내역') {
-          setOrderCount(response.data.pageInfo.total_elements);
-        }
-        if (currentTab === '즐겨찾기') {
-          setFavoriteCount(response.data.pageInfo.total_elements);
-        }
-      } catch (error) {
-        console.error('갯수 데이터 에러', error);
-      }
-    };
-
     // 로그인 상태이고 accessToken이 있으면 데이터 가져오기
     if (isLoggedIn && accessToken) {
       fetchInitialData();
       getMember();
-      fetchData();
     } else {
       // 로그인 상태가 아니면 메인 페이지로 이동
       alert('로그인이 필요합니다.');
       navigate('/');
     }
-  }, [accessToken, currentTab, isLoggedIn, navigate, page]);
+  }, [accessToken, currentTab, isLoggedIn, navigate]);
 
   // 각 탭에 따라 렌더링할 컴포넌트 변경
   const renderDataComponent = () => {
