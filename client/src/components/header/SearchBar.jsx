@@ -54,23 +54,6 @@ const ButtonContainer = styled.div`
   }
 `;
 
-const SearchButton = styled.button`
-  position: absolute;
-  top: 50%;
-  left: 30px;
-  transform: translateY(-50%);
-  width: 20px;
-  height: 20px;
-  border: none;
-  background: none;
-  cursor: pointer;
-  z-index: 200;
-  svg {
-    width: 100%;
-    height: 100%;
-  }
-`;
-
 const fadeIn = keyframes`
   from {
     opacity: 0;
