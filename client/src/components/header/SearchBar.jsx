@@ -23,7 +23,7 @@ const SearchboxInput = styled.input`
     box-shadow 0.3s,
     width 0.2s,
     transform 0.2s;
-  &:focus {
+  &.focused {
     border-color: #debe8f;
     outline: none;
     width: 480px;
@@ -57,10 +57,24 @@ const SearchBar = () => {
   const { searchQuery, setSearchQuery, searchFilter } = useSearchStore();
   const navigate = useNavigate();
   const [isFocused, setIsFocused] = useState(false);
+  const holder = (searchFilter) => {
+    const message = {
+      store: '검색할 매장명을 입력해 주세요',
+      region: '검색할 지역을 입력해 주세요',
+      menu: '검색할 메뉴를 입력해 주세요',
+    };
+
+    return message[searchFilter];
+  };
 
   const handleSearchQuery = (e) => {
     const query = e.target.value;
     setSearchQuery(query);
+  };
+
+  const handleFocused = (e) => {
+    e.preventDefault();
+    setIsFocused(true);
   };
 
   // 로컬 스토리지에 검색어 저장
@@ -86,7 +100,7 @@ const SearchBar = () => {
       });
       saveSearchTerm(searchQuery.trim());
       // 검색창 focus 해제하기
-      document.activeElement.blur();
+      setIsFocused(false);
       // 페이지 이동시 강제 스크롤 이동
       window.scrollTo(0, 0);
     } else {
@@ -95,33 +109,26 @@ const SearchBar = () => {
     }
   };
 
-  const holder = (searchFilter) => {
-    const message = {
-      store: '검색할 매장명을 입력해 주세요',
-      region: '검색할 지역을 입력해 주세요',
-      menu: '검색할 메뉴를 입력해 주세요',
-    };
-
-    return message[searchFilter];
-  };
-
   return (
-    <SearchbarContainer onSubmit={searchSubmitHandler}>
-      <DarkOverlay isFocused={isFocused} />
-      <div className="flex flex-1 justify-center z-[101]">
-        <DropdownMenu />
-        <SearchboxInput
-          className="searchbox"
-          type="text"
-          placeholder={holder(searchFilter)}
-          onChange={handleSearchQuery}
-          value={searchQuery}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
-        ></SearchboxInput>
-        {isFocused && <SearchDropdown />}
-      </div>
-    </SearchbarContainer>
+    <>
+      <DarkOverlay isFocused={isFocused} onClick={() => setIsFocused(false)} />
+      <SearchbarContainer
+        onSubmit={searchSubmitHandler}
+        onClick={handleFocused}
+      >
+        <div className="flex flex-1 justify-center z-[101]">
+          <DropdownMenu />
+          <SearchboxInput
+            className={`searchbox ${isFocused ? 'focused' : ''}`}
+            type="text"
+            placeholder={holder(searchFilter)}
+            onChange={handleSearchQuery}
+            value={searchQuery}
+          ></SearchboxInput>
+          {isFocused && searchQuery ? <SearchDropdown /> : null}
+        </div>
+      </SearchbarContainer>
+    </>
   );
 };
 
