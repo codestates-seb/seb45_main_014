@@ -25,9 +25,11 @@ const SearchboxInput = styled.input`
     transform 0.2s;
   &.focused {
     border-color: #debe8f;
-    outline: none;
     width: 480px;
     transition: all 0.2s ease;
+  }
+  &:focus {
+    outline: none;
   }
 `;
 
