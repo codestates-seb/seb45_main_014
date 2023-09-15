@@ -105,18 +105,17 @@ const Reviews = () => {
         if (res.data.reviews.length < 10) {
           setHasMore(false);
         }
+        if (data.length === 0)
+          return (
+            <h1 className="h-[50vh] flex items-center justify-center">
+              작성하신 리뷰가 없습니다.
+            </h1>
+          );
       })
       .catch((err) => {
         console.log('리뷰 에러', err);
       });
-  }, [accessToken, page]);
-
-  if (data.length === 0)
-    return (
-      <h1 className="h-[50vh] flex items-center justify-center">
-        작성하신 리뷰가 없습니다.
-      </h1>
-    );
+  }, [accessToken, data.length, page]);
 
   return (
     <div className="w-full">
