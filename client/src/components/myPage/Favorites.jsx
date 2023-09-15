@@ -52,8 +52,8 @@ const Favorites = () => {
         loader={<LoadingComponent />}
       >
         <div className="flex flex-wrap justify-center mx-4">
-          {data.map((store, index) => (
-            <StoreCard key={index} store={store} />
+          {data.map((store) => (
+            <StoreCard key={store.id} store={store} />
           ))}
         </div>
       </InfiniteScroll>
