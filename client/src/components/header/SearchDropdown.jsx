@@ -13,7 +13,6 @@ const Dropdown = styled.div`
   border: 2px solid #debe8f;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  z-index: 100;
   overflow: hidden;
 `;
 
@@ -21,10 +20,14 @@ const SearchDropdown = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('recommended'); // 기본값은 추천 검색어
   const dropdownRef = useRef(null);
-  const { setSearchQuery } = useSearchStore();
+  const { setSearchQuery, setSearchFilter } = useSearchStore();
 
   const setQuery = (term) => {
     setSearchQuery(term);
+  };
+
+  const setFilter = (target) => {
+    setSearchFilter(target);
   };
 
   const closeMenu = () => {
@@ -69,6 +72,7 @@ const SearchDropdown = () => {
     <Dropdown isOpen={isMenuOpen} ref={dropdownRef}>
       <div className="flex h-7 bg-[#debe8f] text-white font-semibold text-sm border-b-2 border-[#debe8f] ">
         <button
+          type="button"
           onClick={() => toggleTab('recommended')}
           className={`flex-1 ${
             activeTab === 'recommended' ? 'bg-[#c6a276] active' : ''
@@ -77,6 +81,7 @@ const SearchDropdown = () => {
           추천 검색어
         </button>
         <button
+          type="button"
           onClick={() => toggleTab('recent')}
           className={`flex-1 ${
             activeTab === 'recent' ? 'bg-[#c6a276] active' : ''
@@ -93,15 +98,18 @@ const SearchDropdown = () => {
             </li>
           ) : (
             recentSearches
-              .map((term, index) => (
+              .map((item, index) => (
                 <li
                   key={index}
                   role="presentation"
-                  value={term}
+                  value={item.term}
                   className="text-gray-400 hover:bg-slate-100 py-1 px-2 cursor-pointer"
-                  onClick={() => setQuery(term)}
+                  onClick={() => {
+                    setQuery(item.term);
+                    setFilter(item.target);
+                  }}
                 >
-                  {term}
+                  {item.term}
                 </li>
               ))
               .slice(0, 10)
@@ -113,7 +121,10 @@ const SearchDropdown = () => {
               role="presentation"
               value={item.term}
               className="text-gray-400 hover:bg-slate-100 py-1 px-2 cursor-pointer"
-              onClick={() => setQuery(item.term)}
+              onClick={() => {
+                setQuery(item.term);
+                setFilter(item.target);
+              }}
             >
               {item.term}
             </li>
