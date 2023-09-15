@@ -3,7 +3,7 @@ import StoreCard from '../../assets/StoreCard.jsx';
 import axios from 'axios';
 import { useAuthStore } from '../../store/store.js';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import LoadingSpinner from '../Loading.jsx';
+import LoadingComponent from './MyPageLoading.jsx';
 
 const Favorites = () => {
   const { accessToken } = useAuthStore((state) => state);
@@ -13,7 +13,9 @@ const Favorites = () => {
   const [hasMore, setHasMore] = useState(true);
 
   const fetchMoreData = () => {
-    setPage((prevPage) => prevPage + 1);
+    setTimeout(() => {
+      setPage((prevPage) => prevPage + 1);
+    }, 1000);
   };
 
   useEffect(() => {
@@ -47,7 +49,7 @@ const Favorites = () => {
         dataLength={data.length} // 데이터 배열의 길이
         next={fetchMoreData} // 다음 데이터를 불러오는 함수
         hasMore={hasMore} // 다음 데이터를 불러올 수 있는지
-        loader={<LoadingSpinner />} // 다음 데이터를 불러오는 중에 보여줄 UI
+        loader={<LoadingComponent />}
       >
         <div className="flex flex-wrap justify-center mx-4">
           {data.map((store, index) => (
