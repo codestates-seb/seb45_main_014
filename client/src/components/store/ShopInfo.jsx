@@ -87,7 +87,7 @@ const ShopInfo = ({ store }) => {
   return (
     <div className="text-center">
       <div>
-        <div className="flex justify-center w-full h-[350px] overflow-hidden">
+        <div className="flex justify-center w-full h-[500px]">
           {/* <Slider {...settings} className="mb-10 w-11/12">
             {store.menus.map((menu, index) => (
               <StoreBanner menu={menu} key={index} />
@@ -184,10 +184,6 @@ const StoreIntro = styled.div`
 
 const ShopBanner = styled.img`
   width: 100%;
-  height: 350px;
+  height: 500px;
   object-fit: cover;
-  transition: transform 0.3s ease;
-  &:hover {
-    transform: scale(1.1);
-  }
 `;
