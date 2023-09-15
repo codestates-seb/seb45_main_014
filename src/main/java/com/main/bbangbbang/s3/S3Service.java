@@ -23,7 +23,7 @@ public class S3Service {
     private String bucket;
 
     private final AmazonS3 amazonS3;
-    private static final List<String> IMAGE_EXTENSIONS = List.of("png", "jpg", "jpeg", "bmp", "svg", "Webp");
+    private static final List<String> IMAGE_EXTENSIONS = List.of("png", "jpg", "jpeg", "bmp", "svg", "webp");
     private static final long MAX_FILE_SIZE = 1024*1024*10;
 
     public String uploadImage(MultipartFile file, String directory, Long id) {
@@ -48,7 +48,7 @@ public class S3Service {
     private void validateExtension(MultipartFile file) {
         String fileName = file.getOriginalFilename();
         String extension = fileName.substring(fileName.lastIndexOf(".")+1);
-        if (IMAGE_EXTENSIONS.contains(extension)) throw new BusinessLogicException(ExceptionCode.IMPROPER_EXTENSION);
+        if (!IMAGE_EXTENSIONS.contains(extension)) throw new BusinessLogicException(ExceptionCode.IMPROPER_EXTENSION);
     }
 
     private void validateSize(MultipartFile file) {
