@@ -18,6 +18,7 @@ const SearchboxInput = styled.input`
   font-size: 14px;
   padding: 7.8px 9.1px 7.8px 80px;
   color: black;
+  z-index: 140;
   transition:
     border-color 0.3s,
     box-shadow 0.3s,
@@ -127,7 +128,7 @@ const SearchBar = () => {
             onChange={handleSearchQuery}
             value={searchQuery}
           ></SearchboxInput>
-          {isFocused && searchQuery ? <SearchDropdown /> : null}
+          {isFocused && <SearchDropdown />}
         </div>
       </SearchbarContainer>
     </>
