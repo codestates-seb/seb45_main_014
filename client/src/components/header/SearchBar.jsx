@@ -13,11 +13,10 @@ const SearchbarContainer = styled.form`
 
 const SearchboxInput = styled.input`
   border-radius: 10px;
-  max-height: 41px;
   border: 2px solid #debe8f;
-  width: 40%;
+  width: 400px;
   font-size: 14px;
-  padding: 7.8px 9.1px 7.8px 16px;
+  padding: 7.8px 9.1px 7.8px 80px;
   color: black;
   transition:
     border-color 0.3s,
@@ -27,7 +26,7 @@ const SearchboxInput = styled.input`
   &:focus {
     border-color: #debe8f;
     outline: none;
-    width: 50%;
+    width: 480px;
     transition: all 0.2s ease;
   }
 `;
@@ -64,6 +63,19 @@ const SearchBar = () => {
     setSearchQuery(query);
   };
 
+  // 로컬 스토리지에 검색어 저장
+  const saveSearchTerm = (term) => {
+    const recentSearches = getRecentSearches();
+    recentSearches.unshift(term); // 최근 검색어 배열의 맨 앞에 추가
+    localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
+  };
+
+  // 로컬 스토리지에서 최근 검색어 불러오기
+  const getRecentSearches = () => {
+    const recentSearches = localStorage.getItem('recentSearches');
+    return recentSearches ? JSON.parse(recentSearches) : [];
+  };
+
   const searchSubmitHandler = (e) => {
     e.preventDefault();
 
@@ -72,7 +84,7 @@ const SearchBar = () => {
         pathname: '/search',
         search: `?search_keyword=${searchQuery.trim()}&search_target=${searchFilter}`,
       });
-
+      saveSearchTerm(searchQuery.trim());
       // 검색창 focus 해제하기
       document.activeElement.blur();
       // 페이지 이동시 강제 스크롤 이동
