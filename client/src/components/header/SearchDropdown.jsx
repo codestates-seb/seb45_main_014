@@ -4,6 +4,7 @@ import { styled } from 'styled-components';
 const Dropdown = styled.div`
   position: absolute;
   top: 110%;
+  right: 0;
   width: 100%;
   min-height: 300px;
   height: max-content;
@@ -11,7 +12,7 @@ const Dropdown = styled.div`
   border: 2px solid #debe8f;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  z-index: 102;
+  z-index: 100;
   overflow: hidden;
 `;
 
