@@ -28,7 +28,7 @@ const Favorites = () => {
         },
         params: {
           page: page,
-          size: 10,
+          size: 12,
         },
       })
       .then((res) => {
