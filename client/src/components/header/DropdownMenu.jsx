@@ -51,7 +51,7 @@ const DropdownHeader = styled.label`
   text-align: center;
   border-radius: 10px;
   width: 70px;
-  height: 41px;
+  height: 40.59px;
   font-size: 14px;
   font-weight: 600;
   background-color: #debe8f;
