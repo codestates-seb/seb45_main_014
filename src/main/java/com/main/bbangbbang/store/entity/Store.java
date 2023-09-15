@@ -52,6 +52,9 @@ public class Store {
     private String img;
 
     @Column
+    private String runningTime;
+
+    @Column
     private Float rating;
 
     @ManyToOne
