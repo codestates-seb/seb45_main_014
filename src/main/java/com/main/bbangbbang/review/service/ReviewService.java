@@ -20,51 +20,47 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
 
     @Transactional
-    public Review createReview(Order order) {
+    public Review createReview(Order order, ReviewRequestDto reviewRequestDto) {
         if (order.getOrderStatus() != OrderStatus.PICKUP) {
             throw new RuntimeException("주문 상태가 PICKUP이 아닙니다.");
         }
 
-        Review review = new Review();
-        review.setOrder(order);
-        review.setMember(order.getMember());
-        review.setStore(order.getStore());
+        Review review = Review.of(
+                reviewRequestDto.getRating(),
+                reviewRequestDto.getContent(),
+                order.getStore(),
+                order.getMember(),
+                order);
 
         return reviewRepository.save(review);
     }
 
     @Transactional
-    public Review setReviewImage(Review review, String img) {
+    public void setReviewImage(Review review, String img) {
         review.setImg(img);
-
-        return reviewRepository.save(review);
-    }
-
-    @Transactional
-    public Review setReviewData(Review review, ReviewRequestDto reviewRequestDto) {
-        review.setContent(reviewRequestDto.getContent());
-        review.setRating(reviewRequestDto.getRating());
-
-        return reviewRepository.save(review);
     }
 
     @Transactional
     public Review updateReview() {
+
         return null;
     }
 
     @Transactional(readOnly = true)
     public Review findReview(long reviewId) {
+
         return reviewRepository.findById(reviewId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NO_ITEM));
     }
 
     @Transactional(readOnly = true)
     public Page<Review> findReviews(Long memberId, Integer page, Integer size) {
+
         return reviewRepository.findByMemberId(memberId, PageRequest.of(page-1, size));
     }
 
     @Transactional(readOnly = true)
     public Page<Review> findReviewsByStore(long storeId, int page, int size) {
+
         return reviewRepository.findByStoreId(storeId, PageRequest.of(page-1, size));
     }
 
