@@ -10,6 +10,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import axios from 'axios';
+import { toast } from 'react-hot-toast';
 
 const ShopInfo = ({ store }) => {
   const currentUrl = window.location;
@@ -101,9 +102,9 @@ const ShopInfo = ({ store }) => {
       .then((res) => {
         setIsBookmarked(res.data.store.is_favorite);
         if (res.data.store.is_favorite) {
-          alert('즐겨찾기에 추가되었습니다.');
+          toast.success('즐겨찾기에 추가되었습니다!');
         } else {
-          alert('즐겨찾기에서 삭제되었습니다.');
+          toast.error('즐겨찾기에서 삭제되었습니다!');
         }
       })
       .catch((err) => {
