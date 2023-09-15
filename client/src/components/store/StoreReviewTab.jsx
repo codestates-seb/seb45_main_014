@@ -3,7 +3,7 @@ import { calculateDate } from '../../utils/calculateDate';
 import { useState, useEffect, useRef } from 'react';
 
 const StoreReviewTab = ({ reviewData }) => {
-  const reviewsPerPage = 10; // 페이지당 보여줄 리뷰 수
+  const reviewsPerPage = 5; // 페이지당 보여줄 리뷰 수
   const [currentPage, setCurrentPage] = useState(1);
 
   const handlePageChange = (page) => {
@@ -43,9 +43,9 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
               onClick={() => onPageChange(page)}
               className={`${
                 page === currentPage
-                  ? 'bg-blue-500 text-white'
+                  ? 'bg-[#DEBE8F] text-white'
                   : 'bg-white text-black'
-              } px-3 py-1 rounded-full hover:bg-blue-300`}
+              } w-[30px] h-[30px] pt-[3px] rounded-lg hover:bg-[#f5d3a0] text-center`}
             >
               {page}
             </button>
