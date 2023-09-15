@@ -107,5 +107,38 @@ export const useCartApi = () => {
     }
   };
 
-  return { fetchCart, addCart, deleteCart, orderCart, updateCart, getStock };
+  // 선택된 아이템만 주문 POST 요청
+  const orderSelectedCart = async (data, pickupTime) => {
+    try {
+      await axios.delete(`${API}/api/cart`, {
+        ...config,
+        data: data,
+      });
+
+      const response = await axios.post(
+        `${API}/api/cart?pickup_time=${pickupTime}`,
+        null,
+        config,
+      );
+      // 성공 시 response
+      const pickup_time = parseDate(response.data.order.pickup_time);
+      successNotify(`주문이 정상적으로 완료되었습니다.`);
+      setTimeout(() => {
+        window.location.href = `/mypage#order`;
+      }, 3000);
+    } catch (error) {
+      console.error('주문 중 오류가 발생했습니다.', error);
+      errNotify('주문 중 오류가 발생했습니다.');
+    }
+  };
+
+  return {
+    fetchCart,
+    addCart,
+    deleteCart,
+    orderCart,
+    updateCart,
+    getStock,
+    orderSelectedCart,
+  };
 };
