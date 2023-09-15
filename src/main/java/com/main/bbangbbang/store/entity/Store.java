@@ -31,14 +31,14 @@ public class Store {
     private Long id;
 
     @Column
-    @Size(max = 40)
+    @Size(max = 100)
     private String storeName;
 
     @Column
     private String introduction;
 
     @Column
-    @Size(max = 40)
+    @Size(max = 100)
     private String address;
 
     @Column
@@ -48,7 +48,7 @@ public class Store {
     @Pattern(regexp = "\\d{10,11}$")
     private String phoneNum;
 
-    @Column
+    @Column(length = 1000)
     private String img;
 
     @Column
