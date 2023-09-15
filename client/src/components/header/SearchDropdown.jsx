@@ -1,22 +1,30 @@
 import { useState, useRef, useEffect } from 'react';
 import { styled } from 'styled-components';
+import { useSearchStore } from '../../store/store';
 
 const Dropdown = styled.div`
   position: absolute;
-  top: 120%;
-  right: 1;
-  width: calc(50% + 70px);
-  height: 300px;
+  top: 110%;
+  right: 0;
+  width: 100%;
+  min-height: 300px;
+  height: max-content;
   background-color: white;
-  border: 2px solid #f9d4b1;
+  border: 2px solid #debe8f;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  z-index: 102;
+  z-index: 100;
+  overflow: hidden;
 `;
 
 const SearchDropdown = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const { setSearchQuery } = useSearchStore();
+
+  const setQuery = (term) => {
+    setSearchQuery(term);
+  };
 
   const closeMenu = () => {
     setIsMenuOpen(false);
@@ -43,9 +51,34 @@ const SearchDropdown = () => {
     };
   }, [isMenuOpen]);
 
+  const recentSearches = JSON.parse(localStorage.getItem('recentSearches'));
+
   return (
     <Dropdown isOpen={isMenuOpen} ref={dropdownRef}>
-      검색어 리스트 오는곳
+      <h2 className="bg-[#debe8f] px-2 py-1 text-white font-semibold text-sm">
+        최근 검색어
+      </h2>
+      <ul className="text-sm">
+        {!recentSearches ? (
+          <li className="pt-4 text-center text-lg text-gray-300">
+            최근 검색어가 없습니다.
+          </li>
+        ) : (
+          recentSearches
+            .map((term, index) => (
+              <li
+                key={index}
+                role="presentation"
+                value={term}
+                className="text-gray-400 hover:bg-slate-100 py-1 px-2 cursor-pointer"
+                onClick={() => setQuery(term)}
+              >
+                {term}
+              </li>
+            ))
+            .slice(0, 10)
+        )}
+      </ul>
     </Dropdown>
   );
 };
