@@ -76,7 +76,7 @@ const Store = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [apiUrl, id]);
+  }, [accessToken, apiUrl, id]);
 
   if (!storeData) {
     return <LoadingSpinner />;
