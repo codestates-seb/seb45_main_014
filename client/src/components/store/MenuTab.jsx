@@ -65,7 +65,8 @@ const MenuItem = ({ data }) => {
   };
 
   const quantityUp = () => {
-    if (isCount > data.stock) {
+    const updatedCount = isCount + 1;
+    if (updatedCount > data.stock) {
       toast.error('재고가 부족합니다.', {
         id: 'stock',
         duration: 3000,
