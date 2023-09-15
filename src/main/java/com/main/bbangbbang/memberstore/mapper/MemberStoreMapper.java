@@ -11,6 +11,7 @@ import org.mapstruct.Mapping;
 public interface MemberStoreMapper {
     @Mapping(source = "store.id", target = "id")
     MemberStoreData memberStoreToMemberStoreData(MemberStore memberStore);
+    @Mapping(source = "store.id", target="id")
     @Mapping(source = "store.storeName", target = "storeName")
     @Mapping(source = "store.rating", target = "rating")
     @Mapping(source = "store.region.regionName", target = "regionName")
