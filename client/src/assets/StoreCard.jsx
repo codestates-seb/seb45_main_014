@@ -68,7 +68,7 @@ const StoreCard = ({ store }) => {
 
   // 검색 타겟에 따른 조건부 렌더링
   return (
-    <div className="w-72 relative m-4 border border-solid">
+    <div className="w-72 relative m-2">
       <Link to={`/stores/${id}`}>
         <div className=" overflow-hidden rounded-lg">
           <StoreImage className="object-cover" src={img} alt="대표 이미지" />
@@ -97,17 +97,18 @@ const StoreCard = ({ store }) => {
             </div>
           </div>
         ) : (
-          <div className="flex justify-between">
-            <div className="flex flex-col">
-              <div className="flex">
+          <div className="flex justify-between px-5">
+            <div className="flex flex-col w-full">
+              <div className="flex justify-between">
                 <h2>{store_name}</h2>
-                {formattedStoreRating && (
-                  <h2 className="ml-2 text-yellow-500">
-                    {formattedStoreRating}
-                  </h2>
-                )}
               </div>
               <div className="text-gray-400">{region_name}</div>
+            </div>
+            <div className="flex gap-2 h-full justify-center items-center">
+              <img src={images.bookmarkOn} alt="별점" width={24} height={24} />
+              <h2 className="text-yellow-600 font-extrabold">
+                {formattedStoreRating}
+              </h2>
             </div>
           </div>
         )}
