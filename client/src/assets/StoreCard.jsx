@@ -1,13 +1,20 @@
-import { useBookmarkStore } from '../store/store';
+import axios from 'axios';
+import { useAuthStore, useBookmarkStore } from '../store/store';
 import images from './images/Images';
 import { StoreImage } from './Styles.jsx';
 import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 
-const BookmarkButton = ({ is_favorite, toggleBookmark }) => {
+const BookmarkButton = ({ is_favorite, id, accessToken }) => {
+  const { toggleBookmark } = useBookmarkStore();
+
+  const handleBookmark = () => {
+    toggleBookmark(id, accessToken);
+  };
+
   return (
     <div className="absolute bottom-16 right-1 p-2 w-[40px] h-[40px] bg-black bg-opacity-50 rounded-full">
-      <button onClick={toggleBookmark}>
+      <button onClick={handleBookmark}>
         <img
           src={is_favorite ? images.bookmarkOn : images.bookmarkOff}
           alt="북마크 아이콘"
@@ -50,19 +57,21 @@ const StoreCard = ({ store }) => {
     rating,
     img,
     is_favorite,
-    store_id,
+    id,
     menu_name,
     price,
   } = store;
 
+  console.log('store', store);
+
   const formattedStoreRating = rating ? rating.toFixed(1) : null;
 
-  const { isBookmarked, toggleBookmark } = useBookmarkStore();
+  const { accessToken } = useAuthStore((state) => state);
 
   // 검색 타겟에 따른 조건부 렌더링
   return (
     <div className="w-72 relative m-4 border border-solid">
-      <Link to={`/stores/${store_id || store.id}`}>
+      <Link to={`/stores/${id}`}>
         <div className=" overflow-hidden rounded-lg">
           <StoreImage className="object-cover" src={img} alt="대표 이미지" />
         </div>
@@ -70,10 +79,11 @@ const StoreCard = ({ store }) => {
       {is_favorite && (
         <BookmarkButton
           is_favorite={is_favorite}
-          toggleBookmark={() => toggleBookmark(store.id)}
+          id={id}
+          accessToken={accessToken}
         />
       )}
-      <Link to={`/stores/${store_id || store.id}`}>
+      <Link to={`/stores/${id}`}>
         {menu_name ? (
           <div className="flex justify-between">
             <div className="flex flex-col">

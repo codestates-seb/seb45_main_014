@@ -1,9 +1,28 @@
 import { create } from 'zustand';
 import axios from 'axios';
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 export const useBookmarkStore = create((set) => ({
   isBookmarked: false,
-  toggleBookmark: () => set((state) => ({ isBookmarked: !state.isBookmarked })),
+  toggleBookmark: async (store_id, accessToken) => {
+    try {
+      const response = await axios.post(
+        `${apiUrl}/api/members/favorites/${store_id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+      const { is_favorite } = response.data.store;
+      set({ isBookmarked: is_favorite === 'true' });
+      console.log('즐겨찾기', response.data.store);
+    } catch (error) {
+      console.error('즐겨찾기 에러', error);
+    }
+  },
 }));
 
 export const userFormStore = create((set) => ({
@@ -78,15 +97,11 @@ export const useAuthStore = create((set) => ({
   logout: async () => {
     // 로그아웃 post 요청
     try {
-      await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/member/logout`,
-        null,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('refresh_token')}`,
-          },
+      await axios.post(`${apiUrl}/api/member/logout`, null, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('refresh_token')}`,
         },
-      );
+      });
     } catch (error) {
       console.error(error);
     } finally {

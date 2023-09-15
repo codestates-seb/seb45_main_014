@@ -33,6 +33,7 @@ const Favorites = () => {
       })
       .then((res) => {
         setData((prevData) => [...prevData, ...res.data.stores]);
+        console.log('즐겨찾기 데이터', res.data.stores);
 
         if (res.data.stores.length < 10) {
           setHasMore(false);
