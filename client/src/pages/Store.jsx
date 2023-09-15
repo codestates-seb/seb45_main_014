@@ -21,7 +21,7 @@ const Store = () => {
   // handleScroll 함수 정의
   const handleScroll = () => {
     const scrollY = window.scrollY;
-    const stickyTabHeight = 107;
+    const stickyTabHeight = 43;
     const menuTabOffset = menuRef.current.offsetTop - stickyTabHeight;
     const reviewTabOffset = reviewRef.current.offsetTop - stickyTabHeight;
 
@@ -110,10 +110,10 @@ const Store = () => {
         </li>
       </ul>
       <div className="flex flex-col mx-auto">
-        <span className="mt-[30px] mb-[10px] text-4xl">매장 메뉴</span>
+        <span className="mt-[30px] mb-[10px] text-4xl ">매장 메뉴</span>
         <div ref={menuRef}></div>
         <MenuTab menuData={storeData.menus} />
-        <span className="mt-[30px] mb-[10px] text-4xl">매장 리뷰</span>
+        <span className="mt-[30px] mb-[10px] text-4xl ">매장 리뷰</span>
         <div ref={reviewRef}></div>
         <StoreReviewTab reviewData={reviewData} />
       </div>
