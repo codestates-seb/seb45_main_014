@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { useBookmarkStore } from '../../store/store.js';
+import { useAuthStore, useBookmarkStore } from '../../store/store.js';
 import copy from 'clipboard-copy';
 import images from '../../assets/images/Images';
 import { useEffect } from 'react';
@@ -9,10 +9,12 @@ import StoreBanner from './StoreBanner.jsx';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import axios from 'axios';
 
 const ShopInfo = ({ store }) => {
   const { isBookmarked, toggleBookmark } = useBookmarkStore();
   const currentUrl = window.location;
+  const { accessToken } = useAuthStore((state) => state);
 
   const handleCopyUrl = () => {
     copy(currentUrl);
@@ -84,6 +86,29 @@ const ShopInfo = ({ store }) => {
   //   autoplaySpeed: 3500,
   // };
 
+  const handleBookmark = () => {
+    axios
+      .post(
+        `${process.env.REACT_APP_API_URL}/api/members/favorites/${store.id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      )
+      .then((res) => {
+        if (res.data.stores.is_favorite) {
+          alert('즐겨찾기에 추가되었습니다.');
+        } else {
+          alert('즐겨찾기에서 삭제되었습니다.');
+        }
+      })
+      .catch((err) => {
+        console.error('즐겨찾기 에러', err);
+      });
+  };
+
   return (
     <div className="text-center">
       <div>
@@ -104,10 +129,13 @@ const ShopInfo = ({ store }) => {
             <div className="flex text-2xl mb-3 pb-1.5 border-b">
               <span className="mr-3">매장 소개</span>
               <div>
-                <button onClick={toggleBookmark}>
+                <button>
                   <ShopBookmarkIcon
-                    src={isBookmarked ? images.bookmarkOn : images.bookmarkOff}
+                    src={
+                      store.is_favorite ? images.bookmarkOn : images.bookmarkOff
+                    }
                     alt="즐겨찾기 아이콘"
+                    onClick={handleBookmark}
                   />
                 </button>
                 <button>

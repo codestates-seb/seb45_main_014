@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useAuthStore, useBookmarkStore } from '../store/store';
 import images from './images/Images';
 import { StoreImage } from './Styles.jsx';
@@ -61,8 +60,6 @@ const StoreCard = ({ store }) => {
     menu_name,
     price,
   } = store;
-
-  console.log('store', store);
 
   const formattedStoreRating = rating ? rating.toFixed(1) : null;
 

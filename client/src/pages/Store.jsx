@@ -22,19 +22,22 @@ const Store = () => {
   const handleScroll = () => {
     const scrollY = window.scrollY;
     const stickyTabHeight = 43;
-    const menuTabOffset = menuRef.current.offsetTop - stickyTabHeight;
-    const reviewTabOffset = reviewRef.current.offsetTop - stickyTabHeight;
 
-    // 메뉴 탭과 리뷰 탭의 위치를 기반으로 활성 탭 업데이트
-    if (scrollY >= menuTabOffset && scrollY < reviewTabOffset) {
-      setIsMenuTabActive(true);
-      setIsReviewTabActive(false);
-    } else if (scrollY >= reviewTabOffset) {
-      setIsMenuTabActive(false);
-      setIsReviewTabActive(true);
-    } else {
-      setIsMenuTabActive(false);
-      setIsReviewTabActive(false);
+    // null 체크 추가
+    if (menuRef.current && reviewRef.current) {
+      const menuTabOffset = menuRef.current.offsetTop - stickyTabHeight;
+      const reviewTabOffset = reviewRef.current.offsetTop - stickyTabHeight;
+
+      if (scrollY >= menuTabOffset && scrollY < reviewTabOffset) {
+        setIsMenuTabActive(true);
+        setIsReviewTabActive(false);
+      } else if (scrollY >= reviewTabOffset) {
+        setIsMenuTabActive(false);
+        setIsReviewTabActive(true);
+      } else {
+        setIsMenuTabActive(false);
+        setIsReviewTabActive(false);
+      }
     }
   };
 
