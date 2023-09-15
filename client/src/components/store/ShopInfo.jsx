@@ -1,8 +1,8 @@
 import { styled } from 'styled-components';
-import { useAuthStore, useBookmarkStore } from '../../store/store.js';
+import { useAuthStore } from '../../store/store.js';
 import copy from 'clipboard-copy';
 import images from '../../assets/images/Images';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import StoreBanner from './StoreBanner.jsx';
 
 // 슬라이드 라이브러리
@@ -12,9 +12,10 @@ import 'slick-carousel/slick/slick-theme.css';
 import axios from 'axios';
 
 const ShopInfo = ({ store }) => {
-  const { isBookmarked, toggleBookmark } = useBookmarkStore();
   const currentUrl = window.location;
   const { accessToken } = useAuthStore((state) => state);
+
+  const [isBookmarked, setIsBookmarked] = useState(store.is_favorite);
 
   const handleCopyUrl = () => {
     copy(currentUrl);
@@ -98,7 +99,8 @@ const ShopInfo = ({ store }) => {
         },
       )
       .then((res) => {
-        if (res.data.stores.is_favorite) {
+        setIsBookmarked(res.data.store.is_favorite);
+        if (res.data.store.is_favorite) {
           alert('즐겨찾기에 추가되었습니다.');
         } else {
           alert('즐겨찾기에서 삭제되었습니다.');
@@ -131,9 +133,7 @@ const ShopInfo = ({ store }) => {
               <div>
                 <button>
                   <ShopBookmarkIcon
-                    src={
-                      store.is_favorite ? images.bookmarkOn : images.bookmarkOff
-                    }
+                    src={isBookmarked ? images.bookmarkOn : images.bookmarkOff}
                     alt="즐겨찾기 아이콘"
                     onClick={handleBookmark}
                   />
