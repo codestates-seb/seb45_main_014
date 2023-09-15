@@ -45,7 +45,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
                 page === currentPage
                   ? 'bg-[#DEBE8F] text-white'
                   : 'bg-white text-black'
-              } w-[30px] h-[30px] pt-[3px] rounded-lg hover:bg-[#f5d3a0] text-center`}
+              } w-[30px] h-[30px] pt-[3px] rounded-lg hover:bg-[#dabd92] text-center`}
             >
               {page}
             </button>

@@ -87,7 +87,7 @@ const ShopInfo = ({ store }) => {
   return (
     <div className="text-center">
       <div>
-        <div className="flex justify-center w-full">
+        <div className="flex justify-center w-full h-[350px] overflow-hidden">
           {/* <Slider {...settings} className="mb-10 w-11/12">
             {store.menus.map((menu, index) => (
               <StoreBanner menu={menu} key={index} />
@@ -146,7 +146,7 @@ const ShopInfo = ({ store }) => {
               </div>
               <div className="flex mr-6 ">
                 <p className="mr-2">매장 번호</p>
-                <p>{store.phone_num}</p>
+                <p>{store.phone}</p>
               </div>
             </div>
           </StoreIntro>
