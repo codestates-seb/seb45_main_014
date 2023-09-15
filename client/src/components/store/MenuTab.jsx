@@ -7,16 +7,6 @@ import FalseModal from './modal/FalseModal.jsx';
 import { useCartApi } from '../../api/cart';
 import MenuModal from './modal/MenuModal.jsx';
 
-const ModalBg = styled.div`
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1100;
-  background-color: rgba(76, 76, 76, 0.5);
-`;
-
 const StyledImage = styled.img`
   width: 300px;
   height: 200px;
