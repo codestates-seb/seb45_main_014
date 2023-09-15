@@ -20,9 +20,11 @@ const ButtonContainer = styled.div`
   }
 `;
 
-const ModalContent = ({ message }) => (
-  <div className="flex flex-col items-center py-10 px-8 w-[350px]">
+const ModalContent = ({ message, headline, secondMessage }) => (
+  <div className="flex flex-col items-center py-10 px-8 min-w-[350px]">
+    <h2 className="pb-5 font-semibold">{headline}</h2>
     <p>{message}</p>
+    <p>{secondMessage}</p>
   </div>
 );
 
@@ -36,6 +38,8 @@ const SubmitModal = ({
   onClose,
   onSubmit,
   message,
+  secondMessage,
+  headline,
   cancelLabel,
   submitLabel,
 }) => {
@@ -43,7 +47,11 @@ const SubmitModal = ({
     <>
       <ModalOverlay onClick={onClose} />
       <Modal padding={'0'} top={'45%'}>
-        <ModalContent message={message} />
+        <ModalContent
+          message={message}
+          headline={headline}
+          secondMessage={secondMessage}
+        />
         <ButtonContainer>
           <Button label={cancelLabel} onClick={() => onClose()} />
           <Button label={submitLabel} onClick={() => onSubmit()} />

@@ -11,6 +11,7 @@ import {
   useAuthStore,
 } from '../../store/store.js';
 import { ReactComponent as CartIcon } from '../../assets/images/cart.svg';
+import { useEffect, useState } from 'react';
 
 const HeaderBox = styled.header`
   padding: 12px;
@@ -101,6 +102,11 @@ const Header = () => {
   const { isLoggedIn } = useAuthStore();
   // Zustand에서 cartItem을 가져옴
   const { cartItem } = useCartItemStore();
+  const [itemCount, setItemCount] = useState(0);
+
+  useEffect(() => {
+    setItemCount(cartItem.length);
+  }, [cartItem]);
 
   return (
     <>
@@ -122,9 +128,7 @@ const Header = () => {
               <Link to={'/cart'}>
                 <CartIcon />
                 {/*cartItem의 길이가 0보다 크면 ItemBadge를 렌더링*/}
-                {cartItem.length > 0 && (
-                  <ItemBadge>{cartItem.length}</ItemBadge>
-                )}
+                {itemCount > 0 && <ItemBadge>{itemCount}</ItemBadge>}
               </Link>
             </CartBox>
           </MenuBox>

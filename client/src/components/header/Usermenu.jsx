@@ -96,8 +96,7 @@ const UserMenu = () => {
             <Link to="/mypage">마이페이지</Link>
           </MenuItem>
           <MenuItem>
-            {/* <a href="/logout">로그아웃</a> */}
-            <Link to="/" onClick={logout}>
+            <Link to="" onClick={logout}>
               로그아웃
             </Link>
           </MenuItem>
