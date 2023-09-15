@@ -93,7 +93,8 @@ public class SecurityConfiguration {
 
         configuration.setAllowedOrigins(Arrays.asList(
                 "http://localhost:3000",    // 로컬 개발 환경의 프론트엔드 서버 주소 허용
-                "http://bbangorder.s3-website.ap-northeast-2.amazonaws.com" // S3에 호스팅된 프론트엔드 웹사이트 서버 주소 허용
+                "http://bbangorder.s3-website.ap-northeast-2.amazonaws.com", // S3에 호스팅된 프론트엔드 웹사이트 서버 주소 허용
+                "https://bbangorder.store"  // 도메인 추가 지원
         ));
 
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "DELETE"));

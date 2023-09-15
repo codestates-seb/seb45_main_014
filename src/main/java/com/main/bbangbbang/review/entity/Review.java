@@ -14,7 +14,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -24,6 +26,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor // JPA에서 entity는 반드시 NoArgsConstructor가 있어야 함
 public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -32,9 +35,11 @@ public class Review {
     @Column
     @Min(1)
     @Max(5)
+    @NotNull
     private Integer rating;
 
     @Column
+    @NotNull
     private String content;
 
     @Column
@@ -59,4 +64,16 @@ public class Review {
     @Column
     @CreatedDate
     private LocalDateTime createdAt;
+
+    public Review(Integer rating, String content, Store store, Member member, Order order) {
+        this.rating = rating;
+        this.content = content;
+        this.store = store;
+        this.member = member;
+        this.order = order;
+    }
+
+    public static Review of(Integer rating, String content, Store store, Member member, Order order) {
+        return new Review(rating, content, store, member, order);
+    }
 }
