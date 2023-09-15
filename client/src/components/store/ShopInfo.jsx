@@ -75,24 +75,25 @@ const ShopInfo = ({ store }) => {
     };
   }, [store.address, store.store_name]);
 
-  const settings = {
-    infinite: true,
-    slidesToShow: 5,
-    slidesToScroll: 2,
+  // const settings = {
+  //   infinite: true,
+  //   slidesToShow: 2,
+  //   slidesToScroll: 1,
 
-    autoplay: true,
-    autoplaySpeed: 3500,
-  };
+  //   autoplay: true,
+  //   autoplaySpeed: 3500,
+  // };
 
   return (
     <div className="text-center">
       <div>
         <div className="flex justify-center">
           {/* <Slider {...settings} className="mb-10 w-11/12">
-            {storemenuData.map((menu, index) => (
+            {store.menus.map((menu, index) => (
               <StoreBanner menu={menu} key={index} />
             ))}
           </Slider> */}
+          <ShopBanner src={store.img} />
         </div>
         <div className="flex justify-center mb-6">
           {/* <img className="w-24" src={shop_logo} alt="매장 로고" /> */}
@@ -100,8 +101,8 @@ const ShopInfo = ({ store }) => {
         </div>
         <div className="flex justify-center space-x-8 mb-8">
           <StoreIntro>
-            <div className="flex text-4xl mb-3 pb-1.5 border-b">
-              <strong className="mr-3">매장 소개</strong>
+            <div className="flex text-2xl mb-3 pb-1.5 border-b">
+              <span className="mr-3">매장 소개</span>
               <div>
                 <button onClick={toggleBookmark}>
                   <ShopBookmarkIcon
@@ -141,7 +142,7 @@ const ShopInfo = ({ store }) => {
               </div>
               <div className="flex mr-3 mb-6">
                 <p className="mr-2">매장 주소</p>
-                <p>{store.region_name}</p>
+                <p>{store.address}</p>
               </div>
               <div className="flex mr-6 ">
                 <p className="mr-2">매장 번호</p>
@@ -179,4 +180,14 @@ const StoreIntro = styled.div`
   flex-direction: column;
   text-align: left;
   border-radius: 8px;
+`;
+
+const ShopBanner = styled.img`
+  width: 100%;
+  height: 350px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  &:hover {
+    transform: scale(1.1);
+  }
 `;

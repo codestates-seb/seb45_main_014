@@ -7,16 +7,6 @@ import FalseModal from './modal/FalseModal.jsx';
 import { useCartApi } from '../../api/cart';
 import MenuModal from './modal/MenuModal.jsx';
 
-const ModalBg = styled.div`
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1100;
-  background-color: rgba(76, 76, 76, 0.5);
-`;
-
 const StyledImage = styled.img`
   width: 300px;
   height: 200px;
@@ -117,7 +107,7 @@ const MenuItem = ({ data }) => {
   }
 
   return (
-    <div className="flex p-[10px] border-b">
+    <div className="flex px-[10px] py-[10px] border-b">
       <div className="xl:w-[750px]">
         <h3 className="xl:text-[25px]">{data.menu_name}</h3>
         <div className="xl:text-[15px]">{data.menu_desc}</div>
