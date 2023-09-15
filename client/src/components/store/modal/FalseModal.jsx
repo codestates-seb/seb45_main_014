@@ -25,13 +25,10 @@ const FalseModal = ({ menuModalhandle, closeFalseModal, dataId, quantity }) => {
         // Add any additional logic you want to perform after adding to cart here.
         notify();
         closeFalseModal();
-        menuModalhandle();
       })
       .catch((error) => {
         console.log('오류', error);
       });
-
-    window.location.reload();
   };
 
   const handleBackgroundClick = () => {
