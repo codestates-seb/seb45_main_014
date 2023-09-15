@@ -22,7 +22,7 @@ const ButtonContainer = styled.div`
 
 const ModalContent = styled.div`
   min-width: 430px;
-  padding: 2rem 2rem;
+  padding: 2rem 2rem 1rem 2rem;
 `;
 
 const ButtonBox = styled.div`
@@ -75,7 +75,9 @@ const MenuModal = ({
           <section className="max-h-80 min-h-[120px]">
             <h2 className="font-semibold pb-2">{data.menu_name}</h2>
             {/* 메뉴 설명을 쓸 것인지? */}
-            <p className="max-h-[100px] mb-4 text-gray-400">{data.menu_desc}</p>
+            <p className=" max-w-xs max-h-[100px] mb-4 text-gray-400">
+              {data.menu_desc}
+            </p>
             <div className="flex justify-between items-center">
               <p className="text-base font-semibold">
                 {data.price.toLocaleString()}원
@@ -103,7 +105,7 @@ const MenuModal = ({
               <p>남은 수량 : {data.stock}</p>
             </div>
           </section>
-          <section className="my-2">
+          <section className=" mt-6">
             <div className="flex justify-between items-center text-base font-semibold">
               <p>합계</p>
               <div className="flex text-base font-semibold items-center">
