@@ -142,7 +142,7 @@ const ShopInfo = ({ store }) => {
               </div>
               <div className="flex mr-3 mb-6">
                 <p className="mr-2">매장 주소</p>
-                <p>{store.region_name}</p>
+                <p>{store.address}</p>
               </div>
               <div className="flex mr-6 ">
                 <p className="mr-2">매장 번호</p>
