@@ -45,7 +45,7 @@ const MenuBox = styled.div`
 `;
 
 const SearchBox = styled.div`
-  flex: 1;
+  width: fit-content;
   justify-content: center;
   align-items: center;
 `;

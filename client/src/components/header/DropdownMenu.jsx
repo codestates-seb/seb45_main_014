@@ -3,6 +3,8 @@ import { useSearchStore } from '../../store/store';
 import { useState, useEffect, useRef } from 'react';
 
 const Wrapper = styled.div`
+  position: absolute;
+  left: 0;
   padding-right: 4px;
 `;
 
