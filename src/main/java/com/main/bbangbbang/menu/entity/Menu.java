@@ -53,7 +53,7 @@ public class Menu {
     @Max(1000)
     private Integer stock;
 
-    @Column
+    @Column(length = 1000)
     private String img;
 
     @Column
