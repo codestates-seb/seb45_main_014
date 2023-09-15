@@ -29,7 +29,7 @@ public class StoreService {
     @Transactional(readOnly = true)
     public Store findStoreByMenu(Menu menu) {
         Long menuId = menu.getId();
-        Optional<Store> optionalStore = storeRepository.findByMenusId(menuId);
+        Optional<Store> optionalStore = storeRepository.findByMenusIdOrderByRatingDesc(menuId);
         Store store = optionalStore.orElseThrow(NoSuchElementException::new);
 
         return store;
@@ -43,12 +43,12 @@ public class StoreService {
     @Transactional(readOnly = true)
     public Page<Store> findStoresByName(String storeName, Pageable pageable) {
 
-        return storeRepository.findByStoreNameContaining(storeName, pageable);
+        return storeRepository.findByStoreNameContainingOrderByRatingDesc(storeName, pageable);
     }
 
     @Transactional(readOnly = true)
     public Page<Store> findStoresByRegion(List<Long> regionIds, Pageable pageable) {
 
-        return storeRepository.findByRegionIdIn(regionIds, pageable);
+        return storeRepository.findByRegionIdInOrderByRatingDesc(regionIds, pageable);
     }
 }

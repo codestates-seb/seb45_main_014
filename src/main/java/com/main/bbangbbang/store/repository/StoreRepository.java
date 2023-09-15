@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface StoreRepository extends JpaRepository<Store, Long> {
-    Page<Store> findByStoreNameContaining(String name, Pageable pageable);
-    Page<Store> findByRegionIdIn(List<Long> regionIds, Pageable pageable);
-    Optional<Store> findByMenusId(Long menuId);
+    Page<Store> findByStoreNameContainingOrderByRatingDesc(String name, Pageable pageable);
+    Page<Store> findByRegionIdInOrderByRatingDesc(List<Long> regionIds, Pageable pageable);
+    Optional<Store> findByMenusIdOrderByRatingDesc(Long menuId);
 }
