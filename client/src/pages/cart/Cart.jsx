@@ -71,7 +71,9 @@ const Cart = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // 삭제 모달 상태 추가
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false); // 주문 모달 상태 추가
   const [pickupTime, setPickupTime] = useState(30); // 픽업 시간을 저장하는 상태 변수
-  const { fetchCart, deleteCart, orderCart } = useCartApi();
+  const { fetchCart, deleteCart, orderCart, orderSelectedCart } = useCartApi();
+  const [maxItem, setMaxItem] = useState(0);
+  const [checkedItem, setCheckedItem] = useState(0);
   const { isLoggedIn, accessToken } = useAuthStore((state) => state);
 
   const navigate = useNavigate();
@@ -82,6 +84,14 @@ const Cart = () => {
       navigate('/');
     }
   }, [accessToken, isLoggedIn, navigate]);
+
+  useEffect(() => {
+    setCheckedItem(checkItem.length);
+  }, [checkItem]);
+
+  useEffect(() => {
+    setMaxItem(cartItem.length);
+  }, [cartItem]);
 
   // Dropdown 옵션
   const options = [
@@ -158,8 +168,14 @@ const Cart = () => {
   };
 
   const handleSubmit = async () => {
+    const itemId = cartItem.map((item) => item.id);
+    const uncheckedItem = itemId.filter((id) => !checkItem.includes(id));
     try {
-      await orderCart(pickupTime);
+      // checkitem.length === cartitem.length 일 경우에 orderCart 실행
+      // 아닐 경우에는 orderSelectedCart 실행
+      checkItem.length === cartItem.length
+        ? await orderCart(pickupTime)
+        : await orderSelectedCart(uncheckedItem, pickupTime);
     } catch (error) {
       console.log('에러임', error);
     } finally {
@@ -193,7 +209,7 @@ const Cart = () => {
               }
             />
             <span className="w-[150px] pr-[40px]">
-              전체선택 ({checkItem.length}/{cartItem.length})
+              전체선택 ({checkedItem}/{maxItem})
             </span>
             <button
               onClick={() => openModal('delete')}
@@ -225,6 +241,7 @@ const Cart = () => {
               menuName={item.menu_name === null ? '엄청난 빵' : item.menu_name}
               price={!item.price ? 3500 : item.price}
               quantity={item.quantity}
+              image={item.img}
             />
           ))}
         </CartItems>

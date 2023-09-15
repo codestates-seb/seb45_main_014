@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
 import CheckBox from '../../components/cart/Checkbox.jsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DeleteModal from './SubmitModal.jsx';
 import { ReactComponent as Delete } from '../../assets/images/closebutton.svg';
 import { useCartItemStore } from '../../store/store.js';
@@ -20,14 +20,19 @@ const ItemImg = styled(Link)`
   display: block;
   width: 80px;
   height: 78px;
-  margin-right: 20px;
-  // 여기에 Menu 이미지가 오면 될듯?
+  // props.image가 WebP 이미지 URL을 가지고 있다면 해당 URL을 사용하고, 그렇지 않다면 기본 URL을 사용
   background: ${(props) =>
-    props.img ||
-    `url('https://img-cf.kurly.com/shop/data/goods/1653036991865l0.jpeg')`};
+    props.image
+      ? `url(${props.image})`
+      : `url('https://img-cf.kurly.com/shop/data/goods/1653036991865l0.jpeg')`};
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  &:hover {
+    transform: scale(1.1);
+  }
 `;
 
 const ButtonBox = styled.div`
@@ -64,11 +69,24 @@ const PriceBox = styled.div`
   text-align: right;
 `;
 
-const CartItem = ({ menuName, quantity, price, onChange, checked, id }) => {
+const CartItem = ({
+  menuName,
+  quantity,
+  price,
+  onChange,
+  checked,
+  id,
+  image,
+}) => {
   //-, +버튼으로 quantity를 조절하는 함수
   const [amount, setAmount] = useState(quantity);
   const { setCartItem, storeId, setCheckItem } = useCartItemStore();
   const { deleteCart, updateCart, fetchCart, getStock } = useCartApi();
+  const [storeNum, setStoreNum] = useState(0);
+
+  useEffect(() => {
+    setStoreNum(storeId);
+  }, [storeId]);
 
   const quantityUp = async () => {
     const stock = await getStock(storeId, id);
@@ -129,9 +147,11 @@ const CartItem = ({ menuName, quantity, price, onChange, checked, id }) => {
   return (
     <ItemCard>
       <CheckBox onChange={onChange} checked={checked} />
-      <ItemImg to={`/stores/${storeId}`} />
-      <div className="flex-1">
-        <Link to={`/stores/${storeId}`}>
+      <div className="overflow-hidden rounded-md">
+        <ItemImg to={`/stores/${storeNum}`} image={image} />
+      </div>
+      <div className="flex-1 ml-5">
+        <Link to={`/stores/${storeNum}`}>
           <p>{menuName}</p>
         </Link>
       </div>
