@@ -116,7 +116,7 @@ const SearchBar = () => {
     setIsFocused(true);
   };
 
-  // 로컬 스토리지에 검색어 저장
+  // 로컬 스토리지에 검색어, 타겟 저장
   const saveSearchTerm = (term) => {
     const recentSearches = getRecentSearches();
     recentSearches.unshift(term); // 최근 검색어 배열의 맨 앞에 추가
@@ -143,7 +143,7 @@ const SearchBar = () => {
         pathname: '/search',
         search: `?search_keyword=${searchQuery.trim()}&search_target=${searchFilter}`,
       });
-      saveSearchTerm(searchQuery.trim());
+      saveSearchTerm({ term: searchQuery.trim(), target: searchFilter });
       // 검색창 focus 해제하기
       setIsFocused(false);
       // 페이지 이동시 강제 스크롤 이동
@@ -156,7 +156,6 @@ const SearchBar = () => {
 
   return (
     <>
-      <DarkOverlay isFocused={isFocused} onClick={() => setIsFocused(false)} />
       <SearchbarContainer
         onSubmit={searchSubmitHandler}
         onClick={handleFocused}
@@ -180,6 +179,7 @@ const SearchBar = () => {
           {isFocused && <SearchDropdown />}
         </div>
       </SearchbarContainer>
+      <DarkOverlay isFocused={isFocused} onClick={() => setIsFocused(false)} />
     </>
   );
 };
