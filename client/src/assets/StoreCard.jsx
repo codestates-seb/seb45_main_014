@@ -97,7 +97,7 @@ const StoreCard = ({ store }) => {
             </div>
           </div>
         ) : (
-          <div className="flex justify-between px-5">
+          <div className="flex justify-between pr-3">
             <div className="flex flex-col w-full">
               <div className="flex justify-between">
                 <h2>{store_name}</h2>
@@ -106,7 +106,7 @@ const StoreCard = ({ store }) => {
             </div>
             <div className="flex gap-2 h-full justify-center items-center">
               <img src={images.bookmarkOn} alt="별점" width={24} height={24} />
-              <h2 className="text-yellow-600 font-extrabold">
+              <h2 className="text-yellow-500 font-extrabold">
                 {formattedStoreRating}
               </h2>
             </div>
