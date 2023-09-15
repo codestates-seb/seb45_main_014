@@ -32,6 +32,7 @@ const Price = styled.div`
 
 const FavoriteStoreImage = styled(StoreImage)`
   width: 500px;
+  height: 300px;
 `;
 
 export const FavoriteStoreCard = ({ store }) => {
