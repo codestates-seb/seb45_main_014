@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 public class StoreDetailData extends StoreData {
     private String address;
-    private Long placeId;
+    private String phoneNum;
     private String introduction;
     private List<MenuDetailData> menus;
 }
