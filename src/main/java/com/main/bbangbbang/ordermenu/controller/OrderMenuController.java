@@ -35,7 +35,7 @@ public class OrderMenuController {
 
         orderMenuService.deleteOrderMenus(menuIds, order.getId());
         if (orderMenuService.findOrderMenus(order.getId()).size() == 0) {
-            order.setOrderStatus(OrderStatus.CREATED);
+            orderService.setOrderStatus(order, OrderStatus.CREATED);
         }
 
         return ResponseEntity.noContent().build();
