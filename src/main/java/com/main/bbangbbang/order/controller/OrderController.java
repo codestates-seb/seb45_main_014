@@ -18,10 +18,12 @@ import com.main.bbangbbang.store.service.StoreService;
 import com.main.bbangbbang.utils.PageInfo;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
+@Validated
 @RequestMapping("/api")
 public class OrderController { // jwt토큰 parsing하여 Member확인이 가능할 때까지 memberId = 1로 고정
     private final OrderService orderService;
@@ -64,7 +67,7 @@ public class OrderController { // jwt토큰 parsing하여 Member확인이 가능
 
     @PostMapping("/cart/{menu-id}")
     public ResponseEntity<?> addCart(@PathVariable("menu-id") Long menuId,
-                                     @RequestParam("quantity") Integer quantity,
+                                     @Positive @RequestParam("quantity") Integer quantity,
                                      @RequestParam(value = "new_order", defaultValue = "false") Boolean isNewOrder,
                                      Authentication authentication) {
         String email = authentication.getPrincipal().toString();
