@@ -5,7 +5,8 @@ const Dropdown = styled.div`
   position: absolute;
   top: 110%;
   width: 100%;
-  height: 300px;
+  min-height: 300px;
+  height: max-content;
   background-color: white;
   border: 2px solid #debe8f;
   border-radius: 10px;
@@ -56,14 +57,16 @@ const SearchDropdown = () => {
             최근 검색어가 없습니다.
           </li>
         ) : (
-          recentSearches.map((term, index) => (
-            <li
-              key={index}
-              className="text-gray-400 hover:bg-slate-100 py-1 px-2"
-            >
-              {term}
-            </li>
-          ))
+          recentSearches
+            .map((term, index) => (
+              <li
+                key={index}
+                className="text-gray-400 hover:bg-slate-100 py-1 px-2"
+              >
+                {term}
+              </li>
+            ))
+            .slice(0, 10)
         )}
       </ul>
     </Dropdown>
