@@ -14,7 +14,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import LoadingSpinner from '../../components/Loading.jsx';
 
 const Title = styled.h1`
-  padding: 1rem 0;
+  padding: 1rem;
 `;
 
 const Content = styled.div`
@@ -47,6 +47,7 @@ const MainPage = () => {
   const [stores, setStores] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
+  const [isFetching, setIsFetching] = useState(false); // 데이터 불러오는 중인지
 
   const settings = {
     dots: true,
@@ -58,37 +59,39 @@ const MainPage = () => {
     autoplaySpeed: 1500,
   };
 
-  const fetchData = useCallback(
-    (pageNumber) => {
-      axios
-        .get(`${process.env.REACT_APP_API_URL}/api/stores`, {
+  const fetchData = useCallback(async () => {
+    if (isFetching || !hasMore) return;
+
+    setIsFetching(true);
+
+    try {
+      const res = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/stores`,
+        {
           params: {
-            page: pageNumber,
+            page: page,
             size: 10,
           },
-        })
-        .then((res) => {
-          const newData = res.data.stores;
-          if (newData.length === 0) {
-            setHasMore(false);
-          } else {
-            setStores((prevData) => [...prevData, ...newData]);
-            if (newData.length < 10) {
-              setHasMore(false);
-            }
-            setPage(pageNumber + 1);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-          setHasMore(false);
-        });
-    },
-    [setStores, setHasMore, setPage],
-  );
+        },
+      );
+      const newData = res.data.stores;
+
+      if (newData.length === 0) {
+        setHasMore(false);
+      } else {
+        setStores((prevData) => [...prevData, ...newData]);
+        setPage((prevPage) => prevPage + 1);
+      }
+    } catch (err) {
+      console.log(err);
+      setHasMore(false);
+    } finally {
+      setIsFetching(false);
+    }
+  }, [page, isFetching, hasMore]);
 
   useEffect(() => {
-    fetchData(1);
+    fetchData(0);
   }, [fetchData]);
 
   return (
@@ -128,7 +131,7 @@ const MainPage = () => {
         </div>
         <InfiniteScroll
           dataLength={stores.length}
-          next={() => fetchData(page)}
+          next={() => fetchData(page + 1)}
           hasMore={hasMore}
           loader={
             <div className="flex justify-center pt-14">

@@ -73,7 +73,7 @@ const ShopInfo = ({ store }) => {
     return () => {
       document.head.removeChild(script);
     };
-  }, []);
+  }, [store.address, store.store_name]);
 
   const settings = {
     infinite: true,

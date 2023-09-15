@@ -63,8 +63,8 @@ const EditProfile = ({ onClose }) => {
                 <Input
                   type="text"
                   id="nickname"
-                  placeholder="빵돌이"
-                  required=""
+                  placeholder="10글자 이하로 입력하세요"
+                  maxLength="10"
                 />
               </InputBox>
               <div className="flex gap-4">
