@@ -59,7 +59,6 @@ const MyPage = () => {
   const [isImageModalOpen, setImageModalOpen] = useState(false);
 
   const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
   const [data, setData] = useState([]);
 
   const navigate = useNavigate();
@@ -75,7 +74,6 @@ const MyPage = () => {
     // 기존 탭 데이터 초기화
     setData([]);
     setPage(1);
-    setHasMore(true);
 
     // 각 탭 갯수 가져오기
     const fetchInitialData = async () => {
@@ -182,11 +180,6 @@ const MyPage = () => {
         if (currentTab === '즐겨찾기') {
           setFavoriteCount(response.data.pageInfo.total_elements);
         }
-
-        // 데이터가 없으면 더 이상 가져올 데이터가 없다고 설정
-        if (response.data[dataKey].length < 5) {
-          setHasMore(false);
-        }
       } catch (error) {
         console.error('데이터를 가져오는데 실패함', error);
       }
@@ -204,11 +197,6 @@ const MyPage = () => {
     }
   }, [accessToken, currentTab, isLoggedIn, navigate, page]);
 
-  // 무한 스크롤
-  const fetchMoreData = () => {
-    setPage((prevPage) => prevPage + 1);
-  };
-
   // 무한 스크롤에 사용할 컴포넌트
   const renderDataComponent = () => {
     if (currentTab === '리뷰 관리') {
@@ -216,7 +204,7 @@ const MyPage = () => {
     } else if (currentTab === '주문 내역') {
       return <Orders data={data} />;
     } else if (currentTab === '즐겨찾기') {
-      return <Favorites data={data} />;
+      return <Favorites />;
     }
   };
 
@@ -283,14 +271,7 @@ const MyPage = () => {
           </Link>
         </li>
       </TabContainer>
-      <InfiniteScroll
-        dataLength={data.length} // 현재 로딩된 데이터의 길이
-        next={fetchMoreData} // 추가 데이터를 로드하는 함수
-        hasMore={hasMore} // 더 가져올 데이터가 있는지 여부
-        loader={<LoadingSpinner />} // 로딩 중일 때 표시할 컴포넌트
-      >
-        <div className="flex justify-center">{renderDataComponent()}</div>
-      </InfiniteScroll>
+      <div className="flex justify-center">{renderDataComponent()}</div>
       {isEditProfileModalOpen && (
         <EditProfile onClose={closeEditProfileModal} />
       )}
