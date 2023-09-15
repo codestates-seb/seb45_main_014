@@ -14,5 +14,6 @@ public class StoreDetailData extends StoreData {
     private String address;
     private String phoneNum;
     private String introduction;
+    private String runningTime;
     private List<MenuDetailData> menus;
 }
