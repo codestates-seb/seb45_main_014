@@ -2,7 +2,6 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import StoreCard, { FavoriteStoreCard } from '../../assets/StoreCard.jsx';
-import storeData from '../../assets/data/storeData';
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
