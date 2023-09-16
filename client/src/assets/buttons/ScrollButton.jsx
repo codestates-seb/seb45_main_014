@@ -31,7 +31,9 @@ const ScrollBtnBottom = styled(ScrollBtn)`
 const ScrollButtonWithPosition = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
 
-  const threshold = 10;
+  // 스크롤 위치에 따라 버튼 보이기/숨기기
+  const threshold = 100;
+  const showButtonThreshold = 500;
 
   const handleScroll = () => {
     setScrollPosition(window.scrollY);
@@ -60,7 +62,7 @@ const ScrollButtonWithPosition = () => {
 
   return (
     <div>
-      {scrollPosition > 0 && (
+      {scrollPosition > showButtonThreshold && (
         <ScrollBtnTop type="ScrollBtn" onClick={scrollToTop}>
           <img src={top} alt="top" />
         </ScrollBtnTop>

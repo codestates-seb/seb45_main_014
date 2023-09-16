@@ -155,7 +155,7 @@ const Orders = () => {
         hasMore={hasMore} // 다음 데이터를 불러올 수 있는지
         loader={<LoadingComponent />}
       >
-        <div className="grid grid-flow-row-dense grid-cols-4 gap-4">
+        <div className="grid grid-flow-row-dense md:grid-cols-4 gap-4 sm:grid-cols-2">
           {data.map((item) => (
             <OrdersItem key={item.id} data={item} openModal={openModal} />
           ))}

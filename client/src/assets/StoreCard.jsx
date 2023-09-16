@@ -1,4 +1,5 @@
 import { useAuthStore, useBookmarkStore } from '../store/store';
+import { handleImgError } from '../utils/handleImgError';
 import images from './images/Images';
 import { StoreImage } from './Styles.jsx';
 import { Link } from 'react-router-dom';
@@ -12,7 +13,7 @@ const BookmarkButton = ({ is_favorite, id, accessToken }) => {
   };
 
   return (
-    <div className="absolute bottom-16 right-1 p-2 w-[40px] h-[40px] bg-black bg-opacity-50 rounded-full">
+    <div className="absolute bottom-16 right-1 p-2 w-[40px] h-[40px] bg-black bg-opacity-50 rounded-full hover:bg-opacity-100 transition duration-300 ease-in-out">
       <button onClick={handleBookmark}>
         <img
           src={is_favorite ? images.bookmarkOn : images.bookmarkOff}
@@ -71,7 +72,12 @@ const StoreCard = ({ store }) => {
     <div className="w-72 relative m-2">
       <Link to={`/stores/${id}`}>
         <div className=" overflow-hidden rounded-lg">
-          <StoreImage className="object-cover" src={img} alt="대표 이미지" />
+          <StoreImage
+            className="object-cover"
+            src={img}
+            alt="대표 이미지"
+            onError={handleImgError}
+          />
         </div>
       </Link>
       {is_favorite && (

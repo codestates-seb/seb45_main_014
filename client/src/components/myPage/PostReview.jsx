@@ -14,9 +14,14 @@ import { useState } from 'react';
 import axios from 'axios';
 import { CloseButton } from '../login/Login.jsx';
 import { useNavigate } from 'react-router-dom';
+import { RedButton } from '../../assets/buttons/RedButton.jsx';
 
 const PostReviewModal = styled(Modal)`
   width: 600px;
+
+  @media (max-width: 768px) {
+    max-width: 350px;
+  }
 `;
 
 const TextBox = styled.textarea`
@@ -60,6 +65,7 @@ const PostReview = ({ data, closeModal }) => {
   const { text, setText } = useByteSizeStore();
   const [isSubmitting, setIsSubmitting] = useState(false); // 전송 중 여부
   const { accessToken } = useAuthStore((state) => state);
+  const [isReviewSubmitted, setIsReviewSubmitted] = useState(false); // 리뷰 전송 여부
 
   const menu = data.order_menus;
   const orderDate = formatDate(data.created_at);
@@ -79,6 +85,10 @@ const PostReview = ({ data, closeModal }) => {
     }
   };
 
+  const handleDeleteImage = () => {
+    setSelectedImage(null);
+  };
+
   const handleTextChange = (e) => {
     const newText = e.target.value;
     if (newText.length <= MAX_BYTE_LIMIT) {
@@ -87,10 +97,13 @@ const PostReview = ({ data, closeModal }) => {
   };
 
   const handleCloseModal = () => {
+    if (isReviewSubmitted) {
+      return;
+    }
+
     setRating(0);
     setSelectedImage(null);
     setText('');
-
     closeModal(rating, selectedImage, text);
   };
 
@@ -146,7 +159,9 @@ const PostReview = ({ data, closeModal }) => {
           alert('리뷰가 업로드되었습니다.');
         }
         setIsSubmitting(false);
-        navigate('#review');
+        setIsReviewSubmitted(true);
+        handleCloseModal();
+        navigate('/mypage#review');
       }
     } catch (error) {
       alert(error.response.data.message);
@@ -200,6 +215,7 @@ const PostReview = ({ data, closeModal }) => {
                   alt="선택한 이미지"
                   className="w-20 h-20 object-cover"
                 />
+                <RedButton onClick={handleDeleteImage}>삭제</RedButton>
               </div>
             )}
           </div>

@@ -1,37 +1,39 @@
-import { styled } from 'styled-components';
+import React from 'react';
+import { styled, keyframes } from 'styled-components';
+
+const moveUpDown = keyframes`
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-30px);
+  }
+`;
 
 const LoadingContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 10vh;
 `;
 
-const LoadingSpinner = styled.div`
-  border: 16px solid #f3f3f3;
-  border-top: 16px solid #3498db;
+const Dot = styled.div`
+  width: 20px;
+  height: 20px;
+  margin: 5px;
+  background-color: #debe8f;
   border-radius: 50%;
-  width: 80px;
-  height: 80px;
-
-  animation: spin 2s linear infinite;
-
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
+  animation: ${moveUpDown} 1s linear infinite;
+  animation-delay: ${(props) => props.delay || '0s'};
 `;
 
-const LoadingComponent = () => {
+const LoadingDot = () => {
   return (
     <LoadingContainer>
-      <LoadingSpinner />
+      <Dot delay="0s" />
+      <Dot delay="0.3s" />
+      <Dot delay="0.6s" />
     </LoadingContainer>
   );
 };
 
-export default LoadingComponent;
+export default LoadingDot;

@@ -9,6 +9,7 @@ import axios from 'axios';
 import { useCartItemStore, useAuthStore } from './store/store';
 import AuthGoogle from './components/login/AuthGoogle.jsx';
 import { Toaster, useToasterStore, toast } from 'react-hot-toast';
+import LoadingComponent from './components/myPage/MyPageLoading.jsx';
 
 const NotFound = lazy(() => import('./pages/NotFound.jsx'));
 const MainPage = lazy(() => import('./pages/main/MainPage.jsx'));
@@ -60,7 +61,7 @@ function App() {
       <Header />
       <main className="w-full mx-auto min-h-screen">
         <ScrollButton />
-        <Suspense fallback={<LoadingSpinner />}>
+        <Suspense fallback={<LoadingComponent />}>
           <Routes>
             <Route path="*" element={<NotFound />} />
             <Route path="/" element={<MainPage />} />
