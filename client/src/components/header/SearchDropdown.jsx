@@ -1,6 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
 import { styled } from 'styled-components';
 import { useSearchStore } from '../../store/store';
+import { ReactComponent as ArrowSVG } from '../../assets/images/topleftarrow.svg';
+import { ReactComponent as SearchSVG } from '../../assets/images/searchicon.svg';
+import { ReactComponent as RemoveSVG } from '../../assets/images/deletebutton.svg';
 
 const Dropdown = styled.div`
   position: absolute;
@@ -13,21 +16,30 @@ const Dropdown = styled.div`
   border: 2px solid #debe8f;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  z-index: 100;
   overflow: hidden;
 `;
 
-const SearchDropdown = () => {
+const SearchDropdown = ({ searchInputRef, searchSubmitHandler }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState('recommended'); // 기본값은 추천 검색어
+  const [recentSearches, setRecentSearches] = useState(
+    JSON.parse(localStorage.getItem('recentSearches')) || [],
+  ); // 최근 검색어 목록
   const dropdownRef = useRef(null);
-  const { setSearchQuery } = useSearchStore();
+  const { setSearchQuery, setSearchFilter } = useSearchStore();
 
-  const setQuery = (term) => {
+  const setQueryAndFilter = (term, target) => {
     setSearchQuery(term);
+    setSearchFilter(target);
+    searchInputRef.current.focus();
   };
 
   const closeMenu = () => {
     setIsMenuOpen(false);
+  };
+
+  const toggleTab = (tab) => {
+    setActiveTab(tab);
   };
 
   useEffect(() => {
@@ -51,33 +63,141 @@ const SearchDropdown = () => {
     };
   }, [isMenuOpen]);
 
-  const recentSearches = JSON.parse(localStorage.getItem('recentSearches'));
+  // 추천 검색어 하드코딩하기
+  const recommendedSearches = [
+    { term: '가게', target: 'store' },
+    { term: '빵', target: 'menu' },
+    { term: '서울', target: 'region' },
+    { term: '케이크', target: 'menu' },
+  ];
+
+  const targetToKR = (target) => {
+    switch (target) {
+      case 'store':
+        return '가게명';
+      case 'region':
+        return '지역명';
+      case 'menu':
+        return '메뉴명';
+      default:
+        return '';
+    }
+  };
+
+  // 선택한 검색어로 검색하기
+  const handleSelectOption = (term, target) => {
+    setQueryAndFilter(term, target);
+    setIsMenuOpen(false);
+    searchSubmitHandler();
+  };
+
+  // 최근 검색어 삭제 함수
+  const deleteRecentSearch = (term, target) => {
+    const updatedRecentSearches = recentSearches.filter(
+      (item) => item.term !== term || item.target !== target,
+    );
+    setRecentSearches(updatedRecentSearches);
+    localStorage.setItem(
+      'recentSearches',
+      JSON.stringify(updatedRecentSearches),
+    );
+  };
+
+  // 항목 삭제 이벤트 핸들러
+  const handleDeleteRecentSearch = (term, target) => {
+    deleteRecentSearch(term, target);
+  };
 
   return (
     <Dropdown isOpen={isMenuOpen} ref={dropdownRef}>
-      <h2 className="bg-[#debe8f] px-2 py-1 text-white font-semibold text-sm">
-        최근 검색어
-      </h2>
+      <div className="flex h-7 bg-[#debe8f] text-white font-semibold text-sm border-b-2 border-[#debe8f] ">
+        <button
+          type="button"
+          onClick={() => toggleTab('recommended')}
+          className={`flex-1 ${
+            activeTab === 'recommended' ? 'bg-[#c6a276] active' : ''
+          }`}
+        >
+          추천 검색어
+        </button>
+        <button
+          type="button"
+          onClick={() => toggleTab('recent')}
+          className={`flex-1 ${
+            activeTab === 'recent' ? 'bg-[#c6a276] active' : ''
+          }`}
+        >
+          최근 검색어
+        </button>
+      </div>
       <ul className="text-sm">
-        {!recentSearches ? (
-          <li className="pt-4 text-center text-lg text-gray-300">
-            최근 검색어가 없습니다.
-          </li>
-        ) : (
-          recentSearches
-            .map((term, index) => (
-              <li
-                key={index}
-                role="presentation"
-                value={term}
-                className="text-gray-400 hover:bg-slate-100 py-1 px-2 cursor-pointer"
-                onClick={() => setQuery(term)}
+        {activeTab === 'recent' &&
+          (!recentSearches || recentSearches.length === 0 ? (
+            <li className="pt-4 text-center text-lg text-gray-300">
+              최근 검색어가 없습니다.
+            </li>
+          ) : (
+            recentSearches
+              .map((item, index) => (
+                <li
+                  key={index}
+                  role="presentation"
+                  value={item.term}
+                  className="text-gray-400 hover:bg-slate-100 py-1 px-2 cursor-pointer"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleSelectOption(item.term, item.target);
+                  }}
+                >
+                  <SearchSVG className="w-4 h-3 inline-block mr-1" />
+                  {item.term}
+                  <span className="text-gray-300 text-xs pl-1">
+                    ({targetToKR(item.target)})
+                  </span>
+                  <div
+                    className="inline-block absolute right-8"
+                    onClick={() => setQueryAndFilter(item.term, item.target)}
+                  >
+                    <ArrowSVG className="w-5 h-5" />
+                  </div>
+                  <div
+                    className="inline-block absolute right-2"
+                    onClick={(e) => {
+                      e.stopPropagation(); // 이벤트 전파 방지
+                      handleDeleteRecentSearch(item.term, item.target);
+                    }}
+                  >
+                    <RemoveSVG className="w-5 h-5" />
+                  </div>
+                </li>
+              ))
+              .slice(0, 10)
+          ))}
+        {activeTab === 'recommended' &&
+          recommendedSearches.map((item, index) => (
+            <li
+              key={index}
+              role="presentation"
+              value={item.term}
+              className="text-gray-400 hover:bg-slate-100 py-1 px-2 cursor-pointer"
+              onClick={(e) => {
+                e.preventDefault();
+                handleSelectOption(item.term, item.target);
+              }}
+            >
+              <SearchSVG className="w-4 h-3 inline-block mr-1" />
+              {item.term}
+              <span className="text-gray-300 text-xs pl-1">
+                ({targetToKR(item.target)})
+              </span>
+              <div
+                className="inline-block absolute right-1"
+                onClick={() => setQueryAndFilter(item.term, item.target)}
               >
-                {term}
-              </li>
-            ))
-            .slice(0, 10)
-        )}
+                <ArrowSVG className="w-5 h-5" />
+              </div>
+            </li>
+          ))}
       </ul>
     </Dropdown>
   );

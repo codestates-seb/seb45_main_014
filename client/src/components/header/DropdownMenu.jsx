@@ -51,7 +51,7 @@ const DropdownHeader = styled.label`
   text-align: center;
   border-radius: 10px;
   width: 70px;
-  height: 41px;
+  height: 40.59px;
   font-size: 14px;
   font-weight: 600;
   background-color: #debe8f;
@@ -59,12 +59,12 @@ const DropdownHeader = styled.label`
   color: white;
   cursor: pointer;
   &:hover {
-    background-color: #b3915f;
+    background-color: #c6a276;
   }
 `;
 
 const DropdownMenu = () => {
-  const { setSearchFilter } = useSearchStore();
+  const { setSearchFilter, searchFilter } = useSearchStore();
   const options = [
     { value: 'store', name: '가게명' },
     { value: 'region', name: '지역명' },
@@ -109,9 +109,21 @@ const DropdownMenu = () => {
     console.log(`searchFilter 값은 ${option.value}`);
   };
 
+  const searchFilterToKR = () => {
+    switch (searchFilter) {
+      case 'store':
+        return '가게명';
+      case 'region':
+        return '지역명';
+      case 'menu':
+        return '메뉴명';
+      default:
+        return '';
+    }
+  };
   return (
     <Wrapper onClick={handleToggleDropdown}>
-      <DropdownHeader>{selectedOption.name}</DropdownHeader>
+      <DropdownHeader>{searchFilterToKR() || selectedOption}</DropdownHeader>
       {isOpen && (
         <DropDownPosition>
           <DropdownWrapper isOpen={isOpen} ref={dropdownRef}>
