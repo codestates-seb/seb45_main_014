@@ -11,4 +11,5 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
     Page<Store> findByStoreNameContainingOrderByRatingDesc(String name, Pageable pageable);
     Page<Store> findByRegionIdInOrderByRatingDesc(List<Long> regionIds, Pageable pageable);
     Optional<Store> findByMenusIdOrderByRatingDesc(Long menuId);
+    long count();
 }
