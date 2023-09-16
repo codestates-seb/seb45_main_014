@@ -2,7 +2,6 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import StoreCard, { FavoriteStoreCard } from '../../assets/StoreCard.jsx';
-import storeData from '../../assets/data/storeData';
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -14,17 +13,13 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import LoadingSpinner from '../../components/Loading.jsx';
 
 const Title = styled.h1`
-  padding: 1rem 0;
+  padding: 1rem;
 `;
 
 const Content = styled.div`
   max-width: 1024px;
   margin: 0 auto 12px auto;
 `;
-
-export const getFavoriteStores = () => {
-  return storeData.filter((store) => store.is_favorite === true);
-};
 
 const HotPlace = ({ id, src }) => {
   return (
@@ -42,59 +37,87 @@ const HotPlace = ({ id, src }) => {
 };
 
 const MainPage = () => {
-  const favoriteStores = getFavoriteStores();
   const { isLoggedIn } = useAuthStore((state) => state);
   const [stores, setStores] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
+  const [isFetching, setIsFetching] = useState(false); // 데이터 불러오는 중인지
+
+  const { accessToken } = useAuthStore((state) => state);
+
+  const [favoriteStores, setFavoriteStores] = useState([]);
+  // 즐겨찾기 갯수가 0개면 즐겨찾기 섹션을 보여주지 않는다.
 
   const settings = {
     dots: true,
     infinite: true,
-    slidesToShow: 4,
+    slidesToShow: 2,
     slidesToScroll: 1,
 
     autoplay: true,
     autoplaySpeed: 1500,
   };
 
-  const fetchData = useCallback(
-    (pageNumber) => {
-      axios
-        .get(`${process.env.REACT_APP_API_URL}/api/stores`, {
+  // 즐겨찾기 불러오기
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/api/members/favorites`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          page: 1,
+          size: 8,
+        },
+      })
+      .then((res) => {
+        setFavoriteStores(res.data.stores);
+        console.log('메인 페이지 즐겨찾기', res.data.stores);
+      })
+      .catch((err) => {
+        console.log('메인 페이지 즐겨찾기 에러', err);
+      });
+  }, [accessToken]);
+
+  const fetchData = useCallback(async () => {
+    if (isFetching || !hasMore) return;
+
+    setIsFetching(true);
+
+    try {
+      const res = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/stores`,
+        {
           params: {
-            page: pageNumber,
+            page: page,
             size: 10,
           },
-        })
-        .then((res) => {
-          const newData = res.data.stores;
-          if (newData.length === 0) {
-            setHasMore(false);
-          } else {
-            setStores((prevData) => [...prevData, ...newData]);
-            if (newData.length < 10) {
-              setHasMore(false);
-            }
-            setPage(pageNumber + 1);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-          setHasMore(false);
-        });
-    },
-    [setStores, setHasMore, setPage],
-  );
+        },
+      );
+      const newData = res.data.stores;
+
+      if (newData.length === 0) {
+        setHasMore(false);
+      } else {
+        setStores((prevData) => [...prevData, ...newData]);
+        setPage((prevPage) => prevPage + 1);
+      }
+    } catch (err) {
+      console.log(err);
+      setHasMore(false);
+    } finally {
+      setIsFetching(false);
+    }
+  }, [page, isFetching, hasMore]);
 
   useEffect(() => {
-    fetchData(1);
+    fetchData(0);
   }, [fetchData]);
 
   return (
     <div className="h-full">
       {/* 즐겨찾기 */}
-      {isLoggedIn && (
+      {isLoggedIn && favoriteStores.length !== 0 && (
         <Content>
           <div className="flex justify-between">
             <Title>즐겨찾기</Title>
@@ -103,8 +126,8 @@ const MainPage = () => {
             </Title>
           </div>
           <Slider {...settings}>
-            {favoriteStores.map((store, index) => (
-              <FavoriteStoreCard store={store} key={index} />
+            {favoriteStores.map((store) => (
+              <FavoriteStoreCard store={store} key={store.id} />
             ))}
           </Slider>
         </Content>
@@ -128,7 +151,7 @@ const MainPage = () => {
         </div>
         <InfiniteScroll
           dataLength={stores.length}
-          next={() => fetchData(page)}
+          next={() => fetchData(page + 1)}
           hasMore={hasMore}
           loader={
             <div className="flex justify-center pt-14">

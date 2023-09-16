@@ -101,13 +101,8 @@ const MenuItem = ({ data }) => {
     }
   };
 
-  if (!isLoggedIn || !accessToken) {
-    alert('로그인이 필요합니다.');
-    return null; // null을 반환하여 아무것도 렌더링되지 않도록 수정
-  }
-
   return (
-    <div className="flex p-[10px] border-b">
+    <div className="flex px-[10px] py-[10px] border-b">
       <div className="xl:w-[750px]">
         <h3 className="xl:text-[25px]">{data.menu_name}</h3>
         <div className="xl:text-[15px]">{data.menu_desc}</div>

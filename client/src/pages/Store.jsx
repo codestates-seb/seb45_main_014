@@ -5,6 +5,7 @@ import MenuTab from '../components/store/MenuTab.jsx';
 import StoreReviewTab from '../components/store/StoreReviewTab.jsx';
 import axios from 'axios';
 import LoadingSpinner from '../components/Loading.jsx';
+import { useAuthStore } from '../store/store.js';
 
 const Store = () => {
   const { id } = useParams();
@@ -14,10 +15,43 @@ const Store = () => {
   const reviewRef = useRef(null);
   const apiUrl = process.env.REACT_APP_API_URL;
 
+  const { accessToken } = useAuthStore((state) => state);
+
+  //스크롤 위치에 따른 상태 추가
+  const [isMenuTabActive, setIsMenuTabActive] = useState(false);
+  const [isReviewTabActive, setIsReviewTabActive] = useState(false);
+
+  // handleScroll 함수 정의
+  const handleScroll = () => {
+    const scrollY = window.scrollY;
+    const stickyTabHeight = 43;
+
+    // null 체크 추가
+    if (menuRef.current && reviewRef.current) {
+      const menuTabOffset = menuRef.current.offsetTop - stickyTabHeight;
+      const reviewTabOffset = reviewRef.current.offsetTop - stickyTabHeight;
+
+      if (scrollY >= menuTabOffset && scrollY < reviewTabOffset) {
+        setIsMenuTabActive(true);
+        setIsReviewTabActive(false);
+      } else if (scrollY >= reviewTabOffset) {
+        setIsMenuTabActive(false);
+        setIsReviewTabActive(true);
+      } else {
+        setIsMenuTabActive(false);
+        setIsReviewTabActive(false);
+      }
+    }
+  };
+
   useEffect(() => {
     // 상점 정보
     axios
-      .get(`${apiUrl}/api/stores/${id}`)
+      .get(`${apiUrl}/api/stores/${id}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
       .then((res) => {
         setStoreData(res.data.store);
         console.log(res.data.store);
@@ -35,7 +69,14 @@ const Store = () => {
       .catch((err) => {
         console.error(err);
       });
-  }, [apiUrl, id]);
+
+    // 스크롤 이벤트 리스너 추가
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [accessToken, apiUrl, id]);
 
   if (!storeData) {
     return <LoadingSpinner />;
@@ -52,8 +93,12 @@ const Store = () => {
   return (
     <div className="flex flex-col relative">
       <ShopInfo store={storeData} />
-      <ul className="flex justify-center text-center w-[1070px] mx-auto border-b mb-1 sticky top-[65px] bg-white z-10">
-        <li className="w-full hover:bg-[#ccc] border-r py-3">
+      <ul className="flex justify-center text-center w-[1070px] mx-auto mb-1 sticky top-[65px] bg-white z-10">
+        <li
+          className={`w-full hover:bg-[#ccc] py-3 border-r ${
+            isMenuTabActive ? 'bg-[#ccc]' : 'border-b'
+          }`}
+        >
           <button
             className="block w-full cursor-pointer"
             onClick={() => scrollTo(menuRef)}
@@ -61,7 +106,11 @@ const Store = () => {
             메뉴 ({storeData.menus.length})
           </button>
         </li>
-        <li className="w-full hover:bg-[#ccc] py-3">
+        <li
+          className={`w-full hover:bg-[#ccc] py-3 ${
+            isReviewTabActive ? 'bg-[#ccc]' : 'border-b'
+          }`}
+        >
           <button
             className="block w-full cursor-pointer"
             onClick={() => scrollTo(reviewRef)}
@@ -71,8 +120,10 @@ const Store = () => {
         </li>
       </ul>
       <div className="flex flex-col mx-auto">
+        <span className="mt-[30px] mb-[10px] text-4xl ">매장 메뉴</span>
         <div ref={menuRef}></div>
         <MenuTab menuData={storeData.menus} />
+        <span className="mt-[30px] mb-[10px] text-4xl ">매장 리뷰</span>
         <div ref={reviewRef}></div>
         <StoreReviewTab reviewData={reviewData} />
       </div>

@@ -2,7 +2,7 @@ const reviewData = [
   {
     id: 1,
     store_id: 101,
-    nickname: '회원1',
+    nickname: '뒒뒘뤧뒒뒘뤧뒒뒘뤧뒒',
     order_id: 301,
     rating: 4,
     content:

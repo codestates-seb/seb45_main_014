@@ -2,12 +2,13 @@ import { styled } from 'styled-components';
 import Button from '../../assets/buttons/Button.jsx';
 import CheckBox from '../../components/cart/Checkbox.jsx';
 import CartItem from './CartItem.jsx';
-import { useState, useEffect } from 'react';
-import { useCartItemStore } from '../../store/store.js';
+import { useEffect, useState } from 'react';
+import { useAuthStore, useCartItemStore } from '../../store/store.js';
 import SubmitModal from './SubmitModal.jsx';
 import Dropdown from '../../assets/Dropdown.jsx';
 import { useCartApi } from '../../api/cart.js';
 import { toast } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const ShoppingCart = styled.div`
   width: 100%;
@@ -73,6 +74,16 @@ const Cart = () => {
   const { fetchCart, deleteCart, orderCart, orderSelectedCart } = useCartApi();
   const [maxItem, setMaxItem] = useState(0);
   const [checkedItem, setCheckedItem] = useState(0);
+  const { isLoggedIn, accessToken } = useAuthStore((state) => state);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLoggedIn || !accessToken) {
+      alert('로그인이 필요합니다.');
+      navigate('/');
+    }
+  }, [accessToken, isLoggedIn, navigate]);
 
   useEffect(() => {
     setCheckedItem(checkItem.length);

@@ -15,6 +15,10 @@ import axios from 'axios';
 import { CloseButton } from '../login/Login.jsx';
 import { useNavigate } from 'react-router-dom';
 
+const PostReviewModal = styled(Modal)`
+  width: 600px;
+`;
+
 const TextBox = styled.textarea`
   border: 1px solid #b6a280;
 `;
@@ -113,13 +117,19 @@ const PostReview = ({ data, closeModal }) => {
       );
 
       if (reviewResponse.status === 200) {
+        const reviewId = reviewResponse.data.review.id;
+
         if (selectedImage) {
           // 두 번째 요청: 이미지 업로드 (이미지가 선택된 경우에만 실행)
           const formData = new FormData();
-          formData.append('image', selectedImage);
+          formData.append('file', selectedImage);
+
+          console.log(
+            `Image File: ${selectedImage.name}, Size: ${selectedImage.size}, Type: ${selectedImage.type}`,
+          );
 
           const imageResponse = await axios.post(
-            `${apiUrl}/api/orders/${data.id}/reviews/images`,
+            `${apiUrl}/api/reviews/${reviewId}/image`,
             formData,
             {
               headers: {
@@ -136,10 +146,10 @@ const PostReview = ({ data, closeModal }) => {
           alert('리뷰가 업로드되었습니다.');
         }
         setIsSubmitting(false);
-        handleCloseModal();
-        navigate('/mypage#review');
+        navigate('#review');
       }
     } catch (error) {
+      alert(error.response.data.message);
       console.error(error);
       setIsSubmitting(false);
     }
@@ -148,7 +158,7 @@ const PostReview = ({ data, closeModal }) => {
   return (
     <>
       <ModalOverlay onClick={handleCloseModal} />
-      <Modal>
+      <PostReviewModal>
         <div className="max-w-screen-sm mx-auto flex flex-col gap-4">
           <CloseButton onClick={handleCloseModal}>×</CloseButton>
           <div className="flex justify-between">
@@ -200,7 +210,7 @@ const PostReview = ({ data, closeModal }) => {
             {isSubmitting ? '전송 중...' : '리뷰 작성'}
           </Button>
         </div>
-      </Modal>
+      </PostReviewModal>
     </>
   );
 };

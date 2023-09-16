@@ -1,18 +1,22 @@
 import { styled } from 'styled-components';
-import { useBookmarkStore } from '../../store/store.js';
+import { useAuthStore } from '../../store/store.js';
 import copy from 'clipboard-copy';
 import images from '../../assets/images/Images';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import StoreBanner from './StoreBanner.jsx';
 
 // 슬라이드 라이브러리
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import axios from 'axios';
+import { toast } from 'react-hot-toast';
 
 const ShopInfo = ({ store }) => {
-  const { isBookmarked, toggleBookmark } = useBookmarkStore();
   const currentUrl = window.location;
+  const { accessToken } = useAuthStore((state) => state);
+
+  const [isBookmarked, setIsBookmarked] = useState(store.is_favorite);
 
   const handleCopyUrl = () => {
     copy(currentUrl);
@@ -73,26 +77,51 @@ const ShopInfo = ({ store }) => {
     return () => {
       document.head.removeChild(script);
     };
-  }, []);
+  }, [store.address, store.store_name]);
 
-  const settings = {
-    infinite: true,
-    slidesToShow: 5,
-    slidesToScroll: 2,
+  // const settings = {
+  //   infinite: true,
+  //   slidesToShow: 2,
+  //   slidesToScroll: 1,
 
-    autoplay: true,
-    autoplaySpeed: 3500,
+  //   autoplay: true,
+  //   autoplaySpeed: 3500,
+  // };
+
+  const handleBookmark = () => {
+    axios
+      .post(
+        `${process.env.REACT_APP_API_URL}/api/members/favorites/${store.id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      )
+      .then((res) => {
+        setIsBookmarked(res.data.store.is_favorite);
+        if (res.data.store.is_favorite) {
+          toast.success('즐겨찾기에 추가되었습니다!');
+        } else {
+          toast.error('즐겨찾기에서 삭제되었습니다!');
+        }
+      })
+      .catch((err) => {
+        console.error('즐겨찾기 에러', err);
+      });
   };
 
   return (
     <div className="text-center">
       <div>
-        <div className="flex justify-center">
+        <div className="flex justify-center w-full">
           {/* <Slider {...settings} className="mb-10 w-11/12">
-            {storemenuData.map((menu, index) => (
+            {store.menus.map((menu, index) => (
               <StoreBanner menu={menu} key={index} />
             ))}
           </Slider> */}
+          <ShopBanner src={store.img} />
         </div>
         <div className="flex justify-center mb-6">
           {/* <img className="w-24" src={shop_logo} alt="매장 로고" /> */}
@@ -100,13 +129,14 @@ const ShopInfo = ({ store }) => {
         </div>
         <div className="flex justify-center space-x-8 mb-8">
           <StoreIntro>
-            <div className="flex text-4xl mb-3 pb-1.5 border-b">
-              <strong className="mr-3">매장 소개</strong>
+            <div className="flex text-2xl mb-3 pb-1.5 border-b">
+              <span className="mr-3">매장 소개</span>
               <div>
-                <button onClick={toggleBookmark}>
+                <button>
                   <ShopBookmarkIcon
                     src={isBookmarked ? images.bookmarkOn : images.bookmarkOff}
                     alt="즐겨찾기 아이콘"
+                    onClick={handleBookmark}
                   />
                 </button>
                 <button>
@@ -141,7 +171,7 @@ const ShopInfo = ({ store }) => {
               </div>
               <div className="flex mr-3 mb-6">
                 <p className="mr-2">매장 주소</p>
-                <p>{store.region_name}</p>
+                <p>{store.address}</p>
               </div>
               <div className="flex mr-6 ">
                 <p className="mr-2">매장 번호</p>
@@ -179,4 +209,14 @@ const StoreIntro = styled.div`
   flex-direction: column;
   text-align: left;
   border-radius: 8px;
+`;
+
+const ShopBanner = styled.img`
+  width: 100%;
+  height: 350px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  &:hover {
+    transform: scale(1.1);
+  }
 `;
