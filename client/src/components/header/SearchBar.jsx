@@ -96,21 +96,28 @@ const SearchBar = () => {
     setSearchQuery(query);
   };
 
-  const handleFocused = (e) => {
-    e.preventDefault();
+  const handleFocused = () => {
     setIsFocused(true);
   };
 
   // 로컬 스토리지에 검색어, 타겟 저장
   const saveSearchTerm = (term) => {
     const recentSearches = getRecentSearches();
-    recentSearches.unshift(term); // 최근 검색어 배열의 맨 앞에 추가
-    localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
 
-    // 최근 검색어를 10개까지만 저장(queue)
-    if (recentSearches.length > 10) {
-      recentSearches.pop();
+    // 중복 검색어 여부 확인
+    const isDuplicate = recentSearches.some(
+      (item) => item.term === term.term && item.target === term.target,
+    );
+
+    if (!isDuplicate) {
+      recentSearches.unshift(term); // 최근 검색어 배열의 맨 앞에 추가
       localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
+
+      // 최근 검색어를 10개까지만 저장(queue)
+      if (recentSearches.length > 10) {
+        recentSearches.pop();
+        localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
+      }
     }
   };
 
@@ -120,9 +127,7 @@ const SearchBar = () => {
     return recentSearches ? JSON.parse(recentSearches) : [];
   };
 
-  const searchSubmitHandler = (e) => {
-    e.preventDefault();
-
+  const searchSubmitHandler = () => {
     if (searchQuery.trim()) {
       navigate({
         pathname: '/search',
@@ -145,7 +150,10 @@ const SearchBar = () => {
   return (
     <>
       <SearchbarContainer
-        onSubmit={searchSubmitHandler}
+        onSubmit={(e) => {
+          e.preventDefault();
+          searchSubmitHandler();
+        }}
         onClick={handleFocused}
       >
         <div className="flex flex-1 justify-center z-[101]">
@@ -165,7 +173,12 @@ const SearchBar = () => {
             onChange={handleSearchQuery}
             value={searchQuery}
           ></SearchboxInput>
-          {isFocused && <SearchDropdown searchInputRef={searchInputRef} />}
+          {isFocused && (
+            <SearchDropdown
+              searchInputRef={searchInputRef}
+              searchSubmitHandler={searchSubmitHandler}
+            />
+          )}
         </div>
       </SearchbarContainer>
       <DarkOverlay isFocused={isFocused} onClick={() => setIsFocused(false)} />
