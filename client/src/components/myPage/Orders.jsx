@@ -52,7 +52,7 @@ const OrdersItem = ({ data, openModal, accessToken }) => {
   };
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center justify-center">
       <OrdersImage className="object-cover" src={menuImage} alt="loading" />
       <div className="flex flex-col w-full">
         <div>{data.store_name}</div>
@@ -67,12 +67,18 @@ const OrdersItem = ({ data, openModal, accessToken }) => {
           <div className="text-sm text-stone-500">{data.order_status}</div>
         </div>
       </div>
-      <Button onClick={() => openModal(data)} className="w-full">
-        리뷰 작성
-      </Button>
-      <RedButton onClick={openSubmitModal} className="w-full text-xs">
-        주문 내역 삭제
-      </RedButton>
+      <div className="flex w-full">
+        <div className="w-2/3">
+          {data.order_status === '픽업' && (
+            <Button onClick={() => openModal(data)} className="w-full">
+              리뷰 작성
+            </Button>
+          )}
+        </div>
+        <RedButton onClick={openSubmitModal} className="w-1/3 text-xs">
+          삭제
+        </RedButton>
+      </div>
       {isSubmitModalOpen && (
         <SubmitModal
           onClose={closeSubmitModal}
