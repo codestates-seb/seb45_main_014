@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import axios from 'axios';
+import { toast } from 'react-hot-toast';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -18,7 +19,9 @@ export const useBookmarkStore = create((set) => ({
       );
       const { is_favorite } = response.data.store;
       set({ isBookmarked: is_favorite === 'true' });
-      console.log('즐겨찾기', response.data.store);
+      is_favorite
+        ? toast.success('즐겨찾기에 추가되었습니다.')
+        : toast.error('즐겨찾기에서 삭제되었습니다.');
     } catch (error) {
       console.error('즐겨찾기 에러', error);
     }

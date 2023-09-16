@@ -9,6 +9,7 @@ import SubmitModal from '../../pages/cart/SubmitModal.jsx';
 import { useAuthStore } from '../../store/store.js';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import LoadingComponent from './MyPageLoading.jsx';
+import { toast } from 'react-hot-toast';
 
 const ReviewDetailStyle = styled.div`
   width: 100%;
@@ -39,6 +40,7 @@ const ReviewDetail = ({ data, accessToken }) => {
         },
       })
       .then((res) => {
+        toast.error('리뷰가 삭제되었습니다.');
         window.location.reload();
       })
       .catch((err) => console.log(err));
