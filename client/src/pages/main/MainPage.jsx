@@ -2,7 +2,6 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import StoreCard, { FavoriteStoreCard } from '../../assets/StoreCard.jsx';
-import storeData from '../../assets/data/storeData';
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -22,10 +21,6 @@ const Content = styled.div`
   margin: 0 auto 12px auto;
 `;
 
-export const getFavoriteStores = () => {
-  return storeData.filter((store) => store.is_favorite === true);
-};
-
 const HotPlace = ({ id, src }) => {
   return (
     <div className="relative w-72 cursor-pointer">
@@ -42,22 +37,47 @@ const HotPlace = ({ id, src }) => {
 };
 
 const MainPage = () => {
-  const favoriteStores = getFavoriteStores();
   const { isLoggedIn } = useAuthStore((state) => state);
   const [stores, setStores] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
   const [isFetching, setIsFetching] = useState(false); // 데이터 불러오는 중인지
 
+  const { accessToken } = useAuthStore((state) => state);
+
+  const [favoriteStores, setFavoriteStores] = useState([]);
+  // 즐겨찾기 갯수가 0개면 즐겨찾기 섹션을 보여주지 않는다.
+
   const settings = {
     dots: true,
     infinite: true,
-    slidesToShow: 4,
+    slidesToShow: 2,
     slidesToScroll: 1,
 
     autoplay: true,
     autoplaySpeed: 1500,
   };
+
+  // 즐겨찾기 불러오기
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/api/members/favorites`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          page: 1,
+          size: 8,
+        },
+      })
+      .then((res) => {
+        setFavoriteStores(res.data.stores);
+        console.log('메인 페이지 즐겨찾기', res.data.stores);
+      })
+      .catch((err) => {
+        console.log('메인 페이지 즐겨찾기 에러', err);
+      });
+  }, [accessToken]);
 
   const fetchData = useCallback(async () => {
     if (isFetching || !hasMore) return;
@@ -97,7 +117,7 @@ const MainPage = () => {
   return (
     <div className="h-full">
       {/* 즐겨찾기 */}
-      {isLoggedIn && (
+      {isLoggedIn && favoriteStores.length !== 0 && (
         <Content>
           <div className="flex justify-between">
             <Title>즐겨찾기</Title>
@@ -106,8 +126,8 @@ const MainPage = () => {
             </Title>
           </div>
           <Slider {...settings}>
-            {favoriteStores.map((store, index) => (
-              <FavoriteStoreCard store={store} key={index} />
+            {favoriteStores.map((store) => (
+              <FavoriteStoreCard store={store} key={store.id} />
             ))}
           </Slider>
         </Content>

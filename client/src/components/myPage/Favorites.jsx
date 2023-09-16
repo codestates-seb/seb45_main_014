@@ -28,11 +28,12 @@ const Favorites = () => {
         },
         params: {
           page: page,
-          size: 10,
+          size: 12,
         },
       })
       .then((res) => {
         setData((prevData) => [...prevData, ...res.data.stores]);
+        console.log('즐겨찾기 데이터', res.data.stores);
 
         if (res.data.stores.length < 10) {
           setHasMore(false);

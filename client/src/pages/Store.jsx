@@ -5,6 +5,7 @@ import MenuTab from '../components/store/MenuTab.jsx';
 import StoreReviewTab from '../components/store/StoreReviewTab.jsx';
 import axios from 'axios';
 import LoadingSpinner from '../components/Loading.jsx';
+import { useAuthStore } from '../store/store.js';
 
 const Store = () => {
   const { id } = useParams();
@@ -14,6 +15,8 @@ const Store = () => {
   const reviewRef = useRef(null);
   const apiUrl = process.env.REACT_APP_API_URL;
 
+  const { accessToken } = useAuthStore((state) => state);
+
   //스크롤 위치에 따른 상태 추가
   const [isMenuTabActive, setIsMenuTabActive] = useState(false);
   const [isReviewTabActive, setIsReviewTabActive] = useState(false);
@@ -22,26 +25,33 @@ const Store = () => {
   const handleScroll = () => {
     const scrollY = window.scrollY;
     const stickyTabHeight = 43;
-    const menuTabOffset = menuRef.current.offsetTop - stickyTabHeight;
-    const reviewTabOffset = reviewRef.current.offsetTop - stickyTabHeight;
 
-    // 메뉴 탭과 리뷰 탭의 위치를 기반으로 활성 탭 업데이트
-    if (scrollY >= menuTabOffset && scrollY < reviewTabOffset) {
-      setIsMenuTabActive(true);
-      setIsReviewTabActive(false);
-    } else if (scrollY >= reviewTabOffset) {
-      setIsMenuTabActive(false);
-      setIsReviewTabActive(true);
-    } else {
-      setIsMenuTabActive(false);
-      setIsReviewTabActive(false);
+    // null 체크 추가
+    if (menuRef.current && reviewRef.current) {
+      const menuTabOffset = menuRef.current.offsetTop - stickyTabHeight;
+      const reviewTabOffset = reviewRef.current.offsetTop - stickyTabHeight;
+
+      if (scrollY >= menuTabOffset && scrollY < reviewTabOffset) {
+        setIsMenuTabActive(true);
+        setIsReviewTabActive(false);
+      } else if (scrollY >= reviewTabOffset) {
+        setIsMenuTabActive(false);
+        setIsReviewTabActive(true);
+      } else {
+        setIsMenuTabActive(false);
+        setIsReviewTabActive(false);
+      }
     }
   };
 
   useEffect(() => {
     // 상점 정보
     axios
-      .get(`${apiUrl}/api/stores/${id}`)
+      .get(`${apiUrl}/api/stores/${id}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
       .then((res) => {
         setStoreData(res.data.store);
         console.log(res.data.store);
@@ -66,7 +76,7 @@ const Store = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [apiUrl, id]);
+  }, [accessToken, apiUrl, id]);
 
   if (!storeData) {
     return <LoadingSpinner />;

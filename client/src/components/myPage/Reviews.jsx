@@ -111,27 +111,30 @@ const Reviews = () => {
       });
   }, [accessToken, page]);
 
-  if (data.length === 0)
-    return (
-      <h1 className="h-[50vh] flex items-center justify-center">
-        작성하신 리뷰가 없습니다.
-      </h1>
-    );
-
   return (
     <div className="w-full">
-      <InfiniteScroll
-        dataLength={data.length} // 데이터 배열의 길이
-        next={fetchMoreData} // 다음 데이터를 불러오는 함수
-        hasMore={hasMore} // 다음 데이터를 불러올 수 있는지
-        loader={<LoadingComponent />}
-      >
-        <div className="w-full">
-          {data.map((item) => (
-            <ReviewDetail key={item.id} data={item} accessToken={accessToken} />
-          ))}
-        </div>
-      </InfiniteScroll>
+      {data.length === 0 ? (
+        <h1 className="h-[50vh] flex items-center justify-center">
+          작성하신 리뷰가 없습니다.
+        </h1>
+      ) : (
+        <InfiniteScroll
+          dataLength={data.length} // 데이터 배열의 길이
+          next={fetchMoreData} // 다음 데이터를 불러오는 함수
+          hasMore={hasMore} // 다음 데이터를 불러올 수 있는지
+          loader={<LoadingComponent />}
+        >
+          <div className="w-full">
+            {data.map((item) => (
+              <ReviewDetail
+                key={item.id}
+                data={item}
+                accessToken={accessToken}
+              />
+            ))}
+          </div>
+        </InfiniteScroll>
+      )}
     </div>
   );
 };

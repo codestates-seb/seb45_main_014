@@ -13,6 +13,11 @@ import { Modal, ModalOverlay } from '../../assets/Modal.jsx';
 import { useState } from 'react';
 import axios from 'axios';
 import { CloseButton } from '../login/Login.jsx';
+import { useNavigate } from 'react-router-dom';
+
+const PostReviewModal = styled(Modal)`
+  width: 600px;
+`;
 
 const TextBox = styled.textarea`
   border: 1px solid #b6a280;
@@ -60,6 +65,8 @@ const PostReview = ({ data, closeModal }) => {
   const orderDate = formatDate(data.created_at);
 
   const apiUrl = `${process.env.REACT_APP_API_URL}`;
+
+  const navigate = useNavigate();
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -139,9 +146,10 @@ const PostReview = ({ data, closeModal }) => {
           alert('리뷰가 업로드되었습니다.');
         }
         setIsSubmitting(false);
-        window.location.reload();
+        navigate('#review');
       }
     } catch (error) {
+      alert(error.response.data.message);
       console.error(error);
       setIsSubmitting(false);
     }
@@ -150,7 +158,7 @@ const PostReview = ({ data, closeModal }) => {
   return (
     <>
       <ModalOverlay onClick={handleCloseModal} />
-      <Modal>
+      <PostReviewModal>
         <div className="max-w-screen-sm mx-auto flex flex-col gap-4">
           <CloseButton onClick={handleCloseModal}>×</CloseButton>
           <div className="flex justify-between">
@@ -202,7 +210,7 @@ const PostReview = ({ data, closeModal }) => {
             {isSubmitting ? '전송 중...' : '리뷰 작성'}
           </Button>
         </div>
-      </Modal>
+      </PostReviewModal>
     </>
   );
 };
