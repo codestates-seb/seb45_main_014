@@ -59,13 +59,13 @@ const MainPage = () => {
       .get(`${process.env.REACT_APP_API_URL}/api/stores`, {
         params: {
           page: page,
-          size: 6,
+          size: 12,
         },
       })
       .then((res) => {
         setStores((prevData) => [...prevData, ...res.data.stores]);
 
-        if (res.data.stores.length < 6) {
+        if (res.data.stores.length < 12) {
           setHasMore(false);
         }
       })
