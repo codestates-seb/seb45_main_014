@@ -83,10 +83,36 @@ const CartItem = ({
   const { setCartItem, storeId, setCheckItem } = useCartItemStore();
   const { deleteCart, updateCart, fetchCart, getStock } = useCartApi();
   const [storeNum, setStoreNum] = useState(0);
+  const [stock, setStock] = useState(0);
+  const [storeName, setStoreName] = useState('');
 
   useEffect(() => {
     setStoreNum(storeId);
   }, [storeId]);
+
+  useEffect(() => {
+    const getStockData = async () => {
+      try {
+        const stock = await getStock(storeId, id);
+        setStock(stock);
+      } catch {
+        console.error('에러임');
+      }
+    };
+    getStockData();
+  }, [storeId, id, getStock]);
+
+  useEffect(() => {
+    const getStoredata = async () => {
+      try {
+        const storeName = await fetchCart().then((res) => res.store_name);
+        setStoreName(storeName);
+      } catch {
+        console.error('에러임');
+      }
+    };
+    getStoredata();
+  }, [fetchCart]);
 
   const quantityUp = async () => {
     const stock = await getStock(storeId, id);
@@ -152,7 +178,9 @@ const CartItem = ({
       </div>
       <div className="flex-1 ml-5">
         <Link to={`/stores/${storeNum}`}>
-          <p>{menuName}</p>
+          <p className="text-sm text-gray-400">{storeName}</p>
+          <p className="text-base font-semibold">{menuName}</p>
+          <p className="text-xs text-gray-400">남은 재고 : {stock} 개</p>
         </Link>
       </div>
       <ButtonBox>
