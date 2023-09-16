@@ -13,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -45,7 +44,6 @@ public class Store {
     private Long placeId;
 
     @Column(unique = true)
-    @Pattern(regexp = "\\d{10,11}$")
     private String phoneNum;
 
     @Column(length = 1000)
