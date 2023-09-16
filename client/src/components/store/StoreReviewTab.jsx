@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import ReactPaginate from 'react-paginate';
 import { styled } from 'styled-components';
 
-const StoreReviewTab = ({ reviewData }) => {
+const StoreReviewTab = ({ reviewData, scrollTo, reviewRef }) => {
   const itemsPerPage = 5; // 페이지당 항목 수 (원하는대로 수정)
 
   const [currentPage, setCurrentPage] = useState(0);
@@ -13,6 +13,7 @@ const StoreReviewTab = ({ reviewData }) => {
 
   const handlePageClick = (selectedPage) => {
     setCurrentPage(selectedPage.selected);
+    scrollTo(reviewRef);
   };
 
   const displayedReviews = reviewData.slice(offset, offset + itemsPerPage);
@@ -122,5 +123,27 @@ const CustomPaginate = styled.div`
 
   ul {
     display: flex;
+    color: #fff;
+  }
+
+  li {
+    padding: 6px 12px 6px 12px;
+    margin: 3px;
+    border-radius: 8px;
+
+    &:first-child {
+      background-color: #ffe3a9;
+    }
+    &:last-child {
+      background-color: #ffe3a9;
+    }
+  }
+  li:hover {
+    background-color: #ff8c8c;
+  }
+
+  li:active,
+  li.active {
+    background-color: #ffc3c3; /* 선택된(li.active) 상태의 배경색 변경 */
   }
 `;

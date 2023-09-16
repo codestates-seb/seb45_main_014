@@ -116,7 +116,11 @@ const Store = () => {
         <MenuTab menuData={storeData.menus} />
         <div ref={reviewRef}></div>
         <span className="mt-[30px] mb-[10px] text-4xl">매장 리뷰</span>
-        <StoreReviewTab reviewData={reviewData} />
+        <StoreReviewTab
+          reviewData={reviewData}
+          scrollTo={scrollTo}
+          reviewRef={reviewRef}
+        />
       </div>
     </div>
   );
