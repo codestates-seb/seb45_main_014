@@ -2,13 +2,43 @@ import images from '../../assets/images/Images.js';
 import { calculateDate } from '../../utils/calculateDate';
 import { useState, useEffect, useRef } from 'react';
 import ReactPaginate from 'react-paginate';
+import { styled } from 'styled-components';
 
 const StoreReviewTab = ({ reviewData }) => {
+  const itemsPerPage = 5; // 페이지당 항목 수 (원하는대로 수정)
+
+  const [currentPage, setCurrentPage] = useState(0);
+  const offset = currentPage * itemsPerPage;
+  const pageCount = Math.ceil(reviewData.length / itemsPerPage);
+
+  const handlePageClick = (selectedPage) => {
+    setCurrentPage(selectedPage.selected);
+  };
+
+  const displayedReviews = reviewData.slice(offset, offset + itemsPerPage);
+
   return (
     <div className="flex flex-col w-[1050px] mb-3">
-      {reviewData.map((review) => (
+      {displayedReviews.map((review) => (
         <ReviewItem key={review.id} data={review} />
       ))}
+
+      {/* 페이지네이션 추가 */}
+      <CustomPaginate>
+        <ReactPaginate
+          previousLabel={'이전'}
+          nextLabel={'다음'}
+          breakLabel={'...'}
+          breakClassName={'break-me'}
+          pageCount={pageCount}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={5}
+          onPageChange={handlePageClick}
+          containerClassName={'pagination'}
+          subContainerClassName={'pages pagination'}
+          activeClassName={'active'}
+        />
+      </CustomPaginate>
     </div>
   );
 };
@@ -85,3 +115,12 @@ export const ReviewItem = ({ data }) => {
     </div>
   );
 };
+
+const CustomPaginate = styled.div`
+  display: flex;
+  justify-content: center;
+
+  ul {
+    display: flex;
+  }
+`;
