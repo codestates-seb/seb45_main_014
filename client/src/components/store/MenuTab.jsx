@@ -103,9 +103,9 @@ const MenuItem = ({ data }) => {
 
   return (
     <div className="flex px-[10px] py-[10px] border-b">
-      <div className="xl:w-[750px]">
-        <h3 className="xl:text-[25px]">{data.menu_name}</h3>
-        <div className="xl:text-[15px]">{data.menu_desc}</div>
+      <div className="w-[750px]">
+        <h3 className="text-[25px]">{data.menu_name}</h3>
+        <div className="text-[15px]">{data.menu_desc}</div>
       </div>
       <div>
         <div
