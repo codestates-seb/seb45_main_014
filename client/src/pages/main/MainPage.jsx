@@ -116,11 +116,18 @@ const MainPage = () => {
               <Link to="/mypage#favorite">더보기</Link>
             </Title>
           </div>
-          <Slider {...settings}>
-            {favoriteStores.map((store) => (
-              <FavoriteStoreCard store={store} key={store.id} />
-            ))}
-          </Slider>
+          {/* 즐겨찾기가 1개면 슬라이더 미사용 */}
+          {favoriteStores.length === 1 ? (
+            <div className="flex justify-center">
+              <FavoriteStoreCard store={favoriteStores[0]} />
+            </div>
+          ) : (
+            <Slider {...settings}>
+              {favoriteStores.map((store) => (
+                <FavoriteStoreCard store={store} key={store.id} />
+              ))}
+            </Slider>
+          )}
         </Content>
       )}
 
