@@ -110,4 +110,7 @@ export const useAuthStore = create((set) => ({
       localStorage.removeItem('refresh_token');
     }
   },
+  guestLogin: () => {
+    set({ isLoggedIn: true });
+  },
 }));

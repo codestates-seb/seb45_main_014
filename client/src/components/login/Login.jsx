@@ -1,6 +1,7 @@
 import { GoogleBtn, GuestBtn, KakaoBtn } from './OauthBtn.jsx';
 import { styled } from 'styled-components';
 import { ModalOverlay, Modal } from '../../assets/Modal.jsx';
+import { useAuthStore } from '../../store/store.js';
 
 export const CloseButton = styled.button`
   position: absolute;
@@ -13,6 +14,12 @@ export const CloseButton = styled.button`
 `;
 
 const Login = ({ onClose }) => {
+  const { guestLogin } = useAuthStore((state) => state);
+
+  const handleGuestLogin = () => {
+    guestLogin();
+  };
+
   return (
     <>
       <ModalOverlay onClick={onClose} />
@@ -27,8 +34,8 @@ const Login = ({ onClose }) => {
           <section className="rounded-lg mt-5">
             <div>
               <GoogleBtn />
-              {/* <KakaoBtn />
-              <GuestBtn /> */}
+              {/* <KakaoBtn /> */}
+              <GuestBtn onClick={handleGuestLogin} />
             </div>
           </section>
         </div>

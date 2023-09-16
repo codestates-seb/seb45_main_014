@@ -72,6 +72,7 @@ const MainPage = () => {
       })
       .then((res) => {
         setFavoriteStores(res.data.stores);
+        console.log('메인 페이지 즐겨찾기', res.data.stores);
       })
       .catch((err) => {
         console.log('메인 페이지 즐겨찾기 에러', err);
