@@ -14,7 +14,7 @@ import { toast } from 'react-hot-toast';
 
 const ShopInfo = ({ store }) => {
   const currentUrl = window.location;
-  const { accessToken } = useAuthStore((state) => state);
+  const { isLoggedIn, accessToken } = useAuthStore((state) => state);
 
   const [isBookmarked, setIsBookmarked] = useState(store.is_favorite);
 
@@ -89,6 +89,11 @@ const ShopInfo = ({ store }) => {
   // };
 
   const handleBookmark = () => {
+    if (!isLoggedIn) {
+      toast.error('로그인이 필요한 서비스입니다.');
+      return;
+    }
+
     axios
       .post(
         `${process.env.REACT_APP_API_URL}/api/members/favorites/${store.id}`,
