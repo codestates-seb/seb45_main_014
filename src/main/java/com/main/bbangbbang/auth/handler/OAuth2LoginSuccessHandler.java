@@ -104,12 +104,11 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
         return UriComponentsBuilder
                 .newInstance()
-                .scheme("https")
-                .host("bbangorder.store")
+                .scheme("http")
+                .host("bbangorder.s3-website.ap-northeast-2.amazonaws.com")
 //                .host("localhost")
 //                .port(3000) // 추후 포트번호 변경 시 작성
                 .path("/auth/google")
-//                .path("/signin")
                 .queryParams(queryParams)
                 .build()
                 .toUri();
