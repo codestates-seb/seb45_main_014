@@ -5,6 +5,7 @@ import MenuTab from '../components/store/MenuTab.jsx';
 import StoreReviewTab from '../components/store/StoreReviewTab.jsx';
 import axios from 'axios';
 import LoadingSpinner from '../components/Loading.jsx';
+import { useAuthStore } from '../store/store.js';
 
 const Store = () => {
   const { id } = useParams();
@@ -14,6 +15,8 @@ const Store = () => {
   const reviewRef = useRef(null);
   const apiUrl = process.env.REACT_APP_API_URL;
 
+  const { accessToken } = useAuthStore((state) => state);
+
   //스크롤 위치에 따른 상태 추가
   const [isMenuTabActive, setIsMenuTabActive] = useState(false);
   const [isReviewTabActive, setIsReviewTabActive] = useState(false);
@@ -21,6 +24,7 @@ const Store = () => {
   // handleScroll 함수 정의
   const handleScroll = () => {
     const scrollY = window.scrollY;
+
     const stickyTabHeight = 106;
     if (menuRef.current && reviewRef.current) {
       const menuTabOffset = menuRef.current.offsetTop - stickyTabHeight;
@@ -42,7 +46,11 @@ const Store = () => {
   useEffect(() => {
     // 상점 정보
     axios
-      .get(`${apiUrl}/api/stores/${id}`)
+      .get(`${apiUrl}/api/stores/${id}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
       .then((res) => {
         setStoreData(res.data.store);
         console.log(res.data.store);
@@ -67,7 +75,7 @@ const Store = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [apiUrl, id]);
+  }, [accessToken, apiUrl, id]);
 
   if (!storeData) {
     return <LoadingSpinner />;

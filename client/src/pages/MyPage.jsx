@@ -58,12 +58,6 @@ const MyPage = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!isLoggedIn || !accessToken) {
-      navigate('/');
-    }
-  }, [accessToken, isLoggedIn, navigate]);
-
   // 데이터 가져오기
   useEffect(() => {
     // 각 탭 갯수 가져오기

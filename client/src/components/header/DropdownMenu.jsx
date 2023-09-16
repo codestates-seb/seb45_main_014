@@ -3,6 +3,8 @@ import { useSearchStore } from '../../store/store';
 import { useState, useEffect, useRef } from 'react';
 
 const Wrapper = styled.div`
+  position: absolute;
+  left: 0;
   padding-right: 4px;
 `;
 
@@ -20,7 +22,7 @@ const DropDownPosition = styled.div`
   width: 70px;
   height: 200px;
   overflow: hidden;
-  z-index: 1;
+  z-index: 1000;
 `;
 
 const DropdownWrapper = styled.ul`
@@ -49,20 +51,20 @@ const DropdownHeader = styled.label`
   text-align: center;
   border-radius: 10px;
   width: 70px;
-  height: 41px;
+  height: 40.59px;
   font-size: 14px;
   font-weight: 600;
   background-color: #debe8f;
-  z-index: 1;
+  z-index: 1000;
   color: white;
   cursor: pointer;
   &:hover {
-    background-color: #b3915f;
+    background-color: #c6a276;
   }
 `;
 
 const DropdownMenu = () => {
-  const { setSearchFilter } = useSearchStore();
+  const { setSearchFilter, searchFilter } = useSearchStore();
   const options = [
     { value: 'store', name: '가게명' },
     { value: 'region', name: '지역명' },
@@ -107,9 +109,21 @@ const DropdownMenu = () => {
     console.log(`searchFilter 값은 ${option.value}`);
   };
 
+  const searchFilterToKR = () => {
+    switch (searchFilter) {
+      case 'store':
+        return '가게명';
+      case 'region':
+        return '지역명';
+      case 'menu':
+        return '메뉴명';
+      default:
+        return '';
+    }
+  };
   return (
     <Wrapper onClick={handleToggleDropdown}>
-      <DropdownHeader>{selectedOption.name}</DropdownHeader>
+      <DropdownHeader>{searchFilterToKR() || selectedOption}</DropdownHeader>
       {isOpen && (
         <DropDownPosition>
           <DropdownWrapper isOpen={isOpen} ref={dropdownRef}>

@@ -69,15 +69,10 @@ export const KakaoBtn = () => {
 };
 
 export const GuestBtn = () => {
-  const guestLogin = () => {
-    window.location.href = 'http://.../oauth2/authorization/guest';
-  };
-
   return (
     <OauthBtn
       bgColor="#2e2e2e"
       color="#f6f6f2"
-      onClick={guestLogin}
       icon={<ImManWoman />}
       text="게스트 계정으로 로그인하기"
     />

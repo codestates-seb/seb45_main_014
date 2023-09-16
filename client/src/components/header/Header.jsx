@@ -5,11 +5,7 @@ import SearchBar from './SearchBar.jsx';
 import Login from '../login/Login.jsx';
 import UserMenu from './Usermenu.jsx';
 import Greeting from './Greeting.jsx';
-import {
-  useModalStore,
-  useCartItemStore,
-  useAuthStore,
-} from '../../store/store.js';
+import { useCartItemStore, useAuthStore } from '../../store/store.js';
 import { ReactComponent as CartIcon } from '../../assets/images/cart.svg';
 import { useEffect, useState } from 'react';
 
@@ -49,7 +45,7 @@ const MenuBox = styled.div`
 `;
 
 const SearchBox = styled.div`
-  flex: 1;
+  width: fit-content;
   justify-content: center;
   align-items: center;
 `;
@@ -98,11 +94,21 @@ const ItemBadge = styled.span`
 `;
 
 const Header = () => {
-  const { isModalOpen, openModal, closeModal } = useModalStore();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { isLoggedIn } = useAuthStore();
   // Zustand에서 cartItem을 가져옴
   const { cartItem } = useCartItemStore();
   const [itemCount, setItemCount] = useState(0);
+
+  const openModal = (e) => {
+    e.preventDefault();
+    setIsModalOpen(true);
+  };
+
+  const closeModal = (e) => {
+    e.preventDefault();
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     setItemCount(cartItem.length);
