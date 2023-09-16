@@ -69,6 +69,7 @@ public class ReviewService {
     public void deleteReview(Long reviewId) {
         Review review = reviewRepository.findById(reviewId).orElseThrow(NoSuchElementException::new);
         reviewRepository.delete(review);
+        review.getOrder().setOrderStatus(OrderStatus.PICKUP);
     }
 
     @Transactional
