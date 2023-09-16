@@ -11,6 +11,7 @@ import images from '../../assets/images/Images.js';
 import { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import LoadingComponent from '../../components/myPage/MyPageLoading.jsx';
+import { handleImgError } from '../../utils/handleImgError.js';
 
 const Title = styled.h1`
   padding: 1rem;
