@@ -8,9 +8,9 @@ import axios from 'axios';
 import { useAuthStore } from '../../store/store.js';
 import { StoreImage } from '../../assets/Styles.jsx';
 import images from '../../assets/images/Images.js';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import LoadingSpinner from '../../components/Loading.jsx';
+import LoadingComponent from '../../components/myPage/MyPageLoading.jsx';
 
 const Title = styled.h1`
   padding: 1rem;
@@ -41,12 +41,38 @@ const MainPage = () => {
   const [stores, setStores] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
-  const [isFetching, setIsFetching] = useState(false); // 데이터 불러오는 중인지
 
   const { accessToken } = useAuthStore((state) => state);
 
   const [favoriteStores, setFavoriteStores] = useState([]);
-  // 즐겨찾기 갯수가 0개면 즐겨찾기 섹션을 보여주지 않는다.
+
+  const fetchMoreData = () => {
+    setTimeout(() => {
+      setPage((prevPage) => prevPage + 1);
+    }, 1000);
+  };
+
+  useEffect(() => {
+    setHasMore(true);
+
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/api/stores`, {
+        params: {
+          page: page,
+          size: 6,
+        },
+      })
+      .then((res) => {
+        setStores((prevData) => [...prevData, ...res.data.stores]);
+
+        if (res.data.stores.length < 6) {
+          setHasMore(false);
+        }
+      })
+      .catch((err) => {
+        console.log('빵집 추천 에러', err);
+      });
+  }, [page]);
 
   const settings = {
     dots: true,
@@ -72,47 +98,11 @@ const MainPage = () => {
       })
       .then((res) => {
         setFavoriteStores(res.data.stores);
-        console.log('메인 페이지 즐겨찾기', res.data.stores);
       })
       .catch((err) => {
         console.log('메인 페이지 즐겨찾기 에러', err);
       });
   }, [accessToken]);
-
-  const fetchData = useCallback(async () => {
-    if (isFetching || !hasMore) return;
-
-    setIsFetching(true);
-
-    try {
-      const res = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/stores`,
-        {
-          params: {
-            page: page,
-            size: 10,
-          },
-        },
-      );
-      const newData = res.data.stores;
-
-      if (newData.length === 0) {
-        setHasMore(false);
-      } else {
-        setStores((prevData) => [...prevData, ...newData]);
-        setPage((prevPage) => prevPage + 1);
-      }
-    } catch (err) {
-      console.log(err);
-      setHasMore(false);
-    } finally {
-      setIsFetching(false);
-    }
-  }, [page, isFetching, hasMore]);
-
-  useEffect(() => {
-    fetchData(0);
-  }, [fetchData]);
 
   return (
     <div className="h-full">
@@ -151,11 +141,11 @@ const MainPage = () => {
         </div>
         <InfiniteScroll
           dataLength={stores.length}
-          next={() => fetchData(page + 1)}
+          next={fetchMoreData}
           hasMore={hasMore}
           loader={
             <div className="flex justify-center pt-14">
-              <LoadingSpinner position="static" />
+              <LoadingComponent />
             </div>
           }
         >
