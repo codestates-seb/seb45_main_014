@@ -1,60 +1,50 @@
 import images from '../../assets/images/Images.js';
 import { calculateDate } from '../../utils/calculateDate';
 import { useState, useEffect, useRef } from 'react';
+import ReactPaginate from 'react-paginate';
+import { styled } from 'styled-components';
 
-const StoreReviewTab = ({ reviewData }) => {
-  const reviewsPerPage = 5; // 페이지당 보여줄 리뷰 수
-  const [currentPage, setCurrentPage] = useState(1);
+const StoreReviewTab = ({ reviewData, scrollTo, reviewRef }) => {
+  const itemsPerPage = 5; // 페이지당 항목 수 (원하는대로 수정)
 
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
+  const [currentPage, setCurrentPage] = useState(0);
+  const offset = currentPage * itemsPerPage;
+  const pageCount = Math.ceil(reviewData.length / itemsPerPage);
+
+  const handlePageClick = (selectedPage) => {
+    setCurrentPage(selectedPage.selected);
+    scrollTo(reviewRef);
   };
 
-  // 현재 페이지에 해당하는 리뷰 추출
-  const startIndex = (currentPage - 1) * reviewsPerPage;
-  const endIndex = startIndex + reviewsPerPage;
-  const currentReviews = reviewData.slice(startIndex, endIndex);
+  const displayedReviews = reviewData.slice(offset, offset + itemsPerPage);
 
   return (
     <div className="flex flex-col w-[1050px] mb-3">
-      {currentReviews.map((review) => (
+      {displayedReviews.map((review) => (
         <ReviewItem key={review.id} data={review} />
       ))}
-      <Pagination
-        currentPage={currentPage}
-        totalPages={Math.ceil(reviewData.length / reviewsPerPage)}
-        onPageChange={handlePageChange}
-      />
+
+      {/* 페이지네이션 추가 */}
+      <CustomPaginate>
+        <ReactPaginate
+          previousLabel={'이전'}
+          nextLabel={'다음'}
+          breakLabel={'...'}
+          breakClassName={'break-me'}
+          pageCount={pageCount}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={5}
+          onPageChange={handlePageClick}
+          containerClassName={'pagination'}
+          subContainerClassName={'pages pagination'}
+          activeClassName={'active'}
+        />
+      </CustomPaginate>
     </div>
   );
 };
 
 export default StoreReviewTab;
-
-const Pagination = ({ currentPage, totalPages, onPageChange }) => {
-  const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
-
-  return (
-    <div className="flex justify-center mt-3">
-      <ul className="flex">
-        {pageNumbers.map((page) => (
-          <li key={page} className="mr-2">
-            <button
-              onClick={() => onPageChange(page)}
-              className={`${
-                page === currentPage
-                  ? 'bg-[#DEBE8F] text-white'
-                  : 'bg-white text-black'
-              } w-[30px] h-[30px] pt-[3px] rounded-lg hover:bg-[#f5d3a0] text-center`}
-            >
-              {page}
-            </button>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
 
 export const Stars = ({ rating, readOnly }) => {
   return (
@@ -126,3 +116,34 @@ export const ReviewItem = ({ data }) => {
     </div>
   );
 };
+
+const CustomPaginate = styled.div`
+  display: flex;
+  justify-content: center;
+
+  ul {
+    display: flex;
+    color: #fff;
+  }
+
+  li {
+    padding: 6px 12px 6px 12px;
+    margin: 3px;
+    border-radius: 8px;
+
+    &:first-child {
+      background-color: #ffe3a9;
+    }
+    &:last-child {
+      background-color: #ffe3a9;
+    }
+  }
+  li:hover {
+    background-color: #ff8c8c;
+  }
+
+  li:active,
+  li.active {
+    background-color: #ffc3c3; /* 선택된(li.active) 상태의 배경색 변경 */
+  }
+`;
