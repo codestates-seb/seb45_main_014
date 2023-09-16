@@ -1,60 +1,19 @@
 import images from '../../assets/images/Images.js';
 import { calculateDate } from '../../utils/calculateDate';
 import { useState, useEffect, useRef } from 'react';
+import ReactPaginate from 'react-paginate';
 
 const StoreReviewTab = ({ reviewData }) => {
-  const reviewsPerPage = 5; // 페이지당 보여줄 리뷰 수
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
-
-  // 현재 페이지에 해당하는 리뷰 추출
-  const startIndex = (currentPage - 1) * reviewsPerPage;
-  const endIndex = startIndex + reviewsPerPage;
-  const currentReviews = reviewData.slice(startIndex, endIndex);
-
   return (
     <div className="flex flex-col w-[1050px] mb-3">
-      {currentReviews.map((review) => (
+      {reviewData.map((review) => (
         <ReviewItem key={review.id} data={review} />
       ))}
-      <Pagination
-        currentPage={currentPage}
-        totalPages={Math.ceil(reviewData.length / reviewsPerPage)}
-        onPageChange={handlePageChange}
-      />
     </div>
   );
 };
 
 export default StoreReviewTab;
-
-const Pagination = ({ currentPage, totalPages, onPageChange }) => {
-  const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
-
-  return (
-    <div className="flex justify-center mt-3">
-      <ul className="flex">
-        {pageNumbers.map((page) => (
-          <li key={page} className="mr-2">
-            <button
-              onClick={() => onPageChange(page)}
-              className={`${
-                page === currentPage
-                  ? 'bg-[#DEBE8F] text-white'
-                  : 'bg-white text-black'
-              } w-[30px] h-[30px] pt-[3px] rounded-lg hover:bg-[#dabd92] text-center`}
-            >
-              {page}
-            </button>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
 
 export const Stars = ({ rating, readOnly }) => {
   return (
