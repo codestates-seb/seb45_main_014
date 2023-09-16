@@ -140,6 +140,7 @@ const MainPage = () => {
           <Title className="flex">이 달의 빵집 추천</Title>
         </div>
         <InfiniteScroll
+          style={{ overflow: 'hidden' }}
           dataLength={stores.length}
           next={fetchMoreData}
           hasMore={hasMore}
