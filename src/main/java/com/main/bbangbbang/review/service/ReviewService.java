@@ -7,6 +7,7 @@ import com.main.bbangbbang.order.entity.Order.OrderStatus;
 import com.main.bbangbbang.review.dto.ReviewRequestDto;
 import com.main.bbangbbang.review.entity.Review;
 import com.main.bbangbbang.review.repository.ReviewRepository;
+import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -68,5 +69,11 @@ public class ReviewService {
     public void deleteReview(Long reviewId) {
         Review review = reviewRepository.findById(reviewId).orElseThrow(NoSuchElementException::new);
         reviewRepository.delete(review);
+    }
+
+    @Transactional
+    public List<Review> findAllReviewsByStore(long storeId) {
+
+        return reviewRepository.findByStoreId(storeId);
     }
 }
