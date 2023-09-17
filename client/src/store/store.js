@@ -22,7 +22,9 @@ export const useBookmarkStore = create((set) => ({
       is_favorite
         ? toast.success('즐겨찾기에 추가되었습니다.')
         : toast.error('즐겨찾기에서 삭제되었습니다.');
-      window.location.reload();
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     } catch (error) {
       console.error('즐겨찾기 에러', error);
     }
