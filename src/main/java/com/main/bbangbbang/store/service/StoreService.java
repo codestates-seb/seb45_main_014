@@ -39,7 +39,7 @@ public class StoreService {
 
     @Transactional(readOnly = true)
     public Page<Store> findStores(int page, int size) {
-        return storeRepository.findAll(PageRequest.of(page-1, size));
+        return storeRepository.findAllByOrderByRatingDesc(PageRequest.of(page-1, size));
     }
 
     @Transactional(readOnly = true)
@@ -64,6 +64,8 @@ public class StoreService {
     public void updateRating(long storeId, float rating) {
         Store store = storeRepository.findById(storeId).orElseThrow(
                 () -> new BusinessLogicException(ExceptionCode.NO_ITEM));
-        store.setRating(rating);
+        if (store.getRating() != rating) {
+            store.setRating(rating);
+        }
     }
 }

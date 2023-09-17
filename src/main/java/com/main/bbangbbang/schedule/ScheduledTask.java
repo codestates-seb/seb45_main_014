@@ -35,6 +35,6 @@ public class ScheduledTask {
         for (Review review : reviews) {
             totalRating += review.getRating();
         }
-        return Math.round(totalRating / reviews.size());
+        return Math.round(totalRating / reviews.size() * 10) / 10f;
     }
 }
