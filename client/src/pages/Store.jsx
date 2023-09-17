@@ -80,7 +80,7 @@ const Store = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [accessToken, apiUrl, id, isLoggedIn]);
+  }, [accessToken, apiUrl, guest, id, isLoggedIn]);
 
   if (!storeData) {
     return <LoadingSpinner />;
