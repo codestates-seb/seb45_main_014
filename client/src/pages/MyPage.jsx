@@ -147,6 +147,25 @@ const MyPage = () => {
     setImageModalOpen(false);
   };
 
+  // 회원 탈퇴
+  const deleteMember = () => {
+    if (window.confirm('정말 회원 탈퇴하시겠습니까?')) {
+      axios
+        .delete(`${process.env.REACT_APP_API_URL}/api/member`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then((res) => {
+          alert('회원 탈퇴가 완료되었습니다.');
+          navigate('/');
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  };
+
   // 해시값 인식 후 초기 렌더링 시 해시 값에 따라 탭 변경
   useEffect(() => {
     const hash = window.location.hash;
@@ -165,19 +184,18 @@ const MyPage = () => {
             className="flex justify-center items-center border-2 w-28 rounded-full"
           ></img>
           <div className="flex flex-col justify-center gap-2">
-            <h1 className="">{member.nickname}</h1>
+            <h1>{member.nickname}</h1>
             <div>가입일: {formatDate(member.createdAt)}</div>
             <div className="flex gap-2">
-              <Button className="" onClick={openImageModal}>
-                이미지 변경
-              </Button>
-              <Button className="" onClick={openEditProfileModal}>
-                프로필 수정
-              </Button>
+              <Button onClick={openImageModal}>이미지 변경</Button>
+              <Button onClick={openEditProfileModal}>프로필 수정</Button>
             </div>
           </div>
         </div>
-        <RedButton className="absolute right-0 bottom-0 h-1/3">
+        <RedButton
+          onClick={deleteMember}
+          className="absolute right-0 bottom-0 h-1/3"
+        >
           회원 탈퇴
         </RedButton>
       </div>
