@@ -47,7 +47,9 @@ const TabContainer = styled.ul`
 
 const MyPage = () => {
   const [currentTab, setCurrentTab] = useState('리뷰 관리');
-  const { isLoggedIn, accessToken } = useAuthStore((state) => state);
+  const { isLoggedIn, accessToken, deleteMember } = useAuthStore(
+    (state) => state,
+  );
   const [member, setMember] = useState([]);
 
   const [reviewCount, setReviewCount] = useState(0);
@@ -145,25 +147,6 @@ const MyPage = () => {
   };
   const closeImageModal = () => {
     setImageModalOpen(false);
-  };
-
-  // 회원 탈퇴
-  const deleteMember = () => {
-    if (window.confirm('정말 회원 탈퇴하시겠습니까?')) {
-      axios
-        .delete(`${process.env.REACT_APP_API_URL}/api/member`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        })
-        .then((res) => {
-          alert('회원 탈퇴가 완료되었습니다.');
-          navigate('/');
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
   };
 
   // 해시값 인식 후 초기 렌더링 시 해시 값에 따라 탭 변경

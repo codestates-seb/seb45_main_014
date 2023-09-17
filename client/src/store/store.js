@@ -22,6 +22,8 @@ export const useBookmarkStore = create((set) => ({
       is_favorite
         ? toast.success('즐겨찾기에 추가되었습니다.')
         : toast.error('즐겨찾기에서 삭제되었습니다.');
+
+      window.location.hash = '#favorite';
     } catch (error) {
       console.error('즐겨찾기 에러', error);
     }
@@ -116,5 +118,23 @@ export const useAuthStore = create((set) => ({
   },
   guestLogin: () => {
     set({ isLoggedIn: true });
+  },
+  // 회원 탈퇴
+  deleteMember: async () => {
+    try {
+      await axios.delete(`${apiUrl}/api/member`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+        },
+      });
+      toast.success('회원 탈퇴 되었습니다.');
+      window.location.href = '/';
+    } catch (error) {
+      console.error(error);
+    } finally {
+      set({ isLoggedIn: false, accessToken: null, refreshToken: null });
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+    }
   },
 }));
