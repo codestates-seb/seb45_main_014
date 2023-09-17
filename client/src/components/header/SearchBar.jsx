@@ -12,6 +12,10 @@ const SearchbarContainer = styled.form`
   display: flex;
   justify-content: center;
   position: relative;
+  width: 80%;
+  @media screen and (max-width: 1045px) {
+    width: 100%;
+  }
 `;
 
 const SearchboxInput = styled.input`

@@ -58,10 +58,9 @@ const MenuBox = styled.div`
 const SearchBox = styled.div`
   flex: 2;
   /* width: fit-content; */
+  display: flex;
   justify-content: center;
-  align-items: center;
   @media screen and (max-width: 700px) {
-    display: block;
     /* 화면 너비가 좁아질 때 placeholder 텍스트 숨기기 */
     input::placeholder {
       visibility: hidden;
