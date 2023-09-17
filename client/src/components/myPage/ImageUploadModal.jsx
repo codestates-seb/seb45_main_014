@@ -47,6 +47,10 @@ const ImageUploadModal = ({ onClose }) => {
     };
   };
 
+  const handleFileClick = () => {
+    inputRef.current.click();
+  };
+
   return (
     <>
       <ModalOverlay onClick={onClose} />
@@ -61,11 +65,14 @@ const ImageUploadModal = ({ onClose }) => {
             )}
           </div>
           <input
-            className="w-2/3"
+            className="hidden"
             type="file"
             ref={inputRef}
             onChange={handlePreview}
           />
+          <Button type="button" onClick={handleFileClick}>
+            이미지 선택
+          </Button>
           <div className="flex gap-4">
             <Button type="submit">업로드</Button>
             <CancelButton type="button" onClick={onClose}>

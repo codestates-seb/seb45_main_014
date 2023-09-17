@@ -10,7 +10,7 @@ import { StoreImage } from '../../assets/Styles.jsx';
 import Button from '../../assets/buttons/Button.jsx';
 import formatDate from '../../utils/formatDate.js';
 import { Modal, ModalOverlay } from '../../assets/Modal.jsx';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import axios from 'axios';
 import { CloseButton } from '../login/Login.jsx';
 import { useNavigate } from 'react-router-dom';
@@ -73,6 +73,11 @@ const PostReview = ({ data, closeModal }) => {
   const apiUrl = `${process.env.REACT_APP_API_URL}`;
 
   const navigate = useNavigate();
+
+  const fileInputRef = useRef(null);
+  const triggerFileInput = () => {
+    fileInputRef.current.click();
+  };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -201,13 +206,15 @@ const PostReview = ({ data, closeModal }) => {
           <ByteCount isExceeded={text.length > MAX_BYTE_LIMIT}>
             {`${text.length} / ${MAX_BYTE_LIMIT} 글자`}
           </ByteCount>
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center h-20">
             <input
-              className="w-1/3"
               type="file"
               accept="image/*"
               onChange={handleImageChange}
+              ref={fileInputRef}
+              style={{ display: 'none' }}
             />
+            <Button onClick={triggerFileInput}>이미지 선택</Button>
             {selectedImage && (
               <div className="flex items-center">
                 <img

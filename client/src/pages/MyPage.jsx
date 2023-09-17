@@ -224,7 +224,9 @@ const MyPage = () => {
       {isEditProfileModalOpen && (
         <EditProfile onClose={closeEditProfileModal} />
       )}
-      {isImageModalOpen && <ImageUploadModal onClose={closeImageModal} />}
+      {isImageModalOpen && (
+        <ImageUploadModal memberImage={member.img} onClose={closeImageModal} />
+      )}
     </div>
   );
 };
