@@ -11,12 +11,14 @@ const Store = () => {
   const { id } = useParams();
   const [storeData, setStoreData] = useState(null);
   const [reviewData, setReviewData] = useState([]);
+  const [reviewInfoData, setReviewInfoData] = useState([]);
   const menuRef = useRef(null);
   const reviewRef = useRef(null);
   const apiUrl = process.env.REACT_APP_API_URL;
 
   const { accessToken } = useAuthStore((state) => state);
 
+  const [currentPage, setCurrentPage] = useState(1);
   //스크롤 위치에 따른 상태 추가
   const [isMenuTabActive, setIsMenuTabActive] = useState(false);
   const [isReviewTabActive, setIsReviewTabActive] = useState(false);
@@ -53,17 +55,16 @@ const Store = () => {
       })
       .then((res) => {
         setStoreData(res.data.store);
-        console.log(res.data.store);
       })
       .catch((err) => {
         console.error(err);
       });
     // 리뷰 정보
     axios
-      .get(`${apiUrl}/api/stores/${id}/reviews?page=1&size=10`)
+      .get(`${apiUrl}/api/stores/${id}/reviews?page=${currentPage}&size=10`)
       .then((res) => {
         setReviewData(res.data.reviews);
-        console.log(res.data.reviews);
+        setReviewInfoData(res.data.pageInfo);
       })
       .catch((err) => {
         console.error(err);
@@ -75,7 +76,7 @@ const Store = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [accessToken, apiUrl, id]);
+  }, [accessToken, apiUrl, id, currentPage]);
 
   if (!storeData) {
     return <LoadingSpinner />;
@@ -91,6 +92,7 @@ const Store = () => {
 
   return (
     <div className="flex flex-col relative">
+      {console.log(reviewInfoData)}
       <ShopInfo store={storeData} />
       <ul className="flex justify-center text-center w-[1070px] mx-auto mb-1 sticky top-[65px] bg-white z-10">
         <li
@@ -114,7 +116,7 @@ const Store = () => {
             className="block w-full cursor-pointer"
             onClick={() => scrollTo(reviewRef)}
           >
-            리뷰 ({reviewData.length})
+            리뷰 ({reviewInfoData.total_elements})
           </button>
         </li>
       </ul>
@@ -128,6 +130,10 @@ const Store = () => {
           reviewData={reviewData}
           scrollTo={scrollTo}
           reviewRef={reviewRef}
+          pageInfo={reviewInfoData}
+          page={currentPage}
+          setPage={setCurrentPage}
+          totalPage={reviewInfoData.total_pages}
         />
       </div>
     </div>
