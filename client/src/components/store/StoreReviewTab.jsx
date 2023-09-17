@@ -4,12 +4,12 @@ import { useState, useEffect, useRef } from 'react';
 import ReactPaginate from 'react-paginate';
 import { styled } from 'styled-components';
 
-const StoreReviewTab = ({ reviewData, scrollTo, reviewRef }) => {
+const StoreReviewTab = ({ reviewData, scrollTo, reviewRef, pageInfo }) => {
   const itemsPerPage = 5; // 페이지당 항목 수 (원하는대로 수정)
 
   const [currentPage, setCurrentPage] = useState(0);
   const offset = currentPage * itemsPerPage;
-  const pageCount = Math.ceil(reviewData.length / itemsPerPage);
+  const pageCount = Math.ceil(pageInfo.total_elements / itemsPerPage);
 
   const handlePageClick = (selectedPage) => {
     setCurrentPage(selectedPage.selected);

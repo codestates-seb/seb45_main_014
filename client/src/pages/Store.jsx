@@ -11,6 +11,7 @@ const Store = () => {
   const { id } = useParams();
   const [storeData, setStoreData] = useState(null);
   const [reviewData, setReviewData] = useState([]);
+  const [reviewInfoData, setReviewInfoData] = useState([]);
   const menuRef = useRef(null);
   const reviewRef = useRef(null);
   const apiUrl = process.env.REACT_APP_API_URL;
@@ -60,9 +61,10 @@ const Store = () => {
       });
     // 리뷰 정보
     axios
-      .get(`${apiUrl}/api/stores/${id}/reviews?page=1&size=10`)
+      .get(`${apiUrl}/api/stores/${id}/reviews?page=1&size=10`) //오류 수정 해야함
       .then((res) => {
         setReviewData(res.data.reviews);
+        setReviewInfoData(res.data.pageInfo);
         console.log(res.data.reviews);
       })
       .catch((err) => {
@@ -114,7 +116,7 @@ const Store = () => {
             className="block w-full cursor-pointer"
             onClick={() => scrollTo(reviewRef)}
           >
-            리뷰 ({reviewData.length})
+            리뷰 ({reviewInfoData.total_elements})
           </button>
         </li>
       </ul>
@@ -128,6 +130,7 @@ const Store = () => {
           reviewData={reviewData}
           scrollTo={scrollTo}
           reviewRef={reviewRef}
+          pageInfo={reviewInfoData}
         />
       </div>
     </div>
