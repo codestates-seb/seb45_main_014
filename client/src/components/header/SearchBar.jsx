@@ -136,6 +136,9 @@ const SearchBar = () => {
       saveSearchTerm({ term: searchQuery.trim(), target: searchFilter });
       // 검색창 focus 해제하기
       setIsFocused(false);
+      console.log(
+        `검색어: ${searchQuery.trim()}, 타겟: ${searchFilter} 그리고 여기는 submithandler임`,
+      );
       // 페이지 이동시 강제 스크롤 이동
       window.scrollTo(0, 0);
     } else {
