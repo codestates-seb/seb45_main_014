@@ -32,7 +32,6 @@ const Greeting = () => {
   //         {},
   //         {
   //           headers: {
-  //             Authorization: `Bearer ${accessToken}`,
   //             Refresh: `Bearer ${refreshToken}`,
   //           },
   //         },
@@ -44,7 +43,7 @@ const Greeting = () => {
   //         console.log('리프레시 토큰 에러', err);
   //       });
   //   }
-  // }, [accessToken, login, nickname, refreshToken]);
+  // }, [login, nickname, refreshToken]);
 
   return (
     <div>
