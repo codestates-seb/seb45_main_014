@@ -45,7 +45,7 @@ export const userFormStore = create((set) => ({
 }));
 
 export const useRatingStore = create((set) => ({
-  rating: 0,
+  rating: 5,
   setRating: (rating) => set({ rating }),
 }));
 
