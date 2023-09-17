@@ -105,6 +105,7 @@ export const useAuthStore = create((set) => ({
           Authorization: `Bearer ${localStorage.getItem('refresh_token')}`,
         },
       });
+      toast.success('로그아웃 되었습니다.');
     } catch (error) {
       console.error(error);
     } finally {
