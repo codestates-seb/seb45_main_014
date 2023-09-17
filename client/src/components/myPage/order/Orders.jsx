@@ -1,15 +1,15 @@
 import { styled } from 'styled-components';
-import formatDate from '../../utils/formatDate';
-import Button from '../../assets/buttons/Button.jsx';
-import PostReview from './PostReview.jsx';
+import formatDate from '../../../utils/formatDate';
+import Button from '../../../assets/buttons/Button.jsx';
+import PostReview from '../review/PostReview.jsx';
 import { useEffect, useState } from 'react';
-import { StoreImage } from '../../assets/Styles.jsx';
-import { RedButton } from '../../assets/buttons/RedButton.jsx';
+import { StoreImage } from '../../../assets/Styles.jsx';
+import { RedButton } from '../../../assets/buttons/RedButton.jsx';
 import axios from 'axios';
-import { useAuthStore } from '../../store/store';
-import SubmitModal from '../../pages/cart/SubmitModal.jsx';
+import { useAuthStore } from '../../../store/store';
+import SubmitModal from '../../../pages/cart/SubmitModal.jsx';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import LoadingComponent from './MyPageLoading.jsx';
+import LoadingComponent from '../MyPageLoading.jsx';
 
 const OrdersImage = styled(StoreImage)`
   width: 200px;

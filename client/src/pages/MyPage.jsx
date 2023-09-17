@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import Button from '../assets/buttons/Button.jsx';
 import { styled } from 'styled-components';
-import Reviews from '../components/myPage/Reviews.jsx';
-import Orders from '../components/myPage/Orders.jsx';
-import Favorites from '../components/myPage/Favorites.jsx';
+import Reviews from '../components/myPage/review/Reviews.jsx';
+import Orders from '../components/myPage/order/Orders.jsx';
+import Favorites from '../components/myPage/favorite/Favorites.jsx';
 import axios from 'axios';
 import { useAuthStore } from '../store/store.js';
 

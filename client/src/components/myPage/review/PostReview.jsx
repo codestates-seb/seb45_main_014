@@ -1,20 +1,20 @@
-import { Stars } from '../../components/Stars.jsx';
+import { Stars } from '../../Stars.jsx';
 import {
   useRatingStore,
   useImageStore,
   useByteSizeStore,
   useAuthStore,
-} from '../../store/store.js';
+} from '../../../store/store.js';
 import { styled } from 'styled-components';
-import { StoreImage } from '../../assets/Styles.jsx';
-import Button from '../../assets/buttons/Button.jsx';
-import formatDate from '../../utils/formatDate.js';
-import { Modal, ModalOverlay } from '../../assets/Modal.jsx';
+import { StoreImage } from '../../../assets/Styles.jsx';
+import Button from '../../../assets/buttons/Button.jsx';
+import formatDate from '../../../utils/formatDate.js';
+import { Modal, ModalOverlay } from '../../../assets/Modal.jsx';
 import { useRef, useState } from 'react';
 import axios from 'axios';
-import { CloseButton } from '../login/Login.jsx';
+import { CloseButton } from '../../login/Login.jsx';
 import { useNavigate } from 'react-router-dom';
-import { RedButton } from '../../assets/buttons/RedButton.jsx';
+import { RedButton } from '../../../assets/buttons/RedButton.jsx';
 import { toast } from 'react-hot-toast';
 
 const PostReviewModal = styled(Modal)`
