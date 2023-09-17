@@ -15,7 +15,7 @@ const Store = () => {
   const reviewRef = useRef(null);
   const apiUrl = process.env.REACT_APP_API_URL;
 
-  const { accessToken } = useAuthStore((state) => state);
+  const { accessToken, isLoggedIn } = useAuthStore((state) => state);
 
   //스크롤 위치에 따른 상태 추가
   const [isMenuTabActive, setIsMenuTabActive] = useState(false);
@@ -44,12 +44,16 @@ const Store = () => {
   };
 
   useEffect(() => {
+    let headers = {};
+
+    if (isLoggedIn) {
+      headers['Authorization'] = `Bearer ${accessToken}`;
+    }
+
     // 상점 정보
     axios
       .get(`${apiUrl}/api/stores/${id}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
+        headers,
       })
       .then((res) => {
         setStoreData(res.data.store);
