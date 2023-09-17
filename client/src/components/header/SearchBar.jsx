@@ -100,6 +100,10 @@ const SearchBar = () => {
     setIsFocused(true);
   };
 
+  const toggleFocus = () => {
+    setIsFocused(!isFocused);
+  };
+
   // 로컬 스토리지에 검색어, 타겟 저장
   const saveSearchTerm = (term) => {
     const recentSearches = getRecentSearches();
@@ -179,7 +183,8 @@ const SearchBar = () => {
           {isFocused && (
             <SearchDropdown
               searchInputRef={searchInputRef}
-              searchSubmitHandler={searchSubmitHandler}
+              saveSearchTerm={saveSearchTerm}
+              toggleFocus={toggleFocus}
             />
           )}
         </div>

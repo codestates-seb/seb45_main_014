@@ -4,6 +4,7 @@ import { useSearchStore } from '../../store/store';
 import { ReactComponent as ArrowSVG } from '../../assets/images/topleftarrow.svg';
 import { ReactComponent as SearchSVG } from '../../assets/images/searchicon.svg';
 import { ReactComponent as RemoveSVG } from '../../assets/images/deletebutton.svg';
+import { useNavigate } from 'react-router-dom';
 
 const Dropdown = styled.div`
   position: absolute;
@@ -19,9 +20,10 @@ const Dropdown = styled.div`
   overflow: hidden;
 `;
 
-const SearchDropdown = ({ searchInputRef, searchSubmitHandler }) => {
+const SearchDropdown = ({ searchInputRef, saveSearchTerm, toggleFocus }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('recommended'); // 기본값은 추천 검색어
+  const navigate = useNavigate();
   const [recentSearches, setRecentSearches] = useState(
     JSON.parse(localStorage.getItem('recentSearches')) || [],
   ); // 최근 검색어 목록
@@ -88,8 +90,17 @@ const SearchDropdown = ({ searchInputRef, searchSubmitHandler }) => {
   const handleSelectOption = (term, target) => {
     setQueryAndFilter(term, target);
     console.log(`searchFilter 값은 ${target}, searchQuery 값은 ${term}`);
-    searchSubmitHandler();
-    setIsMenuOpen(false);
+    if (term.trim()) {
+      navigate({
+        pathname: '/search',
+        search: `?search_keyword=${term.trim()}&search_target=${target}`,
+      });
+      saveSearchTerm({ term: term.trim(), target: target });
+      // 페이지 이동시 강제 스크롤 이동
+      window.scrollTo(0, 0);
+      closeMenu();
+      toggleFocus();
+    }
   };
 
   // 최근 검색어 삭제 함수
