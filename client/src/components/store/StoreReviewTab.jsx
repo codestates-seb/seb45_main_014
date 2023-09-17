@@ -4,15 +4,20 @@ import { useState, useEffect, useRef } from 'react';
 import ReactPaginate from 'react-paginate';
 import { styled } from 'styled-components';
 
-const StoreReviewTab = ({ reviewData, scrollTo, reviewRef, pageInfo }) => {
+const StoreReviewTab = ({
+  reviewData,
+  scrollTo,
+  reviewRef,
+  setPage,
+  page,
+  totalPage,
+}) => {
   const itemsPerPage = 5; // 페이지당 항목 수 (원하는대로 수정)
-
-  const [currentPage, setCurrentPage] = useState(0);
-  const offset = currentPage * itemsPerPage;
-  const pageCount = Math.ceil(pageInfo.total_elements / itemsPerPage);
-
+  const offset = page * itemsPerPage;
+  const pageCount = Number(totalPage);
+  console.log(totalPage);
   const handlePageClick = (selectedPage) => {
-    setCurrentPage(selectedPage.selected);
+    setPage(selectedPage.selected);
     scrollTo(reviewRef);
   };
 
@@ -68,6 +73,7 @@ export const Stars = ({ rating, readOnly }) => {
 };
 
 export const ReviewItem = ({ data }) => {
+  console.log(data);
   const [isExpanded, setIsExpanded] = useState(true);
   const [showButton, setShowButton] = useState(false);
   const contentRef = useRef(null);

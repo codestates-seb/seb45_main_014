@@ -18,6 +18,7 @@ const Store = () => {
 
   const { accessToken } = useAuthStore((state) => state);
 
+  const [currentPage, setCurrentPage] = useState(1);
   //스크롤 위치에 따른 상태 추가
   const [isMenuTabActive, setIsMenuTabActive] = useState(false);
   const [isReviewTabActive, setIsReviewTabActive] = useState(false);
@@ -54,18 +55,16 @@ const Store = () => {
       })
       .then((res) => {
         setStoreData(res.data.store);
-        console.log(res.data.store);
       })
       .catch((err) => {
         console.error(err);
       });
     // 리뷰 정보
     axios
-      .get(`${apiUrl}/api/stores/${id}/reviews?page=1&size=10`) //오류 수정 해야함
+      .get(`${apiUrl}/api/stores/${id}/reviews?page=${currentPage}&size=10`)
       .then((res) => {
         setReviewData(res.data.reviews);
         setReviewInfoData(res.data.pageInfo);
-        console.log(res.data.reviews);
       })
       .catch((err) => {
         console.error(err);
@@ -77,7 +76,7 @@ const Store = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [accessToken, apiUrl, id]);
+  }, [accessToken, apiUrl, id, currentPage]);
 
   if (!storeData) {
     return <LoadingSpinner />;
@@ -93,6 +92,7 @@ const Store = () => {
 
   return (
     <div className="flex flex-col relative">
+      {console.log(reviewInfoData)}
       <ShopInfo store={storeData} />
       <ul className="flex justify-center text-center w-[1070px] mx-auto mb-1 sticky top-[65px] bg-white z-10">
         <li
@@ -131,6 +131,9 @@ const Store = () => {
           scrollTo={scrollTo}
           reviewRef={reviewRef}
           pageInfo={reviewInfoData}
+          page={currentPage}
+          setPage={setCurrentPage}
+          totalPage={reviewInfoData.total_pages}
         />
       </div>
     </div>
