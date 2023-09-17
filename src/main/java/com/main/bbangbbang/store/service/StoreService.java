@@ -64,6 +64,8 @@ public class StoreService {
     public void updateRating(long storeId, float rating) {
         Store store = storeRepository.findById(storeId).orElseThrow(
                 () -> new BusinessLogicException(ExceptionCode.NO_ITEM));
-        store.setRating(rating);
+        if (store.getRating() != rating) {
+            store.setRating(rating);
+        }
     }
 }
