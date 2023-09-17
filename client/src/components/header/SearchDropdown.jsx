@@ -87,8 +87,9 @@ const SearchDropdown = ({ searchInputRef, searchSubmitHandler }) => {
   // 선택한 검색어로 검색하기
   const handleSelectOption = (term, target) => {
     setQueryAndFilter(term, target);
-    setIsMenuOpen(false);
+    console.log(`searchFilter 값은 ${target}, searchQuery 값은 ${term}`);
     searchSubmitHandler();
+    setIsMenuOpen(false);
   };
 
   // 최근 검색어 삭제 함수
@@ -146,6 +147,7 @@ const SearchDropdown = ({ searchInputRef, searchSubmitHandler }) => {
                   className="text-gray-400 hover:bg-slate-100 py-1 px-2 cursor-pointer"
                   onClick={(e) => {
                     e.preventDefault();
+                    e.stopPropagation(); // 이벤트 전파 방지
                     handleSelectOption(item.term, item.target);
                   }}
                 >
@@ -156,7 +158,11 @@ const SearchDropdown = ({ searchInputRef, searchSubmitHandler }) => {
                   </span>
                   <div
                     className="inline-block absolute right-8"
-                    onClick={() => setQueryAndFilter(item.term, item.target)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation(); // 이벤트 전파 방지
+                      setQueryAndFilter(item.term, item.target);
+                    }}
                   >
                     <ArrowSVG className="w-5 h-5" />
                   </div>
@@ -182,6 +188,7 @@ const SearchDropdown = ({ searchInputRef, searchSubmitHandler }) => {
               className="text-gray-400 hover:bg-slate-100 py-1 px-2 cursor-pointer"
               onClick={(e) => {
                 e.preventDefault();
+                e.stopPropagation(); // 이벤트 전파 방지
                 handleSelectOption(item.term, item.target);
               }}
             >
@@ -192,7 +199,11 @@ const SearchDropdown = ({ searchInputRef, searchSubmitHandler }) => {
               </span>
               <div
                 className="inline-block absolute right-1"
-                onClick={() => setQueryAndFilter(item.term, item.target)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation(); // 이벤트 전파 방지
+                  setQueryAndFilter(item.term, item.target);
+                }}
               >
                 <ArrowSVG className="w-5 h-5" />
               </div>
