@@ -11,6 +11,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import EditProfile from '../components/myPage/EditProfile.jsx';
 import formatDate from '../utils/formatDate.js';
 import ImageUploadModal from '../components/myPage/ImageUploadModal.jsx';
+import { RedButton } from '../assets/buttons/RedButton.jsx';
 
 const TabContainer = styled.ul`
   display: flex;
@@ -156,25 +157,31 @@ const MyPage = () => {
 
   return (
     <div className="max-w-screen-lg mx-auto p-10">
-      <div className="flex gap-5">
-        <img
-          src={member.img}
-          alt="유저 이미지"
-          className="flex justify-center items-center border-2 w-28 rounded-full"
-        ></img>
-        <div className="flex flex-col justify-center gap-2">
-          <h1 className="">{member.nickname}</h1>
-          <div>가입일: {formatDate(member.createdAt)}</div>
-          <div className="flex gap-2">
-            <Button className="" onClick={openImageModal}>
-              이미지 변경
-            </Button>
-            <Button className="" onClick={openEditProfileModal}>
-              프로필 수정
-            </Button>
+      <div className="flex justify-between relative">
+        <div className="flex gap-5">
+          <img
+            src={member.img}
+            alt="유저 이미지"
+            className="flex justify-center items-center border-2 w-28 rounded-full"
+          ></img>
+          <div className="flex flex-col justify-center gap-2">
+            <h1 className="">{member.nickname}</h1>
+            <div>가입일: {formatDate(member.createdAt)}</div>
+            <div className="flex gap-2">
+              <Button className="" onClick={openImageModal}>
+                이미지 변경
+              </Button>
+              <Button className="" onClick={openEditProfileModal}>
+                프로필 수정
+              </Button>
+            </div>
           </div>
         </div>
+        <RedButton className="absolute right-0 bottom-0 h-1/3">
+          회원 탈퇴
+        </RedButton>
       </div>
+
       <TabContainer className="my-5">
         {/* 리뷰 관리 탭 */}
         <li className={`w-full ${currentTab === '리뷰 관리' ? 'active' : ''}`}>
