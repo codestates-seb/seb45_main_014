@@ -7,6 +7,7 @@ import SubmitModal from '../../../pages/cart/SubmitModal.jsx';
 import axios from 'axios';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 
 const OrdersImage = styled(StoreImage)`
   width: 200px;
@@ -43,6 +44,7 @@ const OrderDetail = ({ data, openModal, accessToken }) => {
         },
       )
       .then((res) => {
+        toast.success('주문 내역이 삭제되었습니다.');
         setTimeout(() => {
           window.location.reload();
         }, 1000);
