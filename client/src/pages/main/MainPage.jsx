@@ -25,7 +25,7 @@ const HotPlace = ({ id, src }) => {
   return (
     <div className="relative w-72 cursor-pointer hover:scale-[1.05]">
       <Link
-        to={`/search?search_keyword=${id}&search_target=region&page=1&size=10`}
+        to={`/search?search_keyword=${id}&search_target=menu&page=1&size=10`}
       >
         <StoreImage className="hover:scale-1" src={src} />
         <div className="flex w-full absolute justify-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,1)]">
