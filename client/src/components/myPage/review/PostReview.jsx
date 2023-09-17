@@ -111,7 +111,7 @@ const PostReview = ({ data, closeModal }) => {
     } else {
       // 리뷰가 작성되지 않았을 경우 확인 메시지 출력
       const isConfirmed = window.confirm(
-        '리뷰 작성을 취소하시겠습니까?\n작성하신 내용은 사라집니다ㅇㅇㅇㅇ.',
+        '리뷰 작성을 취소하시겠습니까?\n작성하신 내용은 사라집니다.',
       );
 
       if (isConfirmed) {
