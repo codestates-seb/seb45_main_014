@@ -15,7 +15,7 @@ const Store = () => {
   const reviewRef = useRef(null);
   const apiUrl = process.env.REACT_APP_API_URL;
 
-  const { accessToken, isLoggedIn } = useAuthStore((state) => state);
+  const { accessToken, isLoggedIn, guest } = useAuthStore((state) => state);
 
   //스크롤 위치에 따른 상태 추가
   const [isMenuTabActive, setIsMenuTabActive] = useState(false);
@@ -47,7 +47,7 @@ const Store = () => {
     let headers = {};
 
     // 로그인 상태일 때만 헤더에 토큰 추가
-    if (isLoggedIn) {
+    if (isLoggedIn && !guest) {
       headers['Authorization'] = `Bearer ${accessToken}`;
     }
 

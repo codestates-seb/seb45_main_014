@@ -13,6 +13,8 @@ import formatDate from '../utils/formatDate.js';
 import ImageUploadModal from '../components/myPage/ImageUploadModal.jsx';
 import { RedButton } from '../assets/buttons/RedButton.jsx';
 
+import { guestData } from '../data/guestData.js';
+
 const TabContainer = styled.ul`
   display: flex;
   justify-content: space-between;
@@ -47,7 +49,7 @@ const TabContainer = styled.ul`
 
 const MyPage = () => {
   const [currentTab, setCurrentTab] = useState('리뷰 관리');
-  const { isLoggedIn, accessToken, deleteMember } = useAuthStore(
+  const { isLoggedIn, accessToken, deleteMember, guest } = useAuthStore(
     (state) => state,
   );
   const [member, setMember] = useState([]);
@@ -120,7 +122,10 @@ const MyPage = () => {
     };
 
     // 로그인 상태이고 accessToken이 있으면 데이터 가져오기
-    if (isLoggedIn && accessToken) {
+    if (isLoggedIn && guest) {
+      fetchInitialData();
+      setMember(guestData);
+    } else if (isLoggedIn && accessToken) {
       fetchInitialData();
       getMember();
     } else {
@@ -128,7 +133,7 @@ const MyPage = () => {
       alert('로그인이 필요합니다.');
       navigate('/');
     }
-  }, [accessToken, currentTab, isLoggedIn, navigate]);
+  }, [accessToken, currentTab, guest, isLoggedIn, navigate]);
 
   // 각 탭에 따라 렌더링할 컴포넌트 변경
   const renderDataComponent = () => {

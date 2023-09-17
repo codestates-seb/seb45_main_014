@@ -5,7 +5,9 @@ import axios from 'axios';
 
 const Greeting = () => {
   const [nickname, setNickname] = useState('');
-  const { login, accessToken, refreshToken } = useAuthStore((state) => state);
+  const { login, accessToken, refreshToken, guest } = useAuthStore(
+    (state) => state,
+  );
 
   // axios로 닉네임 불러오기
   useEffect(() => {
@@ -47,7 +49,7 @@ const Greeting = () => {
 
   return (
     <div>
-      <span className="font-bold">{nickname}</span> 님
+      <span className="font-bold">{guest ? '방문자' : nickname}</span> 님
     </div>
   );
 };

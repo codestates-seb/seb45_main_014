@@ -93,6 +93,7 @@ export const useAuthStore = create((set) => ({
   isLoggedIn: localStorage.getItem('access_token') !== null,
   accessToken: localStorage.getItem('access_token'),
   refreshToken: localStorage.getItem('refresh_token'),
+  guest: false,
   login: (access, refresh) => {
     set({ isLoggedIn: true, accessToken: access, refreshToken: refresh });
     localStorage.setItem('access_token', access);
@@ -110,13 +111,24 @@ export const useAuthStore = create((set) => ({
     } catch (error) {
       console.error(error);
     } finally {
-      set({ isLoggedIn: false, accessToken: null, refreshToken: null });
+      set({
+        isLoggedIn: false,
+        accessToken: null,
+        refreshToken: null,
+        guest: false,
+      });
       localStorage.removeItem('access_token');
       localStorage.removeItem('refresh_token');
     }
   },
   guestLogin: () => {
-    set({ isLoggedIn: true });
+    set({
+      isLoggedIn: true,
+      guest: true,
+      accessToken: 'guest',
+      refreshToken: 'guest',
+    });
+    console.log('guest login');
   },
   // 회원 탈퇴
   deleteMember: async () => {
@@ -131,7 +143,12 @@ export const useAuthStore = create((set) => ({
     } catch (error) {
       console.error(error);
     } finally {
-      set({ isLoggedIn: false, accessToken: null, refreshToken: null });
+      set({
+        isLoggedIn: false,
+        accessToken: null,
+        refreshToken: null,
+        guest: false,
+      });
       localStorage.removeItem('access_token');
       localStorage.removeItem('refresh_token');
     }
