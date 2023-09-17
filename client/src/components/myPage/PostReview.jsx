@@ -15,6 +15,7 @@ import axios from 'axios';
 import { CloseButton } from '../login/Login.jsx';
 import { useNavigate } from 'react-router-dom';
 import { RedButton } from '../../assets/buttons/RedButton.jsx';
+import { toast } from 'react-hot-toast';
 
 const PostReviewModal = styled(Modal)`
   width: 600px;
@@ -103,13 +104,23 @@ const PostReview = ({ data, closeModal }) => {
 
   const handleCloseModal = () => {
     if (isReviewSubmitted) {
-      return;
-    }
+      // 리뷰가 작성되었을 경우 바로 닫힘
+      setRating(5);
+      setSelectedImage(null);
+      setText('');
+    } else {
+      // 리뷰가 작성되지 않았을 경우 확인 메시지 출력
+      const isConfirmed = window.confirm(
+        '리뷰 작성을 취소하시겠습니까?\n작성하신 내용은 사라집니다ㅇㅇㅇㅇ.',
+      );
 
-    setRating(0);
-    setSelectedImage(null);
-    setText('');
-    closeModal(rating, selectedImage, text);
+      if (isConfirmed) {
+        setRating(5);
+        setSelectedImage(null);
+        setText('');
+        closeModal(rating, selectedImage, text);
+      }
+    }
   };
 
   const handleReviewSubmit = async () => {
@@ -158,15 +169,15 @@ const PostReview = ({ data, closeModal }) => {
           );
 
           if (imageResponse.status === 200) {
-            alert('리뷰와 이미지가 업로드되었습니다.');
+            toast.success('리뷰와 이미지가 업로드되었습니다.');
           }
         } else {
-          alert('리뷰가 업로드되었습니다.');
+          toast.success('리뷰가 업로드되었습니다.');
         }
         setIsSubmitting(false);
         setIsReviewSubmitted(true);
-        handleCloseModal();
         navigate('/mypage#review');
+        window.location.reload();
       }
     } catch (error) {
       alert(error.response.data.message);
