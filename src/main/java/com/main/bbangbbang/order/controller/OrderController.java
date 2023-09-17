@@ -15,6 +15,7 @@ import com.main.bbangbbang.order.mapper.OrderMapper;
 import com.main.bbangbbang.order.service.OrderService;
 import com.main.bbangbbang.store.entity.Store;
 import com.main.bbangbbang.store.service.StoreService;
+import com.main.bbangbbang.utils.MemberUtils;
 import com.main.bbangbbang.utils.PageInfo;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -70,7 +71,7 @@ public class OrderController { // jwt토큰 parsing하여 Member확인이 가능
                                      @Positive @RequestParam("quantity") Integer quantity,
                                      @RequestParam(value = "new_order", defaultValue = "false") Boolean isNewOrder,
                                      Authentication authentication) {
-        String email = authentication.getPrincipal().toString();
+        String email = MemberUtils.getEmail(authentication);
         Member member = memberService.findMember(email);
         Menu menu = menuService.findMenu(menuId);
         Store store = storeService.findStoreByMenu(menu);
