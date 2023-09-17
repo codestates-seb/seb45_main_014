@@ -33,7 +33,6 @@ const Favorites = () => {
       })
       .then((res) => {
         setData((prevData) => [...prevData, ...res.data.stores]);
-        console.log('즐겨찾기 데이터', res.data.stores);
 
         if (res.data.stores.length < 10) {
           setHasMore(false);
@@ -57,7 +56,7 @@ const Favorites = () => {
           hasMore={hasMore} // 다음 데이터를 불러올 수 있는지
           loader={<LoadingComponent />}
         >
-          <div className="flex flex-wrap justify-center mx-4">
+          <div className="grid grid-flow-row-dense md:grid-cols-3 gap-4 sm:grid-cols-2">
             {data.map((store) => (
               <StoreCard key={store.id} store={store} />
             ))}
