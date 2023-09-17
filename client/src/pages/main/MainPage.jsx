@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useAuthStore } from '../../store/store.js';
 import { StoreImage } from '../../assets/Styles.jsx';
-import images from '../../assets/images/Images.js';
 import { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import LoadingComponent from '../../components/myPage/MyPageLoading.jsx';
@@ -24,13 +23,13 @@ const Content = styled.div`
 
 const HotPlace = ({ id, src }) => {
   return (
-    <div className="relative w-72 cursor-pointer">
+    <div className="relative w-72 cursor-pointer hover:scale-[1.05]">
       <Link
         to={`/search?search_keyword=${id}&search_target=region&page=1&size=10`}
       >
-        <StoreImage src={src} />
+        <StoreImage className="hover:scale-1" src={src} />
         <div className="flex w-full absolute justify-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,1)]">
-          {id} TOP 10
+          {id}
         </div>
       </Link>
     </div>
@@ -133,12 +132,24 @@ const MainPage = () => {
 
       {/* 핫플레이스 */}
       <Content>
-        <Title>현재 핫플레이스</Title>
+        <Title>오늘 뭐 먹지?</Title>
         <div className="flex gap-4">
-          <HotPlace id="강남" src={images.bbang1} />
-          <HotPlace id="강북" src={images.bbang2} />
-          <HotPlace id="강서" src={images.bbang3} />
-          <HotPlace id="강동" src={images.bbang4} />
+          <HotPlace
+            id="케이크"
+            src="https://images.unsplash.com/photo-1626803775151-61d756612f97?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8Y2FrZXx8fHx8fDE2OTQ5NTU3NzU&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080"
+          />
+          <HotPlace
+            id="도넛"
+            src="https://images.unsplash.com/photo-1598184274620-6e576a2e2656?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8ZG91Z2hudXR8fHx8fHwxNjk0OTU2MDQw&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080"
+          />
+          <HotPlace
+            id="바게트"
+            src="https://images.unsplash.com/photo-1619685347769-c7e6d5a83b10?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8ZG91Z2hudXR8fHx8fHwxNjk0OTU2MTgy&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080"
+          />
+          <HotPlace
+            id="쿠키"
+            src="https://images.unsplash.com/photo-1613703154938-d02828822dd5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8Y29va2llfHx8fHx8MTY5NDk1NjE1NQ&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080"
+          />
         </div>
       </Content>
 
