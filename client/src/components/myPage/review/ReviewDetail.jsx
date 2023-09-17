@@ -7,14 +7,9 @@ import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import { useState } from 'react';
 import { styled } from 'styled-components';
+import { Link } from 'react-router-dom';
 
-const ReviewDetailStyle = styled.div`
-  width: 100%;
-  border-bottom: 1px solid #ccc;
-  padding: 10px;
-  display: flex;
-  justify-content: space-between;
-`;
+const ReviewDetailStyle = styled.div``;
 
 const ReviewDetail = ({ data, accessToken }) => {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -45,20 +40,22 @@ const ReviewDetail = ({ data, accessToken }) => {
 
   return (
     <>
-      <ReviewDetailStyle>
-        <div className="w-2/3">
-          <h2>{data.store_name}</h2>
-          <div className="flex gap-2">
-            <Stars rating={data.rating} readOnly={true} />
-            {formatDate(data.created_at)}
+      <Link to={`/stores/${data.id}`}>
+        <ReviewDetailStyle>
+          <div className="w-2/3">
+            <h2>{data.store_name}</h2>
+            <div className="flex gap-2">
+              <Stars rating={data.rating} readOnly={true} />
+              {formatDate(data.created_at)}
+            </div>
+            <div className="h-1/2 mt-2 flex flex-col justify-between">
+              <p>{data.content}</p>
+            </div>
+            <RedButton onClick={openModal}>삭제</RedButton>
           </div>
-          <div className="h-1/2 mt-2 flex flex-col justify-between">
-            <p>{data.content}</p>
-          </div>
-          <RedButton onClick={openModal}>삭제</RedButton>
-        </div>
-        <StoreImage src={data.img} alt="매장 이미지"></StoreImage>
-      </ReviewDetailStyle>
+          <StoreImage src={data.img} alt="매장 이미지"></StoreImage>
+        </ReviewDetailStyle>
+      </Link>
 
       {isModalOpen && (
         <SubmitModal
