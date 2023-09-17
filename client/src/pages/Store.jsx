@@ -46,6 +46,7 @@ const Store = () => {
   useEffect(() => {
     let headers = {};
 
+    // 로그인 상태일 때만 헤더에 토큰 추가
     if (isLoggedIn) {
       headers['Authorization'] = `Bearer ${accessToken}`;
     }
@@ -79,7 +80,7 @@ const Store = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [accessToken, apiUrl, id]);
+  }, [accessToken, apiUrl, id, isLoggedIn]);
 
   if (!storeData) {
     return <LoadingSpinner />;
