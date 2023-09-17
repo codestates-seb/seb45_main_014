@@ -9,5 +9,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ReviewDataWithStoreName extends ReviewData {
+    private Long storeId;
     private String storeName;
 }
