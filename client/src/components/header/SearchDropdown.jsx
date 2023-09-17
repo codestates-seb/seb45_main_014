@@ -4,6 +4,7 @@ import { useSearchStore } from '../../store/store';
 import { ReactComponent as ArrowSVG } from '../../assets/images/topleftarrow.svg';
 import { ReactComponent as SearchSVG } from '../../assets/images/searchicon.svg';
 import { ReactComponent as RemoveSVG } from '../../assets/images/deletebutton.svg';
+import { useNavigate } from 'react-router-dom';
 
 const Dropdown = styled.div`
   position: absolute;
@@ -19,9 +20,10 @@ const Dropdown = styled.div`
   overflow: hidden;
 `;
 
-const SearchDropdown = ({ searchInputRef, searchSubmitHandler }) => {
+const SearchDropdown = ({ searchInputRef, saveSearchTerm, toggleFocus }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('recommended'); // 기본값은 추천 검색어
+  const navigate = useNavigate();
   const [recentSearches, setRecentSearches] = useState(
     JSON.parse(localStorage.getItem('recentSearches')) || [],
   ); // 최근 검색어 목록
@@ -87,8 +89,18 @@ const SearchDropdown = ({ searchInputRef, searchSubmitHandler }) => {
   // 선택한 검색어로 검색하기
   const handleSelectOption = (term, target) => {
     setQueryAndFilter(term, target);
-    setIsMenuOpen(false);
-    searchSubmitHandler();
+    console.log(`searchFilter 값은 ${target}, searchQuery 값은 ${term}`);
+    if (term.trim()) {
+      navigate({
+        pathname: '/search',
+        search: `?search_keyword=${term.trim()}&search_target=${target}`,
+      });
+      saveSearchTerm({ term: term.trim(), target: target });
+      // 페이지 이동시 강제 스크롤 이동
+      window.scrollTo(0, 0);
+      closeMenu();
+      toggleFocus();
+    }
   };
 
   // 최근 검색어 삭제 함수
@@ -146,6 +158,7 @@ const SearchDropdown = ({ searchInputRef, searchSubmitHandler }) => {
                   className="text-gray-400 hover:bg-slate-100 py-1 px-2 cursor-pointer"
                   onClick={(e) => {
                     e.preventDefault();
+                    e.stopPropagation(); // 이벤트 전파 방지
                     handleSelectOption(item.term, item.target);
                   }}
                 >
@@ -156,7 +169,11 @@ const SearchDropdown = ({ searchInputRef, searchSubmitHandler }) => {
                   </span>
                   <div
                     className="inline-block absolute right-8"
-                    onClick={() => setQueryAndFilter(item.term, item.target)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation(); // 이벤트 전파 방지
+                      setQueryAndFilter(item.term, item.target);
+                    }}
                   >
                     <ArrowSVG className="w-5 h-5" />
                   </div>
@@ -182,6 +199,7 @@ const SearchDropdown = ({ searchInputRef, searchSubmitHandler }) => {
               className="text-gray-400 hover:bg-slate-100 py-1 px-2 cursor-pointer"
               onClick={(e) => {
                 e.preventDefault();
+                e.stopPropagation(); // 이벤트 전파 방지
                 handleSelectOption(item.term, item.target);
               }}
             >
@@ -192,7 +210,11 @@ const SearchDropdown = ({ searchInputRef, searchSubmitHandler }) => {
               </span>
               <div
                 className="inline-block absolute right-1"
-                onClick={() => setQueryAndFilter(item.term, item.target)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation(); // 이벤트 전파 방지
+                  setQueryAndFilter(item.term, item.target);
+                }}
               >
                 <ArrowSVG className="w-5 h-5" />
               </div>

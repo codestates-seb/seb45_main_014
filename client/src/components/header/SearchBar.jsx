@@ -100,6 +100,10 @@ const SearchBar = () => {
     setIsFocused(true);
   };
 
+  const toggleFocus = () => {
+    setIsFocused(!isFocused);
+  };
+
   // 로컬 스토리지에 검색어, 타겟 저장
   const saveSearchTerm = (term) => {
     const recentSearches = getRecentSearches();
@@ -136,6 +140,9 @@ const SearchBar = () => {
       saveSearchTerm({ term: searchQuery.trim(), target: searchFilter });
       // 검색창 focus 해제하기
       setIsFocused(false);
+      console.log(
+        `검색어: ${searchQuery.trim()}, 타겟: ${searchFilter} 그리고 여기는 submithandler임`,
+      );
       // 페이지 이동시 강제 스크롤 이동
       window.scrollTo(0, 0);
     } else {
@@ -176,7 +183,8 @@ const SearchBar = () => {
           {isFocused && (
             <SearchDropdown
               searchInputRef={searchInputRef}
-              searchSubmitHandler={searchSubmitHandler}
+              saveSearchTerm={saveSearchTerm}
+              toggleFocus={toggleFocus}
             />
           )}
         </div>
