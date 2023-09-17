@@ -67,7 +67,12 @@ const Orders = () => {
       >
         <div className="grid grid-flow-row-dense md:grid-cols-4 gap-4 sm:grid-cols-2">
           {data.map((item) => (
-            <OrderDetail key={item.id} data={item} openModal={openModal} />
+            <OrderDetail
+              key={item.id}
+              data={item}
+              openModal={openModal}
+              accessToken={accessToken}
+            />
           ))}
         </div>
       </InfiniteScroll>
