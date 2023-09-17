@@ -7,18 +7,6 @@ import FalseModal from './modal/FalseModal.jsx';
 import { useCartApi } from '../../api/cart';
 import MenuModal from './modal/MenuModal.jsx';
 
-const StyledImage = styled.img`
-  width: 300px;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 8px;
-  transition: transform 0.3s ease;
-
-  &:hover {
-    transform: scale(1.1);
-  }
-`;
-
 const MenuItem = ({ data }) => {
   const apiUrl = process.env.REACT_APP_API_URL;
   const [isMenuModalOpen, setIsMenuModalOpen] = useState(false);
@@ -103,10 +91,6 @@ const MenuItem = ({ data }) => {
 
   return (
     <div className="flex px-[10px] py-[10px] border-b">
-      <div className="w-[750px]">
-        <h3 className="text-[25px]">{data.menu_name}</h3>
-        <div className="text-[15px]">{data.menu_desc}</div>
-      </div>
       <div>
         <div
           onClick={() => {
@@ -124,6 +108,10 @@ const MenuItem = ({ data }) => {
           <div>{data.price.toLocaleString()}원</div>
           <div>남은 수량: {data.stock}</div>
         </div>
+      </div>
+      <div className="w-[750px] px-6">
+        <h3 className="text-[25px]">{data.menu_name}</h3>
+        <div className="text-[18px] px-6 pt-3">{data.menu_desc}</div>
       </div>
       {isMenuModalOpen && (
         <MenuModal
@@ -158,3 +146,15 @@ const MenuTab = ({ menuData }) => {
 };
 
 export default MenuTab;
+
+const StyledImage = styled.img`
+  width: 300px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+`;
