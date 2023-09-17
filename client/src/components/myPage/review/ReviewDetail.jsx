@@ -39,17 +39,19 @@ const ReviewDetail = ({ data, accessToken }) => {
       })
       .then((res) => {
         toast.error('리뷰가 삭제되었습니다.');
-        window.location.reload();
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       })
       .catch((err) => console.log(err));
   };
 
   return (
     <>
-      <Link to={`/stores/${data.id}`}>
-        <ReviewDetailStyle>
-          <div className="w-2/3">
-            <h2>{data.store_name}</h2>
+      <ReviewDetailStyle>
+        <div className="w-2/3">
+          <h2>{data.store_name}</h2>
+          <Link to={`/stores/${data.id}`}>
             <div className="flex gap-2">
               <Stars rating={data.rating} readOnly={true} />
               {formatDate(data.created_at)}
@@ -57,11 +59,11 @@ const ReviewDetail = ({ data, accessToken }) => {
             <div className="h-1/2 mt-2 flex flex-col justify-between">
               <p>{data.content}</p>
             </div>
-            <RedButton onClick={openModal}>삭제</RedButton>
-          </div>
-          <StoreImage src={data.img} alt="매장 이미지"></StoreImage>
-        </ReviewDetailStyle>
-      </Link>
+          </Link>
+          <RedButton onClick={openModal}>삭제</RedButton>
+        </div>
+        <StoreImage src={data.img} alt="매장 이미지"></StoreImage>
+      </ReviewDetailStyle>
 
       {isModalOpen && (
         <SubmitModal

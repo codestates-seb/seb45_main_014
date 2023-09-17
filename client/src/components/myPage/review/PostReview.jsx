@@ -176,8 +176,10 @@ const PostReview = ({ data, closeModal }) => {
         }
         setIsSubmitting(false);
         setIsReviewSubmitted(true);
-        navigate('/mypage#review');
-        window.location.reload();
+        setTimeout(() => {
+          navigate('/mypage#review');
+          window.location.reload();
+        }, 1000);
       }
     } catch (error) {
       alert(error.response.data.message);

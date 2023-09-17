@@ -43,7 +43,9 @@ const OrderDetail = ({ data, openModal, accessToken }) => {
         },
       )
       .then((res) => {
-        window.location.reload();
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       })
       .catch((err) => console.log(err));
   };
