@@ -164,18 +164,18 @@ const MyPage = () => {
   }, []);
 
   return (
-    <div className="max-w-screen-lg mx-auto p-10">
-      <div className="flex justify-between relative">
+    <div className="max-w-screen-lg mx-auto p-10 max-sm:flex-col">
+      <div className="flex justify-between relative flex-row max-sm:flex-col">
         <div className="flex gap-5">
           <img
             src={member.img}
             alt="유저 이미지"
-            className="flex justify-center items-center border-2 w-28 rounded-full"
+            className="flex justify-center items-center border-2 w-28 h-28 rounded-full"
           ></img>
           <div className="flex flex-col justify-center gap-2">
             <h1>{member.nickname}</h1>
-            <div>가입일: {formatDate(member.createdAt)}</div>
-            <div className="flex gap-2">
+            <div className="flex">가입일: {formatDate(member.createdAt)}</div>
+            <div className="lg:flex lg:flex-row max-sm:flex-col gap-2">
               <Button onClick={openImageModal}>이미지 변경</Button>
               <Button onClick={openEditProfileModal}>프로필 수정</Button>
             </div>
@@ -183,7 +183,7 @@ const MyPage = () => {
         </div>
         <RedButton
           onClick={handleDeleteMemberButton}
-          className="absolute right-0 bottom-0 h-1/3"
+          className="absolute right-0 bottom-0 h-1/3 max-sm:static"
         >
           회원 탈퇴
         </RedButton>

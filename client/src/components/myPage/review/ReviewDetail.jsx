@@ -15,6 +15,11 @@ const ReviewDetailStyle = styled.div`
   padding: 10px;
   display: flex;
   justify-content: space-between;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const ReviewDetail = ({ data, accessToken }) => {
@@ -49,7 +54,7 @@ const ReviewDetail = ({ data, accessToken }) => {
   return (
     <>
       <ReviewDetailStyle>
-        <div className="w-2/3">
+        <div className="w-2/3 max-md:w-full">
           <h2>{data.store_name}</h2>
           <Link to={`/stores/${data.id}`}>
             <div className="flex gap-2">
