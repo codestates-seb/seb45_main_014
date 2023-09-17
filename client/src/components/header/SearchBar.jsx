@@ -17,7 +17,7 @@ const SearchbarContainer = styled.form`
 const SearchboxInput = styled.input`
   border-radius: 10px;
   border: 2px solid #debe8f;
-  width: 400px;
+  width: 100%;
   font-size: 14px;
   padding: 7.8px 9.1px 7.8px 80px;
   color: black;
@@ -29,11 +29,19 @@ const SearchboxInput = styled.input`
     transform 0.2s;
   &.focused {
     border-color: #debe8f;
-    width: 480px;
+    width: 100%;
     transition: all 0.2s ease;
   }
   &:focus {
     outline: none;
+  }
+  @media screen and (max-width: 425px) {
+    width: 100%;
+    &.focused {
+      border-color: #debe8f;
+      width: 100%;
+      transition: all 0.2s ease;
+    }
   }
 `;
 

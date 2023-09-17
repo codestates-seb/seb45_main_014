@@ -90,14 +90,13 @@ const MenuItem = ({ data }) => {
         notifysuccess();
         setIsMenuModalOpen(false); // 모달을 닫도록 수정
       }
-    } catch (error) {
-      console.log(error);
-      openFalseModal(data, isCount);
-    } finally {
       const newData = await fetchCart().then((res) => res.order_menus);
       setCartItem(newData);
       // 기존에 있던 checkItem에 새로운 데이터의 id를 추가
       setCheckItem([...new Set([...newData.map((item) => item.id)])]);
+    } catch (error) {
+      console.log(error);
+      openFalseModal(data, isCount);
     }
   };
 
