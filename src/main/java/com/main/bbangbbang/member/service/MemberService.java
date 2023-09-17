@@ -33,7 +33,7 @@ public class MemberService {
         Optional<Member> optionalMember = memberRepository.findByEmail(email);
         Member findMember =
                 optionalMember.orElseThrow(() ->
-                        new BusinessLogicException(ExceptionCode.NO_MEMBER));
+                        new BusinessLogicException(ExceptionCode.NOT_MEMBER));
         return findMember;
 //        return memberRepository.findByEmail(email).orElseThrow(NoSuchElementException::new);
     }
