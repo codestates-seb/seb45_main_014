@@ -8,8 +8,6 @@ import Greeting from './Greeting.jsx';
 import { useCartItemStore, useAuthStore } from '../../store/store.js';
 import { ReactComponent as CartIcon } from '../../assets/images/cart.svg';
 import { useEffect, useState } from 'react';
-import images from '../../assets/images/Images.js';
-import Hamburger from './Hamburger.jsx';
 
 const HeaderBox = styled.header`
   padding: 12px;
@@ -28,45 +26,28 @@ const HeaderBox = styled.header`
     0 2px 8px hsla(0, 0%, 0%, 0.05);
 `;
 
-const Logo = styled.div`
-  flex: 1;
+const Logo = styled(Link)`
   display: flex;
-  min-width: 60px;
+  width: 300px;
   align-items: center;
   text-align: center;
   font-size: 24px;
   font-family: AritaSans;
   font-weight: 900;
-  span {
-    @media screen and (max-width: 815px) {
-      display: none;
-    }
-  }
 `;
 
 const MenuBox = styled.div`
-  flex: 1;
   padding-right: 10px;
   display: flex;
+  width: 300px;
   justify-content: flex-end;
   align-items: center;
-  @media screen and (max-width: 1045px) {
-    display: none;
-  }
 `;
 
 const SearchBox = styled.div`
-  flex: 2;
-  /* width: fit-content; */
+  width: fit-content;
   justify-content: center;
   align-items: center;
-  @media screen and (max-width: 700px) {
-    display: block;
-    /* 화면 너비가 좁아질 때 placeholder 텍스트 숨기기 */
-    input::placeholder {
-      visibility: hidden;
-    }
-  }
 `;
 
 const CartBox = styled.div`
@@ -82,7 +63,7 @@ const UserBox = styled.div`
   margin-left: 15px;
 `;
 
-export const ItemBadge = styled.span`
+const ItemBadge = styled.span`
   position: absolute;
   right: -4px;
   top: -1px;
@@ -136,16 +117,13 @@ const Header = () => {
   return (
     <>
       <HeaderBox>
-        <Logo>
-          <Link to="/" className="flex items-center">
-            <img src={images.mainlogo} alt="main logo" width="50" />
-            <span>BBANG ORDER</span>
-          </Link>
+        <Logo to="/">
+          {/* <img src={images.mainlogo} alt="main logo" width="50" /> */}
+          BBANG ORDER
         </Logo>
         <SearchBox>
           <SearchBar />
         </SearchBox>
-        <Hamburger openLogin={openModal} itemCount={itemCount} />
         {isLoggedIn ? (
           <MenuBox>
             <Greeting />
@@ -155,6 +133,7 @@ const Header = () => {
             <CartBox aria-label="장바구니">
               <Link to={'/cart'}>
                 <CartIcon />
+                {/*cartItem의 길이가 0보다 크면 ItemBadge를 렌더링*/}
                 {itemCount > 0 && <ItemBadge>{itemCount}</ItemBadge>}
               </Link>
             </CartBox>
