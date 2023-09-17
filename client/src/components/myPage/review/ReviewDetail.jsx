@@ -9,7 +9,13 @@ import { useState } from 'react';
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
 
-const ReviewDetailStyle = styled.div``;
+const ReviewDetailStyle = styled.div`
+  width: 100%;
+  border-bottom: 1px solid #ccc;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+`;
 
 const ReviewDetail = ({ data, accessToken }) => {
   const [isModalOpen, setModalOpen] = useState(false);
