@@ -3,6 +3,7 @@ import { RiKakaoTalkFill } from 'react-icons/ri';
 import { ImManWoman } from 'react-icons/im';
 import { useAuthStore } from '../../store/store';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 
 const OauthBtn = ({ bgColor, color, icon, text, onClick }) => {
   return (
@@ -85,6 +86,8 @@ export const GuestBtn = ({ onClose }) => {
     guestLogin();
     navigate('/mypage');
     onClose();
+    toast.success('많은 기능을 이용하시려면 로그인을 해주세요.');
+    toast.success('게스트 계정으로 로그인되었습니다.');
   };
 
   return (
