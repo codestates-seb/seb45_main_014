@@ -39,7 +39,7 @@ public class StoreService {
 
     @Transactional(readOnly = true)
     public Page<Store> findStores(int page, int size) {
-        return storeRepository.findAll(PageRequest.of(page-1, size));
+        return storeRepository.findAllByOrderByRatingDesc(PageRequest.of(page-1, size));
     }
 
     @Transactional(readOnly = true)
