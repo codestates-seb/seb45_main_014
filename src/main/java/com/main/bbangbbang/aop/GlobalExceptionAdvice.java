@@ -13,6 +13,6 @@ public class GlobalExceptionAdvice {
         HttpHeaders headers = new HttpHeaders();
         headers.add("BBANGBBANG_EXCEPTION", String.valueOf(e.getExceptionCode().getStatus()));
 
-        return ResponseEntity.badRequest().headers(headers).body(e.getMessage());
+        return ResponseEntity.ok().headers(headers).body(e.getMessage());
     }
 }
