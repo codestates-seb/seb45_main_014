@@ -61,6 +61,12 @@ const MyPage = () => {
 
   const navigate = useNavigate();
 
+  const handleDeleteMemberButton = () => {
+    if (window.confirm('정말로 탈퇴하시겠습니까?')) {
+      deleteMember();
+    }
+  };
+
   // 데이터 가져오기
   useEffect(() => {
     // 각 탭 갯수 가져오기
@@ -176,7 +182,7 @@ const MyPage = () => {
           </div>
         </div>
         <RedButton
-          onClick={deleteMember}
+          onClick={handleDeleteMemberButton}
           className="absolute right-0 bottom-0 h-1/3"
         >
           회원 탈퇴
