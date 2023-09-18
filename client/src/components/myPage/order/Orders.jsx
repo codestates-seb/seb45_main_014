@@ -50,32 +50,31 @@ const Orders = () => {
     setCurrentModalData(null);
   };
 
-  if (!data || data.length === 0)
-    return (
-      <h1 className="h-[50vh] flex items-center justify-center">
-        주문하신 내역이 없습니다.
-      </h1>
-    );
-
   return (
     <div className="flex justify-center">
-      <InfiniteScroll
-        dataLength={data.length} // 데이터 배열의 길이
-        next={fetchMoreData} // 다음 데이터를 불러오는 함수
-        hasMore={hasMore} // 다음 데이터를 불러올 수 있는지
-        loader={<LoadingComponent />}
-      >
-        <div className="grid grid-flow-row-dense md:grid-cols-4 gap-4 sm:grid-cols-2">
-          {data.map((item) => (
-            <OrderDetail
-              key={item.id}
-              data={item}
-              openModal={openModal}
-              accessToken={accessToken}
-            />
-          ))}
-        </div>
-      </InfiniteScroll>
+      {!hasMore && data.length === 0 ? (
+        <h1 className="h-[50vh] flex items-center justify-center">
+          주문하신 내역이 없습니다.
+        </h1>
+      ) : (
+        <InfiniteScroll
+          dataLength={data.length} // 데이터 배열의 길이
+          next={fetchMoreData} // 다음 데이터를 불러오는 함수
+          hasMore={hasMore} // 다음 데이터를 불러올 수 있는지
+          loader={<LoadingComponent />}
+        >
+          <div className="grid grid-flow-row-dense md:grid-cols-4 gap-4 sm:grid-cols-2">
+            {data.map((item) => (
+              <OrderDetail
+                key={item.id}
+                data={item}
+                openModal={openModal}
+                accessToken={accessToken}
+              />
+            ))}
+          </div>
+        </InfiniteScroll>
+      )}
       {currentModalData && (
         <PostReview data={currentModalData} closeModal={closeModal} />
       )}
