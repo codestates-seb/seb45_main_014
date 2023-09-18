@@ -14,6 +14,10 @@ const ShoppingCart = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
+  @media screen and (max-width: 815px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const CartItems = styled.div`
@@ -39,6 +43,9 @@ const Total = styled.div`
   width: 30%;
   position: relative;
   padding-top: 60px;
+  @media screen and (max-width: 815px) {
+    width: 65%;
+  }
   span {
     font-size: 18px;
     line-height: 24px;

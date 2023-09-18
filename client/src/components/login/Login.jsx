@@ -14,12 +14,6 @@ export const CloseButton = styled.button`
 `;
 
 const Login = ({ onClose }) => {
-  const { guestLogin } = useAuthStore((state) => state);
-
-  const handleGuestLogin = () => {
-    guestLogin();
-  };
-
   return (
     <>
       <ModalOverlay onClick={onClose} />
@@ -35,7 +29,7 @@ const Login = ({ onClose }) => {
             <div>
               <GoogleBtn />
               {/* <KakaoBtn /> */}
-              <GuestBtn onClick={handleGuestLogin} />
+              <GuestBtn onClose={onClose} />
             </div>
           </section>
         </div>

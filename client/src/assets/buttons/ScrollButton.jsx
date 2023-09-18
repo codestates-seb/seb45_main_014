@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
-import bottom from '../icons/bottom-alignment.ico';
-import top from '../icons/top-alignment.ico';
 
 const ScrollBtn = styled.div`
   position: fixed;
@@ -21,11 +19,11 @@ const ScrollBtn = styled.div`
 `;
 
 const ScrollBtnTop = styled(ScrollBtn)`
-  top: 47.5%;
+  top: 48%;
 `;
 
 const ScrollBtnBottom = styled(ScrollBtn)`
-  top: 52.5%;
+  top: 52%;
 `;
 
 const ScrollButtonWithPosition = () => {
@@ -64,14 +62,29 @@ const ScrollButtonWithPosition = () => {
     <div>
       {scrollPosition > showButtonThreshold && (
         <ScrollBtnTop type="ScrollBtn" onClick={scrollToTop}>
-          <img src={top} alt="top" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            id="up-arrow"
+          >
+            <path d="M11.293,1.293a1,1,0,0,1,1.414,0l5,5a1,1,0,0,1-1.414,1.414L13,4.414V22a1,1,0,0,1-2,0V4.414L7.707,7.707A1,1,0,0,1,6.293,6.293Z"></path>
+          </svg>
         </ScrollBtnTop>
       )}
       {Math.abs(
         scrollPosition - (document.body.scrollHeight - window.innerHeight),
       ) > threshold && (
         <ScrollBtnBottom type="ScrollBtn" onClick={scrollToBottom}>
-          <img src={bottom} alt="bottom" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            id="down-arrow"
+          >
+            <path
+              d="m17.71 17.71-5 5a1 1 0 0 1-.33.21.94.94 0 0 1-.76 0 1 1 0 0 1-.33-.21l-5-5a1 1 0 0 1 1.42-1.42l3.29 3.3V2a1 1 0 0 1 2 0v17.59l3.29-3.3a1 1 0 0 1 1.42 1.42Z"
+              data-name="down arrow"
+            ></path>
+          </svg>
         </ScrollBtnBottom>
       )}
     </div>

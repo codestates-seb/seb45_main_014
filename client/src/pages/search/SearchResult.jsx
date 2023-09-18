@@ -18,8 +18,8 @@ const Wrapper = styled.section`
 const DataContainer = styled.div`
   display: flex;
   width: 100%;
-  justify-content: space-around;
   align-items: center;
+  justify-content: center;
   flex-wrap: wrap;
 `;
 
