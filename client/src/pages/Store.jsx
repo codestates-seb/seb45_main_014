@@ -16,7 +16,7 @@ const Store = () => {
   const reviewRef = useRef(null);
   const apiUrl = process.env.REACT_APP_API_URL;
 
-  const { accessToken, isLoggedIn, guest } = useAuthStore((state) => state);
+  const { accessToken, isLoggedIn } = useAuthStore((state) => state);
 
   const [currentPage, setCurrentPage] = useState(1);
   //스크롤 위치에 따른 상태 추가
@@ -48,10 +48,7 @@ const Store = () => {
   useEffect(() => {
     let headers = {};
 
-
-    // 로그인 상태일 때만 헤더에 토큰 추가
-    if (isLoggedIn && !guest) {
-
+    if (isLoggedIn) {
       headers['Authorization'] = `Bearer ${accessToken}`;
     }
 
@@ -83,8 +80,7 @@ const Store = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-
-  }, [accessToken, apiUrl, guest, id, currentPage, isLoggedIn]);
+  }, [accessToken, apiUrl, id, currentPage, isLoggedIn]);
 
   if (!storeData) {
     return <LoadingSpinner />;
@@ -101,10 +97,10 @@ const Store = () => {
   return (
     <div className="flex flex-col relative">
       <ShopInfo store={storeData} />
-      <div className="flex justify-center sticky top-[65px] xl:ml-[0px] sm:ml-[30px]">
-        <ul className="flex text-center xl:w-[1080px] sm: mb-1 bg-white z-10">
+      <div className="flex justify-center sticky top-[65px] xl:ml-[0px]">
+        <ul className="flex text-center xl:w-[1080px] sm:mb-1 bg-white z-10">
           <li
-            className={`xl:w-[540px] sm:w-[225px] hover:bg-[#ccc] py-3 border-r ${
+            className={`sm:w-[225px] xl:w-[540px]  hover:bg-[#ccc] py-3 border-r ${
               isMenuTabActive ? 'bg-[#ccc]' : 'border-b'
             }`}
           >
@@ -129,7 +125,7 @@ const Store = () => {
           </li>
         </ul>
       </div>
-      <div className="flex flex-col sm:max-w-[430px] xl:max-w-[1070px] mx-auto ">
+      <div className="flex flex-col sm:max-w-[350px] xl:max-w-[1070px] mx-auto ">
         <div ref={menuRef}></div>
         <span className="mt-[30px] mb-[10px] xl:text-4xl sm:text-2xl w-[450px] ml-[20px]">
           매장 메뉴

@@ -107,14 +107,14 @@ const MenuItem = ({ data }) => {
         >
           <StyledImage src={data.img} alt="메뉴 이미지" />
         </div>
-        <div className="flex sm:flex-col space-x-0  xl:flex-row space-x-36">
+        <div className="flex sm:flex-col sm:space-x-0 xl:flex-row xl:space-x-36">
           <div>남은 수량 : {data.stock}</div>
           <div>{data.price.toLocaleString()}원</div>
         </div>
       </div>
-      <div className="sm:w-[350px] xl:w-[750px] px-6">
-        <h3 className="sm:text-[25px] xl:text-[25px]">{data.menu_name}</h3>
-        <div className="sm:hidden xl:text-[18px] px-6 pt-3">
+      <div className="max-sm:w-[350px] xl:w-[750px] px-6">
+        <h3 className="max-sm:text-[25px] xl:text-[25px]">{data.menu_name}</h3>
+        <div className="max-sm:hidden xl:text-[18px] px-6 pt-3">
           {data.menu_desc}
         </div>
       </div>
@@ -153,13 +153,11 @@ const MenuTab = ({ menuData }) => {
 export default MenuTab;
 
 const StyledImage = styled.img`
-  @media (max-width: 1980px) {
-    width: 300px;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 8px;
-    transition: transform 0.3s ease;
-  }
+  width: 300px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
 
   @media (max-width: 1280px) {
     width: 300px;
