@@ -93,7 +93,7 @@ const MenuItem = ({ data }) => {
   };
 
   return (
-    <div className="flex px-[10px] py-[10px] border-b">
+    <div className="flex sm:py-[10px] xl:px-[10px] xl:py-[10px] border-b sm:w-[450px] xl:w-full">
       <div>
         <div
           onClick={() => {
@@ -107,14 +107,18 @@ const MenuItem = ({ data }) => {
         >
           <StyledImage src={data.img} alt="메뉴 이미지" />
         </div>
-        <div className="flex sm:flex-col sm:space-x-0 xl:flex-row xl:space-x-36">
-          <div>남은 수량 : {data.stock}</div>
-          <div>{data.price.toLocaleString()}원</div>
+        <div className="flex xl:flex-row xl:space-x-12 sm:space-x-8 sm:text-[15px]">
+          <div className="text-left xl:w-[150px] sm:w-[100px]">
+            남은 수량 : {data.stock}
+          </div>
+          <div className="text-right xl:w-[100px] sm:w-[80px]">
+            {data.price.toLocaleString()}원
+          </div>
         </div>
       </div>
-      <div className="max-sm:w-[350px] xl:w-[750px] px-6">
-        <h3 className="max-sm:text-[25px] xl:text-[25px]">{data.menu_name}</h3>
-        <div className="max-sm:hidden xl:text-[18px] px-6 pt-3">
+      <div className="sm:w-[400px] xl:w-[750px] px-6">
+        <h3 className="sm:text-[23px] xl:text-[25px]">{data.menu_name}</h3>
+        <div className="sm:hidden xl:text-[18px] px-6 pt-3">
           {data.menu_desc}
         </div>
       </div>
@@ -161,7 +165,7 @@ const StyledImage = styled.img`
 
   @media (max-width: 1280px) {
     width: 300px;
-    height: 200px;
+    height: 150px;
   }
   &:hover {
     transform: scale(1.1);

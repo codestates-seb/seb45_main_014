@@ -125,7 +125,7 @@ const Store = () => {
           </li>
         </ul>
       </div>
-      <div className="flex flex-col sm:max-w-[350px] xl:max-w-[1070px] mx-auto ">
+      <div className="flex flex-col sm:max-w-[430px] xl:max-w-[1070px] mx-auto ">
         <div ref={menuRef}></div>
         <span className="mt-[30px] mb-[10px] xl:text-4xl sm:text-2xl w-[450px] ml-[20px]">
           매장 메뉴

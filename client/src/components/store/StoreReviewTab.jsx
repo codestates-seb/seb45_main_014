@@ -90,15 +90,17 @@ export const ReviewItem = ({ data }) => {
   };
 
   return (
-    <div className="flex w-[1070px] p-[10px] border-b">
-      <div className="w-[750px]">
-        <div className="flex mb-1">
-          <span className="mr-3">{data.nickname}</span>
-          <div>{calculateDate(data.created_at)} 전</div>
-        </div>
-        <div className="flex mb-3">
-          <div>
-            <Stars rating={data.rating} readOnly={true} />
+    <div className="flex sm:flex-col xl:flex-row xl:w-[1070px] xl:p-[10px] border-b">
+      <div className="xl:w-[750px]">
+        <div className="flex xl:flex-col sm:flex-row sm:mb-3">
+          <div className="flex xl:flex-row xl:mb-1">
+            <span className="xl:mr-3 sm:mr-3">{data.nickname}</span>
+            <div className="sm:mr-3">{calculateDate(data.created_at)} 전</div>
+          </div>
+          <div className="flex xl:mb-3">
+            <div>
+              <Stars rating={data.rating} readOnly={true} />
+            </div>
           </div>
         </div>
         <div
@@ -114,7 +116,7 @@ export const ReviewItem = ({ data }) => {
         )}
       </div>
       <img
-        className="w-[300px] h-[200px] object-cover rounded-lg ml-3"
+        className="sm:w-[150px] sm:h-[150px] sm:grow-0 xl:w-[300px] xl:h-[200px] object-cover rounded-lg ml-3"
         src={data.img}
         alt="후기 이미지"
       />
