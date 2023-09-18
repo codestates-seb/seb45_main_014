@@ -126,7 +126,9 @@ const MenuItem = ({ data }) => {
       </div>
       <div className="sm:w-[400px] xl:w-[750px] px-6">
         <h3 className="sm:text-[23px] xl:text-[25px]">{data.menu_name}</h3>
-        <div className="xl:text-[18px] px-6 pt-3">{data.menu_desc}</div>
+        <div className="xl:text-[18px] px-6 pt-3 sm:hidden xl:block">
+          {data.menu_desc}
+        </div>
       </div>
       {isMenuModalOpen && (
         <MenuModal

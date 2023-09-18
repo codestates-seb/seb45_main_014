@@ -244,7 +244,7 @@ const StoreInfoBox = styled.div`
   @media screen and (max-width: 1280px) {
     display: flex;
     flex-direction: column;
-    margin-left: 25%;
+    margin-left: 26%;
   }
 `;
 
