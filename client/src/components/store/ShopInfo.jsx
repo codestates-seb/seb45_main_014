@@ -134,7 +134,7 @@ const ShopInfo = ({ store }) => {
             {store.store_name}
           </h1>
         </div>
-        <div className="flex xl:flex-row sm:flex-col sm:items-center xl:justify-center space-x-8 mb-8">
+        <div className="flex xl:flex-row sm:flex-col sm:items-center xl:justify-center xl:space-x-8 xl:mb-8">
           <StoreIntro>
             <div className="flex text-2xl mb-3 pb-1.5 border-b">
               <span className="mr-3">매장 소개</span>
@@ -178,7 +178,7 @@ const ShopInfo = ({ store }) => {
               </div>
               <div className="flex mb-6">
                 <p className="mr-2">매장 주소 | </p>
-                <p className="grow-0 w-[450px]">{store.address}</p>
+                <p className="grow-0 xl:w-[450px]">{store.address}</p>
               </div>
               <div className="flex mr-6 ">
                 <p className="mr-2">매장 번호 | </p>
@@ -186,7 +186,7 @@ const ShopInfo = ({ store }) => {
               </div>
             </div>
           </StoreIntro>
-          <div className="flex flex-col text-left text-2xl xl:w-[450px]">
+          <div className="flex flex-col text-left text-2xl xl:w-[450px] sm:mb-[20px]">
             <span className="mb-3">매장 위치</span>
             <div
               className="rounded-lg"
@@ -222,7 +222,7 @@ const StoreIntro = styled.div`
     display: flex;
     margin-bottom: 50px;
     width: 450px;
-    margin-left: 32px;
+    margin-left: 0px;
   }
 `;
 
