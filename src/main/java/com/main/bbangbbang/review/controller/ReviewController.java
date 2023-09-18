@@ -53,7 +53,7 @@ public class ReviewController {
         validateSameMember(member, order);
 
         Review review = reviewService.createReview(order, reviewRequestDto);
-        orderService.setOrderStatus(order, OrderStatus.REVIEWED);
+        orderService.setOrderStatus(order.getId(), OrderStatus.REVIEWED);
 
         return ResponseEntity.ok(new ReviewResponseDto(reviewMapper.reviewToReviewDataWithStoreName(review)));
     }

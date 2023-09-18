@@ -37,7 +37,10 @@ public class OrderService {
     }
 
     @Transactional
-    public void setOrderStatus(Order order, OrderStatus orderStatus) {
+    public void setOrderStatus(long orderId, OrderStatus orderStatus) {
+        Order order = orderRepository.findById(orderId).orElseThrow(
+                () -> new BusinessLogicException(ExceptionCode.NO_ITEM));
+
         order.setOrderStatus(orderStatus);
     }
 
@@ -76,6 +79,12 @@ public class OrderService {
         return orders.get(0);
     }
 
+    @Transactional
+    public List<Order> findBakingOrders() {
+
+        return orderRepository.findByOrderStatus(OrderStatus.BAKING);
+    }
+
     @Transactional(readOnly = true)
     public Page<Order> findOrders(Long memberId, Integer page, Integer size) {
 
@@ -103,7 +112,7 @@ public class OrderService {
             orderMenuService.doOrderMenu(orderMenu);
         }
         order.setPickupTime(LocalDateTime.now().plusMinutes(minutes));
-        order.setOrderStatus(OrderStatus.PICKUP);
+        order.setOrderStatus(OrderStatus.BAKING);
 
         return order;
     }
@@ -134,6 +143,12 @@ public class OrderService {
         }
 
         return findUnderActiveOrder(member.getId());
+    }
+
+    @Transactional(readOnly = true)
+    public Long getSize(){
+
+        return orderRepository.count();
     }
 
     private void validateOneUnderActiveOrder(List<Order> orders) {
