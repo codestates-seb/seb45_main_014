@@ -84,12 +84,6 @@ public class Order {
     }
 
     public void addOrderMenu(OrderMenu orderMenu) {
-        for (OrderMenu orderMenuOnCart: orderMenus) {
-            if (orderMenuOnCart.getMenu().getMenuName().equals(orderMenu.getMenu().getMenuName())) {
-                orderMenuOnCart.setQuantity(orderMenuOnCart.getQuantity() + orderMenu.getQuantity());
-                return;
-            }
-        }
         orderMenus.add(orderMenu);
     }
 }
