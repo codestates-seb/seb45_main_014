@@ -23,7 +23,7 @@ const Content = styled.div`
 
 const HotPlace = ({ id, src }) => {
   return (
-    <div className="relative w-72 cursor-pointer hover:scale-[1.05]">
+    <div className="relative w-72 cursor-pointer">
       <Link
         to={`/search?search_keyword=${id}&search_target=menu&page=1&size=10`}
       >
@@ -77,11 +77,11 @@ const MainPage = () => {
   const settings = {
     dots: true,
     infinite: true,
-    slidesToShow: 2,
+    slidesToShow: 3,
     slidesToScroll: 1,
 
     autoplay: true,
-    autoplaySpeed: 1500,
+    autoplaySpeed: 2000,
   };
 
   // 즐겨찾기 불러오기
@@ -116,9 +116,11 @@ const MainPage = () => {
             </Title>
           </div>
           {/* 즐겨찾기가 1개면 슬라이더 미사용 */}
-          {favoriteStores.length === 1 ? (
+          {favoriteStores.length === 2 ? (
             <div className="flex justify-center">
-              <FavoriteStoreCard store={favoriteStores[0]} />
+              {favoriteStores.map((store) => (
+                <FavoriteStoreCard store={store} key={store.id} />
+              ))}
             </div>
           ) : (
             <Slider {...settings}>
