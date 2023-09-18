@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
-    Page<Order> findByMemberIdAndOrderStatusNot(Long memberId, OrderStatus orderStatus, Pageable pageable);
+    Page<Order> findByMemberIdAndOrderStatusNotIn(Long memberId, List<OrderStatus> orderStatus, Pageable pageable);
     List<Order> findByOrderStatusInAndMemberId(List<OrderStatus> orderStatus, Long memberId);
     List<Order> findByOrderStatus(OrderStatus orderStatus);
     long count();
