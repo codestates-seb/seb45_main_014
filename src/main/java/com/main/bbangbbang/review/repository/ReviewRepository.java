@@ -8,8 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
-    Page<Review> findByStoreId(long storeId, Pageable pageable);
+    Page<Review> findByStoreIdOrderByLastModifiedAtDesc(long storeId, Pageable pageable);
     List<Review> findByStoreId(long storeId);
-    Page<Review> findByMemberId(long memberId, Pageable pageable);
+    Page<Review> findByMemberIdOrderByLastModifiedAtDesc(long memberId, Pageable pageable);
     Optional<Review> findByOrderId(long orderId);
 }
