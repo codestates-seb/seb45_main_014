@@ -116,7 +116,7 @@ export const ReviewItem = ({ data }) => {
         )}
       </div>
       <img
-        className="sm:w-[150px] sm:h-[150px] sm:grow-0 xl:w-[300px] xl:h-[200px] object-cover rounded-lg ml-3"
+        className="sm:w-[150px] sm:h-[150px] sm:grow-0 xl:w-[300px] xl:h-[200px] object-cover rounded-lg ml-3 sm:my-3"
         src={data.img}
         alt="후기 이미지"
       />
