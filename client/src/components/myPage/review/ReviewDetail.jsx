@@ -54,20 +54,24 @@ const ReviewDetail = ({ data, accessToken }) => {
   return (
     <>
       <ReviewDetailStyle>
-        <div className="w-2/3 max-lg:w-full">
-          <Link to={`/stores/${data.store_id}`}>
-            <h2>{data.store_name}</h2>
-            <div className="flex gap-2">
-              <Stars rating={data.rating} readOnly={true} />
-              {formatDate(data.created_at)}
-            </div>
-            {data.content && (
-              <div className="h-1/2 mt-2 flex flex-col justify-between">
-                <p>{data.content}</p>
+        <div className="flex flex-col justify-between">
+          <div className="max-lg:w-full">
+            <Link to={`/stores/${data.store_id}`}>
+              <h2>{data.store_name}</h2>
+              <div className="flex gap-2">
+                <Stars rating={data.rating} readOnly={true} />
+                {formatDate(data.created_at)}
               </div>
-            )}
-          </Link>
-          <RedButton onClick={openModal}>삭제</RedButton>
+              {data.content && (
+                <div className="mt-2 flex flex-col justify-between px-4">
+                  <p>{data.content}</p>
+                </div>
+              )}
+            </Link>
+          </div>
+          <RedButton className="flex flex-end" onClick={openModal}>
+            삭제
+          </RedButton>
         </div>
         {data.img && <StoreImage src={data.img} alt="매장 이미지" />}
       </ReviewDetailStyle>
