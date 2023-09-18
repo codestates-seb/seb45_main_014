@@ -69,7 +69,7 @@ const ReviewDetail = ({ data, accessToken }) => {
               )}
             </Link>
           </div>
-          <RedButton className="flex flex-end" onClick={openModal}>
+          <RedButton className="w-20" onClick={openModal}>
             삭제
           </RedButton>
         </div>

@@ -45,7 +45,7 @@ const Favorites = () => {
 
   return (
     <>
-      {data.length === 0 ? (
+      {!hasMore && data.length === 0 ? (
         <h1 className="h-[50vh] flex items-center justify-center">
           즐겨찾기가 없습니다.
         </h1>

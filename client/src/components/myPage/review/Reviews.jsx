@@ -44,7 +44,7 @@ const Reviews = () => {
 
   return (
     <div className="w-full">
-      {data.length === 0 ? (
+      {!hasMore && data.length === 0 ? (
         <h1 className="h-[50vh] flex items-center justify-center">
           작성하신 리뷰가 없습니다.
         </h1>
