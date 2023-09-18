@@ -124,7 +124,7 @@ const Header = () => {
   };
 
   const closeModal = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     setIsModalOpen(false);
   };
 

@@ -112,8 +112,8 @@ const StoreCard = ({ store }) => {
               <div className="text-gray-400">{region_name}</div>
             </div>
             <div className="flex gap-2 h-full justify-center items-center">
-              <img src={images.bookmarkOn} alt="별점" width={24} height={24} />
-              <h2 className="text-yellow-500 font-extrabold">
+              <img src={images.bookmarkOn} alt="별점" width={20} height={20} />
+              <h2 className="text-yellow-500 font-extrabold flex items-center justify-center">
                 {formattedStoreRating}
               </h2>
             </div>

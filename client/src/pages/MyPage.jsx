@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import Button from '../assets/buttons/Button.jsx';
 import { styled } from 'styled-components';
-import Reviews from '../components/myPage/Reviews.jsx';
-import Orders from '../components/myPage/Orders.jsx';
-import Favorites from '../components/myPage/Favorites.jsx';
+import Reviews from '../components/myPage/review/Reviews.jsx';
+import Orders from '../components/myPage/order/Orders.jsx';
+import Favorites from '../components/myPage/favorite/Favorites.jsx';
 import axios from 'axios';
 import { useAuthStore } from '../store/store.js';
 
@@ -11,6 +11,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import EditProfile from '../components/myPage/EditProfile.jsx';
 import formatDate from '../utils/formatDate.js';
 import ImageUploadModal from '../components/myPage/ImageUploadModal.jsx';
+import { RedButton } from '../assets/buttons/RedButton.jsx';
+
+import { guestData } from '../data/guestData.js';
 
 const TabContainer = styled.ul`
   display: flex;
@@ -46,7 +49,9 @@ const TabContainer = styled.ul`
 
 const MyPage = () => {
   const [currentTab, setCurrentTab] = useState('리뷰 관리');
-  const { isLoggedIn, accessToken } = useAuthStore((state) => state);
+  const { isLoggedIn, accessToken, deleteMember, guest } = useAuthStore(
+    (state) => state,
+  );
   const [member, setMember] = useState([]);
 
   const [reviewCount, setReviewCount] = useState(0);
@@ -57,6 +62,12 @@ const MyPage = () => {
   const [isImageModalOpen, setImageModalOpen] = useState(false);
 
   const navigate = useNavigate();
+
+  const handleDeleteMemberButton = () => {
+    if (window.confirm('정말로 탈퇴하시겠습니까?')) {
+      deleteMember();
+    }
+  };
 
   // 데이터 가져오기
   useEffect(() => {
@@ -111,7 +122,10 @@ const MyPage = () => {
     };
 
     // 로그인 상태이고 accessToken이 있으면 데이터 가져오기
-    if (isLoggedIn && accessToken) {
+    if (isLoggedIn && guest) {
+      fetchInitialData();
+      setMember(guestData);
+    } else if (isLoggedIn && accessToken) {
       fetchInitialData();
       getMember();
     } else {
@@ -119,7 +133,7 @@ const MyPage = () => {
       alert('로그인이 필요합니다.');
       navigate('/');
     }
-  }, [accessToken, currentTab, isLoggedIn, navigate]);
+  }, [accessToken, currentTab, guest, isLoggedIn, navigate]);
 
   // 각 탭에 따라 렌더링할 컴포넌트 변경
   const renderDataComponent = () => {
@@ -155,26 +169,31 @@ const MyPage = () => {
   }, []);
 
   return (
-    <div className="max-w-screen-lg mx-auto p-10">
-      <div className="flex gap-5">
-        <img
-          src={member.img}
-          alt="유저 이미지"
-          className="flex justify-center items-center border-2 w-28 rounded-full"
-        ></img>
-        <div className="flex flex-col justify-center gap-2">
-          <h1 className="">{member.nickname}</h1>
-          <div>가입일: {formatDate(member.createdAt)}</div>
-          <div className="flex gap-2">
-            <Button className="" onClick={openImageModal}>
-              이미지 변경
-            </Button>
-            <Button className="" onClick={openEditProfileModal}>
-              프로필 수정
-            </Button>
+    <div className="max-w-screen-lg mx-auto p-10 max-sm:flex-col">
+      <div className="flex justify-between relative flex-row max-sm:flex-col">
+        <div className="flex gap-5">
+          <img
+            src={member.img}
+            alt="유저 이미지"
+            className="flex justify-center items-center border-2 w-28 h-28 rounded-full"
+          ></img>
+          <div className="flex flex-col justify-center gap-2">
+            <h1>{member.nickname}</h1>
+            <div className="flex">가입일: {formatDate(member.createdAt)}</div>
+            <div className="lg:flex lg:flex-row max-sm:flex-col gap-2">
+              <Button onClick={openImageModal}>이미지 변경</Button>
+              <Button onClick={openEditProfileModal}>프로필 수정</Button>
+            </div>
           </div>
         </div>
+        <RedButton
+          onClick={handleDeleteMemberButton}
+          className="absolute right-0 bottom-0 h-1/3 max-sm:static"
+        >
+          회원 탈퇴
+        </RedButton>
       </div>
+
       <TabContainer className="my-5">
         {/* 리뷰 관리 탭 */}
         <li className={`w-full ${currentTab === '리뷰 관리' ? 'active' : ''}`}>
@@ -199,7 +218,9 @@ const MyPage = () => {
       {isEditProfileModalOpen && (
         <EditProfile onClose={closeEditProfileModal} />
       )}
-      {isImageModalOpen && <ImageUploadModal onClose={closeImageModal} />}
+      {isImageModalOpen && (
+        <ImageUploadModal memberImage={member.img} onClose={closeImageModal} />
+      )}
     </div>
   );
 };

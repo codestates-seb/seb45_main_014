@@ -5,7 +5,7 @@ import Button from '../../assets/buttons/Button.jsx';
 import { CancelButton } from './EditProfile.jsx';
 import { useAuthStore } from '../../store/store.js';
 
-const ImageUploadModal = ({ onClose }) => {
+const ImageUploadModal = ({ onClose, memberImage }) => {
   const inputRef = useRef(null);
 
   const [preview, setPreview] = useState(null);
@@ -47,6 +47,10 @@ const ImageUploadModal = ({ onClose }) => {
     };
   };
 
+  const handleFileClick = () => {
+    inputRef.current.click();
+  };
+
   return (
     <>
       <ModalOverlay onClick={onClose} />
@@ -56,16 +60,21 @@ const ImageUploadModal = ({ onClose }) => {
           onSubmit={handleUpload}
         >
           <div className="w-64 h-64 border-2 border-black-100">
-            {preview && (
+            {preview ? (
               <img className="w-full h-full" src={preview} alt="미리보기" />
+            ) : (
+              <img className="w-full" src={memberImage} alt="유저 이미지" />
             )}
           </div>
           <input
-            className="w-2/3"
+            className="hidden"
             type="file"
             ref={inputRef}
             onChange={handlePreview}
           />
+          <Button type="button" onClick={handleFileClick}>
+            이미지 선택
+          </Button>
           <div className="flex gap-4">
             <Button type="submit">업로드</Button>
             <CancelButton type="button" onClick={onClose}>

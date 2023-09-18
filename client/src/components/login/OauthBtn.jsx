@@ -2,6 +2,8 @@ import { FcGoogle } from 'react-icons/fc';
 import { RiKakaoTalkFill } from 'react-icons/ri';
 import { ImManWoman } from 'react-icons/im';
 import { useAuthStore } from '../../store/store';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 
 const OauthBtn = ({ bgColor, color, icon, text, onClick }) => {
   return (
@@ -68,11 +70,31 @@ export const KakaoBtn = () => {
   );
 };
 
-export const GuestBtn = () => {
+export const GuestBtn = ({ onClose }) => {
+  const navigate = useNavigate();
+
+  const { guestLogin } = useAuthStore((state) => state);
+
+  const handleGuestLogin = () => {
+    if (
+      !window.confirm(
+        '게스트 로그인은 대부분의 기능을 사용할 수 없습니다. \n그래도 진행하시겠습니까?',
+      )
+    ) {
+      return;
+    }
+    guestLogin();
+    navigate('/mypage');
+    onClose();
+    toast.success('많은 기능을 이용하시려면 로그인을 해주세요.');
+    toast.success('게스트 계정으로 로그인되었습니다.');
+  };
+
   return (
     <OauthBtn
       bgColor="#2e2e2e"
       color="#f6f6f2"
+      onClick={handleGuestLogin}
       icon={<ImManWoman />}
       text="게스트 계정으로 로그인하기"
     />

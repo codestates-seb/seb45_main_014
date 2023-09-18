@@ -22,6 +22,9 @@ export const useBookmarkStore = create((set) => ({
       is_favorite
         ? toast.success('즐겨찾기에 추가되었습니다.')
         : toast.error('즐겨찾기에서 삭제되었습니다.');
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     } catch (error) {
       console.error('즐겨찾기 에러', error);
     }
@@ -44,7 +47,7 @@ export const userFormStore = create((set) => ({
 }));
 
 export const useRatingStore = create((set) => ({
-  rating: 0,
+  rating: 5,
   setRating: (rating) => set({ rating }),
 }));
 
@@ -92,6 +95,7 @@ export const useAuthStore = create((set) => ({
   isLoggedIn: localStorage.getItem('access_token') !== null,
   accessToken: localStorage.getItem('access_token'),
   refreshToken: localStorage.getItem('refresh_token'),
+  guest: false,
   login: (access, refresh) => {
     set({ isLoggedIn: true, accessToken: access, refreshToken: refresh });
     localStorage.setItem('access_token', access);
@@ -105,15 +109,50 @@ export const useAuthStore = create((set) => ({
           Authorization: `Bearer ${localStorage.getItem('refresh_token')}`,
         },
       });
+      toast.success('로그아웃 되었습니다.');
     } catch (error) {
       console.error(error);
     } finally {
-      set({ isLoggedIn: false, accessToken: null, refreshToken: null });
+      set({
+        isLoggedIn: false,
+        accessToken: null,
+        refreshToken: null,
+        guest: false,
+      });
       localStorage.removeItem('access_token');
       localStorage.removeItem('refresh_token');
     }
   },
   guestLogin: () => {
-    set({ isLoggedIn: true });
+    set({
+      isLoggedIn: true,
+      guest: true,
+      accessToken: 'guest',
+      refreshToken: 'guest',
+    });
+    console.log('guest login');
+  },
+  // 회원 탈퇴
+  deleteMember: async () => {
+    try {
+      await axios.delete(`${apiUrl}/api/member`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+        },
+      });
+      toast.success('회원 탈퇴 되었습니다.');
+      window.location.href = '/';
+    } catch (error) {
+      console.error(error);
+    } finally {
+      set({
+        isLoggedIn: false,
+        accessToken: null,
+        refreshToken: null,
+        guest: false,
+      });
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+    }
   },
 }));
