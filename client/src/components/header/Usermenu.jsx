@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ReactComponent as UserIcon } from '../../assets/images/user.svg';
 import { styled } from 'styled-components';
 import { useAuthStore } from '../../store/store.js';
@@ -30,7 +30,7 @@ const MenuDropdown = styled.div`
   display: ${(props) => (props.isOpen ? 'block' : 'none')};
 `;
 
-const MenuList = styled.ul`
+const MenuList = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -41,7 +41,7 @@ const MenuList = styled.ul`
   z-index: 5;
 `;
 
-const MenuItem = styled.li`
+const MenuItem = styled.div`
   text-align: center;
   width: 100%;
   padding: 10px;
@@ -55,6 +55,7 @@ const UserMenu = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { logout } = useAuthStore();
   const dropdownRef = useRef(null);
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
@@ -62,6 +63,10 @@ const UserMenu = () => {
 
   const closeMenu = () => {
     setIsMenuOpen(false);
+  };
+
+  const goToMyPage = () => {
+    navigate('/mypage');
   };
 
   useEffect(() => {
@@ -86,19 +91,31 @@ const UserMenu = () => {
   }, [isMenuOpen]);
 
   return (
-    <UserMenuContainer>
+    <UserMenuContainer ref={dropdownRef}>
       <UserIconWrapper onClick={toggleMenu}>
         <UserIcon />
       </UserIconWrapper>
-      <MenuDropdown isOpen={isMenuOpen} ref={dropdownRef}>
+      <MenuDropdown isOpen={isMenuOpen}>
         <MenuList>
-          <MenuItem>
-            <Link to="/mypage">마이페이지</Link>
+          <MenuItem
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              goToMyPage();
+              closeMenu();
+            }}
+          >
+            마이페이지
           </MenuItem>
-          <MenuItem>
-            <Link to="" onClick={logout}>
-              로그아웃
-            </Link>
+          <MenuItem
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              logout();
+              closeMenu();
+            }}
+          >
+            로그아웃
           </MenuItem>
         </MenuList>
       </MenuDropdown>

@@ -93,6 +93,9 @@ const PostReview = ({ data, closeModal }) => {
 
   const handleDeleteImage = () => {
     setSelectedImage(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = null;
+    }
   };
 
   const handleTextChange = (e) => {

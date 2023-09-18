@@ -173,10 +173,13 @@ const SearchBar = () => {
           e.preventDefault();
           searchSubmitHandler();
         }}
-        onClick={handleFocused}
+        onClick={(e) => {
+          e.stopPropagation();
+          handleFocused();
+        }}
       >
+        <DropdownMenu />
         <div className="flex flex-1 justify-center z-[101]">
-          <DropdownMenu />
           <ButtonContainer>
             <RemoveSVG onClick={() => setSearchQuery('')} />
             <SearchSVG

@@ -98,7 +98,9 @@ const DropdownMenu = () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isOpen]);
-  const handleToggleDropdown = () => {
+  const handleToggleDropdown = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     setIsOpen(!isOpen);
   };
 

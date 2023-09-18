@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { useAuthStore, useCartItemStore } from '../store/store';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 export const useCartApi = () => {
+  const navigate = useNavigate();
   // 에러메시지 Toast message
   const errNotify = (message) => toast.error(message, { id: 'err' });
   const successNotify = (message) =>
@@ -30,11 +32,7 @@ export const useCartApi = () => {
   const fetchCart = async () => {
     try {
       const response = await axios.get(`${API}/api/cart`, config);
-      const storeId = response.data.order.store_id;
-      const orderMenus = response.data.order.order_menus;
-      setCartItem(orderMenus);
-      setCheckItem(orderMenus.map((menu) => menu.id));
-      setStoreId(storeId);
+      return response.data.order;
     } catch (error) {
       console.error(error);
     }
@@ -71,11 +69,13 @@ export const useCartApi = () => {
       );
       // 성공 시 response
       const pickup_time = parseDate(response.data.order.pickup_time);
+      setCartItem([]);
+      setCheckItem([]);
+      setStoreId(null);
       successNotify(`주문이 정상적으로 완료되었습니다.`);
       setTimeout(() => {
-        window.location.href = `/mypage#order`;
+        navigate(`/mypage#order`);
       }, 1000);
-      fetchCart();
     } catch (error) {
       console.error('주문 중 오류가 발생했습니다.', error);
       errNotify('주문 중 오류가 발생했습니다.');
@@ -127,6 +127,9 @@ export const useCartApi = () => {
       );
       // 성공 시 response
       const pickup_time = parseDate(response.data.order.pickup_time);
+      setCartItem([]);
+      setCheckItem([]);
+      setStoreId(null);
       successNotify(`주문이 정상적으로 완료되었습니다.`);
       setTimeout(() => {
         window.location.href = `/mypage#order`;
