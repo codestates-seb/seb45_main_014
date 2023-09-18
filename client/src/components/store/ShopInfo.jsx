@@ -178,7 +178,9 @@ const ShopInfo = ({ store }) => {
               </div>
               <div className="flex mb-6">
                 <p className="mr-2">매장 주소 | </p>
-                <p className="grow-0 xl:w-[450px]">{store.address}</p>
+                <p className="grow-1 xl:w-[430px] xl:text-left">
+                  {store.address}
+                </p>
               </div>
               <div className="flex mr-6 ">
                 <p className="mr-2">매장 번호 | </p>
