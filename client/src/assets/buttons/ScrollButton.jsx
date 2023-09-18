@@ -9,7 +9,7 @@ const ScrollBtn = styled.div`
   height: 50px;
   cursor: pointer;
 
-  border-radius: 10%;
+  border-radius: 50%;
   padding: 10px;
 
   &:hover {
@@ -64,10 +64,16 @@ const ScrollButtonWithPosition = () => {
         <ScrollBtnTop type="ScrollBtn" onClick={scrollToTop}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
+            enableBackground="new 0 0 24 24"
             viewBox="0 0 24 24"
-            id="up-arrow"
+            id="UpperArrow"
           >
-            <path d="M11.293,1.293a1,1,0,0,1,1.414,0l5,5a1,1,0,0,1-1.414,1.414L13,4.414V22a1,1,0,0,1-2,0V4.414L7.707,7.707A1,1,0,0,1,6.293,6.293Z"></path>
+            <path
+              d="M16.9,13.4l-4.2-4.2l0,0c-0.4-0.4-1-0.4-1.4,0l-4.2,4.2c-0.4,0.4-0.4,1,0,1.4s1,0.4,1.4,0l3.5-3.5l3.5,3.5
+	c0.2,0.2,0.4,0.3,0.7,0.3l0,0c0.3,0,0.5-0.1,0.7-0.3C17.3,14.4,17.3,13.8,16.9,13.4z"
+              fill="#debe90"
+              className="color000000 svgShape"
+            ></path>
           </svg>
         </ScrollBtnTop>
       )}
@@ -78,11 +84,12 @@ const ScrollButtonWithPosition = () => {
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
-            id="down-arrow"
+            id="DownArrow"
           >
             <path
-              d="m17.71 17.71-5 5a1 1 0 0 1-.33.21.94.94 0 0 1-.76 0 1 1 0 0 1-.33-.21l-5-5a1 1 0 0 1 1.42-1.42l3.29 3.3V2a1 1 0 0 1 2 0v17.59l3.29-3.3a1 1 0 0 1 1.42 1.42Z"
-              data-name="down arrow"
+              d="M17,9.17a1,1,0,0,0-1.41,0L12,12.71,8.46,9.17a1,1,0,0,0-1.41,0,1,1,0,0,0,0,1.42l4.24,4.24a1,1,0,0,0,1.42,0L17,10.59A1,1,0,0,0,17,9.17Z"
+              fill="#debe90"
+              className="color000000 svgShape"
             ></path>
           </svg>
         </ScrollBtnBottom>
