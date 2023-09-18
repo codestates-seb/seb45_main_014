@@ -54,6 +54,11 @@ export const useCartApi = () => {
         ...config,
         data: data,
       });
+
+      const response = await fetchCart();
+      setCartItem(response.order_menus);
+      setCheckItem(response.order_menus.map((item) => item.id));
+      setStoreId(response.store_id);
     } catch (error) {
       console.error(error);
     }

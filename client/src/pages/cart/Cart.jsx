@@ -163,10 +163,10 @@ const Cart = () => {
       await deleteCart(checkedId);
 
       // 삭제된 내역 업데이트
-      const newData = await fetchCart().then((res) => res.order_menus);
-      setCartItem(newData);
-      setCheckItem(newData.map((item) => item.id));
-      console.log(newData);
+      // const newData = await fetchCart().then((res) => res.order_menus);
+      // setCartItem(newData);
+      // setCheckItem(newData.map((item) => item.id));
+      // console.log(newData);
     } catch (error) {
       console.error('에러임', error);
     } finally {
