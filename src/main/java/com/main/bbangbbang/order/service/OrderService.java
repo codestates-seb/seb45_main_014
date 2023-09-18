@@ -119,8 +119,8 @@ public class OrderService {
 
     @Transactional
     public void addCart(Order order, Menu menu, Integer quantity) {
+        validateSameStore(order, menu); // 같은 매장의 매뉴임? 아니면 -> Exception!!
         if (order.getOrderStatus() == OrderStatus.ACTIVE) {
-            validateSameStore(order, menu); // 같은 매장의 매뉴임? 아니면 -> Exception!!
             for (OrderMenu orderMenu : order.getOrderMenus())
                 if (orderMenu.getMenu().getId().equals(menu.getId())) {
                     orderMenu.setQuantity(quantity);
