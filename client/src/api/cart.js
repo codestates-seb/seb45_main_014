@@ -30,7 +30,11 @@ export const useCartApi = () => {
   const fetchCart = async () => {
     try {
       const response = await axios.get(`${API}/api/cart`, config);
-      return response.data.order;
+      const storeId = response.data.order.store_id;
+      const orderMenus = response.data.order.order_menus;
+      setCartItem(orderMenus);
+      setCheckItem(orderMenus.map((menu) => menu.id));
+      setStoreId(storeId);
     } catch (error) {
       console.error(error);
     }
@@ -70,7 +74,8 @@ export const useCartApi = () => {
       successNotify(`주문이 정상적으로 완료되었습니다.`);
       setTimeout(() => {
         window.location.href = `/mypage#order`;
-      }, 3000);
+      }, 1000);
+      fetchCart();
     } catch (error) {
       console.error('주문 중 오류가 발생했습니다.', error);
       errNotify('주문 중 오류가 발생했습니다.');
@@ -125,7 +130,7 @@ export const useCartApi = () => {
       successNotify(`주문이 정상적으로 완료되었습니다.`);
       setTimeout(() => {
         window.location.href = `/mypage#order`;
-      }, 3000);
+      }, 1000);
     } catch (error) {
       console.error('주문 중 오류가 발생했습니다.', error);
       errNotify('주문 중 오류가 발생했습니다.');
