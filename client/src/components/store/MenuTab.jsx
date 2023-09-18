@@ -17,6 +17,7 @@ const MenuItem = ({ data }) => {
   const { setCartItem, setCheckItem } = useCartItemStore((state) => state);
   const [currentData, setCurrentData] = useState(null);
   const [currentCount, setCurrentCount] = useState(1);
+  const [customStatus, setCustomStatus] = useState();
 
   const notify = () => toast.error('제품이 품절 되었습니다.');
   const notifysuccess = () => toast.success('장바구니에 추가 되었습니다.');
@@ -65,23 +66,30 @@ const MenuItem = ({ data }) => {
     try {
       const response = await axios.post(
         `${apiUrl}/api/cart/${data.id}?quantity=${cartItem.quantity}`,
-        null,
+        {},
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         },
       );
-      const statusData = response.status;
-      const exception = response.headers['Bbangbbang_exception'];
-      console.log(exception);
-      if (statusData === 200 && exception === 904)
-        openFalseModal(data, isCount);
+      console.log('Method 1:', response.headers['BBANGBBANG_EXCEPTION']);
+      console.log('Method 2:', response.headers['bbangbbang_exception']);
+      console.log('Method 3:', response.headers.BBANGBBANG_EXCEPTION);
+      console.log('Method 4:', response.headers.bbangbbang_exception);
+      console.log('Method 5:', response.headers['Bbangbbang_exception']);
+      console.log('Method 6:', response.headers.Bbangbbang_exception);
 
-      if (statusData === 200) {
+      const statusData = response.status;
+      const exception = response.headers['bbangbbang_exception'];
+
+      if (statusData === 200 && exception === String(900)) {
+        openFalseModal(data, isCount);
+      } else {
         notifysuccess();
         setIsMenuModalOpen(false); // 모달을 닫도록 수정
       }
+
       const newData = await fetchCart().then((res) => res.order_menus);
       setCartItem(newData);
       // 기존에 있던 checkItem에 새로운 데이터의 id를 추가
