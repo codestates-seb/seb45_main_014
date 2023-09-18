@@ -55,8 +55,8 @@ const ReviewDetail = ({ data, accessToken }) => {
     <>
       <ReviewDetailStyle>
         <div className="w-2/3 max-lg:w-full">
-          <h2>{data.store_name}</h2>
-          <Link to={`/stores/${data.id}`}>
+          <Link to={`/stores/${data.store_id}`}>
+            <h2>{data.store_name}</h2>
             <div className="flex gap-2">
               <Stars rating={data.rating} readOnly={true} />
               {formatDate(data.created_at)}
@@ -67,7 +67,7 @@ const ReviewDetail = ({ data, accessToken }) => {
           </Link>
           <RedButton onClick={openModal}>삭제</RedButton>
         </div>
-        <StoreImage src={data.img} alt="매장 이미지"></StoreImage>
+        {data.img && <StoreImage src={data.img} alt="매장 이미지" />}
       </ReviewDetailStyle>
 
       {isModalOpen && (
