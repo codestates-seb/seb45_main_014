@@ -96,10 +96,32 @@ export const useAuthStore = create((set) => ({
   accessToken: localStorage.getItem('access_token'),
   refreshToken: localStorage.getItem('refresh_token'),
   guest: false,
-  login: (access, refresh) => {
+  tokenExpirationTimer: null,
+  login: (access, refresh, expiresIn) => {
     set({ isLoggedIn: true, accessToken: access, refreshToken: refresh });
     localStorage.setItem('access_token', access);
     localStorage.setItem('refresh_token', refresh);
+
+    clearTimeout(this.tokenExpirationTimer); // 이전 타이머를 취소 (있다면)
+    this.tokenExpirationTimer = setTimeout(
+      () => {
+        // 새로운 액세스 토큰을 발급받는 함수
+        this.refreshAccessToken();
+      },
+      (expiresIn - 60) * 1000,
+    ); // 만료 60초 전에 갱신
+  },
+  refreshAccessToken: async () => {
+    try {
+      const response = await axios.post(`${apiUrl}/api/token/refresh`, {
+        refresh_token: this.refreshToken,
+      });
+      const { access, refresh, expiresIn } = response.data;
+      this.login(access, refresh, expiresIn); // 새 토큰으로 로그인 정보 갱신
+    } catch (error) {
+      console.error('Failed to refresh access token:', error);
+      this.logout(); // 갱신 실패시 로그아웃
+    }
   },
   logout: async () => {
     // 로그아웃 post 요청
