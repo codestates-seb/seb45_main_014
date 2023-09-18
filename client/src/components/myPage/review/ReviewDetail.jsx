@@ -61,9 +61,11 @@ const ReviewDetail = ({ data, accessToken }) => {
               <Stars rating={data.rating} readOnly={true} />
               {formatDate(data.created_at)}
             </div>
-            <div className="h-1/2 mt-2 flex flex-col justify-between">
-              <p>{data.content}</p>
-            </div>
+            {data.content && (
+              <div className="h-1/2 mt-2 flex flex-col justify-between">
+                <p>{data.content}</p>
+              </div>
+            )}
           </Link>
           <RedButton onClick={openModal}>삭제</RedButton>
         </div>
