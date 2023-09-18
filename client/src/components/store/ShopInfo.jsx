@@ -136,7 +136,7 @@ const ShopInfo = ({ store }) => {
         </div>
         <div className="flex xl:flex-row sm:flex-col sm:items-center xl:justify-center xl:space-x-8 xl:mb-8">
           <StoreIntro>
-            <div className="flex text-2xl mb-3 pb-1.5 border-b">
+            <div className="flex text-2xl xl:mb-20 pb-1.5 border-b">
               <span className="mr-3">매장 소개</span>
               <div>
                 <button>
@@ -155,7 +155,7 @@ const ShopInfo = ({ store }) => {
                 </button>
               </div>
             </div>
-            <div className="flex flex-col text-[18px]">
+            <div className="flex flex-col text-[18px] xl:mb-[110px]">
               <div className="flex mr-3  mb-6">
                 <p className="mr-2">영업 시간 | </p>
                 <p>{store.running_time}</p>
@@ -213,13 +213,12 @@ const ShopInfoShareIcon = styled.img`
 `;
 
 const StoreIntro = styled.div`
-  @media (max-width: 1980px) {
-    width: 550px;
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-    border-radius: 8px;
-  }
+  width: 550px;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  border-radius: 8px;
+
   @media (max-width: 1280px) {
     display: flex;
     margin-bottom: 50px;
