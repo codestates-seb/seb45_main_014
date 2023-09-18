@@ -56,13 +56,13 @@ public class ReviewService {
     @Transactional(readOnly = true)
     public Page<Review> findReviews(Long memberId, Integer page, Integer size) {
 
-        return reviewRepository.findByMemberId(memberId, PageRequest.of(page-1, size));
+        return reviewRepository.findByMemberIdOrderByLastModifiedAtDesc(memberId, PageRequest.of(page-1, size));
     }
 
     @Transactional(readOnly = true)
     public Page<Review> findReviewsByStore(long storeId, int page, int size) {
 
-        return reviewRepository.findByStoreId(storeId, PageRequest.of(page-1, size));
+        return reviewRepository.findByStoreIdOrderByLastModifiedAtDesc(storeId, PageRequest.of(page-1, size));
     }
 
     @Transactional
