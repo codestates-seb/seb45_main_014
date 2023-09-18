@@ -128,7 +128,9 @@ const ShopInfo = ({ store }) => {
           </Slider> */}
         <ShopBanner src={store.img} />
       </div>
-      <h1 className="xl:text-5xl sm:text-3xl xl:my-3">{store.store_name}</h1>
+      <h1 className="xl:text-5xl sm:text-3xl xl:my-3 sm:my-3">
+        {store.store_name}
+      </h1>
       <StoreLayout>
         <StoreInfoBox>
           <StoreIntro>
@@ -260,6 +262,9 @@ const StoreIntro = styled.div`
   p {
     display: inline;
     margin-right: 5px;
+  }
+  @media screen and (max-width: 1280px) {
+    width: 500px;
   }
 `;
 
