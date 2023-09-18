@@ -19,11 +19,11 @@ const ScrollBtn = styled.div`
 `;
 
 const ScrollBtnTop = styled(ScrollBtn)`
-  top: 48%;
+  top: calc(50% - 20px);
 `;
 
 const ScrollBtnBottom = styled(ScrollBtn)`
-  top: 52%;
+  top: calc(50% + 20px);
 `;
 
 const ScrollButtonWithPosition = () => {
