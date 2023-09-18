@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ReactComponent as UserIcon } from '../../assets/images/user.svg';
 import { styled } from 'styled-components';
 import { useAuthStore } from '../../store/store.js';
+import axios from 'axios';
 
 const UserMenuContainer = styled.div`
   position: relative;
@@ -11,9 +12,14 @@ const UserMenuContainer = styled.div`
 
 const UserIconWrapper = styled.div`
   display: flex;
-  align-items: center;
   justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
   transition: all 0.2s ease;
+  background-image: url(${(props) => props.img});
+  background-size: cover;
   &:hover {
     transform: scale(1.15);
   }
@@ -53,7 +59,8 @@ const MenuItem = styled.div`
 
 const UserMenu = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { logout } = useAuthStore();
+  const [userImg, setUserImg] = useState('');
+  const { logout, accessToken } = useAuthStore();
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
@@ -90,11 +97,37 @@ const UserMenu = () => {
     };
   }, [isMenuOpen]);
 
+  // 유저 이미지 불러오기
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/api/member`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((res) => {
+        const img = res.data.img;
+        if (img) {
+          setUserImg(img);
+        } else {
+          // 유효한 이미지가 없을 경우
+          setUserImg(
+            'https://img.freepik.com/premium-vector/pretzel-with-salt-on-it-hand-drawn-watercolor-vector-illustration-isolated-on-white-background_650009-16.jpg',
+          );
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [accessToken]);
+
   return (
     <UserMenuContainer ref={dropdownRef}>
-      <UserIconWrapper onClick={toggleMenu}>
-        <UserIcon />
-      </UserIconWrapper>
+      {userImg ? (
+        <UserIconWrapper onClick={toggleMenu} img={userImg} />
+      ) : (
+        <UserIcon width="40" height="40" onClick={toggleMenu} />
+      )}
       <MenuDropdown isOpen={isMenuOpen}>
         <MenuList>
           <MenuItem

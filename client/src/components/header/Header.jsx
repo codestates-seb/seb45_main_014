@@ -87,7 +87,6 @@ export const ItemBadge = styled.span`
   top: -1px;
   width: 20px;
   height: 20px;
-  padding: 0 4px;
   border: 2px solid rgb(255, 255, 255);
   border-radius: 10px;
   background-color: #b39260;
@@ -103,7 +102,7 @@ export const ItemBadge = styled.span`
     'Open Sans',
     'Helvetica Neue',
     sans-serif;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 700;
   color: rgb(255, 255, 255);
   line-height: 15px;
@@ -128,8 +127,15 @@ const Header = () => {
     setIsModalOpen(false);
   };
 
+  // useEffect(() => {
+  //   setItemCount(cartItem.length);
+  // }, [cartItem]);
+  // cartItem.quantity를 모두 더한 값을 itemCount로 설정
   useEffect(() => {
-    setItemCount(cartItem.length);
+    const total = cartItem.reduce((acc, cur) => {
+      return acc + cur.quantity;
+    }, 0);
+    setItemCount(total);
   }, [cartItem]);
 
   return (
