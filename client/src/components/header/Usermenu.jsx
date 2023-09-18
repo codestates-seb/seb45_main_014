@@ -17,6 +17,12 @@ const UserIconWrapper = styled.div`
   height: 40px;
   border-radius: 50%;
   overflow: hidden;
+  transition: all 0.2s ease;
+  background-image: url(${(props) => props.img});
+  background-size: cover;
+  &:hover {
+    transform: scale(1.15);
+  }
 `;
 
 const MenuDropdown = styled.div`
@@ -48,17 +54,6 @@ const MenuItem = styled.div`
   font-weight: 500;
   &:hover {
     background-color: #f9f9f9;
-  }
-`;
-
-const Icon = styled.div`
-  width: 100%;
-  height: 100%;
-  transition: all 0.2s ease;
-  background-image: url(${(props) => props.img});
-  background-size: cover;
-  &:hover {
-    transform: scale(1.15);
   }
 `;
 
@@ -128,9 +123,11 @@ const UserMenu = () => {
 
   return (
     <UserMenuContainer ref={dropdownRef}>
-      <UserIconWrapper onClick={toggleMenu}>
-        {userImg ? <Icon img={userImg} /> : <UserIcon />}
-      </UserIconWrapper>
+      {userImg ? (
+        <UserIconWrapper onClick={toggleMenu} img={userImg} />
+      ) : (
+        <UserIcon width="40" height="40" onClick={toggleMenu} />
+      )}
       <MenuDropdown isOpen={isMenuOpen}>
         <MenuList>
           <MenuItem
