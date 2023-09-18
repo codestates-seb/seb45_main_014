@@ -157,15 +157,15 @@ const ShopInfo = ({ store }) => {
             </div>
             <div className="flex flex-col text-[18px]">
               <div className="flex mr-3  mb-6">
-                <p className="mr-2">영업 시간</p>
+                <p className="mr-2">영업 시간 | </p>
                 <p>{store.running_time}</p>
               </div>
               <div className="flex mr-3 mb-6">
-                <p className="mr-2">매장 평점</p>
+                <p className="mr-2">매장 평점 | </p>
                 <p>{store.rating}</p>
               </div>
               <div className="flex mr-3 mb-6">
-                <p className="mr-2">대표 메뉴</p>
+                <p className="mr-2">대표 메뉴 | </p>
                 <div className="flex flex-wrap max-w-[400px]">
                   {store.menus.map((menu, index) => {
                     return (
@@ -177,12 +177,12 @@ const ShopInfo = ({ store }) => {
                 </div>
               </div>
               <div className="flex mb-6">
-                <p className="mr-2">매장 주소</p>
-                <p className="grow-0 w-[460px]">{store.address}</p>
+                <p className="mr-2">매장 주소 | </p>
+                <p className="grow-0 w-[450px]">{store.address}</p>
               </div>
               <div className="flex mr-6 ">
-                <p className="mr-2">매장 번호</p>
-                <p>{store.phone}</p>
+                <p className="mr-2">매장 번호 | </p>
+                <p>{store.phone_num}</p>
               </div>
             </div>
           </StoreIntro>

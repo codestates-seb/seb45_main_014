@@ -7,18 +7,6 @@ import FalseModal from './modal/FalseModal.jsx';
 import { useCartApi } from '../../api/cart';
 import MenuModal from './modal/MenuModal.jsx';
 
-const StyledImage = styled.img`
-  width: 300px;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 8px;
-  transition: transform 0.3s ease;
-
-  &:hover {
-    transform: scale(1.1);
-  }
-`;
-
 const MenuItem = ({ data }) => {
   const apiUrl = process.env.REACT_APP_API_URL;
   const [isMenuModalOpen, setIsMenuModalOpen] = useState(false);
@@ -32,7 +20,7 @@ const MenuItem = ({ data }) => {
 
   const notify = () => toast.error('제품이 품절 되었습니다.');
   const notifysuccess = () => toast.success('장바구니에 추가 되었습니다.');
-
+  const notifynotlogin = () => toast.error('로그인 후 이용 가능합니다.');
   const menuModalClose = () => {
     setIsMenuModalOpen(false); // 메뉴모달 닫기
   };
@@ -48,6 +36,7 @@ const MenuItem = ({ data }) => {
   const closeFalseModal = () => {
     setIsFalseModalOpen(false);
   };
+
   // 전부 닫기
   const allClose = () => {
     setIsFalseModalOpen(false);
@@ -85,7 +74,10 @@ const MenuItem = ({ data }) => {
       );
       const statusData = response.status;
       const exception = response.headers['Bbangbbang_exception'];
-      // console.log(exception);
+      console.log(exception);
+      if (statusData === 200 && exception === 904)
+        openFalseModal(data, isCount);
+
       if (statusData === 200) {
         notifysuccess();
         setIsMenuModalOpen(false); // 모달을 닫도록 수정
@@ -96,16 +88,12 @@ const MenuItem = ({ data }) => {
       setCheckItem([...new Set([...newData.map((item) => item.id)])]);
     } catch (error) {
       console.log(error);
-      openFalseModal(data, isCount);
+      notifynotlogin();
     }
   };
 
   return (
     <div className="flex px-[10px] py-[10px] border-b">
-      <div className="w-[750px]">
-        <h3 className="text-[25px]">{data.menu_name}</h3>
-        <div className="text-[15px]">{data.menu_desc}</div>
-      </div>
       <div>
         <div
           onClick={() => {
@@ -123,6 +111,10 @@ const MenuItem = ({ data }) => {
           <div>{data.price.toLocaleString()}원</div>
           <div>남은 수량: {data.stock}</div>
         </div>
+      </div>
+      <div className="w-[750px] px-6">
+        <h3 className="text-[25px]">{data.menu_name}</h3>
+        <div className="text-[18px] px-6 pt-3">{data.menu_desc}</div>
       </div>
       {isMenuModalOpen && (
         <MenuModal
@@ -157,3 +149,15 @@ const MenuTab = ({ menuData }) => {
 };
 
 export default MenuTab;
+
+const StyledImage = styled.img`
+  width: 300px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+`;
