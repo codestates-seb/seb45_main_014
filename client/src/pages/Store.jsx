@@ -97,7 +97,7 @@ const Store = () => {
   return (
     <div className="flex flex-col relative">
       <ShopInfo store={storeData} />
-      <div className="flex justify-center sticky top-[65px] xl:ml-[0px]">
+      <div className="flex justify-center sticky top-[65px] z-10 xl:ml-[0px]">
         <ul className="flex text-center xl:w-[1080px] sm:mb-1 bg-white z-10">
           <li
             className={`sm:w-[225px] xl:w-[540px]  hover:bg-[#ccc] py-3 border-r ${

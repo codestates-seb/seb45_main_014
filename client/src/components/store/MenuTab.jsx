@@ -169,5 +169,6 @@ const StyledImage = styled.img`
   }
   &:hover {
     transform: scale(1.1);
+    z-index: 8;
   }
 `;
