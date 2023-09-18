@@ -13,9 +13,8 @@ const StoreReviewTab = ({
   totalPage,
 }) => {
   const itemsPerPage = 5; // 페이지당 항목 수 (원하는대로 수정)
-  const offset = page * itemsPerPage;
+  const offset = (page - 1) * itemsPerPage; // 5
   const pageCount = Number(totalPage);
-  console.log(totalPage);
   const handlePageClick = (selectedPage) => {
     setPage(selectedPage.selected);
     scrollTo(reviewRef);
@@ -24,7 +23,7 @@ const StoreReviewTab = ({
   const displayedReviews = reviewData.slice(offset, offset + itemsPerPage);
 
   return (
-    <div className="flex flex-col w-[1050px] mb-3">
+    <div className="flex flex-col xl:w-[1050px] mb-3">
       {displayedReviews.map((review) => (
         <ReviewItem key={review.id} data={review} />
       ))}
@@ -73,7 +72,7 @@ export const Stars = ({ rating, readOnly }) => {
 };
 
 export const ReviewItem = ({ data }) => {
-  console.log(data);
+  console.log('리뷰 아이템');
   const [isExpanded, setIsExpanded] = useState(true);
   const [showButton, setShowButton] = useState(false);
   const contentRef = useRef(null);
@@ -95,7 +94,7 @@ export const ReviewItem = ({ data }) => {
       <div className="w-[750px]">
         <div className="flex mb-1">
           <span className="mr-3">{data.nickname}</span>
-          <div>{calculateDate(data.created_at)}일 전</div>
+          <div>{calculateDate(data.created_at)} 전</div>
         </div>
         <div className="flex mb-3">
           <div>

@@ -130,11 +130,11 @@ const ShopInfo = ({ store }) => {
         </div>
         <div className="flex justify-center mb-6">
           {/* <img className="w-24" src={shop_logo} alt="매장 로고" /> */}
-          <h1 className="text-left text-4xl pt-8 w-[280px] ">
+          <h1 className="text-center xl:text-5xl py-10 xl:w-[500px] sm:w-[250]  sm:text-4xl">
             {store.store_name}
           </h1>
         </div>
-        <div className="flex justify-center space-x-8 mb-8">
+        <div className="flex xl:flex-row sm:flex-col sm:items-center xl:justify-center space-x-8 mb-8">
           <StoreIntro>
             <div className="flex text-2xl mb-3 pb-1.5 border-b">
               <span className="mr-3">매장 소개</span>
@@ -186,7 +186,7 @@ const ShopInfo = ({ store }) => {
               </div>
             </div>
           </StoreIntro>
-          <div className="flex flex-col text-left text-2xl">
+          <div className="flex flex-col text-left text-2xl xl:w-[450px]">
             <span className="mb-3">매장 위치</span>
             <div
               className="rounded-lg"
@@ -211,11 +211,19 @@ const ShopInfoShareIcon = styled.img`
 `;
 
 const StoreIntro = styled.div`
-  width: 550px;
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-  border-radius: 8px;
+  @media (max-width: 1980px) {
+    width: 550px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    border-radius: 8px;
+  }
+  @media (max-width: 1280px) {
+    display: flex;
+    margin-bottom: 50px;
+    width: 450px;
+    margin-left: 32px;
+  }
 `;
 
 const ShopBanner = styled.img`

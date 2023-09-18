@@ -48,8 +48,10 @@ const Store = () => {
   useEffect(() => {
     let headers = {};
 
+
     // 로그인 상태일 때만 헤더에 토큰 추가
     if (isLoggedIn && !guest) {
+
       headers['Authorization'] = `Bearer ${accessToken}`;
     }
 
@@ -81,7 +83,8 @@ const Store = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [accessToken, apiUrl, guest, id, isLoggedIn]);
+
+  }, [accessToken, apiUrl, guest, id, currentPage, isLoggedIn]);
 
   if (!storeData) {
     return <LoadingSpinner />;
@@ -97,37 +100,40 @@ const Store = () => {
 
   return (
     <div className="flex flex-col relative">
-      {console.log(reviewInfoData)}
       <ShopInfo store={storeData} />
-      <ul className="flex justify-center text-center w-[1070px] mx-auto mb-1 sticky top-[65px] bg-white z-10">
-        <li
-          className={`w-full hover:bg-[#ccc] py-3 border-r ${
-            isMenuTabActive ? 'bg-[#ccc]' : 'border-b'
-          }`}
-        >
-          <button
-            className="block w-full cursor-pointer"
-            onClick={() => scrollTo(menuRef)}
+      <div className="flex justify-center sticky top-[65px] xl:ml-[0px] sm:ml-[30px]">
+        <ul className="flex text-center xl:w-[1080px] sm: mb-1 bg-white z-10">
+          <li
+            className={`xl:w-[540px] sm:w-[225px] hover:bg-[#ccc] py-3 border-r ${
+              isMenuTabActive ? 'bg-[#ccc]' : 'border-b'
+            }`}
           >
-            메뉴 ({storeData.menus.length})
-          </button>
-        </li>
-        <li
-          className={`w-full hover:bg-[#ccc] py-3 ${
-            isReviewTabActive ? 'bg-[#ccc]' : 'border-b'
-          }`}
-        >
-          <button
-            className="block w-full cursor-pointer"
-            onClick={() => scrollTo(reviewRef)}
+            <button
+              className="block w-full cursor-pointer"
+              onClick={() => scrollTo(menuRef)}
+            >
+              메뉴 ({storeData.menus.length})
+            </button>
+          </li>
+          <li
+            className={`xl:w-[540px] sm:w-[225px] hover:bg-[#ccc] py-3 ${
+              isReviewTabActive ? 'bg-[#ccc]' : 'border-b'
+            }`}
           >
-            리뷰 ({reviewInfoData.total_elements})
-          </button>
-        </li>
-      </ul>
-      <div className="flex flex-col mx-auto">
+            <button
+              className="block w-full cursor-pointer"
+              onClick={() => scrollTo(reviewRef)}
+            >
+              리뷰 ({reviewInfoData.total_elements})
+            </button>
+          </li>
+        </ul>
+      </div>
+      <div className="flex flex-col sm:max-w-[430px] xl:max-w-[1070px] mx-auto ">
         <div ref={menuRef}></div>
-        <span className="mt-[30px] mb-[10px] text-4xl">매장 메뉴</span>
+        <span className="mt-[30px] mb-[10px] xl:text-4xl sm:text-2xl w-[450px] ml-[20px]">
+          매장 메뉴
+        </span>
         <MenuTab menuData={storeData.menus} />
         <div ref={reviewRef}></div>
         <span className="mt-[30px] mb-[10px] text-4xl">매장 리뷰</span>
