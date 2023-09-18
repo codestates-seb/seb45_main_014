@@ -34,7 +34,10 @@ const Orders = () => {
         },
       })
       .then((res) => {
-        setData((prevData) => [...prevData, ...res.data.orders]);
+        const filteredData = res.data.orders.filter(
+          (item) => item.order_status !== '생성',
+        );
+        setData((prevData) => [...prevData, ...filteredData]);
 
         if (res.data.orders.length < 10) {
           setHasMore(false);
