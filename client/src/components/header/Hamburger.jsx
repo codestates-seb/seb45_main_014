@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ReactComponent as HamburgerIcon } from '../../assets/images/hamburger.svg';
 import { ReactComponent as UserIcon } from '../../assets/images/user.svg';
 import { ReactComponent as CartIcon } from '../../assets/images/cart.svg';
@@ -87,14 +87,34 @@ export const ItemBadge = styled.span`
 const Hamburger = ({ openLogin, itemCount }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { isLoggedIn } = useAuthStore();
+  const menuRef = useRef(null);
 
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener('click', handleClickOutside);
+    } else {
+      document.removeEventListener('click', handleClickOutside);
+    }
+
+    // 컴포넌트가 unmount 될 때 이벤트 핸들러 제거
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [isMenuOpen]);
+
   return (
     <>
-      <HamburgerButton>
+      <HamburgerButton ref={menuRef}>
         <button type="button" aria-label="메뉴" onClick={toggleMenu}>
           <HamburgerIcon width="45" />
           {itemCount > 0 && <ItemBadge>{itemCount}</ItemBadge>}
