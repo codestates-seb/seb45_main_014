@@ -39,7 +39,6 @@ public class ScheduledTask {
         for (Order order : orderService.findBakingOrders()) {
             long seconds = Duration.between(order.getLastModifiedAt(), LocalDateTime.now()).getSeconds();
             if (seconds >= 60L) {
-                System.out.println(seconds);
                 orderService.setOrderStatus(order.getId(), OrderStatus.PICKUP);
             }
         }
