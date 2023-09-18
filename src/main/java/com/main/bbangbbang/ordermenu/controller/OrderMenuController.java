@@ -8,6 +8,7 @@ import com.main.bbangbbang.order.entity.Order;
 import com.main.bbangbbang.order.entity.Order.OrderStatus;
 import com.main.bbangbbang.order.service.OrderService;
 import com.main.bbangbbang.ordermenu.service.OrderMenuService;
+import com.main.bbangbbang.utils.MemberUtils;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ public class OrderMenuController {
     @DeleteMapping("/cart")
     public ResponseEntity<?> deleteOrderMenu(@RequestBody List<Long> menuIds,
                                              Authentication authentication) {
-        String email = authentication.getPrincipal().toString();
+        String email = MemberUtils.getEmail(authentication);
         Member member = memberService.findMember(email);
         Order order = orderService.findUnderActiveOrder(member.getId());
         if (order.getOrderStatus() != OrderStatus.ACTIVE) throw new BusinessLogicException(ExceptionCode.NO_ITEM);

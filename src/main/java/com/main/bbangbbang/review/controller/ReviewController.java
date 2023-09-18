@@ -15,6 +15,7 @@ import com.main.bbangbbang.review.entity.Review;
 import com.main.bbangbbang.review.mapper.ReviewMapper;
 import com.main.bbangbbang.review.service.ReviewService;
 import com.main.bbangbbang.s3.S3Service;
+import com.main.bbangbbang.utils.MemberUtils;
 import com.main.bbangbbang.utils.PageInfo;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,7 +48,7 @@ public class ReviewController {
     public ResponseEntity<?> postReview(@PathVariable("order-id") Long orderId,
                                         @RequestBody ReviewRequestDto reviewRequestDto,
                                         Authentication authentication) {
-        String email = authentication.getPrincipal().toString();
+        String email = MemberUtils.getEmail(authentication);
         Member member = memberService.findMember(email);
         Order order = orderService.findOrder(orderId);
         validateSameMember(member, order);
@@ -62,7 +63,7 @@ public class ReviewController {
     public ResponseEntity<?> postReviewImage(@PathVariable("review-id") Long reviewId,
                                              @RequestPart("file") MultipartFile multipartFile,
                                              Authentication authentication) {
-        String email = authentication.getPrincipal().toString();
+        String email = MemberUtils.getEmail(authentication);
         Member member = memberService.findMember(email);
         Review review = reviewService.findReview(reviewId);
         Order order = review.getOrder();
@@ -79,7 +80,7 @@ public class ReviewController {
     public ResponseEntity<?> getReviews(@RequestParam(name = "page") Integer page,
                                         @RequestParam(name = "size") Integer size,
                                         Authentication authentication) {
-        String email = authentication.getPrincipal().toString();
+        String email = MemberUtils.getEmail(authentication);
         Member member = memberService.findMember(email);
         Page<Review> reviewPage = reviewService.findReviews(member.getId(), page, size);
         PageInfo pageInfo = PageInfo.of(page, size, reviewPage);
@@ -94,7 +95,7 @@ public class ReviewController {
     @DeleteMapping("/reviews/{review-id}")
     public ResponseEntity<?> deleteReview(@PathVariable("review-id") Long reviewId,
                                           Authentication authentication) {
-        String email = authentication.getPrincipal().toString();
+        String email = MemberUtils.getEmail(authentication);
         Member member = memberService.findMember(email);
         Review review = reviewService.findReview(reviewId);
 
