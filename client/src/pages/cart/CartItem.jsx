@@ -114,6 +114,11 @@ const CartItem = ({
     getStoredata();
   }, [fetchCart]);
 
+  // 개수가 바뀔때마다 컴포넌트 리렌더링
+  useEffect(() => {
+    setAmount(quantity);
+  }, [quantity]);
+
   const quantityUp = async () => {
     const stock = await getStock(storeId, id);
     const updatedAmount = amount + 1;
