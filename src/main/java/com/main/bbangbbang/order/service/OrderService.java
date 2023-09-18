@@ -88,9 +88,9 @@ public class OrderService {
     @Transactional(readOnly = true)
     public Page<Order> findOrders(Long memberId, Integer page, Integer size) {
 
-        return orderRepository.findByMemberIdAndOrderStatusNot(
+        return orderRepository.findByMemberIdAndOrderStatusNotIn(
                 memberId,
-                OrderStatus.DELETED,
+                List.of(OrderStatus.CANCELED, OrderStatus.DELETED),
                 PageRequest.of(page-1, size)
         );
     }
