@@ -46,7 +46,7 @@ public class OrderController { // jwt토큰 parsing하여 Member확인이 가능
 
     @GetMapping("/cart")
     public ResponseEntity<OrderResponseDto> getActiveOrder(Authentication authentication) {
-        String email = authentication.getPrincipal().toString();
+        String email = MemberUtils.getEmail(authentication);
         Member member = memberService.findMember(email);
         Order order = orderService.findUnderActiveOrder(member.getId());
 
@@ -56,7 +56,7 @@ public class OrderController { // jwt토큰 parsing하여 Member확인이 가능
     @PostMapping("/cart")
     public ResponseEntity<OrderResponseDto> doOrder(@RequestParam("pickup_time") Integer minutes,
                                                     Authentication authentication) { //pickup_time 명확한 명칭으로 수정 필
-        String email = authentication.getPrincipal().toString();
+        String email = MemberUtils.getEmail(authentication);
         Member member = memberService.findMember(email);
 
         Order order = orderService.findUnderActiveOrder(member.getId());
@@ -86,7 +86,7 @@ public class OrderController { // jwt토큰 parsing하여 Member확인이 가능
     public ResponseEntity<OrdersResponseDto> getOrders(@RequestParam("page") int page,
                                                        @RequestParam("size") int size,
                                                        Authentication authentication) {
-        String email = authentication.getPrincipal().toString();
+        String email = MemberUtils.getEmail(authentication);
         Member member = memberService.findMember(email);
 
         Page<Order> orderPage = orderService.findOrders(member.getId(), page, size);
@@ -102,7 +102,7 @@ public class OrderController { // jwt토큰 parsing하여 Member확인이 가능
     @DeleteMapping("/members/orders/{order-id}")
     public ResponseEntity<?> deleteOrder(@PathVariable("order-id") long orderId,
                                          Authentication authentication) {
-        String email = authentication.getPrincipal().toString();
+        String email = MemberUtils.getEmail(authentication);
         Member member = memberService.findMember(email);
         orderService.removeOrder(member, orderId);
 

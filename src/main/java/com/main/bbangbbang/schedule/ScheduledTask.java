@@ -1,8 +1,13 @@
 package com.main.bbangbbang.schedule;
 
+import com.main.bbangbbang.order.entity.Order;
+import com.main.bbangbbang.order.entity.Order.OrderStatus;
+import com.main.bbangbbang.order.service.OrderService;
 import com.main.bbangbbang.review.entity.Review;
 import com.main.bbangbbang.review.service.ReviewService;
 import com.main.bbangbbang.store.service.StoreService;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +20,7 @@ import org.springframework.stereotype.Component;
 public class ScheduledTask {
     private final StoreService storeService;
     private final ReviewService reviewService;
+    private final OrderService orderService;
 
     @Scheduled(fixedRate = 1000L*60L, initialDelay = 1000L*10L)
     public void updateStoreRating() {
@@ -26,6 +32,18 @@ public class ScheduledTask {
             storeService.updateRating(i, rating);
         }
         log.info("별점 업데이트 완료");
+    }
+
+    @Scheduled(fixedRate = 1000L*60L, initialDelay = 1000L*20L)
+    public void updateOrderStatus() {
+        for (Order order : orderService.findBakingOrders()) {
+            long seconds = Duration.between(order.getLastModifiedAt(), LocalDateTime.now()).getSeconds();
+            if (seconds >= 60L) {
+                System.out.println(seconds);
+                orderService.setOrderStatus(order.getId(), OrderStatus.PICKUP);
+            }
+        }
+        log.info("상태 업데이트 완료");
     }
 
     private float getRating(List<Review> reviews) {

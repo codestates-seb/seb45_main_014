@@ -8,6 +8,7 @@ import com.main.bbangbbang.memberstore.dto.MemberStoresResponseDto;
 import com.main.bbangbbang.memberstore.entity.MemberStore;
 import com.main.bbangbbang.memberstore.mapper.MemberStoreMapper;
 import com.main.bbangbbang.memberstore.service.MemberStoreService;
+import com.main.bbangbbang.utils.MemberUtils;
 import com.main.bbangbbang.utils.PageInfo;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,7 +35,7 @@ public class MemberStoreController {
     public ResponseEntity<?> getFavorite(@RequestParam("page") int page,
                                          @RequestParam("size") int size,
                                          Authentication authentication) {
-        String email = authentication.getPrincipal().toString();
+        String email = MemberUtils.getEmail(authentication);
         Member member = memberService.findMember(email);
         Page<MemberStore> memberStorePage = memberStoreService.findFavorite(member.getId(), page, size);
         PageInfo pageInfo = PageInfo.of(page, size, memberStorePage);
@@ -48,7 +49,7 @@ public class MemberStoreController {
     @PostMapping("/members/favorites/{store-id}")
     public ResponseEntity<?> postFavorite(@PathVariable("store-id") Long storeId,
                                           Authentication authentication) {
-        String email = authentication.getPrincipal().toString();
+        String email = MemberUtils.getEmail(authentication);
         Member member = memberService.findMember(email);
         MemberStore memberStore = memberStoreService.changeFavorite(member.getId(), storeId);
 

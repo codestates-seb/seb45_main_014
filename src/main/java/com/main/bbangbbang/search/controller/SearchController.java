@@ -12,6 +12,7 @@ import com.main.bbangbbang.store.dto.StoresResponseDto;
 import com.main.bbangbbang.store.entity.Store;
 import com.main.bbangbbang.store.mapper.StoreMapper;
 import com.main.bbangbbang.utils.FavoriteUtils;
+import com.main.bbangbbang.utils.MemberUtils;
 import com.main.bbangbbang.utils.PageInfo;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -69,7 +70,7 @@ public class SearchController {
         StoresResponseDto responseDto = convertToResponseDto(storePage, pageInfo);
 
         if (authentication != null) {
-            String email = authentication.getPrincipal().toString();
+            String email = MemberUtils.getEmail(authentication);
             Member member = memberService.findMember(email);
             FavoriteUtils.markFavorite(member, responseDto);
         }

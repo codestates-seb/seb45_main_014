@@ -14,6 +14,7 @@ import com.main.bbangbbang.store.entity.Store;
 import com.main.bbangbbang.store.mapper.StoreMapper;
 import com.main.bbangbbang.store.service.StoreService;
 import com.main.bbangbbang.utils.FavoriteUtils;
+import com.main.bbangbbang.utils.MemberUtils;
 import com.main.bbangbbang.utils.PageInfo;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,7 +46,7 @@ public class StoreController { // 매장 상세 페이지
         StoreResponseDto responseDto = new StoreResponseDto(storeData);
 
         if (authentication != null) {
-            String email = authentication.getPrincipal().toString();
+            String email = MemberUtils.getEmail(authentication);
             Member member = memberService.findMember(email);
             FavoriteUtils.markFavorite(member, responseDto);
         }
@@ -80,7 +81,7 @@ public class StoreController { // 매장 상세 페이지
         StoresResponseDto responseDto = new StoresResponseDto(stores,pageInfo);
 
         if (authentication != null) {
-            String email = authentication.getPrincipal().toString();
+            String email = MemberUtils.getEmail(authentication);
             Member member = memberService.findMember(email);
             FavoriteUtils.markFavorite(member, responseDto);
         }
