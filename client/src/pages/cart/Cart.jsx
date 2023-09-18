@@ -100,7 +100,6 @@ const Cart = () => {
     setMaxItem(cartItem.length);
   }, [cartItem]);
 
-  // Dropdown 옵션
   const options = [
     { value: 30, name: '30분' },
     { value: 60, name: '1시간' },
