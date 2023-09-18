@@ -134,7 +134,6 @@ const CustomPaginate = styled.div`
   }
 
   li {
-    padding: 6px 12px 6px 12px;
     margin: 3px;
     border-radius: 8px;
 
@@ -143,6 +142,15 @@ const CustomPaginate = styled.div`
     }
     &:last-child {
       background-color: #ffe3a9;
+    }
+    a {
+      padding: 6px 12px 6px 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      font-size: 12px;
     }
   }
   li:hover {
