@@ -32,11 +32,7 @@ export const useCartApi = () => {
   const fetchCart = async () => {
     try {
       const response = await axios.get(`${API}/api/cart`, config);
-      const storeId = response.data.order.store_id;
-      const orderMenus = response.data.order.order_menus;
-      setCartItem(orderMenus);
-      setCheckItem(orderMenus.map((menu) => menu.id));
-      setStoreId(storeId);
+      return response.data.order;
     } catch (error) {
       console.error(error);
     }
