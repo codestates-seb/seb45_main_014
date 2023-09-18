@@ -119,7 +119,7 @@ export const useAuthStore = create((set) => ({
       const { access, refresh, expiresIn } = response.data;
       this.login(access, refresh, expiresIn); // 새 토큰으로 로그인 정보 갱신
     } catch (error) {
-      console.error('Failed to refresh access token:', error);
+      console.error('액세스 토큰 에러: ', error);
       this.logout(); // 갱신 실패시 로그아웃
     }
   },
