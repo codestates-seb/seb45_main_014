@@ -20,7 +20,7 @@ const MenuItem = ({ data }) => {
 
   const notify = () => toast.error('제품이 품절 되었습니다.');
   const notifysuccess = () => toast.success('장바구니에 추가 되었습니다.');
-
+  const notifynotlogin = () => toast.error('로그인 후 이용 가능합니다.');
   const menuModalClose = () => {
     setIsMenuModalOpen(false); // 메뉴모달 닫기
   };
@@ -36,6 +36,7 @@ const MenuItem = ({ data }) => {
   const closeFalseModal = () => {
     setIsFalseModalOpen(false);
   };
+
   // 전부 닫기
   const allClose = () => {
     setIsFalseModalOpen(false);
@@ -73,19 +74,21 @@ const MenuItem = ({ data }) => {
       );
       const statusData = response.status;
       const exception = response.headers['Bbangbbang_exception'];
-      // console.log(exception);
+      console.log(exception);
+      if (statusData === 200 && exception === 904)
+        openFalseModal(data, isCount);
+
       if (statusData === 200) {
         notifysuccess();
         setIsMenuModalOpen(false); // 모달을 닫도록 수정
       }
-    } catch (error) {
-      console.log(error);
-      openFalseModal(data, isCount);
-    } finally {
       const newData = await fetchCart().then((res) => res.order_menus);
       setCartItem(newData);
       // 기존에 있던 checkItem에 새로운 데이터의 id를 추가
       setCheckItem([...new Set([...newData.map((item) => item.id)])]);
+    } catch (error) {
+      console.log(error);
+      notifynotlogin();
     }
   };
 

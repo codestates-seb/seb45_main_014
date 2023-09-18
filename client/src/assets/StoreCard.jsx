@@ -59,6 +59,7 @@ const StoreCard = ({ store }) => {
     img,
     is_favorite,
     id,
+    store_id,
     menu_name,
     price,
   } = store;
@@ -70,7 +71,7 @@ const StoreCard = ({ store }) => {
   // 검색 타겟에 따른 조건부 렌더링
   return (
     <div className="w-72 relative m-2">
-      <Link to={`/stores/${id}`}>
+      <Link to={`/stores/${store_id ? store_id : id}`}>
         <div className=" overflow-hidden rounded-lg">
           <StoreImage
             className="object-cover"
