@@ -3,6 +3,13 @@ import { styled } from 'styled-components';
 export const StoreImage = styled.img`
   width: 300px;
   height: 200px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+
+  &:hover {
+    scale: 1.05;
+    transition: 0.3s;
+  }
 `;
 
 export const Input = styled.input`

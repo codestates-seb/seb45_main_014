@@ -1,16 +1,23 @@
 import { createGlobalStyle } from 'styled-components';
-import GmarketSans from '../fonts/GmarketSansTTFMedium.ttf';
 
 const GlobalStyle = createGlobalStyle`
-  @font-face {
-    font-family: 'GmarketSans';
-    src: url(${GmarketSans}) format('truetype');
-    font-weight: 300;
-    font-style: normal;
+
+  * {
+    box-sizing: border-box;
+  }
+  html, body {
+    font-family: 'GmarketSans', sans-serif;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    background-color: #FBF6F0;
   }
   body {
-    font-family: 'GmarketSans', sans-serif;
+    padding-top: 65px;
   }
-`;
+  ul, li {
+    list-style-type: none;
+  }
+  `;
 
 export default GlobalStyle;

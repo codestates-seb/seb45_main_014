@@ -2,12 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
+@font-face {
+  font-family: 'NotoSans';
+  src: url('./assets/fonts/NotoSansKR-VariableFont_wght.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
 }
-
+/* @font-face {
+  font-family: 'GmarketSans';
+  src: url('./assets/fonts/GmarketSansTTFMedium.ttf') format('truetype');
+} */
 @font-face {
   font-family: 'AritaSans'; /* 사용하고 싶은 font-family명을 지정 */
   src: url('./assets/fonts/AritaSans-Medium.otf') format('opentype'); /* 폰트파일 불러오기 */
