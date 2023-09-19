@@ -128,7 +128,7 @@ const ShopInfo = ({ store }) => {
           </Slider> */}
         <ShopBanner src={store.img} />
       </div>
-      <h1 className="xl:text-5xl sm:text-3xl xl:my-3 sm:my-3">
+      <h1 className="xl:text-5xl sm:text-3xl xl:my-10 sm:my-5">
         {store.store_name}
       </h1>
       <StoreLayout>
