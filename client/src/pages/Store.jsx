@@ -99,10 +99,10 @@ const Store = () => {
     <div className="flex flex-col relative">
       <ShopInfo store={storeData} />
       <div className="flex justify-center sticky top-[65px] z-10 xl:ml-[0px]">
-        <ul className="flex text-center xl:w-[1080px] sm:mb-1 bg-white z-10">
+        <ul className="flex text-center text-[#797878] xl:w-[1080px] sm:mb-1 bg-white z-10">
           <li
-            className={`sm:w-[260px] xl:w-[540px]  hover:bg-[#ccc] py-3 border-r ${
-              isMenuTabActive ? 'bg-[#ccc]' : 'border-b'
+            className={`sm:w-[260px] xl:w-[540px] bg-[#FBF6F0]  hover:bg-[#fde1bf] py-3 border-r ${
+              isMenuTabActive ? 'bg-[#fde1bf]' : 'border-b'
             }`}
           >
             <button
@@ -113,8 +113,8 @@ const Store = () => {
             </button>
           </li>
           <li
-            className={`xl:w-[540px] sm:w-[250px] hover:bg-[#ccc] py-3 ${
-              isReviewTabActive ? 'bg-[#ccc]' : 'border-b'
+            className={`xl:w-[540px] sm:w-[250px] bg-[#FBF6F0] hover:bg-[#fde1bf] py-3 ${
+              isReviewTabActive ? 'bg-[#fde1bf]' : 'border-b'
             }`}
           >
             <button
