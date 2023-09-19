@@ -17,7 +17,6 @@ const MenuItem = ({ data }) => {
   const { setCartItem, setCheckItem } = useCartItemStore((state) => state);
   const [currentData, setCurrentData] = useState(null);
   const [currentCount, setCurrentCount] = useState(1);
-  const [customStatus, setCustomStatus] = useState();
 
   const notify = () => toast.error('제품이 품절 되었습니다.');
   const notifysuccess = () => toast.success('장바구니에 추가 되었습니다.');
@@ -66,13 +65,14 @@ const MenuItem = ({ data }) => {
     try {
       const response = await axios.post(
         `${apiUrl}/api/cart/${data.id}?quantity=${cartItem.quantity}`,
-        {},
+        null,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         },
       );
+      console.log('메뉴:', data.id, '수량:', cartItem.quantity);
       console.log('Method 1:', response.headers['BBANGBBANG_EXCEPTION']);
       console.log('Method 2:', response.headers['bbangbbang_exception']);
       console.log('Method 3:', response.headers.BBANGBBANG_EXCEPTION);
@@ -126,7 +126,7 @@ const MenuItem = ({ data }) => {
       </div>
       <div className="sm:w-[400px] xl:w-[750px] px-6">
         <h3 className="sm:text-[23px] xl:text-[25px]">{data.menu_name}</h3>
-        <div className="sm:hidden xl:text-[18px] px-6 pt-3">
+        <div className="xl:text-[18px] px-6 pt-3 sm:hidden xl:block">
           {data.menu_desc}
         </div>
       </div>

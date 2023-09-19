@@ -101,24 +101,24 @@ const Store = () => {
       <div className="flex justify-center sticky top-[65px] z-10 xl:ml-[0px]">
         <ul className="flex text-center xl:w-[1080px] sm:mb-1 bg-white z-10">
           <li
-            className={`sm:w-[225px] xl:w-[540px]  hover:bg-[#ccc] py-3 border-r ${
+            className={`sm:w-[260px] xl:w-[540px]  hover:bg-[#ccc] py-3 border-r ${
               isMenuTabActive ? 'bg-[#ccc]' : 'border-b'
             }`}
           >
             <button
-              className="block w-full cursor-pointer"
+              className="block w-full cursor-pointer xl:text-2xl sm:text-1xl "
               onClick={() => scrollTo(menuRef)}
             >
               메뉴 ({storeData.menus.length})
             </button>
           </li>
           <li
-            className={`xl:w-[540px] sm:w-[225px] hover:bg-[#ccc] py-3 ${
+            className={`xl:w-[540px] sm:w-[250px] hover:bg-[#ccc] py-3 ${
               isReviewTabActive ? 'bg-[#ccc]' : 'border-b'
             }`}
           >
             <button
-              className="block w-full cursor-pointer"
+              className="block w-full xl:text-2xl sm:text-1xl cursor-pointer"
               onClick={() => scrollTo(reviewRef)}
             >
               리뷰 ({reviewInfoData.total_elements})
