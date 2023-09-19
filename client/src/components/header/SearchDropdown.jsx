@@ -67,10 +67,11 @@ const SearchDropdown = ({ searchInputRef, saveSearchTerm, toggleFocus }) => {
 
   // 추천 검색어 하드코딩하기
   const recommendedSearches = [
-    { term: '가게', target: 'store' },
+    { term: '베이커리', target: 'store' },
     { term: '빵', target: 'menu' },
     { term: '서울', target: 'region' },
     { term: '케이크', target: 'menu' },
+    { term: '크림', target: 'menu' },
   ];
 
   const targetToKR = (target) => {

@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { ReactComponent as Magnifier } from '../../assets/images/magnifier.svg';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import LoadingSpinner from '../../components/Loading.jsx';
+import LoadingComponent from '../../components/myPage/MyPageLoading.jsx';
 
 const Wrapper = styled.section`
   max-width: 1024px;
@@ -54,54 +54,61 @@ const SearchResult = () => {
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false); // isLoading 상태 추가
   const location = useLocation();
+  const searchQuery = location.search;
+  const [searchParams] = useSearchParams();
+  const query = searchParams.get('search_keyword');
+  const searchTarget = searchParams.get('search_target');
 
-  // 페이지 번호를 인수로 받아 데이터를 가져오는 함수
+  const fetchMoreData = () => {
+    setTimeout(() => {
+      fetchData(page);
+    }, 1000);
+  };
+
+  // 검색어가 변경될 때마다 데이터를 가져오는 useEffect
+
   const fetchData = useCallback(
     (pageNumber) => {
-      const API = `${process.env.REACT_APP_API_URL}/api`;
-      setIsLoading(true); // 요청 시작 시 isLoading을 true로 설정
-      axios
-        .get(`${API}/search${location.search}&page=${pageNumber}&size=10`)
-        .then((res) => {
-          const newData = res.data.menus || res.data.stores; // search_target에 따라 데이터를 다르게 가져옴
+      setHasMore(true);
+      setIsLoading(true); // 요청이 시작되면 isLoading을 true로 설정
 
-          if (newData.length === 0) {
-            setHasMore(false); // 더 이상 데이터가 없을 때 hasMore를 false로 설정
-          } else {
-            setData((prevData) => [...prevData, ...newData]); // 기존 데이터에 새로운 데이터를 추가
-            if (newData.length < 10) {
-              setHasMore(false); // 데이터의 길이가 10보다 작으면 무한 스크롤 중지
-            }
-            setPage(pageNumber + 1); // 다음 페이지를 위해 페이지 번호를 증가
+      axios
+        .get(`${process.env.REACT_APP_API_URL}/api/search${searchQuery}`, {
+          params: {
+            page: pageNumber,
+            size: 9,
+          },
+        })
+        .then((res) => {
+          const newData = res.data.menus || res.data.stores;
+          setPage(pageNumber + 1);
+          setData((prevData) => [...prevData, ...newData]);
+          if (newData.length < 9) {
+            setHasMore(false);
+            setIsLoading(false); // 요청이 끝나면 isLoading을 false로 설정
           }
         })
         .catch((err) => {
-          console.log('에러임', err);
-          setHasMore(false); // 데이터를 가져오는 동안 에러가 발생하면 hasMore를 false로 설정하여 무한 스크롤을 중지
+          console.log('검색 페이지에서 에러남', err);
         })
         .finally(() => {
-          setIsLoading(false); // 요청이 완료되면 isLoading을 false로 설정
+          setIsLoading(false); // 요청이 끝나면 isLoading을 false로 설정
         });
     },
-    [location, setData, setHasMore, setPage],
+    [searchQuery],
   );
 
-  // 검색어가 변경될 때마다 데이터를 가져오는 useEffect
   useEffect(() => {
-    const keyWord = decodeURI(location.search);
+    const keyWord = decodeURI(searchQuery);
 
     if (keyWord) {
       setData([]); // 검색어가 변경될 때마다 기존 데이터를 초기화
       setHasMore(true); // 재검색을 할 경우 다시 hasMore를 true로 설정하여 무한 스크롤을 계속할 수 있도록 함
-      fetchData(1); // 페이지 로드시 첫 번째 페이지 데이터 로드
+      fetchData(1);
     } else {
       setData([]);
     }
-  }, [location, fetchData]);
-
-  const [searchParams] = useSearchParams();
-  const query = searchParams.get('search_keyword');
-  const searchTarget = searchParams.get('search_target');
+  }, [location, searchQuery, fetchData]);
 
   return (
     <Wrapper>
@@ -114,7 +121,7 @@ const SearchResult = () => {
       {/* 요청이 pending 후에 NoResult를 표시 */}
       {isLoading ? (
         <div className="flex justify-center pt-14">
-          <LoadingSpinner position="absolute" />
+          <LoadingComponent />
         </div>
       ) : data.length === 0 ? (
         <NoResult>
@@ -125,11 +132,11 @@ const SearchResult = () => {
         // 무한 스크롤 구현
         <InfiniteScroll
           dataLength={data.length}
-          next={() => fetchData(page)} // 다음 페이지 데이터 로드
+          next={fetchMoreData} // 다음 페이지 데이터 로드
           hasMore={hasMore} // 무한 스크롤을 계속할지 여부
           loader={
-            <div className="flex justify-center pt-14" hidden>
-              로딩중...
+            <div className="flex justify-center pt-14">
+              <LoadingComponent />
             </div>
           }
         >
