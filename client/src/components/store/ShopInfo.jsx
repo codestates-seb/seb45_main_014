@@ -135,9 +135,7 @@ const ShopInfo = ({ store }) => {
         <StoreInfoBox>
           <StoreIntro>
             <div className="border-b xl:mr-4 pb-2">
-              <h2 className="xl:text-4xl sm:text-2xl xl:w-[500px]">
-                매장 소개
-              </h2>
+              <h2 className="xl:text-4xl sm:text-2xl">매장 소개</h2>
               <BookmarkShare>
                 <button>
                   <ShopBookmarkIcon
@@ -246,13 +244,20 @@ const StoreInfoBox = styled.div`
     flex-direction: column;
     margin-left: 26%;
   }
+
+  @media screen and (max-width: 640px) {
+    display: flex;
+    flex-direction: column;
+    margin-left: 11%;
+  }
 `;
 
 const StoreIntro = styled.div`
   display: inline-block;
-  width: 50%;
+  width: 535px;
   float: left;
   padding-right: 5px;
+
   h2 {
     display: inline;
   }
@@ -265,6 +270,7 @@ const StoreIntro = styled.div`
   }
   @media screen and (max-width: 1280px) {
     width: 500px;
+    margin-bottom: 10px;
   }
 `;
 
@@ -272,6 +278,10 @@ const StoreMap = styled.div`
   display: inline-block;
   max-width: 50%;
   padding-left: 5px;
+
+  @media screen and (max-width: 1280px) {
+    padding-left: 0px;
+  }
 `;
 
 const BookmarkShare = styled.div`
