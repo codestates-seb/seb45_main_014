@@ -1,4 +1,4 @@
-# [BBANG ORDER](http://bbangorder.store)
+# [BBANG ORDER](http://bbangorder.s3-website.ap-northeast-2.amazonaws.com/)
 
 > ## 전국 빵집을 투어하자!
 
@@ -20,28 +20,56 @@
 
 ## 멤버
 
-|                                                                                                                          |                                                                                                                      |                                                                                                                             |
-| :----------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------: |
-|     ![bread](https://github.com/codestates-seb/seb45_main_014/assets/121498405/fc5b6c09-792b-46e6-8622-7d45822c497f)     | ![bread (1)](https://github.com/codestates-seb/seb45_main_014/assets/121498405/3c12cfcb-a7a3-4b9c-b3c9-c5768e78f053) |    ![bread (2)](https://github.com/codestates-seb/seb45_main_014/assets/121498405/0d70801e-6d88-4bcd-a495-db302e28fd11)     |
-|                                    [BE 김성현 (팀장)](https://github.com/tsulocalize)                                    |                                      [BE 김하민](https://github.com/kimhaming)                                       |                                        [BE 박보승](https://github.com/Alluringstar)                                         |
-| ![burger-cheese](https://github.com/codestates-seb/seb45_main_014/assets/121498405/a99acfc0-f745-483b-955e-205c35d37ffa) | ![croissant](https://github.com/codestates-seb/seb45_main_014/assets/121498405/5bd23ad9-f67c-4884-82ba-c7bdc781147c) | ![cookie-and-cream](https://github.com/codestates-seb/seb45_main_014/assets/121498405/c00963e8-5ace-4110-b9ec-df0616b51b11) |
-|                                     [FE 양새결 (부팀장)](http://github.com/YangSaekyul)                                     |                                        [FE 김종호](https://github.com/JongHoSke)                                        |                                             [FE 송상현](https://github.com/nuyhv)                                              |
+|                                                                                                            |                                                                                                            |                                                                                                            |
+| :--------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------: |
+| ![성현](https://github.com/YangSaekyul/main-project/assets/121498405/60da6968-11f6-431f-90fb-76c6026f01a5) | ![하민](https://github.com/YangSaekyul/main-project/assets/121498405/12ecd391-07b9-43b7-9ed1-11697b4984d3) | ![보승](https://github.com/YangSaekyul/main-project/assets/121498405/08e3602d-37ae-4640-b090-0088292f9574) |
+|                             [BE 김성현 (팀장)](https://github.com/tsulocalize)                             |                                 [BE 김하민](https://github.com/kimhaming)                                  |                                [BE 박보승](https://github.com/Alluringstar)                                |
+| ![새결](https://github.com/YangSaekyul/main-project/assets/121498405/d261b3b4-61c0-4013-9183-1073007ddebc) | ![종호](https://github.com/YangSaekyul/main-project/assets/121498405/d2f0c2ea-7882-4b38-94c3-58fc3cd677f1) | ![상현](https://github.com/YangSaekyul/main-project/assets/121498405/85ed747d-8463-4d6a-8e2a-24e8a10409af) |
+|                            [FE 양새결 (부팀장)](http://github.com/YangSaekyul)                             |                                 [FE 김종호](https://github.com/JongHoSke)                                  |                                   [FE 송상현](https://github.com/nuyhv)                                    |
 
 ## 기능
 
-- 예약 주문
-- 리뷰 조회, 작성, 삭제
-- 즐겨찾기
-- 로그인, 회원가입 + OAuth2
-- 검색
+| 기능                   | GIF 링크                                                                               |
+| ---------------------- | -------------------------------------------------------------------------------------- |
+| 메인페이지             | ![메인페이지](https://media3.giphy.com/media/3hW4DzhImOidXOg4RA/giphy.gif)             |
+| 로그인                 | ![로그인](https://media2.giphy.com/media/LbsTz2Bm9po1WSxzMm/giphy.gif)                 |
+| 메인페이지 - 로그인    | ![메인페이지-로그인](https://media4.giphy.com/media/ycUVVgM2Vdr9y2sfST/giphy.gif)      |
+| 검색                   | ![검색](https://media0.giphy.com/media/dMmBv849UCHoabOzGI/giphy.gif)                   |
+| 매장 상세 페이지       | ![매장 상세 페이지](https://media2.giphy.com/media/iRgP45PbEQbtm5ZwCd/giphy.gif)       |
+| 장바구니에 담기        | ![장바구니에 담기](https://media3.giphy.com/media/OFFSShRLBkvQWnClGG/giphy.gif)        |
+| 주문 페이지            | ![주문 페이지](https://media0.giphy.com/media/bZ8u67RfKhe4hnajrU/giphy.gif)            |
+| 리뷰 관리              | ![리뷰 관리](https://media4.giphy.com/media/bWXgYPClWy4xTZWp4W/giphy.gif)              |
+| 주문 내역 및 리뷰 작성 | ![주문 내역 및 리뷰 작성](https://media1.giphy.com/media/xmFuiQOYXNkoYJuvYS/giphy.gif) |
+| 즐겨찾기               | ![즐겨찾기](https://media3.giphy.com/media/t8pkzK8HMDFxE8srf6/giphy.gif)               |
 
 ## 배포 링크
 
-- [빵오더](http://bbangorder.store/)
+- [빵오더](http://bbangorder.s3-website.ap-northeast-2.amazonaws.com/)
 
 ## Tech Stack
 
-![image](https://github.com/codestates-seb/seb45_main_014/assets/121498405/d46c176f-70bf-4e2c-8627-add7795db8b9)
+![Spring Security](https://img.shields.io/badge/Spring%20Security-0D1117?style=for-the-badge&logo=spring-security&logoColor=6DB33F)
+![Spring Boot OAuth2](https://img.shields.io/badge/Spring%20Boot%20OAuth2-0D1117?style=for-the-badge&logo=spring-boot&logoColor=6DB33F)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-0D1117?style=for-the-badge&logo=spring-boot&logoColor=6DB33F)
+![Spring JPA](https://img.shields.io/badge/Spring%20JPA-0D1117?style=for-the-badge&logo=spring&logoColor=6DB33F)
+![JWT](https://img.shields.io/badge/JWT-0D1117?style=for-the-badge&logo=json-web-tokens&logoColor=white)
+![MYSQL](https://img.shields.io/badge/MYSQL-0D1117?style=for-the-badge&logo=mysql&logoColor=4479A1)
+
+![React](https://img.shields.io/badge/React-0D1117?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Zustand](https://img.shields.io/badge/Zustand-0D1117?style=for-the-badge&logo=zustand&logoColor=F3C71E)  
+![Styled Components](https://img.shields.io/badge/Styled%20Components-0D1117?style=for-the-badge&logo=styled-components&logoColor=DB7093)
+![Axios](https://img.shields.io/badge/Axios-0D1117?style=for-the-badge&logo=axios&logoColor=FFFFFF)  
+![HTML5](https://img.shields.io/badge/HTML5-0D1117?style=for-the-badge&logo=html5&logoColor=E34F26)
+![CSS3](https://img.shields.io/badge/CSS3-0D1117?style=for-the-badge&logo=css3&logoColor=1572B6)
+![JavaScript](https://img.shields.io/badge/JavaScript-0D1117?style=for-the-badge&logo=javascript&logoColor=F7DF1E)
+![React Router](https://img.shields.io/badge/React%20Router-0D1117?style=for-the-badge&logo=react-router&logoColor=CA4245)
+
+![AWS](https://img.shields.io/badge/AWS-0D1117?style=for-the-badge&logo=amazon-aws&logoColor=FF9900)
+![Discord](https://img.shields.io/badge/Discord-0D1117?style=for-the-badge&logo=discord&logoColor=5865F2)
+![Zoom](https://img.shields.io/badge/Zoom-0D1117?style=for-the-badge&logo=zoom&logoColor=2D8CFF)
+![Figma](https://img.shields.io/badge/Figma-0D1117?style=for-the-badge&logo=figma&logoColor=F24E1E)
+![Postman](https://img.shields.io/badge/Postman-0D1117?style=for-the-badge&logo=postman&logoColor=FF6C37)
+![DBDDiagram](https://img.shields.io/badge/DBDDiagram-0D1117?style=for-the-badge&logo=dbdiagram&logoColor=FFFFFF)
 
 ## Git Rule
 
