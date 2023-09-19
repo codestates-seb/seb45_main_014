@@ -172,7 +172,7 @@ const StyledImage = styled.img`
   transition: transform 0.3s ease;
 
   @media (max-width: 1280px) {
-    width: 300px;
+    width: 200px;
     height: 150px;
   }
   &:hover {
