@@ -6,12 +6,16 @@ spring:
       settings:
         web-allow-others: true
   datasource:
-    url: jdbc:h2:mem:test
+    url: jdbc:mysql://database-1.cymwmpm0yhqt.ap-northeast-2.rds.amazonaws.com/bbangbbang?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
+    username: ${RDS_USERNAME}
+    password: ${RDS_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: create
     show-sql: true
     defer-datasource-initialization: true
+    database-platform: org.hibernate.dialect.MySQL8Dialect
   sql:
     init:
       mode: always
