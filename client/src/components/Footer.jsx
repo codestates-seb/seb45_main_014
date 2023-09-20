@@ -23,16 +23,15 @@ const FooterContent = styled.div`
 const Support = styled.div`
   display: flex;
   font-weight: 600;
+  align-items: center;
+  text-align: center;
 `;
 const SupItem = styled.p`
+  display: flex;
   padding: 0;
-  border-right: 2px solid white;
-  max-height: 20px;
   font-size: 18px;
-  line-height: 20px;
-  &:last-child {
-    border: none;
-  }
+  align-items: center;
+  text-align: center;
 `;
 
 const MemberWrapper = styled.div`
@@ -96,8 +95,19 @@ const Footer = () => {
         <Support>
           {supportItem.map((item, idx) => (
             <SupItem className="font-bold" key={idx}>
-              <Link to={item.url} target="_blank" rel="noopener noreferrer">
-                {item.name}
+              <Link
+                to={item.url}
+                className="flex items-center"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src={images.githublogo}
+                  alt="github logo"
+                  width="20px"
+                  className="mr-1 mb-1"
+                />
+                <span>{item.name}</span>
               </Link>
               <span className="pl-2 text-base font-medium">
                 (2023-08-24 ~ 09-22)
