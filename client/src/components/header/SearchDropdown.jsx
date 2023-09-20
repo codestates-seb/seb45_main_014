@@ -200,7 +200,7 @@ const SearchDropdown = ({ searchInputRef, saveSearchTerm, toggleFocus }) => {
               className="text-gray-400 hover:bg-slate-100 py-1 px-2 cursor-pointer"
               onClick={(e) => {
                 e.preventDefault();
-                e.stopPropagation(); // 이벤트 전파 방지
+                e.stopPropagation();
                 handleSelectOption(item.term, item.target);
               }}
             >

@@ -57,7 +57,6 @@ const MenuBox = styled.div`
 
 const SearchBox = styled.div`
   flex: 2;
-  /* width: fit-content; */
   display: flex;
   justify-content: center;
   @media screen and (max-width: 700px) {
