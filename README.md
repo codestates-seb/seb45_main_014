@@ -56,7 +56,8 @@
 ![MYSQL](https://img.shields.io/badge/MYSQL-0D1117?style=for-the-badge&logo=mysql&logoColor=4479A1)
 
 ![React](https://img.shields.io/badge/React-0D1117?style=for-the-badge&logo=react&logoColor=61DAFB)
-![Zustand](https://img.shields.io/badge/Zustand-0D1117?style=for-the-badge&logo=zustand&logoColor=F3C71E)  
+![Zustand](https://img.shields.io/badge/Zustand-0D1117?style=for-the-badge&logo=zustand&logoColor=F3C71E)
+![Tailwindcss](https://img.shields.io/badge/Tailwindcss-0D1117?style=for-the-badge&logo=Tailwindcss&logoColor=06B6D4)
 ![Styled Components](https://img.shields.io/badge/Styled%20Components-0D1117?style=for-the-badge&logo=styled-components&logoColor=DB7093)
 ![Axios](https://img.shields.io/badge/Axios-0D1117?style=for-the-badge&logo=axios&logoColor=FFFFFF)  
 ![HTML5](https://img.shields.io/badge/HTML5-0D1117?style=for-the-badge&logo=html5&logoColor=E34F26)
