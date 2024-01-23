@@ -9,18 +9,17 @@ import StoreBanner from './StoreBanner.jsx';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 
 const ShopInfo = ({ store }) => {
-  console.log(store);
-  const currentUrl = window.location;
   const { isLoggedIn, accessToken } = useAuthStore((state) => state);
 
   const [isBookmarked, setIsBookmarked] = useState(store.is_favorite);
 
   const handleCopyUrl = () => {
-    copy(currentUrl);
+    copy(window.location);
     alert('URL이 복사되었습니다.');
   };
 

@@ -73,12 +73,12 @@ const MenuItem = ({ data }) => {
         },
       );
       console.log('메뉴:', data.id, '수량:', cartItem.quantity);
-      console.log('Method 1:', response.headers['BBANGBBANG_EXCEPTION']);
-      console.log('Method 2:', response.headers['bbangbbang_exception']);
-      console.log('Method 3:', response.headers.BBANGBBANG_EXCEPTION);
-      console.log('Method 4:', response.headers.bbangbbang_exception);
-      console.log('Method 5:', response.headers['Bbangbbang_exception']);
-      console.log('Method 6:', response.headers.Bbangbbang_exception);
+      // console.log('Method 1:', response.headers['BBANGBBANG_EXCEPTION']);
+      // console.log('Method 2:', response.headers['bbangbbang_exception']);
+      // console.log('Method 3:', response.headers.BBANGBBANG_EXCEPTION);
+      // console.log('Method 4:', response.headers.bbangbbang_exception);
+      // console.log('Method 5:', response.headers['Bbangbbang_exception']);
+      // console.log('Method 6:', response.headers.Bbangbbang_exception);
 
       const statusData = response.status;
       const exception = response.headers['bbangbbang_exception'];
