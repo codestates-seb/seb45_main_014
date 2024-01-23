@@ -10,23 +10,33 @@ const StoreReviewTab = ({
   reviewRef,
   setPage,
   page,
-  totalPage,
+  totalElements,
 }) => {
-  const itemsPerPage = 5; // 페이지당 항목 수 (원하는대로 수정)
-  const offset = (page - 1) * itemsPerPage; // 5
-  const pageCount = Number(totalPage);
+  const itemsPerPage = 5;
+  const offset = Math.max(0, (page - 1) * itemsPerPage);
+  const pageCount = Math.ceil(Number(totalElements) / itemsPerPage);
   const handlePageClick = (selectedPage) => {
-    setPage(selectedPage.selected);
+    setPage(selectedPage.selected + 1);
     scrollTo(reviewRef);
   };
-
-  const displayedReviews = reviewData.slice(offset, offset + itemsPerPage);
+  console.log(
+    'totalElements',
+    totalElements,
+    'offset',
+    offset,
+    'itemsPerPage',
+    itemsPerPage,
+    'pageCount',
+    pageCount,
+  );
 
   return (
     <div className="flex flex-col xl:w-[1050px] mb-3">
-      {displayedReviews.map((review) => (
-        <ReviewItem key={review.id} data={review} />
-      ))}
+      {reviewData ? (
+        reviewData.map((review) => <ReviewItem key={review.id} data={review} />)
+      ) : (
+        <div></div>
+      )}
 
       {/* 페이지네이션 추가 */}
       <CustomPaginate>

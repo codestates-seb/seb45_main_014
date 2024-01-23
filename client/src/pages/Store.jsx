@@ -64,12 +64,15 @@ const Store = () => {
       .catch((err) => {
         console.error(err);
       });
+
     // 리뷰 정보
     axios
-      .get(`${apiUrl}/api/stores/${id}/reviews?page=${currentPage}&size=10`)
+      .get(`${apiUrl}/api/stores/${id}/reviews?page=${currentPage}&size=5`)
       .then((res) => {
         setReviewData(res.data.reviews);
         setReviewInfoData(res.data.pageInfo);
+        console.log(reviewInfoData);
+        console.log('res.data.pageInfo', res.data.pageInfo);
       })
       .catch((err) => {
         console.error(err);
@@ -83,7 +86,7 @@ const Store = () => {
     };
   }, [accessToken, apiUrl, guest, id, currentPage, isLoggedIn]);
 
-  if (!storeData) {
+  if (!storeData && reviewData) {
     return <LoadingSpinner />;
   }
 
@@ -141,7 +144,7 @@ const Store = () => {
           pageInfo={reviewInfoData}
           page={currentPage}
           setPage={setCurrentPage}
-          totalPage={reviewInfoData.total_pages}
+          totalElements={reviewInfoData.total_elements}
         />
       </div>
     </div>
